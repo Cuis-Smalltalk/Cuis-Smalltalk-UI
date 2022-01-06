@@ -7,6 +7,10 @@ with a more useful set of
 widgets and widget components 
 for Morphic authoring.
 
+Depricated/superceded packages also include
+Morphic-ColorEditor and Morph-MetaProperties.
+
+
 These packages are written for Cuis 6.0.
 
 Morphs considered as components are in packages in the 'lib' directory
@@ -20,5 +24,4 @@ Morphs considered tools (LayoutEditor, ColorEditor, MetaProperties, ..) are in p
 ```smalltalk
 Feature require: 'UI-Tools'.
 ```
-
 
