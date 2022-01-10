@@ -25,3 +25,86 @@ Morphs considered tools (LayoutEditor, ColorEditor, MetaProperties, ..) are in p
 Feature require: 'UI-Tools'.
 ```
 
+## UI-Components Packages
+
+UI-Base-Morphs
+- WindowTitleMorph
+- SqueezeLabelMorph
+- EllipseMorph
+- FrameMorph
+- LineMorph
+- PointerLineMorph
+
+UI-Click-Select
+- MultiMenuSelectMenu
+- RadioGroup
+- RadioButtonMorph
+
+UI-DragAndDrop
+- SignMorph
+- DropColorMorph
+- ClickColorMorph
+- FontMorph
+
+UI-Entry
+- OneLineEditorMorph
+- SimpleEditor
+- SimpleNumberEntryMorph
+
+UI-Panel
+- Panel
+- DialogPanel
+- EditPanel
+- ValueEntryPanel
+- CharacterEntryPanel
+- PointEntryPanel
+- PositiveIntegerEntryPanel
+- StringEntryPanel
+- PluggableScrollBar
+
+UI-Widgets
+- WheelMorph
+- ChevronMorph
+- DropDownChevronMorph
+- CircularToolbarMorph
+- CircularSubToolbarMorph
+- WaitSpinner
+- WizardPanel
+
+UI-Pallet
+- ImagePickerPanel
+- PickAColorPallet
+- PickAIconPallet
+- PickALargerIconPallet
+- PalletLayoutMorph
+- InnerPluggableImagePallet
+- PluggableImagePallet
+
+## UI-Tools Packages
+
+Color-Edit-Panel
+- ColorEditorPanel
+- ColorPallet
+- ColorPaneMorph
+- ColorEditorModel
+- ColorSliderMorph
+
+Layout-Edit-Panels
+- LayoutMorphEditPanel
+- LayoutSpecEditPanel
+
+Morphic-MetaProperties
+- VisualPropertyEditor
+- VisualPropertyMenuItem
+- OrdinaryPropertyMenuItem
+- MetaProperty
+- MetaPropertyFrom
+- MetaPropertyOneOf
+- MetaPropertyMultiSelect
+- MetaPropertyRange
+- MetaPropertyTransducer
+- MetaPropertyViaTest
+
+UI-Edit-Lens
+- MorphEditLens
+
