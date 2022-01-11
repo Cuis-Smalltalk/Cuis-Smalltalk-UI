@@ -59,6 +59,7 @@ UI-Panel
 - CharacterEntryPanel
 - PointEntryPanel
 - PositiveIntegerEntryPanel
+- PositiveFloatEntryPanel
 - StringEntryPanel
 - PluggableScrollBar
 
