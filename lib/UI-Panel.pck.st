@@ -1,120 +1,130 @@
-'From Cuis 6.0 [latest update: #5031] on 31 December 2021 at 12:44:06 pm'!
+'From Cuis 6.0 [latest update: #5041] on 11 January 2022 at 3:29:12 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 18!
+!provides: 'UI-Panel' 1 19!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
-SystemOrganization addCategory: 'UI-Panel'!
+SystemOrganization addCategory: #'UI-Panel'!
 
 
-!classDefinition: #PluggableScrollBar category: 'UI-Panel'!
+!classDefinition: #PluggableScrollBar category: #'UI-Panel'!
 ScrollBar subclass: #PluggableScrollBar
 	instanceVariableNames: 'refreshValueSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableScrollBar class' category: 'UI-Panel'!
+!classDefinition: 'PluggableScrollBar class' category: #'UI-Panel'!
 PluggableScrollBar class
 	instanceVariableNames: ''!
 
-!classDefinition: #Panel category: 'UI-Panel'!
+!classDefinition: #Panel category: #'UI-Panel'!
 PluggableMorph subclass: #Panel
 	instanceVariableNames: 'widgetsColor titleMorph layoutMorph stayUp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'Panel class' category: 'UI-Panel'!
+!classDefinition: 'Panel class' category: #'UI-Panel'!
 Panel class
 	instanceVariableNames: ''!
 
-!classDefinition: #DialogPanel category: 'UI-Panel'!
+!classDefinition: #DialogPanel category: #'UI-Panel'!
 Panel subclass: #DialogPanel
 	instanceVariableNames: 'buttonArea'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'DialogPanel class' category: 'UI-Panel'!
+!classDefinition: 'DialogPanel class' category: #'UI-Panel'!
 DialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #EditPanel category: 'UI-Panel'!
+!classDefinition: #EditPanel category: #'UI-Panel'!
 DialogPanel subclass: #EditPanel
 	instanceVariableNames: 'editModel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'EditPanel class' category: 'UI-Panel'!
+!classDefinition: 'EditPanel class' category: #'UI-Panel'!
 EditPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueEntryPanel category: 'UI-Panel'!
+!classDefinition: #ValueEntryPanel category: #'UI-Panel'!
 DialogPanel subclass: #ValueEntryPanel
 	instanceVariableNames: 'kind'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'ValueEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'ValueEntryPanel class' category: #'UI-Panel'!
 ValueEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #CharacterEntryPanel category: 'UI-Panel'!
+!classDefinition: #CharacterEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #CharacterEntryPanel
 	instanceVariableNames: 'characterEditMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'CharacterEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'CharacterEntryPanel class' category: #'UI-Panel'!
 CharacterEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PointEntryPanel category: 'UI-Panel'!
+!classDefinition: #PointEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #PointEntryPanel
 	instanceVariableNames: 'xEntryMorph yEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PointEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'PointEntryPanel class' category: #'UI-Panel'!
 PointEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveIntegerEntryPanel category: 'UI-Panel'!
+!classDefinition: #PositiveFloatEntryPanel category: #'UI-Panel'!
+ValueEntryPanel subclass: #PositiveFloatEntryPanel
+	instanceVariableNames: 'numberEntryMorph'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'PositiveFloatEntryPanel class' category: #'UI-Panel'!
+PositiveFloatEntryPanel class
+	instanceVariableNames: ''!
+
+!classDefinition: #PositiveIntegerEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #PositiveIntegerEntryPanel
 	instanceVariableNames: 'numberEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveIntegerEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'PositiveIntegerEntryPanel class' category: #'UI-Panel'!
 PositiveIntegerEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringEntryPanel category: 'UI-Panel'!
+!classDefinition: #StringEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #StringEntryPanel
 	instanceVariableNames: 'stringEditMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'StringEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'StringEntryPanel class' category: #'UI-Panel'!
 StringEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPanel category: 'UI-Panel'!
+!classDefinition: #WizardPanel category: #'UI-Panel'!
 DialogPanel subclass: #WizardPanel
 	instanceVariableNames: 'pages currentPageIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPanel class' category: 'UI-Panel'!
+!classDefinition: 'WizardPanel class' category: #'UI-Panel'!
 WizardPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPage category: 'UI-Panel'!
+!classDefinition: #WizardPage category: #'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPage class' category: 'UI-Panel'!
+!classDefinition: 'WizardPage class' category: #'UI-Panel'!
 WizardPage class
 	instanceVariableNames: ''!
 
@@ -152,6 +162,9 @@ I am a panel for filling in a Point value.
 My xEntryMorph and yEntryMorph hold the current points x@y value.
 
 !
+
+!PositiveFloatEntryPanel commentStamp: '<historical>' prior: 0!
+I edit positive real numbers!
 
 !PositiveIntegerEntryPanel commentStamp: '<historical>' prior: 0!
 I edit positive integers!
@@ -984,6 +997,55 @@ example1
 	^  self
 		open: 10@200
 		label: 'Point Value' ! !
+
+!PositiveFloatEntryPanel methodsFor: 'events' stamp: 'KenD 1/11/2022 14:33:48'!
+accept
+	
+	self delete.
+	self model 
+		ifNotNil: [ :myModel | 
+			myModel propertyValue: numberEntryMorph value 
+		].! !
+
+!PositiveFloatEntryPanel methodsFor: 'events' stamp: 'KenD 1/11/2022 14:34:07'!
+valueWhenDropped
+	
+	^ self model  
+		ifNotNil: [ :m | 
+			m propertyValue: numberEntryMorph value 
+		] ifNil: [ 0 ]! !
+
+!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 1/11/2022 14:33:17'!
+initialize
+	numberEntryMorph := 
+		(SimpleNumberEntryMorph 
+			positiveFloatDefault: 1.0 
+			maxNumChars: 8).
+	super initialize.
+! !
+
+!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 1/11/2022 14:31:20'!
+model: aModel
+	super model: aModel.
+	numberEntryMorph setValue: aModel propertyValue ! !
+
+!PositiveFloatEntryPanel methodsFor: 'GUI building' stamp: 'KenD 1/11/2022 14:30:49'!
+newPane
+
+	| entryLayout |
+	entryLayout := LayoutMorph newRow.
+	entryLayout 
+		separation: self defaultSeparation;
+		axisEdgeWeight: #center;
+		addMorph: numberEntryMorph ; "set in #initialize"
+		color: (Color transparent).
+	
+	^ entryLayout ! !
+
+!PositiveFloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:29:38'!
+checkValidity: aNumber
+	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Positive Number ' , aNumber printString ].
+	(aNumber >= 0) ifFalse: [ self error: 'I require a Positive Number: ' , aNumber printString ]! !
 
 !PositiveIntegerEntryPanel methodsFor: 'events' stamp: 'KenD 4/28/2019 18:51:07'!
 accept

@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5042] on 10 January 2022 at 1:24:43 pm'!
+'From Cuis 6.0 [latest update: #5041] on 11 January 2022 at 3:28:46 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 104!
+!provides: 'Morphic-MetaProperties' 1 105!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -1500,7 +1500,7 @@ minValue: aValue
 
 	minValue := aValue ! !
 
-!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'hlsf 12/30/2021 11:16:34'!
+!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 1/11/2022 15:27:11'!
 addToInitialDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1520,7 +1520,17 @@ addToInitialDictionaries
 								morphPosition: morph morphPositionInWorld 
 												+ morph morphExtentInOwner
 								; fitInWorld ]).
-	props at: #acceptsPositiveNumber put: (MetaPropertyFrom kind: Number minValue: 0).
+	props at: #acceptsPositiveNumber 
+		  put: (MetaPropertyFrom 
+				kind: Number 
+				minValue: 0
+				editProc: [ :morph :metaProp :menuItem | 
+					PositiveFloatEntryPanel
+						open: menuItem
+						label: (menuItem name asString) ::
+						morphPosition: morph morphPositionInWorld 
+											+ morph morphExtentInOwner;
+						fitInWorld ]).
 	props at: #acceptsPositiveInteger
 		    put: (MetaPropertyFrom 
 					kind: Integer 

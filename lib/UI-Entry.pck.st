@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5031] on 1 January 2022 at 8:17:01 am'!
+'From Cuis 6.0 [latest update: #5041] on 11 January 2022 at 3:29:06 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 9!
+!provides: 'UI-Entry' 1 10!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -851,7 +851,7 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 9/18/2019 15:13:43'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:25:35'!
 floatDefault: aReal  maxNumChars: numChars
 	"Any real number"
 	
@@ -859,11 +859,11 @@ floatDefault: aReal  maxNumChars: numChars
 		ifFalse: [ self error: 'Expected an real number : ' , aReal printString ].
 
 	^ self new
-			legalChars: '12345.67890'  
-		     numCharsToHold: numChars
-			value: aReal 
-			validator: [ :str |  [ str asNumber ] on: Error do: [ -1 ] ] 
-			toString:  [ :n | n printStringFractionDigits: 4 ]! !
+		legalChars: '12345.67890'  
+		numCharsToHold: numChars
+		value: aReal 
+		validator: [ :str |  [ str asNumber ] on: Error do: [ aReal ] ] 
+		toString:  [ :n | n printStringFractionDigits: 4 ]! !
 
 !SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 11/23/2013 20:01'!
 hexEntryOfSize: numChars
@@ -952,6 +952,20 @@ percentForRealFactor: factorMax
 				(val between: 0 and: 100) ifFalse: [ nil ] ifTrue: [ val / ratio ]
 			] 
 			toString: [ :n | (n * ratio) rounded printString ]! !
+
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:25:16'!
+positiveFloatDefault: aReal  maxNumChars: numChars
+	"Any real number"
+	
+	(aReal isKindOf: Number) 
+		ifFalse: [ self error: 'Expected a positive real number : ' , aReal printString ].
+
+	^ self new
+		legalChars: '12345.67890'  
+		numCharsToHold: numChars
+		value: aReal 
+		validator: [ :str |  [ str asNumber ] on: Error do: [ aReal ] ] 
+		toString:  [ :n | n printStringFractionDigits: 4 ]! !
 
 !SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 12/16/2013 17:08'!
 realFactor: factorMax
