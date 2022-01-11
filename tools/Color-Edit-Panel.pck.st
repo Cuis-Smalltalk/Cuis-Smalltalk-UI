@@ -2,7 +2,7 @@
 'Description I supply the ColorEditor Panel'!
 !provides: 'Color-Edit-Panel' 1 4!
 !requires: 'UI-DragAndDrop' 1 3 nil!
-!requires: 'UI-Pallet' 1 8 nil!
+!requires: 'UI-Palette' 1 8 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'Color-Extras' 1 9 nil!
@@ -41,14 +41,14 @@ ImageMorph subclass: #ColorSliderMorph
 ColorSliderMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #ColorPallet category: #'Color-Edit-Panel'!
-ImagePickerPanel subclass: #ColorPallet
+!classDefinition: #ColorPalette category: #'Color-Edit-Panel'!
+ImagePickerPanel subclass: #ColorPalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Color-Edit-Panel'!
-!classDefinition: 'ColorPallet class' category: #'Color-Edit-Panel'!
-ColorPallet class
+!classDefinition: 'ColorPalette class' category: #'Color-Edit-Panel'!
+ColorPalette class
 	instanceVariableNames: ''!
 
 !classDefinition: #ColorEditorPanel category: #'Color-Edit-Panel'!
@@ -101,8 +101,8 @@ The associated ColorPane has a Focus Color (x,y) at constant z.
 This pane shows the range of color of z at the focus point -- constant (x,y)
 !
 
-!ColorPallet commentStamp: '<historical>' prior: 0!
-I am just a way to get a Color pallet.  See my class side.!
+!ColorPalette commentStamp: '<historical>' prior: 0!
+I am just a way to get a Color palette.  See my class side.!
 
 !ColorEditorPanel commentStamp: 'hlsf 12/29/2021 10:42:51' prior: 0!
 I present the ColorEditor UI
@@ -111,7 +111,7 @@ Usage:
 	ColorEditorPanel open.
 	ColorEditorPanel open: Color forestGreen.!
 
-!ColorPallet class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 14:15:59'!
+!ColorPalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 14:15:59'!
 initializedInstance
 
 	^ ImagePickerPanel namedColors! !
@@ -1069,13 +1069,13 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!ColorPallet class methodsFor: 'new-morph participation' stamp: 'KenD 12/24/2013 17:55'!
+!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/24/2013 17:55'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!ColorPallet class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
 useCSS3ColorDict
 "
 	self useCSS3ColorDict.
@@ -1083,16 +1083,16 @@ useCSS3ColorDict
 	Feature require: 'CSS3-NamedColors'.
 	Color setColorNamesDict: Color css3ColorDictionary.! !
 
-!ColorPallet class methodsFor: 'color dictionary' stamp: 'KenD 7/24/2015 11:33'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 7/24/2015 11:33'!
 useCrayonColorDict
 "
-	ColorPallet useCrayonColorDict.
+	ColorPalette useCrayonColorDict.
 "
 
 	Feature require: 'Crayon-NamedColors'.
 	Color setColorNamesDict: Color crayonColorDictionary.! !
 
-!ColorPallet class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
 useNBSISCCColorDict
 "
 	self useNBSISCCColorDict.
@@ -1100,12 +1100,12 @@ useNBSISCCColorDict
 	Feature require: 'NBSISCC-NamedColors'.
 	Color setColorNamesDict: Color nbsisccColorDictionary.! !
 
-!ColorPallet class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
 useSmallColorDict
 
 	Color setColorNamesDict: Color defaultColorNamesDictionary.! !
 
-!ColorPallet class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
 useXKCDColorDict
 "
 	self useXKCDColorDict.
@@ -1114,7 +1114,7 @@ useXKCDColorDict
 	Feature require: 'XKCD-NamedColors'.
 	Color setColorNamesDict: Color xkcdColorDictionary.! !
 
-!ColorPallet class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:59'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:59'!
 useXKCDFirst48ColorDict
 "
 	self useXKCDFirst48ColorDict.
@@ -1550,7 +1550,7 @@ colorSelectionMenu
 		ifTrue: [ ColorEditorPanel open].
 	((selectedIndex > 0) and: [selectedIndex < 5])
 		ifTrue: [ | pickerPanel savedExtent |
-			ColorPallet perform: ( choicesSetter at: selectedIndex ).
+			ColorPalette perform: ( choicesSetter at: selectedIndex ).
 			pickerPanel := ImagePickerPanel namedColors. 
 			savedExtent := pickerPanel morphExtentInOwner. 
 			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
@@ -1589,7 +1589,7 @@ colorSelectionMenu: originalColor
 		ifTrue: [ ColorEditorPanel openWithColor: originalColor].
 	((selectedIndex > 0) and: [selectedIndex < 5])
 		ifTrue: [ | pickerPanel savedExtent |
-			ColorPallet perform: ( choicesSetter at: selectedIndex ).
+			ColorPalette perform: ( choicesSetter at: selectedIndex ).
 			pickerPanel := ImagePickerPanel namedColors. 
 			savedExtent := pickerPanel morphExtentInOwner. 
 			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"

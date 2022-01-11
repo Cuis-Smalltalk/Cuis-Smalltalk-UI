@@ -5,7 +5,7 @@
 !requires: 'Morphic-MetaProperties' 1 102 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
 !requires: 'Layout-Edit-Panels' 1 8 nil!
-!requires: 'UI-Pallet' 1 10 nil!
+!requires: 'UI-Palette' 1 10 nil!
 SystemOrganization addCategory: 'UI-Tools'!
 
 

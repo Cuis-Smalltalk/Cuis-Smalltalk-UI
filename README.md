@@ -71,20 +71,20 @@ UI-Widgets
 - WaitSpinner
 - WizardPanel
 
-UI-Pallet
+UI-Palette
 - ImagePickerPanel
-- PickAColorPallet
-- PickAIconPallet
-- PickALargerIconPallet
-- PalletLayoutMorph
-- InnerPluggableImagePallet
-- PluggableImagePallet
+- PickAColorPalette
+- PickAnIconPalette
+- PickALargerIconPalette
+- PaletteLayoutMorph
+- InnerPluggableImagePalette
+- PluggableImagePalette
 
 ## UI-Tools Packages
 
 Color-Edit-Panel
 - ColorEditorPanel
-- ColorPallet
+- ColorPalette
 - ColorPaneMorph
 - ColorEditorModel
 - ColorSliderMorph
