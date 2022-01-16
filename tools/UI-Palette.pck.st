@@ -1,128 +1,128 @@
 'From Cuis 6.0 [latest update: #5031] on 31 December 2021 at 12:43:55 pm'!
-'Description I supply Pallets of selectable items.
-E.g. see PickAIconPallet, PickAColorPallet'!
-!provides: 'UI-Pallet' 1 10!
+'Description I supply Palettes of selectable items.
+E.g. see PickAnIconPalette, PickAColorPalette'!
+!provides: 'UI-Palette' 1 10!
 !requires: 'UI-Click-Select' 1 1 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 7 nil!
 !requires: 'Color-Extras' 1 9 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
-SystemOrganization addCategory: 'UI-Pallet'!
+SystemOrganization addCategory: 'UI-Palette'!
 
 
-!classDefinition: #PalletLayoutMorph category: 'UI-Pallet'!
-LayoutMorph subclass: #PalletLayoutMorph
+!classDefinition: #PaletteLayoutMorph category: 'UI-Palette'!
+LayoutMorph subclass: #PaletteLayoutMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Pallet'!
-!classDefinition: 'PalletLayoutMorph class' category: 'UI-Pallet'!
-PalletLayoutMorph class
+	category: 'UI-Palette'!
+!classDefinition: 'PaletteLayoutMorph class' category: 'UI-Palette'!
+PaletteLayoutMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #InnerPluggableImagePallet category: 'UI-Pallet'!
-InnerPluggableMorph subclass: #InnerPluggableImagePallet
+!classDefinition: #InnerPluggableImagePalette category: 'UI-Palette'!
+InnerPluggableMorph subclass: #InnerPluggableImagePalette
 	instanceVariableNames: 'nameImageCollection imageFilter imageExtent calculatedExtent'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Pallet'!
-!classDefinition: 'InnerPluggableImagePallet class' category: 'UI-Pallet'!
-InnerPluggableImagePallet class
+	category: 'UI-Palette'!
+!classDefinition: 'InnerPluggableImagePalette class' category: 'UI-Palette'!
+InnerPluggableImagePalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableImagePallet category: 'UI-Pallet'!
-PluggableScrollPane subclass: #PluggableImagePallet
+!classDefinition: #PluggableImagePalette category: 'UI-Palette'!
+PluggableScrollPane subclass: #PluggableImagePalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Pallet'!
-!classDefinition: 'PluggableImagePallet class' category: 'UI-Pallet'!
-PluggableImagePallet class
+	category: 'UI-Palette'!
+!classDefinition: 'PluggableImagePalette class' category: 'UI-Palette'!
+PluggableImagePalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #ImagePickerPanel category: 'UI-Pallet'!
+!classDefinition: #ImagePickerPanel category: 'UI-Palette'!
 Panel subclass: #ImagePickerPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Pallet'!
-!classDefinition: 'ImagePickerPanel class' category: 'UI-Pallet'!
+	category: 'UI-Palette'!
+!classDefinition: 'ImagePickerPanel class' category: 'UI-Palette'!
 ImagePickerPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PickAColorPallet category: 'UI-Pallet'!
-ImagePickerPanel subclass: #PickAColorPallet
+!classDefinition: #PickAColorPalette category: 'UI-Palette'!
+ImagePickerPanel subclass: #PickAColorPalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Pallet'!
-!classDefinition: 'PickAColorPallet class' category: 'UI-Pallet'!
-PickAColorPallet class
+	category: 'UI-Palette'!
+!classDefinition: 'PickAColorPalette class' category: 'UI-Palette'!
+PickAColorPalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #PickAIconPallet category: 'UI-Pallet'!
-ImagePickerPanel subclass: #PickAIconPallet
+!classDefinition: #PickAnIconPalette category: 'UI-Palette'!
+ImagePickerPanel subclass: #PickAnIconPalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Pallet'!
-!classDefinition: 'PickAIconPallet class' category: 'UI-Pallet'!
-PickAIconPallet class
+	category: 'UI-Palette'!
+!classDefinition: 'PickAnIconPalette class' category: 'UI-Palette'!
+PickAnIconPalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #PickALargerIconPallet category: 'UI-Pallet'!
-ImagePickerPanel subclass: #PickALargerIconPallet
+!classDefinition: #PickALargerIconPalette category: 'UI-Palette'!
+ImagePickerPanel subclass: #PickALargerIconPalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Pallet'!
-!classDefinition: 'PickALargerIconPallet class' category: 'UI-Pallet'!
-PickALargerIconPallet class
+	category: 'UI-Palette'!
+!classDefinition: 'PickALargerIconPalette class' category: 'UI-Palette'!
+PickALargerIconPalette class
 	instanceVariableNames: ''!
 
 
-!PalletLayoutMorph commentStamp: '<historical>' prior: 0!
+!PaletteLayoutMorph commentStamp: '<historical>' prior: 0!
 I am a LayoutMorph which allows grabbing (cloning) my submorphs.!
 
-!InnerPluggableImagePallet commentStamp: '<historical>' prior: 0!
-I display pick/clone-able images in a PluggableImagePallet which is a PluggableScrollPane!
+!InnerPluggableImagePalette commentStamp: '<historical>' prior: 0!
+I display pick/clone-able images in a PluggableImagePalette which is a PluggableScrollPane!
 
 !ImagePickerPanel commentStamp: '<historical>' prior: 0!
 I present a scrollable view of images to pick from. 
 (Note PartsBinMorph and it parent, DragAndDropAreaMorph)
 !
 
-!PickAColorPallet commentStamp: '<historical>' prior: 0!
+!PickAColorPalette commentStamp: '<historical>' prior: 0!
 I am just a way of getting an initializedInstance from the New Morph.. menu..  
 
 See my class side.!
 
-!PickAIconPallet commentStamp: '<historical>' prior: 0!
+!PickAnIconPalette commentStamp: '<historical>' prior: 0!
 I am just a way of getting an initializedInstance from the New Morph.. menu..  
 
 See my class side.!
 
-!PickALargerIconPallet commentStamp: '<historical>' prior: 0!
+!PickALargerIconPalette commentStamp: '<historical>' prior: 0!
 I am just a way of getting an initializedInstance from the New Morph.. menu..  
 
 See my class side.!
 
-!PickAColorPallet class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:24:49'!
+!PickAColorPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:24:49'!
 initializedInstance
 
 	^ super namedColors! !
 
-!PickAIconPallet class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:02'!
+!PickAnIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:02'!
 initializedInstance
 
 	^ super namedIcons ! !
 
-!PickALargerIconPallet class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:27'!
+!PickALargerIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:27'!
 initializedInstance
 
 	^ super largerIcons ! !
 
-!PalletLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 5/11/2019 01:39:50'!
+!PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 5/11/2019 01:39:50'!
 aboutToGrab: aMorph
 	"submorph is being grabbed by a hand.
 	Perform necessary adjustments (if any) and return the actual morph
@@ -132,13 +132,13 @@ aboutToGrab: aMorph
 	^ aMorph copy   "Note PartsBinMorph>>aboutToGrab: "
 	! !
 
-!PalletLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/14/2013 15:59'!
+!PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/14/2013 15:59'!
 allowsSubmorphDrag
 	"Answer whether our morphs can just be grabbed with the hand, instead of requiring the use of the halo. Redefined to answer true."
 
 	^ true! !
 
-!PalletLayoutMorph methodsFor: 'layout' stamp: 'KenD 11/7/2021 14:14:42'!
+!PaletteLayoutMorph methodsFor: 'layout' stamp: 'KenD 11/7/2021 14:14:42'!
 shrinkWrap
 	"Resize self to minimally contain submorphs with specified separation"
 	
@@ -182,53 +182,53 @@ shrinkWrap
 	self morphExtent: width @ height.
 	self layoutSubmorphs.! !
 
-!PalletLayoutMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/15/2013 16:40'!
+!PaletteLayoutMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/15/2013 16:40'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!InnerPluggableImagePallet methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:42:54'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:42:54'!
 adjustExtent
 	
 	"Nothing to do here"! !
 
-!InnerPluggableImagePallet methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:37:56'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:37:56'!
 getMenu
 
 	^ nil! !
 
-!InnerPluggableImagePallet methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:10'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:10'!
 imageExtent
 	"Answer extent of an image contained in me.
 	Assume all images of same extent"
 	^imageExtent ! !
 
-!InnerPluggableImagePallet methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:38:18'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:38:18'!
 imageExtent: aPointExtent
 
 	imageExtent := aPointExtent ! !
 
-!InnerPluggableImagePallet methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:16'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:16'!
 imageHeight
 
 	^ imageExtent y! !
 
-!InnerPluggableImagePallet methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:21'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:21'!
 imageWidth
 
 	^ imageExtent x! !
 
-!InnerPluggableImagePallet methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:37:45'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:37:45'!
 minimumExtent
 
 	^self calculatedExtent ! !
 
-!InnerPluggableImagePallet methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:40'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:40'!
 nameImageCollection
 
 	^ nameImageCollection ! !
 
-!InnerPluggableImagePallet methodsFor: 'initialization' stamp: 'KenD 11/7/2021 14:16:42'!
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 11/7/2021 14:16:42'!
 collection: aNameImageCollection filter: imageTransducer
 
 	| numImages maxWidth numAcross numDown spacedExtent |
@@ -274,7 +274,7 @@ Transcript show: 'calculatedExtent: ', (self calculatedExtent asString)
 
 ! !
 
-!InnerPluggableImagePallet methodsFor: 'initialization' stamp: 'KenD 9/16/2021 13:18:54'!
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/16/2021 13:18:54'!
 initialize
 
 	super initialize.
@@ -283,7 +283,7 @@ initialize
 		layoutSpec: LayoutSpec useAll;
 		yourself! !
 
-!InnerPluggableImagePallet methodsFor: 'initialization' stamp: 'KenD 9/16/2021 13:11:57'!
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/16/2021 13:11:57'!
 layoutImages: numAcross extent: layoutExtent
 	"Lay out images in a LayoutMorph and return it."
 	
@@ -306,7 +306,7 @@ layoutImages: numAcross extent: layoutExtent
 			image := nameImageAssoc value.
 			count := count + 1.  "Image count"
 			(count \\ numAcross) isZero ifTrue: [ "Start a new Row"
-				nextRow := PalletLayoutMorph newRow 
+				nextRow := PaletteLayoutMorph newRow 
 							separation: (self spaceWidth @ 0).
 				nextRow layoutSpec: rowLayoutSpec.
 				column addMorph: nextRow.
@@ -326,40 +326,40 @@ layoutImages: numAcross extent: layoutExtent
 	^ column
 ! !
 
-!InnerPluggableImagePallet methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:02'!
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:02'!
 calculatedExtent
 
 	^ calculatedExtent! !
 
-!InnerPluggableImagePallet methodsFor: 'private' stamp: 'KenD 9/15/2021 14:36:55'!
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:36:55'!
 calculatedExtent: aPointExtent
 
 	calculatedExtent := aPointExtent.
 	self morphExtent: calculatedExtent ! !
 
-!InnerPluggableImagePallet methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:10'!
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:10'!
 processImage: anImage
 
 	^ imageFilter value: anImage
 ! !
 
-!InnerPluggableImagePallet methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:16'!
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:16'!
 spaceWidth
 	"Answer the space in pixels between images"
 	
 	^ 2! !
 
-!InnerPluggableImagePallet class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 11:58:06'!
+!InnerPluggableImagePalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 11:58:06'!
 fromCollection: sortedColors imageFilter: colorTransducer
 
 		^ self basicNew initialize 
 			collection: sortedColors 
 			filter: colorTransducer ! !
 
-!PluggableImagePallet methodsFor: 'initialization' stamp: 'KenD 9/15/2021 08:31:54'!
+!PluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/15/2021 08:31:54'!
 innerMorphClass
 
-	^ InnerPluggableImagePallet! !
+	^ InnerPluggableImagePalette! !
 
 !ImagePickerPanel methodsFor: 'initialization' stamp: 'KenD 9/15/2021 14:29:33'!
 initialize
@@ -375,7 +375,7 @@ initialize
 
 !ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 11/5/2021 13:44:04'!
 clickSelectColorsFor: aMorph
-	"Click-Select from a ClickColorPallet"
+	"Click-Select from a ClickColorPalette"
 "Change Color Dictionary:
 	ImagePickerPanel useCSS3ColorDict.                  
 	ImagePickerPanel useXKCDColorDict.
@@ -433,7 +433,7 @@ largerIcons
 
 !ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 9/20/2021 07:09:04'!
 namedColors
-"	'Pick a ColorPallet'
+"	'Pick a ColorPalette'
 	ImagePickerPanel useCSS3ColorDict.                  
 	ImagePickerPanel useXKCDColorDict.
 	ImagePickerPanel useSmallColorDict.
@@ -574,7 +574,7 @@ transducer: imageProcessor
 
 	"Panel contains scroll-pane containes image selections"
 	
-	scrollPane := PluggableImagePallet new.
+	scrollPane := PluggableImagePalette new.
 	"scrollPane 		model: scrollPane scroller."
 	scrollPane 
 		color: `Color orange` ;
@@ -596,32 +596,32 @@ transducer: imageProcessor
 		yourself
 		! !
 
-!PickAColorPallet class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:28:49'!
+!PickAColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:28:49'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!PickAIconPallet class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:03'!
+!PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:03'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!PickALargerIconPallet class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:12'!
+!PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:12'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!Morph methodsFor: '*ui-pallet' stamp: 'KenD 11/5/2021 13:48:39'!
+!Morph methodsFor: '*ui-palette' stamp: 'KenD 11/5/2021 13:48:39'!
 changeColor
 	"Change the color of the receiver -- triggered, e.g. from a menu"
 
 	"Override default method"
 	(ImagePickerPanel clickSelectColorsFor: self) openInHand.! !
 
-!SystemWindow methodsFor: '*ui-pallet' stamp: 'KenD 11/5/2021 14:06:04'!
+!SystemWindow methodsFor: '*ui-palette' stamp: 'KenD 11/5/2021 14:06:04'!
 changeColor
 	"Change the color of the receiver -- triggered, e.g. from a menu.  This variant allows the recolor triggered from the window's halo recolor handle to have the same result as choosing change-window-color from the window-title menu"
 
@@ -634,7 +634,7 @@ changeColor
 		putUpFor: self near: self morphFullBoundsInWorld"
 	(ImagePickerPanel clickSelectColorsFor: self) openInHand.! !
 
-!SystemWindow methodsFor: '*ui-pallet' stamp: 'KenD 11/5/2021 14:02:02'!
+!SystemWindow methodsFor: '*ui-palette' stamp: 'KenD 11/5/2021 14:02:02'!
 setWindowColor
 
 	"Override to add click-color select"

@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5031] on 31 December 2021 at 1:24:07 pm'!
+'From Cuis 6.0 [latest update: #5041] on 11 January 2022 at 3:28:46 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 103!
+!provides: 'Morphic-MetaProperties' 1 105!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -1311,7 +1311,7 @@ initialize
 	"self initializeDictionaries." "invoked in VisualPropertyEditor class>>initialize"
 ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 12/31/2021 13:23:17'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 1/10/2022 13:15:12'!
 initializeDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1359,9 +1359,12 @@ initializeDictionaries
 						]).
 	props at: #acceptsNumber put: (MetaProperty kind: Number).
 	props at: #acceptsColor 
-		    put: (MetaProperty kind: Color
-								editProc: [ :morph :metaProp :propName |
-												Color colorSelectionMenu ] ).
+		    put: (MetaProperty 
+				kind: Color
+				editProc: [ :morph :metaProp :menuItem |
+					| origColor |
+					origColor := menuItem prevValue.
+					Color colorSelectionMenu: origColor ] ).
 	props at: #acceptsPoint 
 		    put: (MetaProperty 
 				kind: Point
@@ -1465,7 +1468,7 @@ Some Morph properties support private mechanics, but others should be visually s
 
 The basic idea here is to allow authors of Morph classes to attach MetaProperties so that a Morph''s visual instance variables and properties show up in a VisualPropertyEditor.  Instance variables and properties are private/hidden by default.
 
-To remove walls, a morph''s public properties (those that have been annotated to show up in a VisualPropertyEditor) can be updated by fill-in or DragNDrop for example from a Color, Font or some other Pallet or selected from a menu select list.
+To remove walls, a morph''s public properties (those that have been annotated to show up in a VisualPropertyEditor) can be updated by fill-in or DragNDrop for example from a Color, Font or some other Palette or selected from a menu select list.
 
 Note that these (public) visual properties may be virtual.  The idea being that changing a property value may store a value into an instance variable, a #property, or invoke a bit of code that does the right thing and maintains some invariant.
 
@@ -1497,7 +1500,7 @@ minValue: aValue
 
 	minValue := aValue ! !
 
-!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'hlsf 12/30/2021 11:16:34'!
+!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 1/11/2022 15:27:11'!
 addToInitialDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1517,7 +1520,17 @@ addToInitialDictionaries
 								morphPosition: morph morphPositionInWorld 
 												+ morph morphExtentInOwner
 								; fitInWorld ]).
-	props at: #acceptsPositiveNumber put: (MetaPropertyFrom kind: Number minValue: 0).
+	props at: #acceptsPositiveNumber 
+		  put: (MetaPropertyFrom 
+				kind: Number 
+				minValue: 0
+				editProc: [ :morph :metaProp :menuItem | 
+					PositiveFloatEntryPanel
+						open: menuItem
+						label: (menuItem name asString) ::
+						morphPosition: morph morphPositionInWorld 
+											+ morph morphExtentInOwner;
+						fitInWorld ]).
 	props at: #acceptsPositiveInteger
 		    put: (MetaPropertyFrom 
 					kind: Integer 
