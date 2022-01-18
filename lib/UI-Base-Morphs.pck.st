@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5031] on 31 December 2021 at 1:09:51 pm'!
+'From Cuis 6.0 [latest update: #5041] on 17 January 2022 at 12:50:49 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 12!
+!provides: 'UI-Base-Morphs' 1 13!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -175,6 +175,17 @@ color
 	"I take on the color of my title bar"
 
 	^ Color transparent ! !
+
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 1/17/2022 12:43:06'!
+dontShrinkTitle
+
+	| oldTitle |
+	oldTitle := titleMorph.
+	titleMorph := LabelMorph 
+				contents: titleMorph contents 
+				font: titleMorph font
+				"emphasis: titleMorph emphasis" .
+	self replaceSubmorph: oldTitle by: titleMorph! !
 
 !WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 11/7/2021 14:14:49'!
 height
@@ -369,6 +380,18 @@ drawAction: drawSelector
 	self addMorph: button
 	! !
 
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 1/17/2022 08:19:28'!
+dontShrinkTitle: aString buttonsNamed: aSymbolColleciton
+	"Set me up"
+	
+	titleMorph := LabelMorph contents: aString font: Preferences windowTitleFont.
+	self hideAllButtons.
+	aSymbolColleciton  do: [ :aName |
+		(self buttonNamed: aName)
+			ifNotNil: [ :aButton | aButton show ]
+	].
+! !
+
 !WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 10/26/2021 16:11:47'!
 initialize
 
@@ -403,6 +426,18 @@ buttonNames
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
+
+!WindowTitleMorph class methodsFor: 'instance creation' stamp: 'KenD 1/17/2022 08:18:02'!
+dontShrinkTitle: aString buttonsNamed: aSymbolCollection
+
+	((self buttonNames) includesAllOf: aSymbolCollection)
+		ifFalse: [ | stdNames outliers |
+			stdNames := self buttonNames.
+			outliers := aSymbolCollection reject: [ :aName | stdNames includes: aName ].
+			self error: 'Bad button name(s): ', outliers printString 
+		].
+	^ (self newRow) dontShrinkTitle: aString buttonsNamed: aSymbolCollection
+! !
 
 !WindowTitleMorph class methodsFor: 'instance creation' stamp: 'KenD 4/23/2015 17:05'!
 title: aString
