@@ -1,58 +1,58 @@
-'From Cuis 6.0 [latest update: #5042] on 16 January 2022 at 10:58:02 am'!
+'From Cuis 6.0 [latest update: #5045] on 18 January 2022 at 9:45:35 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 6!
+!provides: 'UI-Click-Select' 1 7!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
-SystemOrganization addCategory: 'UI-Click-Select'!
+SystemOrganization addCategory: #'UI-Click-Select'!
 
 
-!classDefinition: #InnerListOfMorph category: 'UI-Click-Select'!
+!classDefinition: #InnerListOfMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #InnerListOfMorph
 	instanceVariableNames: 'highlightedRow selectedRow'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'InnerListOfMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'InnerListOfMorph class' category: #'UI-Click-Select'!
 InnerListOfMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #RadioGroup category: 'UI-Click-Select'!
+!classDefinition: #RadioGroup category: #'UI-Click-Select'!
 LayoutMorph subclass: #RadioGroup
 	instanceVariableNames: 'list font buttonOnLeft buttons'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'RadioGroup class' category: 'UI-Click-Select'!
+!classDefinition: 'RadioGroup class' category: #'UI-Click-Select'!
 RadioGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableListOfMorph category: 'UI-Click-Select'!
-PluggableListMorph subclass: #PluggableListOfMorph
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Click-Select'!
-!classDefinition: 'PluggableListOfMorph class' category: 'UI-Click-Select'!
-PluggableListOfMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #MultiSelectMenu category: 'UI-Click-Select'!
+!classDefinition: #MultiSelectMenu category: #'UI-Click-Select'!
 MenuMorph subclass: #MultiSelectMenu
 	instanceVariableNames: 'choices seed result'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'MultiSelectMenu class' category: 'UI-Click-Select'!
+!classDefinition: 'MultiSelectMenu class' category: #'UI-Click-Select'!
 MultiSelectMenu class
 	instanceVariableNames: ''!
 
-!classDefinition: #RadioButtonMorph category: 'UI-Click-Select'!
+!classDefinition: #PluggableListOfMorph category: #'UI-Click-Select'!
+PluggableListMorph subclass: #PluggableListOfMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'PluggableListOfMorph class' category: #'UI-Click-Select'!
+PluggableListOfMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #RadioButtonMorph category: #'UI-Click-Select'!
 EllipseMorph subclass: #RadioButtonMorph
 	instanceVariableNames: 'isSelected'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'RadioButtonMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'RadioButtonMorph class' category: #'UI-Click-Select'!
 RadioButtonMorph class
 	instanceVariableNames: ''!
 
@@ -74,10 +74,6 @@ iVars:
  buttons - cached array of buttons
 !
 
-!PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
-I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
-My width is adjusted to the larger morph of my list.!
-
 !MultiSelectMenu commentStamp: '<historical>' prior: 0!
 I am used to relate a set of names to an integer incoding, where each  symbolic name is realated to a bit.
 
@@ -98,6 +94,10 @@ For example, TextEmphasis codes are a bit ORing of values:
  2r01000000	64 	with ST-80 Glyphs
  !
 
+!PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
+I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
+My width is adjusted to the larger morph of my list.!
+
 !RadioButtonMorph commentStamp: '<historical>' prior: 0!
 I am a very simple radio button.!
 
@@ -107,12 +107,6 @@ initialize
 	self separation: 5@3.
 	self morphWidth: 0.
 	selectedRow _ highlightedRow _ nil! !
-
-!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/16/2022 10:32:30'!
-drawBoundsForRow: row
-"calculate the bounds that row should be drawn at.  This might be outside our bounds!!"
-	^ (submorphs atLast: row) fullBoundsInOwner expandBy: 1
-! !
 
 !InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/16/2022 10:24:49'!
 highlightedRow: n
@@ -124,25 +118,22 @@ highlightedRow: n
 			self invalidateLocalRect: (self drawBoundsForRow: highlightedRow) ].
 		].! !
 
-!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/16/2022 10:50:20'!
+!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/18/2022 21:20:00'!
 rowAtLocation: aPoint 
-	| rect |
-	rect _ aPoint corner: `2@2`.
+	| detectRow |
+	detectRow _ 0.
 	1 to: submorphs size do: [:row |
-		((submorphs atLast: row) displayBoundsIntersects: rect)
-			ifTrue: [ ^ row]
-		]
-	^ 0! !
+		((submorphs atLast: row) fullBoundsInOwner containsPoint: aPoint)
+			ifTrue: [ detectRow _ row] 		].
+	^ detectRow ! !
 
-!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/16/2022 10:57:26'!
+!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/18/2022 21:14:12'!
 rowAtLocation: aPoint ifNone: aNoneBlock
-	| rect |
-	rect _ aPoint corner: `2@2`.
+	| detectedRow|
 	1 to: submorphs size do: [:row |
-		((submorphs atLast: row) displayBoundsIntersects: rect)
-			ifTrue: [ ^ row]
-		].
-	^ aNoneBlock! !
+		((submorphs atLast: row) fullBoundsInOwner containsPoint: aPoint)
+			ifTrue: [ detectedRow _ row]		].
+	^ detectedRow ifNil: aNoneBlock ! !
 
 !InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:20:28'!
 adjustExtent
@@ -160,6 +151,39 @@ minimumWidth
 	^ submorphs 
 		ifEmpty: [0]
 		ifNotEmpty: [submorphs max: [:morph | morph fullBoundsInOwner width + (self xSeparation * 2)]]! !
+
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/18/2022 21:22:42'!
+drawBoundsForRow: row
+"calculate the bounds that row should be drawn at.  This might be outside our bounds!!"
+	^ (submorphs atLast: row) fullBoundsInOwner expandBy: 5@3
+! !
+
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/18/2022 21:20:58'!
+drawHighlightOn: aCanvas
+	| selectionDrawBounds |
+	highlightedRow ifNil: [ ^self ].
+	highlightedRow = 0 ifTrue: [ ^self ].
+	selectionDrawBounds _ self drawBoundsForRow: highlightedRow.
+	selectionDrawBounds _ selectionDrawBounds intersect: self morphLocalBounds.
+	aCanvas
+		fillRectangle: selectionDrawBounds
+		color: ((Theme current listHighlightFocused: owner hasKeyboardFocus) alpha: 0.9)! !
+
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/18/2022 21:29:42'!
+drawOn: aCanvas
+	self drawHighlightOn: aCanvas.
+	self drawSelectionOn: aCanvas ! !
+
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/18/2022 21:29:27'!
+drawSelectionOn: aCanvas
+	| selectionDrawBounds |
+	selectedRow ifNil: [ ^self ].
+	selectedRow = 0 ifTrue: [ ^self ].
+	selectionDrawBounds _ self drawBoundsForRow: selectedRow.
+	selectionDrawBounds _ selectionDrawBounds intersect: self morphLocalBounds.
+	aCanvas
+		fillRectangle: selectionDrawBounds
+		color: (Theme current listHighlightFocused: owner hasKeyboardFocus)! !
 
 !InnerListOfMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/14/2022 09:48:30'!
 includeInNewMorphMenu
@@ -461,45 +485,6 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/16/2022 09:58:55'!
-addToScroller: aMorph
-	super addToScroller: aMorph.
-	self suitedExtent .! !
-
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/14/2022 11:08:27'!
-initialize
-	super initialize.
-	autoDeselect _ false.
-	self hHideScrollBar.! !
-
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
-innerMorphClass
-	^ InnerListOfMorph ! !
-
-!PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
-is: aSymbol
-	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
-scrollDeltaHeight
-	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 10:00:37'!
-suitedExtent
-	self morphHeight: (extent y min: scroller fullHeight max: 100).
-	self morphWidth: self minimumExtent x + scroller minimumWidth! !
-
-!PluggableListOfMorph class methodsFor: 'as yet unclassified' stamp: 'hlsf 1/14/2022 10:42:34'!
-example1
-"
-	self example1 openInWorld
-"
-| list |
-	list _ PluggableListOfMorph new.
-	#(#addressBookIcon #chatIcon #closeIcon #dateIcon #copyIcon #deleteIcon) do: [:icon |
-		list addToScroller: (ImageMorph new image: (Theme current perform: icon))].
-	^ list! !
-
 !MultiSelectMenu methodsFor: 'events-processing' stamp: 'KenD 12/17/2016 14:36:43'!
 accept
 
@@ -673,6 +658,45 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
+
+!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/16/2022 09:58:55'!
+addToScroller: aMorph
+	super addToScroller: aMorph.
+	self suitedExtent .! !
+
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/18/2022 21:45:21'!
+initialize
+	super initialize.
+	autoDeselect _ true.
+	self hHideScrollBar.! !
+
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
+innerMorphClass
+	^ InnerListOfMorph ! !
+
+!PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
+is: aSymbol
+	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
+scrollDeltaHeight
+	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 10:00:37'!
+suitedExtent
+	self morphHeight: (extent y min: scroller fullHeight max: 100).
+	self morphWidth: self minimumExtent x + scroller minimumWidth! !
+
+!PluggableListOfMorph class methodsFor: 'as yet unclassified' stamp: 'hlsf 1/14/2022 10:42:34'!
+example1
+"
+	self example1 openInWorld
+"
+| list |
+	list _ PluggableListOfMorph new.
+	#(#addressBookIcon #chatIcon #closeIcon #dateIcon #copyIcon #deleteIcon) do: [:icon |
+		list addToScroller: (ImageMorph new image: (Theme current perform: icon))].
+	^ list! !
 
 !RadioButtonMorph methodsFor: 'initialization' stamp: 'hlsf 10/29/2021 10:45:24'!
 defaultBorderWidth
