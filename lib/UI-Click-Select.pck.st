@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5045] on 18 January 2022 at 9:45:35 pm'!
+'From Cuis 6.0 [latest update: #5045] on 20 January 2022 at 11:12:37 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 7!
+!provides: 'UI-Click-Select' 1 8!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -56,6 +56,16 @@ EllipseMorph subclass: #RadioButtonMorph
 RadioButtonMorph class
 	instanceVariableNames: ''!
 
+!classDefinition: #PaletteModel category: #'UI-Click-Select'!
+Object subclass: #PaletteModel
+	instanceVariableNames: 'palette selectedColor'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'PaletteModel class' category: #'UI-Click-Select'!
+PaletteModel class
+	instanceVariableNames: ''!
+
 
 !InnerListOfMorph commentStamp: '<historical>' prior: 0!
 The morph that displays the list of Morph in a PluggableListOfMorph.!
@@ -101,10 +111,13 @@ My width is adjusted to the larger morph of my list.!
 !RadioButtonMorph commentStamp: '<historical>' prior: 0!
 I am a very simple radio button.!
 
-!InnerListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/16/2022 10:25:28'!
+!PaletteModel commentStamp: '<historical>' prior: 0!
+I am a model presenting a list of color!
+
+!InnerListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/20/2022 11:11:47'!
 initialize
 	super initialize.
-	self separation: 5@3.
+	self separation: 8@8.
 	self morphWidth: 0.
 	selectedRow _ highlightedRow _ nil! !
 
@@ -118,22 +131,45 @@ highlightedRow: n
 			self invalidateLocalRect: (self drawBoundsForRow: highlightedRow) ].
 		].! !
 
-!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/18/2022 21:20:00'!
-rowAtLocation: aPoint 
-	| detectRow |
-	detectRow _ 0.
-	1 to: submorphs size do: [:row |
-		((submorphs atLast: row) fullBoundsInOwner containsPoint: aPoint)
-			ifTrue: [ detectRow _ row] 		].
-	^ detectRow ! !
+!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/20/2022 11:06:04'!
+listChanged
+	highlightedRow _ 	selectedRow _ nil.! !
 
-!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/18/2022 21:14:12'!
+!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/19/2022 21:02:38'!
+rowAtLocation: aPoint 
+	| detectedRow |
+	detectedRow _ 0.
+	1 to: submorphs size do: [:row |
+		((self drawBoundsForRow: row) containsPoint: aPoint)
+			ifTrue: [ detectedRow _ row] 		].
+	^ detectedRow ! !
+
+!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/19/2022 20:58:37'!
 rowAtLocation: aPoint ifNone: aNoneBlock
 	| detectedRow|
 	1 to: submorphs size do: [:row |
-		((submorphs atLast: row) fullBoundsInOwner containsPoint: aPoint)
+		((self drawBoundsForRow: row) containsPoint: aPoint)
 			ifTrue: [ detectedRow _ row]		].
 	^ detectedRow ifNil: aNoneBlock ! !
+
+!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/19/2022 21:12:44'!
+selectedRow
+	"return the currently selected row, or nil if none is selected"
+	^selectedRow! !
+
+!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/19/2022 21:12:19'!
+selectedRow: index
+	"select the index-th row.  if nil, remove the current selection"
+	selectedRow = index ifFalse: [
+		selectedRow ifNotNil: [
+			self invalidateLocalRect: (self drawBoundsForRow: selectedRow) ].
+		highlightedRow ifNotNil: [
+			self invalidateLocalRect: (self drawBoundsForRow: highlightedRow) ].
+		selectedRow _ index.
+		highlightedRow _ nil.
+		selectedRow ifNotNil: [
+			self invalidateLocalRect: (self drawBoundsForRow: selectedRow) ].
+		].! !
 
 !InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:20:28'!
 adjustExtent
@@ -152,13 +188,13 @@ minimumWidth
 		ifEmpty: [0]
 		ifNotEmpty: [submorphs max: [:morph | morph fullBoundsInOwner width + (self xSeparation * 2)]]! !
 
-!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/18/2022 21:22:42'!
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/20/2022 11:11:28'!
 drawBoundsForRow: row
 "calculate the bounds that row should be drawn at.  This might be outside our bounds!!"
-	^ (submorphs atLast: row) fullBoundsInOwner expandBy: 5@3
+	^ (submorphs atLast: row) fullBoundsInOwner expandBy: separation * (1 @ 0.5)
 ! !
 
-!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/18/2022 21:20:58'!
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/19/2022 21:13:31'!
 drawHighlightOn: aCanvas
 	| selectionDrawBounds |
 	highlightedRow ifNil: [ ^self ].
@@ -167,10 +203,11 @@ drawHighlightOn: aCanvas
 	selectionDrawBounds _ selectionDrawBounds intersect: self morphLocalBounds.
 	aCanvas
 		fillRectangle: selectionDrawBounds
-		color: ((Theme current listHighlightFocused: owner hasKeyboardFocus) alpha: 0.9)! !
+		color: ((Theme current listHighlightFocused: owner hasKeyboardFocus) alpha: 0.3)! !
 
-!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/18/2022 21:29:42'!
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/19/2022 21:21:59'!
 drawOn: aCanvas
+	super drawOn: aCanvas .
 	self drawHighlightOn: aCanvas.
 	self drawSelectionOn: aCanvas ! !
 
@@ -184,6 +221,15 @@ drawSelectionOn: aCanvas
 	aCanvas
 		fillRectangle: selectionDrawBounds
 		color: (Theme current listHighlightFocused: owner hasKeyboardFocus)! !
+
+!InnerListOfMorph methodsFor: 'private' stamp: 'hlsf 1/19/2022 21:07:52'!
+noSelection
+	selectedRow _ nil.
+	highlightedRow _ nil! !
+
+!InnerListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 11:08:38'!
+defaultColor
+	^ `Color white`! !
 
 !InnerListOfMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/14/2022 09:48:30'!
 includeInNewMorphMenu
@@ -659,10 +705,14 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/16/2022 09:58:55'!
-addToScroller: aMorph
-	super addToScroller: aMorph.
-	self suitedExtent .! !
+!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/20/2022 11:10:09'!
+getList
+	getListSelector 		ifNil: [^ #()].
+	list _ model perform: getListSelector.
+	list ifNil: [^ #()].	
+	scroller removeAllMorphs.
+	list do: [:aMorph | 	self addToScroller: aMorph].
+	self suitedExtent! !
 
 !PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/18/2022 21:45:21'!
 initialize
@@ -687,16 +737,16 @@ suitedExtent
 	self morphHeight: (extent y min: scroller fullHeight max: 100).
 	self morphWidth: self minimumExtent x + scroller minimumWidth! !
 
-!PluggableListOfMorph class methodsFor: 'as yet unclassified' stamp: 'hlsf 1/14/2022 10:42:34'!
+!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 1/20/2022 11:09:13'!
 example1
 "
 	self example1 openInWorld
 "
-| list |
-	list _ PluggableListOfMorph new.
-	#(#addressBookIcon #chatIcon #closeIcon #dateIcon #copyIcon #deleteIcon) do: [:icon |
-		list addToScroller: (ImageMorph new image: (Theme current perform: icon))].
-	^ list! !
+	^ PluggableListOfMorph 
+		model: PaletteModel new
+		listGetter: #palette
+		indexGetter: #colorIndex
+		indexSetter: #colorIndex:! !
 
 !RadioButtonMorph methodsFor: 'initialization' stamp: 'hlsf 10/29/2021 10:45:24'!
 defaultBorderWidth
@@ -819,3 +869,27 @@ includeInNewMorphMenu
 ofSize: numPixels
 
 	^ self new ofSize: numPixels! !
+
+!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:54:53'!
+colorIndex
+	^ selectedColor ! !
+
+!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:55:02'!
+colorIndex: index
+	selectedColor _ index ! !
+
+!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:54:14'!
+initialize
+	super initialize.
+	selectedColor _ 1.
+	palette _ #(#blue #white #red #green #black #orange) collect: [ :aColor |
+		BoxedMorph new ::
+			morphExtent: 80@15;
+			color: (Color perform: aColor);
+			borderWidth: 1;
+			borderColor: Color black;
+			yourself]! !
+
+!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:49:48'!
+palette
+	^ palette ! !
