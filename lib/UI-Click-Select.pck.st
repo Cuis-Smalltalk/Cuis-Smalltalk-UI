@@ -1,10 +1,20 @@
-'From Cuis 6.0 [latest update: #5045] on 20 January 2022 at 11:12:37 am'!
+'From Cuis 6.0 [latest update: #5045] on 21 January 2022 at 11:41:11 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 8!
+!provides: 'UI-Click-Select' 1 9!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
 
+
+!classDefinition: #DropDownButtonMorph category: #'UI-Click-Select'!
+LayoutMorph subclass: #DropDownButtonMorph
+	instanceVariableNames: 'model dropDownList'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'DropDownButtonMorph class' category: #'UI-Click-Select'!
+DropDownButtonMorph class
+	instanceVariableNames: ''!
 
 !classDefinition: #InnerListOfMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #InnerListOfMorph
@@ -114,6 +124,63 @@ I am a very simple radio button.!
 !PaletteModel commentStamp: '<historical>' prior: 0!
 I am a model presenting a list of color!
 
+!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/21/2022 10:25:21'!
+defaultBorderWidth
+	"answer the default border width for the receiver"
+	^ 0! !
+
+!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/21/2022 10:25:13'!
+defaultColor
+	"answer the default color/fill style for the receiver"
+	^ `Color lightGray`! !
+
+!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/21/2022 10:24:43'!
+model: anObject
+	"Set my model and make me me a dependent of the given object."
+	model ifNotNil: [model removeActionsWithReceiver: self].
+	anObject ifNotNil: [anObject addDependent: self].
+	model _ anObject! !
+
+!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/21/2022 11:40:49'!
+model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+	| button arrowButton |
+	self model: anObject.
+	dropDownList _ PluggableListOfMorph model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel.
+	button _ PluggableButtonMorph new ::
+		model: self;
+		action: #toggleDropDownList;
+		icon: dropDownList visualSelection;
+		morphExtent: dropDownList minimumItemExtent.
+	arrowButton _ PluggableButtonMorph new ::
+		iconDrawSelector: #drawDownIcon;
+		model: self;
+		action: #toggleDropDownList;
+		morphExtent: Theme current scrollbarThickness asPoint.
+	self 
+		addMorph: button 
+		layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: #center).
+	self	
+		addMorph: arrowButton 
+		layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: #center).! !
+
+!DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:23:52'!
+model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+	"Create a 'pluggable' list view on the given model parameterized by the given message selectors."
+	^self new
+		model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel ! !
+
+!DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:27:53'!
+new
+	^ self newRow! !
+
+!DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/21/2022 10:28:14'!
+includeInNewMorphMenu
+	^ false! !
+
+!InnerListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/20/2022 11:08:38'!
+defaultColor
+	^ `Color white`! !
+
 !InnerListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/20/2022 11:11:47'!
 initialize
 	super initialize.
@@ -175,18 +242,26 @@ selectedRow: index
 adjustExtent
 	self morphExtent: self minimumExtent ! !
 
-!InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:46:38'!
-fullHeight
+!InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:50'!
+maximumItemHeight
+"The maximum height among the item"
+	^ submorphs 
+		ifEmpty: [0]
+		ifNotEmpty: [submorphs max: [:morph | morph fullBoundsInOwner height + (self ySeparation * 2)]]! !
+
+!InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:10:18'!
+minimumWidth
+"The minium width to consider to fit in the UI"
+	^ submorphs 
+		ifEmpty: [0]
+		ifNotEmpty: [submorphs max: [:morph | morph fullBoundsInOwner width + (self xSeparation * 2)]]! !
+
+!InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:11:13'!
+totalHeight
 "The complete height of the list, when fully viewable"
 	^ submorphs 
 		inject: self ySeparation * 2 
 		into: [:totalHeight :morph | totalHeight  + morph fullBoundsInOwner height]! !
-
-!InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:32:30'!
-minimumWidth
-	^ submorphs 
-		ifEmpty: [0]
-		ifNotEmpty: [submorphs max: [:morph | morph fullBoundsInOwner width + (self xSeparation * 2)]]! !
 
 !InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/20/2022 11:11:28'!
 drawBoundsForRow: row
@@ -226,10 +301,6 @@ drawSelectionOn: aCanvas
 noSelection
 	selectedRow _ nil.
 	highlightedRow _ nil! !
-
-!InnerListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 11:08:38'!
-defaultColor
-	^ `Color white`! !
 
 !InnerListOfMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/14/2022 09:48:30'!
 includeInNewMorphMenu
@@ -705,14 +776,15 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/20/2022 11:10:09'!
+!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
 getList
 	getListSelector 		ifNil: [^ #()].
 	list _ model perform: getListSelector.
 	list ifNil: [^ #()].	
 	scroller removeAllMorphs.
 	list do: [:aMorph | 	self addToScroller: aMorph].
-	self suitedExtent! !
+	self suitedExtent.
+	^ list! !
 
 !PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/18/2022 21:45:21'!
 initialize
@@ -727,6 +799,11 @@ innerMorphClass
 !PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
 is: aSymbol
 	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:30'!
+minimumItemExtent
+"the minimum list item extent to consider to fit in the UI"
+	^ scroller minimumWidth @ scroller maximumItemHeight ! !
 
 !PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
 scrollDeltaHeight
