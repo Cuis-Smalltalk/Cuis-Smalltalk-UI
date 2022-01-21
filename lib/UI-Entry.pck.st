@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5041] on 11 January 2022 at 3:29:06 pm'!
+'From Cuis 6.0 [latest update: #5041] on 21 January 2022 at 4:09:50 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 10!
+!provides: 'UI-Entry' 1 11!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -631,13 +631,15 @@ minumExtent
 
 	^ self measureContents + self extentBorder ! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 4/11/2017 16:15:01'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'NM 1/21/2022 16:07:38'!
 keyStroke: aKeyboardEvent
 	"Check for legal char if in ASCII range, else let super so it"
 	
 	(aKeyboardEvent isKeystroke) 
 		ifTrue: [ | keyChar |
 			keyChar := aKeyboardEvent keyCharacter.
+			". to permit character deletion with backspace " 
+			(keyChar = Character backspace) ifTrue: [ ^ super keyStroke: aKeyboardEvent  ].
 			(self entryChars includes: keyChar)
 				ifFalse: [ "reject"
 					self flash.
@@ -674,10 +676,11 @@ refreshValueFrom: model
 				self redrawNeeded
 	]! !
 
-!SimpleNumberEntryMorph methodsFor: 'initialization' stamp: 'KenD 9/25/2021 14:29:02'!
+!SimpleNumberEntryMorph methodsFor: 'initialization' stamp: 'NM 1/21/2022 16:08:29'!
 legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue validator: aClosureToValidate toString: aClosureForString
 
-	entryChars := legalEntryChars.
+	". the character Backspace is always allowd to permit deletion "
+	entryChars := legalEntryChars. 
 	numCharsToHold := nilOrInteger.
 	theValue := initialValue.
 	validator := aClosureToValidate.
@@ -784,6 +787,25 @@ hexRGBEntry
 				ifFalse: [ nil ]]
 			toString: [ :n |
 				n printStringBase: 16 length: 6 padded: true ]! !
+
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'NM 1/21/2022 16:01:57'!
+ipV4Octect
+" Can be an integer number beweeen 0 and 255.
+---- Example --- 
+SimpleNumberEntryMorph ipV4Octect openInHand 
+
+ "
+	^ self new
+		legalChars: '0123456789'
+		numCharsToHold: 3 
+		value: 0 
+			validator: [ :str | | degrees |
+				degrees := [ str asNumber ] on: Error do: [ -1 ].
+				(degrees between: 0 and: 255) 
+					ifTrue: [ degrees ]
+					ifFalse: [ nil ]
+			]
+			toString: [ :n | n printString ]! !
 
 !SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 11:09:43'!
 percent
