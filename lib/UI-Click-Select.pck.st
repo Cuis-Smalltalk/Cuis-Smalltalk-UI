@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5045] on 21 January 2022 at 11:41:11 am'!
+'From Cuis 6.0 [latest update: #5045] on 22 January 2022 at 12:25:03 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 9!
+!provides: 'UI-Click-Select' 1 10!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -8,7 +8,7 @@ SystemOrganization addCategory: #'UI-Click-Select'!
 
 !classDefinition: #DropDownButtonMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #DropDownButtonMorph
-	instanceVariableNames: 'model dropDownList'
+	instanceVariableNames: 'model dropDownList setMorphIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -124,44 +124,80 @@ I am a very simple radio button.!
 !PaletteModel commentStamp: '<historical>' prior: 0!
 I am a model presenting a list of color!
 
-!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/21/2022 10:25:21'!
-defaultBorderWidth
-	"answer the default border width for the receiver"
-	^ 0! !
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 11:11:50'!
+toggleDropDownList
+	dropDownList visible: dropDownList visible not.
+	dropDownList visible 
+		ifTrue: [	dropDownList morphPosition: self morphPositionInWorld + self morphBottomLeft]! !
 
-!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/21/2022 10:25:13'!
-defaultColor
-	"answer the default color/fill style for the receiver"
-	^ `Color lightGray`! !
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 12:13:01'!
+update: action
+	super update: action.
+	action == setMorphIndex 
+		ifTrue: [
+			self updateButton.
+			dropDownList hide]! !
 
-!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/21/2022 10:24:43'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 12:24:18'!
+updateButton
+	submorphs second
+		icon: ((dropDownList getListItem: dropDownList getCurrentSelectionIndex) imageForm: 32);
+		morphExtent: dropDownList minimumItemExtent;
+		redrawNeeded 
+	! !
+
+!DropDownButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/21/2022 10:24:43'!
 model: anObject
 	"Set my model and make me me a dependent of the given object."
 	model ifNotNil: [model removeActionsWithReceiver: self].
 	anObject ifNotNil: [anObject addDependent: self].
 	model _ anObject! !
 
-!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/21/2022 11:40:49'!
-model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/21/2022 10:25:21'!
+defaultBorderWidth
+	"answer the default border width for the receiver"
+	^ 0! !
+
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/21/2022 10:25:13'!
+defaultColor
+	"answer the default color/fill style for the receiver"
+	^ `Color lightGray`! !
+
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 11:29:34'!
+installButtons
 	| button arrowButton |
-	self model: anObject.
-	dropDownList _ PluggableListOfMorph model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel.
 	button _ PluggableButtonMorph new ::
 		model: self;
 		action: #toggleDropDownList;
-		icon: dropDownList visualSelection;
+		icon: (dropDownList visualSelection imageForm: 32);
 		morphExtent: dropDownList minimumItemExtent.
 	arrowButton _ PluggableButtonMorph new ::
 		iconDrawSelector: #drawDownIcon;
 		model: self;
 		action: #toggleDropDownList;
 		morphExtent: Theme current scrollbarThickness asPoint.
+	self separation: dropDownList scroller xSeparation @ dropDownList scroller ySeparation.
 	self 
 		addMorph: button 
 		layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: #center).
 	self	
 		addMorph: arrowButton 
 		layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: #center).! !
+
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:07:10'!
+model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+	self model: anObject.
+	setMorphIndex _ setSelectionSel .
+	dropDownList _ PluggableListOfMorph model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel.
+	dropDownList 
+		openInWorld; 
+		hide.
+	self installButtons! !
+
+!DropDownButtonMorph methodsFor: 'submorphs-add/remove' stamp: 'hlsf 1/22/2022 11:27:41'!
+delete
+	super delete.
+	dropDownList delete! !
 
 !DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:23:52'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
@@ -176,6 +212,17 @@ new
 !DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/21/2022 10:28:14'!
 includeInNewMorphMenu
 	^ false! !
+
+!DropDownButtonMorph class methodsFor: 'examples' stamp: 'hlsf 1/22/2022 10:46:18'!
+example1
+"
+	self example1 openInWorld
+"
+	^ DropDownButtonMorph 
+		model: PaletteModel new
+		listGetter: #palette
+		indexGetter: #colorIndex
+		indexSetter: #colorIndex:! !
 
 !InnerListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/20/2022 11:08:38'!
 defaultColor
@@ -809,9 +856,9 @@ minimumItemExtent
 scrollDeltaHeight
 	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
 
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 10:00:37'!
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/22/2022 10:47:06'!
 suitedExtent
-	self morphHeight: (extent y min: scroller fullHeight max: 100).
+	self morphHeight: (extent y min: scroller totalHeight max: 100).
 	self morphWidth: self minimumExtent x + scroller minimumWidth! !
 
 !PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 1/20/2022 11:09:13'!
@@ -951,9 +998,11 @@ ofSize: numPixels
 colorIndex
 	^ selectedColor ! !
 
-!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:55:02'!
+!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/22/2022 12:05:53'!
 colorIndex: index
-	selectedColor _ index ! !
+	selectedColor _ index.
+	"Inform any interested view we changed the selected item"
+	self changed: #colorIndex:! !
 
 !PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:54:14'!
 initialize
