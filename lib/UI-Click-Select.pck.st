@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5045] on 22 January 2022 at 12:25:03 pm'!
+'From Cuis 6.0 [latest update: #5045] on 22 January 2022 at 12:40:14 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 10!
+!provides: 'UI-Click-Select' 1 11!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -8,7 +8,7 @@ SystemOrganization addCategory: #'UI-Click-Select'!
 
 !classDefinition: #DropDownButtonMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #DropDownButtonMorph
-	instanceVariableNames: 'model dropDownList setMorphIndex'
+	instanceVariableNames: 'model dropDownList setMorphIndex button'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -138,9 +138,9 @@ update: action
 			self updateButton.
 			dropDownList hide]! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 12:24:18'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 12:28:31'!
 updateButton
-	submorphs second
+	button
 		icon: ((dropDownList getListItem: dropDownList getCurrentSelectionIndex) imageForm: 32);
 		morphExtent: dropDownList minimumItemExtent;
 		redrawNeeded 
@@ -163,14 +163,13 @@ defaultColor
 	"answer the default color/fill style for the receiver"
 	^ `Color lightGray`! !
 
-!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 11:29:34'!
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:28:20'!
 installButtons
-	| button arrowButton |
+	|  arrowButton |
 	button _ PluggableButtonMorph new ::
 		model: self;
-		action: #toggleDropDownList;
-		icon: (dropDownList visualSelection imageForm: 32);
-		morphExtent: dropDownList minimumItemExtent.
+		action: #toggleDropDownList.
+	self updateButton.
 	arrowButton _ PluggableButtonMorph new ::
 		iconDrawSelector: #drawDownIcon;
 		model: self;
@@ -833,10 +832,9 @@ getList
 	self suitedExtent.
 	^ list! !
 
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/18/2022 21:45:21'!
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:39:41'!
 initialize
 	super initialize.
-	autoDeselect _ true.
 	self hHideScrollBar.! !
 
 !PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
@@ -994,17 +992,21 @@ ofSize: numPixels
 
 	^ self new ofSize: numPixels! !
 
-!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:54:53'!
+!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 1/20/2022 10:54:53'!
 colorIndex
 	^ selectedColor ! !
 
-!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/22/2022 12:05:53'!
+!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 1/22/2022 12:32:14'!
 colorIndex: index
 	selectedColor _ index.
 	"Inform any interested view we changed the selected item"
 	self changed: #colorIndex:! !
 
-!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:54:14'!
+!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 1/20/2022 10:49:48'!
+palette
+	^ palette ! !
+
+!PaletteModel methodsFor: 'initialization' stamp: 'hlsf 1/20/2022 10:54:14'!
 initialize
 	super initialize.
 	selectedColor _ 1.
@@ -1015,7 +1017,3 @@ initialize
 			borderWidth: 1;
 			borderColor: Color black;
 			yourself]! !
-
-!PaletteModel methodsFor: 'as yet unclassified' stamp: 'hlsf 1/20/2022 10:49:48'!
-palette
-	^ palette ! !
