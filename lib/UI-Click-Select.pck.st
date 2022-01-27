@@ -1,10 +1,30 @@
-'From Cuis 6.0 [latest update: #5045] on 25 January 2022 at 9:19:48 pm'!
+'From Cuis 6.0 [latest update: #5048] on 27 January 2022 at 1:42:44 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 13!
+!provides: 'UI-Click-Select' 1 15!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
 
+
+!classDefinition: #CheckGroup category: #'UI-Click-Select'!
+LayoutMorph subclass: #CheckGroup
+	instanceVariableNames: 'list font buttonOnLeft buttons'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'CheckGroup class' category: #'UI-Click-Select'!
+CheckGroup class
+	instanceVariableNames: ''!
+
+!classDefinition: #RadioGroup category: #'UI-Click-Select'!
+CheckGroup subclass: #RadioGroup
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'RadioGroup class' category: #'UI-Click-Select'!
+RadioGroup class
+	instanceVariableNames: ''!
 
 !classDefinition: #DropDownButtonMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #DropDownButtonMorph
@@ -24,16 +44,6 @@ LayoutMorph subclass: #InnerListOfMorph
 	category: 'UI-Click-Select'!
 !classDefinition: 'InnerListOfMorph class' category: #'UI-Click-Select'!
 InnerListOfMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #RadioGroup category: #'UI-Click-Select'!
-LayoutMorph subclass: #RadioGroup
-	instanceVariableNames: 'list font buttonOnLeft buttons'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Click-Select'!
-!classDefinition: 'RadioGroup class' category: #'UI-Click-Select'!
-RadioGroup class
 	instanceVariableNames: ''!
 
 !classDefinition: #MultiSelectMenu category: #'UI-Click-Select'!
@@ -87,11 +97,8 @@ PaletteModel class
 	instanceVariableNames: ''!
 
 
-!InnerListOfMorph commentStamp: '<historical>' prior: 0!
-The morph that displays the list of Morph in a PluggableListOfMorph.!
-
-!RadioGroup commentStamp: '<historical>' prior: 0!
-I manage a RadioGroup -- a Group of RadioButtons, each with a label.
+!CheckGroup commentStamp: '<historical>' prior: 0!
+I manage a CheckGroup -- a Group of CheckButtons, each with a label.
 
 I am a columnMorph
 
@@ -103,6 +110,12 @@ iVars:
  buttonOnLeft -- if True, button image then label else label then button image
  buttons - cached array of buttons
 !
+
+!RadioGroup commentStamp: '<historical>' prior: 0!
+I manage a RadioGroup -- a Group of RadioButtons, each with a label.!
+
+!InnerListOfMorph commentStamp: '<historical>' prior: 0!
+The morph that displays the list of Morph in a PluggableListOfMorph.!
 
 !MultiSelectMenu commentStamp: '<historical>' prior: 0!
 I am used to relate a set of names to an integer incoding, where each  symbolic name is realated to a bit.
@@ -136,6 +149,381 @@ I am a very simple radio button.!
 
 !PaletteModel commentStamp: '<historical>' prior: 0!
 I am a model presenting a list of color!
+
+!CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:54'!
+buttonClass
+" What kind of button am I, check or radio? "
+	^ CheckButtonMorph ! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:49:38'!
+buttonFor: aSymbol
+	"Return aRadioButton corresponding to selector"
+	
+	| symbols row |
+	symbols := self list.
+	row :=  submorphs at: ((symbols size) + 1 - (symbols indexOf: aSymbol ifAbsent: [ ^nil ])).
+	^ row submorphs detect: [ :s | s class == self buttonClass ] ifNone: [ nil ]! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 21:02'!
+buttonOnLeft
+
+	^ buttonOnLeft ! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/20/2013 13:56'!
+buttons
+
+	^ buttons! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/20/2013 13:56'!
+buttons: arrayOfRadioButtons
+
+	buttons := arrayOfRadioButtons.! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 19:46'!
+font
+
+	^ font! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 19:45'!
+labelStrings
+
+	^ self list collect: [ :each | each asString ]! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 19:45'!
+list
+	"Answer my array of label symbols"
+
+	^ list! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 13:41:43'!
+list: arrayOfSymbols
+	"Set up my submorphs from arrayOfSymbols"
+
+	| maxStringWidth labelLayout buttonList labelList |
+	maxStringWidth := 0.
+	self removeAllMorphs; "Don't keep old stuff."
+		 setList: arrayOfSymbols.
+	buttonList  := OrderedCollection new.
+	labelList    := OrderedCollection new.
+	arrayOfSymbols do: [ :labelSym | | newRow label button |
+		newRow := self newButtonRow.
+		button := self newButton.
+		label := LabelMorph contents: labelSym asString font: self font.
+		maxStringWidth := maxStringWidth max: (self font widthOfString: labelSym).
+		self registerEventsFor: label with: button.
+		self pack: button and: label in: newRow.
+		buttonList add: button.
+		labelList add: label.
+		self addMorph: newRow 	].
+	self buttons: buttonList asArray.
+	self registerEvents.
+	
+	"Make all labels have same width"
+	labelLayout := LayoutSpec 
+			fixedWidth: maxStringWidth + 4
+			fixedHeight: self font lineSpacing + 2
+			offAxisEdgeWeight: #center.
+	labelList do: [ :label | label layoutSpec: labelLayout ].! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:18'!
+rowFor: aSymbol
+	"My rows are submorphs inversly ordered from my list"
+	
+	| symbols |
+	symbols := self list.
+
+	^ self submorphs at: ((symbols size) + 1 - (symbols indexOf: aSymbol ifAbsent: [ ^nil ]))! !
+
+!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/20/2013 14:49'!
+symbolForButton: radioButton
+
+	^ self list at: (self buttons indexOf: radioButton)! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'KenD 11/20/2013 15:05'!
+buttonOnLeft: aBoolean
+
+	buttonOnLeft := aBoolean ! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'KenD 11/19/2013 19:48'!
+fromList: arrayOfSymbols
+
+	self list: arrayOfSymbols ! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 12:41:53'!
+fromMorphDict: morphDict
+	"Set up my submorphs from collectionOfMorphs"
+	
+	|  buttonList morphList |
+	buttonList  := OrderedCollection new.
+	morphList    := OrderedCollection new.
+	morphDict keysAndValuesDo: [ :aName :aMorph | | newRow button |
+		newRow := self newButtonRow.
+		button := self newButton.
+		aMorph setBalloonText: aName.
+		self registerEventsFor: aMorph with: button.
+		self pack: button and: aMorph in: newRow.
+		buttonList add: button.
+		morphList add: aName.
+		self addMorph: newRow 	].
+	self buttons: buttonList asArray.
+	self registerEvents.
+	self setList: morphList asArray! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'KenD 6/1/2020 15:05:24'!
+initialize
+	"Initialize self to harmless values"
+	
+	super initialize.
+	self setList: #(); "see #list: setter"
+		 setFont: Preferences standardButtonFont;
+		 buttonOnLeft: true;
+		 separation: 2@2;
+		 color: Color transparent! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:34:19'!
+newButton
+
+	^self buttonClass 	ofSize: self buttonClass defaultDiameter ::
+		layoutSpec: LayoutSpec keepMorphExtent;
+		yourself! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:37:38'!
+newButtonRow
+
+	^ LayoutMorph newRow ::
+		separation: 5; 
+		color: Color transparent; 
+		axisEdgeWeight: #rowLeft;
+		yourself! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:34:10'!
+pack: button and: aMorph in: row
+
+	self buttonOnLeft
+		ifTrue: [ row  addMorph: button; addMorph: aMorph ] 
+		ifFalse: [ row addMorph: aMorph; addMorph: button ]! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'KenD 11/20/2013 15:06'!
+setFont: aFont
+
+	font := aFont ! !
+
+!CheckGroup methodsFor: 'initialization' stamp: 'KenD 11/20/2013 15:06'!
+setList: arrayOfSymbols
+
+	list := arrayOfSymbols ! !
+
+!CheckGroup methodsFor: 'geometry' stamp: 'hlsf 1/27/2022 12:35:39'!
+naturalHeight
+	"Answer the combined heights of my elements"
+	
+	^ 4  + ((self list size) 
+		* (2 + ((self font lineSpacing) max: (self buttonClass defaultDiameter))))! !
+
+!CheckGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 12:37:19'!
+fontPreferenceChanged
+
+	| labelStrings maxStringWidth labelLayoutSpec |
+	super fontPreferenceChanged.
+	self setFont: Preferences standardButtonFont.
+	maxStringWidth := 3. "minimum"
+	labelStrings := self labelStrings.
+	labelStrings do: [ :str |
+		maxStringWidth := maxStringWidth max:  (self font widthOfString: str)
+	].
+	labelLayoutSpec := 
+			LayoutSpec 
+					fixedWidth: maxStringWidth + 4
+					fixedHeight: self font lineSpacing + 2
+					offAxisEdgeWeight: #center. 
+	self submorphsDo: [ :selectLine |
+		selectLine submorphsDo: [ :aMorph |
+			(aMorph respondsTo: #setFont:)
+				ifTrue: [ aMorph setFont: Preferences standardButtonFont ].
+			(aMorph respondsTo: #font:)
+				ifTrue: [ aMorph font: Preferences standardButtonFont ].
+			(aMorph respondsTo: #ofSize:)
+				ifTrue: [aMorph ofSize: self buttonClass defaultDiameter].
+			((aMorph isKindOf: LabelMorph)
+			  and: [labelStrings includes: aMorph contents])
+				ifTrue: [ aMorph layoutSpec: labelLayoutSpec ].
+		]
+	].! !
+
+!CheckGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 13:28:47'!
+newSelection: radioButton
+
+	"Unselect other buttons"
+	self triggerEvent: #informCheckSelection with: (self symbolForButton: radioButton)
+	! !
+
+!CheckGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 13:34:35'!
+registerEvents
+
+	^ self buttons do: [ :b | b when: #checkSelection send: #newSelection: to: self ]! !
+
+!CheckGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 13:34:39'!
+registerEventsFor: aMorph with: aButton
+"Make button react to a Morph"
+
+	aMorph 
+		setProperty: #'handlesMouseDown:' 		
+		toValue: [ :ignored | true ];
+		
+		setProperty: #'mouseButton1Up:localPosition:'
+		toValue: [ :event :position |  aButton toggleSelection ];
+		
+		setProperty: #'handlesMouseOver:' 		
+		toValue: [ :ignored | true ];
+		
+		setProperty: #'mouseEnter:' 
+		toValue: [ :event | aButton mouseEnter: event ];
+
+		setProperty: #'mouseLeave:' 
+		toValue: [ :event | aButton mouseLeave: event ].
+! !
+
+!CheckGroup methodsFor: 'events' stamp: 'KenD 11/25/2013 19:29'!
+unselectAll
+
+	self buttons do: [ :b | b isSelected: false ].
+	self redrawNeeded 
+	! !
+
+!CheckGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 11:57:55'!
+example1
+"
+	self example1 openInWorld
+"
+	| group |
+	group _ self fromList: #('Cuis-Smalltalk' 'Pharo' 'Squeak').
+	group 	buttons do: [:each | 
+			each when: #checkSelection send: #show: to: Transcript].
+	^ group! !
+
+!CheckGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 13:29:37'!
+example2
+	"Answer a CheckGroup of images"
+"
+	CheckGroup example2 openInWorld.
+"
+	| pallet statusLabel checkSelection formsDict morphDict |
+	statusLabel :=  LabelMorph initializedInstance.
+	pallet := LayoutMorph newColumn.
+	pallet addMorph: (WindowTitleMorph 
+					title: 'Radio Graphic' ).
+	formsDict := (Theme content 
+						from: 'Theme' 
+						get: {'16x16'. 'emotes'}
+			      ) asDictionary.
+	morphDict := Dictionary new.
+	formsDict keysAndValuesDo: [ :aName :aForm |
+		morphDict 
+			at: aName 
+			put: (ImageMorph new image: (aForm magnifyTo: 32@32))
+	].
+	checkSelection := CheckGroup fromMorphsDict: morphDict.
+	statusLabel contents: 'unselected'.
+	pallet addMorph: statusLabel.
+	pallet addMorph: checkSelection.
+	checkSelection 
+		when: #informCheckSelection 
+		send: #contents: 
+		to:  statusLabel.
+	
+	^pallet! !
+
+!CheckGroup class methodsFor: 'instance creation' stamp: 'KenD 11/19/2013 19:38'!
+fromList: buttonLables
+	"Add label list as array of symbols to a new instance of me"
+
+	| listOfSymbols |
+	listOfSymbols := OrderedCollection new.
+	buttonLables do: [ :each | listOfSymbols add: each asSymbol ].
+	
+	^ self newColumn fromList: listOfSymbols asArray ! !
+
+!CheckGroup class methodsFor: 'instance creation' stamp: 'KenD 10/31/2021 08:46:21'!
+fromMorphsDict: aDictionaryOfMorphs
+	"Add dict of (name->morph) to a new instance of me"
+
+	^ self newColumn fromMorphDict: aDictionaryOfMorphs ! !
+
+!CheckGroup class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:07'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ false! !
+
+!RadioGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:42'!
+buttonClass
+" What kind of button am I, check or radio? "
+	^ RadioButtonMorph ! !
+
+!RadioGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 12:05:52'!
+newSelection: radioButton
+
+	"Unselect other buttons"
+	self buttons do: [ :b | b == radioButton ifFalse: [ b isSelected: false ] ].
+	self triggerEvent: #informRadioSelection with: (self symbolForButton: radioButton)
+	! !
+
+!RadioGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 13:34:58'!
+registerEvents
+
+	^ self buttons do: [ :b | b when: #radioSelection send: #newSelection: to: self ]! !
+
+!RadioGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 13:35:37'!
+registerEventsFor: aMorph with: aButton
+"Make button react to a Morph"
+
+	super registerEventsFor: aMorph with: aButton .
+	aMorph 
+		setProperty: #'mouseButton1Up:localPosition:'
+		toValue: [ :event :position |  aButton select ]! !
+
+!RadioGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 11:55:20'!
+example1
+"
+	self example1 openInWorld
+"
+	| group |
+	group _ self fromList: #('Yes' 'No').
+	group 	buttons do: [:each | 
+			each when: #radioSelection send: #show: to: Transcript].
+	^ group! !
+
+!RadioGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 12:43:47'!
+example2
+	"Answer a RadioGroup of images"
+"
+	RadioGroup example2 openInWorld.
+"
+	| pallet statusLabel radioSelection formsDict morphDict |
+	statusLabel :=  LabelMorph initializedInstance.
+	pallet := LayoutMorph newColumn.
+	pallet addMorph: (WindowTitleMorph 
+					title: 'Radio Graphic' ).
+	formsDict := (Theme content 
+						from: 'Theme' 
+						get: {'16x16'. 'emotes'}
+			      ) asDictionary.
+	morphDict := Dictionary new.
+	formsDict keysAndValuesDo: [ :aName :aForm |
+		morphDict 
+			at: aName 
+			put: (ImageMorph new image: (aForm magnifyTo: 32@32))
+	].
+	radioSelection := RadioGroup fromMorphsDict: morphDict.
+	statusLabel contents: 'unselected'.
+	pallet addMorph: statusLabel.
+	pallet addMorph: radioSelection.
+	radioSelection 
+		when: #informRadioSelection 
+		send: #contents: 
+		to:  statusLabel.
+	
+	^pallet! !
 
 !DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 11:11:50'!
 toggleDropDownList
@@ -378,298 +766,6 @@ includeInNewMorphMenu
 new
 	^ self newColumn! !
 
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/24/2013 16:55'!
-buttonFor: aSymbol
-	"Return aRadioButton corresponding to selector"
-	
-	| symbols row |
-	symbols := self list.
-	row :=  submorphs at: ((symbols size) + 1 - (symbols indexOf: aSymbol ifAbsent: [ ^nil ])).
-	^ row submorphs detect: [ :s | s class == RadioButtonMorph ] ifNone: [ nil ]! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 21:02'!
-buttonOnLeft
-
-	^ buttonOnLeft ! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/20/2013 13:56'!
-buttons
-
-	^ buttons! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/20/2013 13:56'!
-buttons: arrayOfRadioButtons
-
-	buttons := arrayOfRadioButtons.! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 19:46'!
-font
-
-	^ font! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 19:45'!
-labelStrings
-
-	^ self list collect: [ :each | each asString ]! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 19:45'!
-list
-	"Answer my array of label symbols"
-
-	^ list! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 10/28/2021 14:47:30'!
-list: arrayOfSymbols
-	"Set up my submorphs from arrayOfSymbols"
-
-	| maxStringWidth labelLayout buttonList labelList |
-	maxStringWidth := 0.
-	self removeAllMorphs; "Don't keep old stuff."
-		 setList: arrayOfSymbols.
-	buttonList  := OrderedCollection new.
-	labelList    := OrderedCollection new.
-	arrayOfSymbols do: [ :labelSym | | newRow label button |
-		newRow := LayoutMorph newRow.
-		newRow separation: 3; color: Color transparent; axisEdgeWeight: #rowLeft.
-		
-		button := RadioButtonMorph 
-				ofSize: RadioButtonMorph defaultDiameter.
-		button layoutSpec: (LayoutSpec keepMorphExtent).
-		"Make button react to label"
-		label := LabelMorph contents: labelSym asString font: self font.
-		label setProperty: #'handlesMouseDown:' toValue: [ :ignored | true ].
-		label setProperty: #'mouseButton1Up:localPosition:'
-			toValue: [ :event :position |  button select ].
-		label setProperty: #'handlesMouseOver:' toValue: [ :ignored | true ].
-		label setProperty: #'mouseEnter:' 
-			toValue: [ :event | button mouseEnter: event ].
-		label setProperty: #'mouseLeave:' 
-			toValue: [ :event | button mouseLeave: event ].
-
-		maxStringWidth := maxStringWidth max: (self font widthOfString: labelSym).
-		(self buttonOnLeft)
-			ifTrue: [ newRow  addMorph: button; addMorph: label ] 
-			ifFalse: [ newRow addMorph: label; addMorph: button ].
-		buttonList add: button.
-		labelList add: label.
-		self 
-			addMorph: newRow
-
-	].
-	self buttons: buttonList asArray.
-	self buttons do: [ :b | b when: #radioSelection send: #newSelection: to: self ].
-	
-	"Make all labels have same width"
-	labelLayout := LayoutSpec 
-			fixedWidth: maxStringWidth + 4
-			fixedHeight: self font lineSpacing + 2
-			offAxisEdgeWeight: #center.
-	labelList do: [ :label | label layoutSpec: labelLayout ].
-
-! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:18'!
-rowFor: aSymbol
-	"My rows are submorphs inversly ordered from my list"
-	
-	| symbols |
-	symbols := self list.
-
-	^ self submorphs at: ((symbols size) + 1 - (symbols indexOf: aSymbol ifAbsent: [ ^nil ]))! !
-
-!RadioGroup methodsFor: 'accessing' stamp: 'KenD 11/20/2013 14:49'!
-symbolForButton: radioButton
-
-	^ self list at: (self buttons indexOf: radioButton)! !
-
-!RadioGroup methodsFor: 'initialization' stamp: 'KenD 11/20/2013 15:05'!
-buttonOnLeft: aBoolean
-
-	buttonOnLeft := aBoolean ! !
-
-!RadioGroup methodsFor: 'initialization' stamp: 'KenD 11/19/2013 19:48'!
-fromList: arrayOfSymbols
-
-	self list: arrayOfSymbols ! !
-
-!RadioGroup methodsFor: 'initialization' stamp: 'KenD 10/31/2021 08:41:15'!
-fromMorphDict: morphDict
-	"Set up my submorphs from collectionOfMorphs"
-
-	|  buttonList morphList |
-	buttonList  := OrderedCollection new.
-	morphList    := OrderedCollection new.
-	morphDict keysAndValuesDo: [ :aName :aMorph | | newRow button |
-		newRow := LayoutMorph newRow.
-		newRow 
-			separation: 3;
-			color: Color transparent; 
-			axisEdgeWeight: #rowLeft.
-		
-		button := RadioButtonMorph 
-				ofSize: RadioButtonMorph defaultDiameter.
-		button layoutSpec: (LayoutSpec keepMorphExtent).
-		
-		aMorph setBalloonText: aName.
-		"Make button react to/with graphic"
-		aMorph setProperty: #'handlesMouseDown:' 
-			toValue: [ :ignored | true ].
-		aMorph setProperty: #'mouseButton1Up:localPosition:'
-			toValue: [ :event :position |  button select ].
-		aMorph setProperty: #'handlesMouseOver:' 
-			toValue: [ :ignored | true ].
-		aMorph setProperty: #'mouseEnter:' 
-			toValue: [ :event | button mouseEnter: event ].
-		aMorph setProperty: #'mouseLeave:' 
-			toValue: [ :event | button mouseLeave: event ].
-
-		(self buttonOnLeft)
-			ifTrue: [ newRow  addMorph: button; addMorph: aMorph ] 
-			ifFalse: [ newRow addMorph: aMorph; addMorph: button ].
-		buttonList add: button.
-		morphList add: aName.
-		self 
-			addMorph: newRow
-
-	].
-	self buttons: buttonList asArray.
-	self setList:   morphList asArray.
-	
-	self buttons do: [ :b | 
-		b when: #radioSelection 
-		   send: #newSelection: 
-		   to: self 
-	].
-	
-! !
-
-!RadioGroup methodsFor: 'initialization' stamp: 'KenD 6/1/2020 15:05:24'!
-initialize
-	"Initialize self to harmless values"
-	
-	super initialize.
-	self setList: #(); "see #list: setter"
-		 setFont: Preferences standardButtonFont;
-		 buttonOnLeft: true;
-		 separation: 2@2;
-		 color: Color transparent! !
-
-!RadioGroup methodsFor: 'initialization' stamp: 'KenD 11/20/2013 15:06'!
-setFont: aFont
-
-	font := aFont ! !
-
-!RadioGroup methodsFor: 'initialization' stamp: 'KenD 11/20/2013 15:06'!
-setList: arrayOfSymbols
-
-	list := arrayOfSymbols ! !
-
-!RadioGroup methodsFor: 'geometry' stamp: 'KenD 10/27/2021 13:46:29'!
-naturalHeight
-	"Answer the combined heights of my elements"
-	
-	^ 4  + ((self list size) 
-		* (2 + ((self font lineSpacing) max: (RadioButtonMorph defaultDiameter))))! !
-
-!RadioGroup methodsFor: 'events-processing' stamp: 'KenD 10/28/2021 14:18:07'!
-fontPreferenceChanged
-
-	| labelStrings maxStringWidth labelLayoutSpec |
-	super fontPreferenceChanged.
-	self setFont: Preferences standardButtonFont.
-	maxStringWidth := 3. "minimum"
-	labelStrings := self labelStrings.
-	labelStrings do: [ :str |
-		maxStringWidth := maxStringWidth max:  (self font widthOfString: str)
-	].
-	labelLayoutSpec := 
-			LayoutSpec 
-					fixedWidth: maxStringWidth + 4
-					fixedHeight: self font lineSpacing + 2
-					offAxisEdgeWeight: #center. 
-	self submorphsDo: [ :selectLine |
-		selectLine submorphsDo: [ :aMorph |
-			(aMorph respondsTo: #setFont:)
-				ifTrue: [ aMorph setFont: Preferences standardButtonFont ].
-			(aMorph respondsTo: #font:)
-				ifTrue: [ aMorph font: Preferences standardButtonFont ].
-			(aMorph respondsTo: #ofSize:)
-				ifTrue: [aMorph ofSize: RadioButtonMorph defaultDiameter].
-			((aMorph isKindOf: LabelMorph)
-			  and: [labelStrings includes: aMorph contents])
-				ifTrue: [ aMorph layoutSpec: labelLayoutSpec ].
-		]
-	].! !
-
-!RadioGroup methodsFor: 'events-processing' stamp: 'KenD 11/20/2013 15:11'!
-newSelection: radioButton
-
-	"Unselect other buttons"
-	self buttons do: [ :b | b == radioButton ifFalse: [ b isSelected: false ] ].
-	self triggerEvent: #informRadioSelection with: (self symbolForButton: radioButton)
-	! !
-
-!RadioGroup methodsFor: 'events-processing' stamp: 'KenD 11/25/2013 19:29'!
-unselectAll
-
-	self buttons do: [ :b | b isSelected: false ].
-	self redrawNeeded 
-	! !
-
-!RadioGroup class methodsFor: 'examples' stamp: 'KenD 10/31/2021 13:12:01'!
-imageTestPallet
-	"Answer a RadioGroup of images"
-"
-	RadioGroup imageTestPallet openInWorld.
-"
-	| pallet statusLabel radioSelection formsDict morphDict |
-	statusLabel :=  LabelMorph initializedInstance.
-	pallet := LayoutMorph newColumn.
-	pallet addMorph: (WindowTitleMorph 
-					title: 'Radio Graphic' ).
-	formsDict := (Theme content 
-						from: 'Theme' 
-						get: {'16x16'. 'emotes'}
-			      ) asDictionary.
-	morphDict := Dictionary new.
-	formsDict keysAndValuesDo: [ :aName :aForm |
-		morphDict 
-			at: aName 
-			put: (ImageMorph new image: (aForm magnifyTo: 32@32))
-	].
-	radioSelection := RadioGroup fromMorphsDict: morphDict.
-	statusLabel contents: 'unselected'.
-	pallet addMorph: statusLabel.
-	pallet addMorph: radioSelection.
-	radioSelection 
-		when: #informRadioSelection 
-		send: #contents: 
-		to:  statusLabel.
-	
-	^pallet! !
-
-!RadioGroup class methodsFor: 'instance creation' stamp: 'KenD 11/19/2013 19:38'!
-fromList: buttonLables
-	"Add label list as array of symbols to a new instance of me"
-
-	| listOfSymbols |
-	listOfSymbols := OrderedCollection new.
-	buttonLables do: [ :each | listOfSymbols add: each asSymbol ].
-	
-	^ self newColumn fromList: listOfSymbols asArray ! !
-
-!RadioGroup class methodsFor: 'instance creation' stamp: 'KenD 10/31/2021 08:46:21'!
-fromMorphsDict: aDictionaryOfMorphs
-	"Add dict of (name->morph) to a new instance of me"
-
-	^ self newColumn fromMorphDict: aDictionaryOfMorphs ! !
-
-!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:07'!
-includeInNewMorphMenu
-	"Return true for all classes that can be instantiated from the menu"
-	
-	^ false! !
-
 !MultiSelectMenu methodsFor: 'events-processing' stamp: 'KenD 12/17/2016 14:36:43'!
 accept
 
@@ -892,10 +988,10 @@ example1
 		indexGetter: #colorIndex
 		indexSetter: #colorIndex:! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/25/2022 20:44:30'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:31:34'!
 defaultBorderWidth
 
-	^ 3! !
+	^ 4! !
 
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/25/2022 20:44:36'!
 defaultColor
@@ -949,13 +1045,12 @@ isSelected
 
 	^ isSelected ! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 21:01:06'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 12:03:23'!
 isSelected: aBoolean
 	(isSelected := aBoolean)
 		ifFalse: [self fillColor: self defaultColor] 
-		ifTrue: [
-			self fillColor: Color black. 
-			self triggerEvent: #checkSelection with: self 		]
+		ifTrue: [	self fillColor: Color black]. 
+	self triggerEvent: #checkSelection with: self
 ! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:45'!
