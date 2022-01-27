@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5048] on 27 January 2022 at 1:42:44 pm'!
+'From Cuis 6.0 [latest update: #5050] on 27 January 2022 at 9:01:29 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 15!
+!provides: 'UI-Click-Select' 1 16!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -195,7 +195,7 @@ list
 
 	^ list! !
 
-!CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 13:41:43'!
+!CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 21:00:41'!
 list: arrayOfSymbols
 	"Set up my submorphs from arrayOfSymbols"
 
@@ -221,7 +221,7 @@ list: arrayOfSymbols
 	"Make all labels have same width"
 	labelLayout := LayoutSpec 
 			fixedWidth: maxStringWidth + 4
-			fixedHeight: self font lineSpacing + 2
+			fixedHeight: self font lineSpacing 
 			offAxisEdgeWeight: #center.
 	labelList do: [ :label | label layoutSpec: labelLayout ].! !
 
@@ -482,13 +482,13 @@ registerEventsFor: aMorph with: aButton
 		setProperty: #'mouseButton1Up:localPosition:'
 		toValue: [ :event :position |  aButton select ]! !
 
-!RadioGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 11:55:20'!
+!RadioGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 20:50:25'!
 example1
 "
 	self example1 openInWorld
 "
 	| group |
-	group _ self fromList: #('Yes' 'No').
+	group _ self fromList: #('guess YES' 'guess NO').
 	group 	buttons do: [:each | 
 			each when: #radioSelection send: #show: to: Transcript].
 	^ group! !
