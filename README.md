@@ -38,6 +38,7 @@ UI-Base-Morphs
 UI-Click-Select
 - MultiMenuSelectMenu
 - RadioGroup
+- CheckButtonMorph
 - RadioButtonMorph
 
 UI-DragAndDrop
