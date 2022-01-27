@@ -40,6 +40,8 @@ UI-Click-Select
 - RadioGroup
 - CheckButtonMorph
 - RadioButtonMorph
+- PluggableListOfMorph
+- DropDownButtonMorph
 
 UI-DragAndDrop
 - SignMorph
