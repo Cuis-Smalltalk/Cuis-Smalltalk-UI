@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5041] on 11 January 2022 at 3:28:46 pm'!
+'From Cuis 6.0 [latest update: #5053] on 29 January 2022 at 3:42:53 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 105!
+!provides: 'Morphic-MetaProperties' 1 106!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -9,126 +9,119 @@
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'Graphics-Files-Additional' 1 18 nil!
-SystemOrganization addCategory: #'Morphic-MetaProperties'!
+SystemOrganization addCategory: 'Morphic-MetaProperties'!
 
 
-!classDefinition: #VisualPropertyEditor category: #'Morphic-MetaProperties'!
-MenuMorph subclass: #VisualPropertyEditor
-	instanceVariableNames: 'targetMorph metaProps showAllIvars showAllProps'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Morphic-MetaProperties'!
-!classDefinition: 'VisualPropertyEditor class' category: #'Morphic-MetaProperties'!
-VisualPropertyEditor class
-	instanceVariableNames: ''!
-
-!classDefinition: #VisualPropertyMenuItem category: #'Morphic-MetaProperties'!
+!classDefinition: #VisualPropertyMenuItem category: 'Morphic-MetaProperties'!
 UpdatingMenuItemMorph subclass: #VisualPropertyMenuItem
 	instanceVariableNames: 'metaProperty name prevValue targetMorph accessProc updateProc'
-	classVariableNames: 'BlankIcon BoolIcon CharIcon ChronIcon ClassIcon ClosureIcon CollectIcon CpxIcon FalseIcon FileIcon FloatIcon FolderIcon FontIcon FracIcon ImageIcon IntIcon LayoutIcon NilIcon ObjIcon OneOfIcon PtIcon RngIcon StrIcon StreamIcon SymIcon TrueIcon WindowIcon'
+	classVariableNames: 'BlankIcon BoolIcon CharIcon ChronIcon ClassIcon ClosureIcon CollectIcon CpxIcon FalseIcon FileIcon FloatIcon FolderIcon FontIcon FracIcon ImageIcon IntIcon LayoutIcon NilIcon ObjIcon OneOfIcon PtIcon RngIcon StrIcon StreamIcon SymIcon TargetIcon TrueIcon WindowIcon'
 	poolDictionaries: ''
 	category: 'Morphic-MetaProperties'!
-!classDefinition: 'VisualPropertyMenuItem class' category: #'Morphic-MetaProperties'!
+!classDefinition: 'VisualPropertyMenuItem class' category: 'Morphic-MetaProperties'!
 VisualPropertyMenuItem class
 	instanceVariableNames: ''!
 
-!classDefinition: #OrdinaryPropertyMenuItem category: #'Morphic-MetaProperties'!
+!classDefinition: #OrdinaryPropertyMenuItem category: 'Morphic-MetaProperties'!
 MenuItemMorph subclass: #OrdinaryPropertyMenuItem
 	instanceVariableNames: 'accessKind name targetMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-MetaProperties'!
-!classDefinition: 'OrdinaryPropertyMenuItem class' category: #'Morphic-MetaProperties'!
+!classDefinition: 'OrdinaryPropertyMenuItem class' category: 'Morphic-MetaProperties'!
 OrdinaryPropertyMenuItem class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaProperty category: #'Morphic-MetaProperties'!
-Object subclass: #MetaProperty
-	instanceVariableNames: 'kind editProc'
-	classVariableNames: 'MetaPropDict PreDefinedPropsDict'
-	poolDictionaries: ''
-	category: 'Morphic-MetaProperties'!
-!classDefinition: 'MetaProperty class' category: #'Morphic-MetaProperties'!
-MetaProperty class
-	instanceVariableNames: ''!
-
-!classDefinition: #MetaPropertyFrom category: #'Morphic-MetaProperties'!
-MetaProperty subclass: #MetaPropertyFrom
-	instanceVariableNames: 'minValue'
+!classDefinition: #VisualPropertyEditor category: 'Morphic-MetaProperties'!
+MenuMorph subclass: #VisualPropertyEditor
+	instanceVariableNames: 'targetMorph metaProps showAllIvars showAllProps'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-MetaProperties'!
-!classDefinition: 'MetaPropertyFrom class' category: #'Morphic-MetaProperties'!
-MetaPropertyFrom class
+!classDefinition: 'VisualPropertyEditor class' category: 'Morphic-MetaProperties'!
+VisualPropertyEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaPropertyOneOf category: #'Morphic-MetaProperties'!
-MetaProperty subclass: #MetaPropertyOneOf
-	instanceVariableNames: 'choiceCollection'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Morphic-MetaProperties'!
-!classDefinition: 'MetaPropertyOneOf class' category: #'Morphic-MetaProperties'!
-MetaPropertyOneOf class
-	instanceVariableNames: ''!
-
-!classDefinition: #MetaPropertyMultiSelect category: #'Morphic-MetaProperties'!
-MetaPropertyOneOf subclass: #MetaPropertyMultiSelect
-	instanceVariableNames: 'maxValue encodeProc decodeProc'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Morphic-MetaProperties'!
-!classDefinition: 'MetaPropertyMultiSelect class' category: #'Morphic-MetaProperties'!
-MetaPropertyMultiSelect class
-	instanceVariableNames: ''!
-
-!classDefinition: #MetaPropertyRange category: #'Morphic-MetaProperties'!
-MetaProperty subclass: #MetaPropertyRange
-	instanceVariableNames: 'minValue maxValue'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Morphic-MetaProperties'!
-!classDefinition: 'MetaPropertyRange class' category: #'Morphic-MetaProperties'!
-MetaPropertyRange class
-	instanceVariableNames: ''!
-
-!classDefinition: #MetaPropertyTransducer category: #'Morphic-MetaProperties'!
-MetaProperty subclass: #MetaPropertyTransducer
-	instanceVariableNames: 'kinds transformProc'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Morphic-MetaProperties'!
-!classDefinition: 'MetaPropertyTransducer class' category: #'Morphic-MetaProperties'!
-MetaPropertyTransducer class
-	instanceVariableNames: ''!
-
-!classDefinition: #MetaPropertyViaTest category: #'Morphic-MetaProperties'!
-MetaProperty subclass: #MetaPropertyViaTest
-	instanceVariableNames: 'testClosure'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Morphic-MetaProperties'!
-!classDefinition: 'MetaPropertyViaTest class' category: #'Morphic-MetaProperties'!
-MetaPropertyViaTest class
-	instanceVariableNames: ''!
-
-!classDefinition: #MetaPropertyTests category: #'Morphic-MetaProperties'!
+!classDefinition: #MetaPropertyTests category: 'Morphic-MetaProperties'!
 TestCase subclass: #MetaPropertyTests
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-MetaProperties'!
-!classDefinition: 'MetaPropertyTests class' category: #'Morphic-MetaProperties'!
+!classDefinition: 'MetaPropertyTests class' category: 'Morphic-MetaProperties'!
 MetaPropertyTests class
 	instanceVariableNames: ''!
 
+!classDefinition: #MetaProperty category: 'Morphic-MetaProperties'!
+Object subclass: #MetaProperty
+	instanceVariableNames: 'kind editProc'
+	classVariableNames: 'MetaPropDict PreDefinedPropsDict'
+	poolDictionaries: ''
+	category: 'Morphic-MetaProperties'!
+!classDefinition: 'MetaProperty class' category: 'Morphic-MetaProperties'!
+MetaProperty class
+	instanceVariableNames: ''!
 
-!VisualPropertyEditor commentStamp: '<historical>' prior: 0!
-My instances present the public visual properties of Morphs -- those which have MetaProperties.
+!classDefinition: #MetaPropertyFrom category: 'Morphic-MetaProperties'!
+MetaProperty subclass: #MetaPropertyFrom
+	instanceVariableNames: 'minValue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Morphic-MetaProperties'!
+!classDefinition: 'MetaPropertyFrom class' category: 'Morphic-MetaProperties'!
+MetaPropertyFrom class
+	instanceVariableNames: ''!
 
-MetaProperties can be added to any Morph class and all submorph classes will inherit them.
+!classDefinition: #MetaPropertyOneOf category: 'Morphic-MetaProperties'!
+MetaProperty subclass: #MetaPropertyOneOf
+	instanceVariableNames: 'choiceCollection'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Morphic-MetaProperties'!
+!classDefinition: 'MetaPropertyOneOf class' category: 'Morphic-MetaProperties'!
+MetaPropertyOneOf class
+	instanceVariableNames: ''!
 
-See class MetaProperty and my class #initialize method for details. !
+!classDefinition: #MetaPropertyMultiSelect category: 'Morphic-MetaProperties'!
+MetaPropertyOneOf subclass: #MetaPropertyMultiSelect
+	instanceVariableNames: 'maxValue encodeProc decodeProc'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Morphic-MetaProperties'!
+!classDefinition: 'MetaPropertyMultiSelect class' category: 'Morphic-MetaProperties'!
+MetaPropertyMultiSelect class
+	instanceVariableNames: ''!
+
+!classDefinition: #MetaPropertyRange category: 'Morphic-MetaProperties'!
+MetaProperty subclass: #MetaPropertyRange
+	instanceVariableNames: 'minValue maxValue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Morphic-MetaProperties'!
+!classDefinition: 'MetaPropertyRange class' category: 'Morphic-MetaProperties'!
+MetaPropertyRange class
+	instanceVariableNames: ''!
+
+!classDefinition: #MetaPropertyTransducer category: 'Morphic-MetaProperties'!
+MetaProperty subclass: #MetaPropertyTransducer
+	instanceVariableNames: 'kinds transformProc'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Morphic-MetaProperties'!
+!classDefinition: 'MetaPropertyTransducer class' category: 'Morphic-MetaProperties'!
+MetaPropertyTransducer class
+	instanceVariableNames: ''!
+
+!classDefinition: #MetaPropertyViaTest category: 'Morphic-MetaProperties'!
+MetaProperty subclass: #MetaPropertyViaTest
+	instanceVariableNames: 'testClosure'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Morphic-MetaProperties'!
+!classDefinition: 'MetaPropertyViaTest class' category: 'Morphic-MetaProperties'!
+MetaPropertyViaTest class
+	instanceVariableNames: ''!
+
 
 !VisualPropertyMenuItem commentStamp: '<historical>' prior: 0!
 My instances display a menu selection for a Morph visual property.  
@@ -147,6 +140,16 @@ ivars:
 My instances supply menu iterms which can have their values dragged for DragNDrop.
 
 My accessKind is either #property #instanceVar.!
+
+!VisualPropertyEditor commentStamp: '<historical>' prior: 0!
+My instances present the public visual properties of Morphs -- those which have MetaProperties.
+
+MetaProperties can be added to any Morph class and all submorph classes will inherit them.
+
+See class MetaProperty and my class #initialize method for details. !
+
+!MetaPropertyTests commentStamp: '<historical>' prior: 0!
+Unit tests for MetaProeprties!
 
 !MetaProperty commentStamp: '<historical>' prior: 0!
 I am the parent class for Morph meta-properties.  
@@ -214,9 +217,6 @@ I test via  (aClosure value: newValue).
 
 aClosure should take one argument and return a boolean.!
 
-!MetaPropertyTests commentStamp: '<historical>' prior: 0!
-Unit tests for MetaProeprties!
-
 !VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:29:37'!
 name
 
@@ -226,6 +226,554 @@ name
 name
 
 	^ name! !
+
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 9/18/2019 16:05:31'!
+displayString
+
+	| propValue propString |
+	propValue := self propertyValue.
+	propString :=
+		(propValue is: Number) 
+		ifTrue: [propValue printStringFractionDigits: 4] 
+		ifFalse: [(propValue isPoint) 
+			ifTrue: [propValue printStringFractionDigits: 2]
+			ifFalse: [propValue printString]].
+	^ name asString , ': ', propString! !
+
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:29:30'!
+metaProperty
+
+	^ metaProperty! !
+
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:29:58'!
+prevValue
+
+	^ prevValue! !
+
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:30:25'!
+propertyDescriptor
+
+	^ self metaProperty! !
+
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/12/2016 14:38:44'!
+propertyValue
+	"Getter"
+
+	^ accessProc value! !
+
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/22/2016 16:50:52'!
+propertyValue: newValue
+	"Setter"
+
+	updateProc value: newValue.
+	self update! !
+
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:35:46'!
+targetMorph
+
+	^ targetMorph ! !
+
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 11/28/2016 16:38:00'!
+allowsMorphDrop
+	"Answer whether we accept dropping morphs. Redefined to answer true."
+
+	^ true! !
+
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/7/2016 14:55:23'!
+processMouseDown: evt localPosition: localEventPosition
+	"Do nothing upon mouse-down except inform the hand to watch for a 
+	click; wait until an ensuing #click: message gets dispatched"
+"
+	Transcript newLine; show: (self name , ' got #processMouseDown:localPosition:').  
+"
+	evt wasHandled: true.
+	evt hand waitForClicksOrDrag: self
+				event: evt
+				dragSel: #dragEvent:localPosition:
+				clkSel: #mouseButton1Down:localPosition:
+
+! !
+
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/18/2016 15:39:20'!
+wantsDroppedMorph: aMorph event: evt
+	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
+
+
+	(self allowsValue: aMorph valueWhenDropped)
+		ifTrue: [ 
+"
+	Transcript newLine ; show: 'wantsDroppedMorph:event YES ', aMorph printString .
+"
+			self propertyValue: aMorph valueWhenDropped.
+			self showAccept: aMorph. 
+			"Rejecting the drop adds aMorph to its old owner at 0@0.
+			 So we accept the drop, but then delete aMorph.  
+			This is done in #showAccept."
+			^ true  
+	 	]
+		ifFalse: [
+"
+	Transcript newLine ; show: 'wantsDroppedMorph:event NO ', aMorph printString .
+"
+			self showReject: aMorph.
+			^ false
+		].
+	
+! !
+
+!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 11/28/2016 16:37:33'!
+allowsValue: aValue
+
+	^ self metaProperty accepts: aValue! !
+
+!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 4/13/2019 14:30:25'!
+is: aSymbol
+	^ aSymbol == #VisualPropertyMenuItem or: [ super is: aSymbol ]! !
+
+!VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 12/18/2016 13:05:45'!
+edit
+
+	self metaProperty edit: self targetMorph menuItem: self.
+	self update ! !
+
+!VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 11/28/2016 16:35:20'!
+undo
+	"Reset value from remembered value"
+
+	self targetMorph setProperty: self name  toValue: self prevValue! !
+
+!VisualPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 4/14/2019 16:09:36'!
+propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor accessProc: getterClosure updateProc: setterClosure
+
+	super initialize.
+	name := aSymbol.
+	targetMorph := aMorph.
+	metaProperty := aPropertyDescriptor.
+	prevValue := getterClosure value.	
+	accessProc := getterClosure.
+	updateProc := setterClosure.
+	self
+		contents: ( self displayStringForWidth: (self owner 
+							ifNil: [60] 
+							ifNotNil: [(self owner morphWidth) - 30]) );
+		setIcon: prevValue icon;
+		target: self selector: #edit arguments: nil.
+! !
+
+!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 4/14/2019 16:19:18'!
+displayStringForWidth: maxWidth
+	"Answer a string which fits in maxwidth"
+	|  myString count stringWidth  |
+	myString := self displayString.
+	(myString size <= 0) ifTrue: [ ^ '' ].
+	stringWidth := font widthOfString: '..'.
+	count := 1.
+	1 to: myString size do: [ :index | 
+		stringWidth := stringWidth + (font widthOf: (myString at: index)).
+		(stringWidth < maxWidth) ifTrue: [count := index]
+	].
+
+	(myString size <= count)
+		ifTrue: [ ^myString ] "fits"
+		ifFalse: [ ^(myString truncateTo: count) , '..' ] 
+	! !
+
+!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 4/14/2019 16:12:02'!
+updateContents
+	"(re)set my content string and icon"
+
+	| myWidth |
+	myWidth := self owner ifNil: [60] ifNotNil: [self owner morphWidth - 10 ].
+	self morphWidth: myWidth.
+	self contents: ( self displayStringForWidth: (myWidth - 20) ). "space for icon + border"
+	self setIcon: (self propertyValue icon)! !
+
+!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 11/7/2021 14:17:09'!
+showAccept: aMorph
+	"Draw and erase a green box"
+
+	| hilightMorph mPos mExtent |
+	mPos     := aMorph morphPositionInWorld.
+	mExtent := aMorph morphExtentInOwner.
+	hilightMorph := FrameMorph new.
+	hilightMorph   borderWidth: 6;
+					borderColor: Color green;
+					morphExtent: mExtent + 6;
+					openInWorld;
+					morphPosition: mPos - (6@6). "surround aMorph"
+
+	aMorph        addAlarm: #delete after: 200.
+	hilightMorph addAlarm: #delete after: 400.! !
+
+!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 11/7/2021 14:17:15'!
+showReject: aMorph
+	"Draw and erase a red X"
+
+	| leftStroke rightStroke mPos mExtent |
+	mPos := aMorph morphPositionInWorld.
+	mExtent := aMorph morphExtentInOwner.
+	"Show a red X"
+	leftStroke   := LineMorph 
+						startPoint: mPos - (10@10) 
+						endPoint: (mPos + mExtent + (10@10)) 
+						width: 6
+						color: Color red.
+	rightStroke := LineMorph 
+						startPoint: mPos + (-10 @ (mExtent y + 10))
+						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
+						width: 6
+						color: Color red.
+	leftStroke   openInWorld.
+	rightStroke openInWorld.
+	
+	"NB: Keep Morph when rejected"
+	leftStroke   addAlarm: #delete after: 400.	
+	rightStroke addAlarm: #delete after: 400.! !
+
+!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 4/14/2019 15:27:49'!
+update
+
+	self updateContents.
+	self targetMorph redrawNeeded.! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:29'!
+blankIcon
+
+	^BlankIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:35'!
+booleanIcon
+
+	^BoolIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:41'!
+charIcon
+
+	^CharIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:49'!
+chronIcon
+
+	^ChronIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:55'!
+classIcon
+
+	^ClassIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:01'!
+closureIcon
+
+	^ClosureIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:09'!
+collectionIcon
+
+	^CollectIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:15'!
+complexIcon
+
+	^CpxIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:22'!
+falseIcon
+
+	^FalseIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:28'!
+fileIcon
+
+	^FileIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:36'!
+floatIcon
+
+	^FloatIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:41'!
+folderIcon
+
+	^FolderIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:46'!
+fontIcon
+
+	^FontIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:50'!
+fractionIcon
+
+	^FracIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 12/14/2021 12:40:25'!
+imageIcon
+
+	^ImageIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:56'!
+integerIcon
+
+	^IntIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 12/14/2021 12:40:40'!
+layoutIcon
+
+	^LayoutIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:02'!
+nilIcon
+
+	^NilIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:06'!
+objectIcon
+
+	^ObjIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:12'!
+oneOfIcon
+
+	^OneOfIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:17'!
+pointIcon
+
+	^PtIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:26'!
+rangeIcon
+
+	^RngIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:31'!
+streamIcon
+
+	^StreamIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:37'!
+stringIcon
+
+	^StrIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:43'!
+symbolIcon
+
+	^SymIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 1/29/2022 15:41:22'!
+targetIcon
+
+	^TargetIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:49'!
+trueIcon
+
+	^TrueIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:54'!
+windowIcon
+
+	^WindowIcon! !
+
+!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 1/29/2022 15:40:52'!
+initialize
+"
+	VisualPropertyMenuItem initialize.
+"
+	| dirName |
+	dirName :=  ((self package) fullFileName upToLastPathSeparator), '/icons/'.
+
+	BlankIcon := ImageReadWriter formFromFileNamed: dirName , 'Blank.png'.
+	BoolIcon := ImageReadWriter formFromFileNamed: dirName , 'Bool.png'.
+	CharIcon := ImageReadWriter formFromFileNamed: dirName , 'Char.png'.
+	ChronIcon := ImageReadWriter formFromFileNamed: dirName , 'Chron.png'.
+	ClassIcon := ImageReadWriter formFromFileNamed: dirName , 'Class.png'.
+	ClosureIcon := ImageReadWriter formFromFileNamed: dirName , 'Closure.png'.
+	CollectIcon := ImageReadWriter formFromFileNamed: dirName , 'Collect.png'.
+	CpxIcon := ImageReadWriter formFromFileNamed: dirName , 'Cpx.png'.
+	FalseIcon := ImageReadWriter formFromFileNamed: dirName , 'False.png'.
+	FileIcon := ImageReadWriter formFromFileNamed: dirName , 'File.png'.
+	FloatIcon := ImageReadWriter formFromFileNamed: dirName , 'Float.png'.
+	FolderIcon := ImageReadWriter formFromFileNamed: dirName , 'Folder.png'.
+	FontIcon := ImageReadWriter formFromFileNamed: dirName , 'Font.png'.
+	FracIcon := ImageReadWriter formFromFileNamed: dirName , 'Frac.png'.
+	ImageIcon := ImageReadWriter formFromFileNamed: dirName , 'Graphic.png'.
+	IntIcon := ImageReadWriter formFromFileNamed: dirName , 'Int.png'.
+	LayoutIcon := (ImageReadWriter formFromFileNamed: dirName , 'Effect.png') magnifyTo: 16@16.
+	NilIcon := ImageReadWriter formFromFileNamed: dirName , 'Nil.png'.
+"	ObjIcon := ImageReadWriter formFromFileNamed: dirName , 'Obj.png'."
+	ObjIcon := ImageReadWriter formFromFileNamed: dirName , 'mushroom.png'.
+	OneOfIcon := ImageReadWriter formFromFileNamed: dirName , 'OneOf.png'.
+	PtIcon := ImageReadWriter formFromFileNamed: dirName , 'Pt.png'.
+	RngIcon := ImageReadWriter formFromFileNamed: dirName , 'Rng.png'.
+	StrIcon := ImageReadWriter formFromFileNamed: dirName , 'Str.png'.
+	StreamIcon := ImageReadWriter formFromFileNamed: dirName , 'Stream.png'.
+	SymIcon := ImageReadWriter formFromFileNamed: dirName , 'Sym.png'.
+	TargetIcon := ImageReadWriter formFromFileNamed: dirName , 'targetIcon.png'.
+	TrueIcon := ImageReadWriter formFromFileNamed: dirName , 'True.png'.
+	WindowIcon := ImageReadWriter formFromFileNamed: dirName , 'Window.png'.
+	
+! !
+
+!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 12/7/2016 15:07:44'!
+propName: aSymbol morph: aMorph
+
+	^ self propName: aSymbol morph: aMorph propMeta: MetaProperty default
+! !
+
+!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/12/2016 14:39:37'!
+ivarName: aSymbol morph: aMorph propMeta: aPropertyDescriptor
+	"Instance Variable based accessor"
+	
+	^ self 
+		propName: aSymbol 
+		morph: aMorph 
+		propMeta: aPropertyDescriptor 
+		accessProc: [ ^ aMorph instVarNamed: aSymbol ] 
+		updateProc: [ :newValue | aMorph instVarNamed: aSymbol put: newValue ] ! !
+
+!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/22/2016 19:59:47'!
+propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor
+	"Selector based accessor"
+	
+	| setterSym isEncoded getterProc setterProc |
+	setterSym := (aSymbol , ':') asSymbol.
+	isEncoded := (aPropertyDescriptor isKindOf: MetaPropertyMultiSelect)
+					or: [ aPropertyDescriptor isKindOf: MetaPropertyTransducer ].
+	getterProc := [ aMorph perform: aSymbol ] .
+	setterProc := [ :newValue | aMorph perform: setterSym with: newValue ].
+	^ self 
+		propName: aSymbol 
+		morph: aMorph 
+		propMeta: aPropertyDescriptor 
+		accessProc:
+			(isEncoded 
+				ifFalse: [ getterProc ]
+				ifTrue: [ [ aPropertyDescriptor decodeProc value: (getterProc value) ] ])
+		updateProc: 
+			(isEncoded 
+				ifFalse: [ setterProc ]
+				ifTrue: [ [ :newValue |  setterProc value: (aPropertyDescriptor encodeProc value: newValue) ] ])
+			! !
+
+!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/12/2016 14:39:10'!
+propName: aSymbol 
+morph: aMorph 
+propMeta: aPropertyDescriptor 
+accessProc: getterClosure 
+updateProc: setterClosure 
+
+	"Generalized value accessor"
+	^ self new propName: aSymbol 
+				morph: aMorph
+				propMeta: aPropertyDescriptor 
+				accessProc: getterClosure 
+				updateProc: setterClosure ! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 5/12/2018 19:45:14'!
+icon
+
+	^icon! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 5/12/2018 19:45:42'!
+icon: anIcon
+
+	self setIcon: anIcon! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/2/2016 16:15:02'!
+targetMorph
+
+	^ targetMorph! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/2/2016 16:22:54'!
+value
+	"Answer value of my targetMorph's property or instance variable"
+
+	^ (accessKind = #property)
+		ifTrue:  [ targetMorph valueOfProperty: name ]
+		ifFalse: [ targetMorph instVarNamed:     name ]! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/11/2016 13:53:49'!
+allowsMorphDrop
+	"We don't allow editing by Drop, but answer true here to visually reject and delete dropped morph."
+
+	^ true! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/2/2016 16:05:05'!
+processMouseDown: evt localPosition: localEventPosition
+	"Do nothing upon mouse-down except inform the hand to watch for a 
+	click; wait until an ensuing #click: message gets dispatched"
+"
+	Transcript newLine; show: (self name , ' got #processMouseDown:localPosition:').  
+"
+	evt wasHandled: true.
+	evt hand waitForClicksOrDrag: self
+				event: evt
+				dragSel: #dragEvent:localPosition:
+				clkSel: #mouseButton1Down:localPosition:
+
+! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 11/7/2021 14:17:00'!
+showReject: aMorph
+	"Draw and erase a red X"
+
+	| leftStroke rightStroke mPos mExtent |
+	mPos := aMorph morphPositionInWorld.
+	mExtent := aMorph morphExtentInOwner.
+	leftStroke   := LineMorph 
+						startPoint: mPos - (10@10) 
+						endPoint: (mPos + mExtent + (10@10)) 
+						width: 6
+						color: Color red.
+	rightStroke := LineMorph 
+						startPoint: mPos + (-10 @ (mExtent y + 10))
+						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
+						width: 6
+						color: Color red.
+	leftStroke   openInWorld.
+	rightStroke openInWorld.
+	
+	"NB: Keep Morph when rejected"
+	leftStroke   addAlarm: #delete after: 400.	
+	rightStroke addAlarm: #delete after: 400.
+	
+	PopUpMenu inform: 'You can''t set this'
+	! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/14/2016 13:22:59'!
+wantsDroppedMorph: aMorph event: evt
+	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
+
+	self showReject: aMorph.
+	
+	"Rejecting the drop adds aMorph to its old owner at 0@0."
+	^ false  "Reject the drop"! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 12/2/2016 16:03:28'!
+itemForIVar: aName targetMorph: aMorph
+
+	accessKind := #instanceVariable.
+	targetMorph := aMorph.
+	name := aName.! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 12/2/2016 16:02:32'!
+itemForProperty: aName targetMorph: aMorph
+
+	accessKind := #property.
+	targetMorph := aMorph.
+	name := aName.! !
+
+!OrdinaryPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/2/2016 16:00:46'!
+itemForIVar: aName targetMorph: aMorph
+
+	^self new itemForIVar: aName targetMorph: aMorph! !
+
+!OrdinaryPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/2/2016 16:01:01'!
+itemForProperty: aName targetMorph: aMorph
+
+	^self new itemForProperty: aName targetMorph: aMorph! !
 
 !VisualPropertyEditor methodsFor: 'dropping/grabbing' stamp: 'KenD 4/12/2019 15:45:56'!
 aboutToGrab: aMorph
@@ -705,547 +1253,79 @@ initialize
 
 ! !
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 9/18/2019 16:05:31'!
-displayString
+!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 12/5/2016 14:19:19'!
+testAccepts
 
-	| propValue propString |
-	propValue := self propertyValue.
-	propString :=
-		(propValue is: Number) 
-		ifTrue: [propValue printStringFractionDigits: 4] 
-		ifFalse: [(propValue isPoint) 
-			ifTrue: [propValue printStringFractionDigits: 2]
-			ifFalse: [propValue printString]].
-	^ name asString , ': ', propString! !
+	self assert: ((MetaProperty kind: String) accepts: 'aString').
+	self deny: ((MetaProperty kind: String) accepts: 2@3).
+	self assert: ((MetaProperty kind: String) accepts: #symbol).
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:29:30'!
-metaProperty
+	"OneOf choice"
+	self assert: ((MetaPropertyOneOf kind: Symbol choices: #(fee fie fo fum)) accepts: #fie).
+	self deny: ((MetaPropertyOneOf kind: Symbol choices: #(fee fie fo fum)) accepts: #bogus).
+	self deny: ((MetaPropertyOneOf kind: Symbol choices: #(fee fie fo fum)) accepts: 4@5).
+	self deny: ((MetaPropertyOneOf kind: Boolean choices: #(true false)) accepts: nil).
+	self assert: ((MetaPropertyOneOf kind: Boolean choices: #(true false)) accepts: true).
+	self assert: ((MetaPropertyOneOf kind: Boolean choices: #(true false)) accepts: false).
+	self deny: ((MetaPropertyOneOf kind: Boolean choices: #(true false)) accepts: #bogus).
 
-	^ metaProperty! !
+	"Number Range"
+	self assert: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 1.2).
+	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 0.7).
+	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 7).
+	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 4).
+	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 2@3).
+	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: #bogus).
+		
+	"Point Range"
+	self assert: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 1@4).
+	self assert: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 4@3).
+	self deny: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 1@5).
+	self deny: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 5@1).
+	self deny: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: -1@1).
+	self assert: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 0.3@1).
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:29:58'!
-prevValue
 
-	^ prevValue! !
+	"Positive Point"
+	self assert: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: 23@47).
+	self deny: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: -23@47).
+	self deny: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: -23@-47).
+	self deny: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: 1@-1).
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:30:25'!
-propertyDescriptor
-
-	^ self metaProperty! !
-
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/12/2016 14:38:44'!
-propertyValue
-	"Getter"
-
-	^ accessProc value! !
-
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/22/2016 16:50:52'!
-propertyValue: newValue
-	"Setter"
-
-	updateProc value: newValue.
-	self update! !
-
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:35:46'!
-targetMorph
-
-	^ targetMorph ! !
-
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 11/28/2016 16:38:00'!
-allowsMorphDrop
-	"Answer whether we accept dropping morphs. Redefined to answer true."
-
-	^ true! !
-
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/7/2016 14:55:23'!
-processMouseDown: evt localPosition: localEventPosition
-	"Do nothing upon mouse-down except inform the hand to watch for a 
-	click; wait until an ensuing #click: message gets dispatched"
-"
-	Transcript newLine; show: (self name , ' got #processMouseDown:localPosition:').  
-"
-	evt wasHandled: true.
-	evt hand waitForClicksOrDrag: self
-				event: evt
-				dragSel: #dragEvent:localPosition:
-				clkSel: #mouseButton1Down:localPosition:
-
+	"Pattern Match"
+	self assert: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 'mombazzi').
+	self deny: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 'bamboozle').
+	self deny: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 43).
 ! !
 
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/18/2016 15:39:20'!
-wantsDroppedMorph: aMorph event: evt
-	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
+!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 12/5/2016 13:55:45'!
+testCreationGuards
 
-
-	(self allowsValue: aMorph valueWhenDropped)
-		ifTrue: [ 
-"
-	Transcript newLine ; show: 'wantsDroppedMorph:event YES ', aMorph printString .
-"
-			self propertyValue: aMorph valueWhenDropped.
-			self showAccept: aMorph. 
-			"Rejecting the drop adds aMorph to its old owner at 0@0.
-			 So we accept the drop, but then delete aMorph.  
-			This is done in #showAccept."
-			^ true  
-	 	]
-		ifFalse: [
-"
-	Transcript newLine ; show: 'wantsDroppedMorph:event NO ', aMorph printString .
-"
-			self showReject: aMorph.
-			^ false
-		].
+	"Kind must be a Class"
+	self should: [ MetaProperty kind: 37 ] raise: Error.
+	self should: [ MetaProperty kind: Color blue ] raise: Error.
 	
-! !
+	"Values must be of right kind"
+	self should: [ MetaPropertyFrom kind: Point minValue: Color red ] raise: Error.
+	self should: [ MetaPropertyFrom kind: Number minValue: 3@4 ] raise: Error.
+	self should: [ MetaPropertyOneOf kind: Number choices: #(fee fie fo fum) ] raise: Error.
+	self should: [ MetaPropertyOneOf kind: Number choices: Color green ] raise: Error.
+	self should: [ MetaPropertyRange kind: Number minValue: 1@2 maxValue: 3 ] raise: Error.
+	self should: [ MetaPropertyRange kind: Number minValue: 1 maxValue: 2@3 ] raise: Error.
+	self should: [ MetaPropertyViaTest kind: Number test: Color white ] raise: Error.
+	self should: [ MetaPropertyViaTest kind: Number test: [ :a :b | a + b ] ] raise: Error.
+	self should: [ MetaPropertyViaTest kind: 34 test: [ :a :b | a + b ] ] raise: Error.! !
 
-!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 11/28/2016 16:37:33'!
-allowsValue: aValue
+!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 12/5/2016 13:22:28'!
+testPredefinedMProps
 
-	^ self metaProperty accepts: aValue! !
-
-!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 4/13/2019 14:30:25'!
-is: aSymbol
-	^ aSymbol == #VisualPropertyMenuItem or: [ super is: aSymbol ]! !
-
-!VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 12/18/2016 13:05:45'!
-edit
-
-	self metaProperty edit: self targetMorph menuItem: self.
-	self update ! !
-
-!VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 11/28/2016 16:35:20'!
-undo
-	"Reset value from remembered value"
-
-	self targetMorph setProperty: self name  toValue: self prevValue! !
-
-!VisualPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 4/14/2019 16:09:36'!
-propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor accessProc: getterClosure updateProc: setterClosure
-
-	super initialize.
-	name := aSymbol.
-	targetMorph := aMorph.
-	metaProperty := aPropertyDescriptor.
-	prevValue := getterClosure value.	
-	accessProc := getterClosure.
-	updateProc := setterClosure.
-	self
-		contents: ( self displayStringForWidth: (self owner 
-							ifNil: [60] 
-							ifNotNil: [(self owner morphWidth) - 30]) );
-		setIcon: prevValue icon;
-		target: self selector: #edit arguments: nil.
-! !
-
-!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 4/14/2019 16:19:18'!
-displayStringForWidth: maxWidth
-	"Answer a string which fits in maxwidth"
-	|  myString count stringWidth  |
-	myString := self displayString.
-	(myString size <= 0) ifTrue: [ ^ '' ].
-	stringWidth := font widthOfString: '..'.
-	count := 1.
-	1 to: myString size do: [ :index | 
-		stringWidth := stringWidth + (font widthOf: (myString at: index)).
-		(stringWidth < maxWidth) ifTrue: [count := index]
-	].
-
-	(myString size <= count)
-		ifTrue: [ ^myString ] "fits"
-		ifFalse: [ ^(myString truncateTo: count) , '..' ] 
-	! !
-
-!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 4/14/2019 16:12:02'!
-updateContents
-	"(re)set my content string and icon"
-
-	| myWidth |
-	myWidth := self owner ifNil: [60] ifNotNil: [self owner morphWidth - 10 ].
-	self morphWidth: myWidth.
-	self contents: ( self displayStringForWidth: (myWidth - 20) ). "space for icon + border"
-	self setIcon: (self propertyValue icon)! !
-
-!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 11/7/2021 14:17:09'!
-showAccept: aMorph
-	"Draw and erase a green box"
-
-	| hilightMorph mPos mExtent |
-	mPos     := aMorph morphPositionInWorld.
-	mExtent := aMorph morphExtentInOwner.
-	hilightMorph := FrameMorph new.
-	hilightMorph   borderWidth: 6;
-					borderColor: Color green;
-					morphExtent: mExtent + 6;
-					openInWorld;
-					morphPosition: mPos - (6@6). "surround aMorph"
-
-	aMorph        addAlarm: #delete after: 200.
-	hilightMorph addAlarm: #delete after: 400.! !
-
-!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 11/7/2021 14:17:15'!
-showReject: aMorph
-	"Draw and erase a red X"
-
-	| leftStroke rightStroke mPos mExtent |
-	mPos := aMorph morphPositionInWorld.
-	mExtent := aMorph morphExtentInOwner.
-	"Show a red X"
-	leftStroke   := LineMorph 
-						startPoint: mPos - (10@10) 
-						endPoint: (mPos + mExtent + (10@10)) 
-						width: 6
-						color: Color red.
-	rightStroke := LineMorph 
-						startPoint: mPos + (-10 @ (mExtent y + 10))
-						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
-						width: 6
-						color: Color red.
-	leftStroke   openInWorld.
-	rightStroke openInWorld.
+	self assert: ((MetaProperty metaPropNamed: #acceptsString) accepts: 'aString').
+	self assert: ((MetaProperty metaPropNamed: #acceptsColor) accepts: Color blue).
+	self assert: ((MetaProperty metaPropNamed: #acceptsPositivePoint) accepts: 2@3).
+	self assert: ((MetaProperty metaPropNamed: #acceptsPositiveNumber) accepts: 0.1).
 	
-	"NB: Keep Morph when rejected"
-	leftStroke   addAlarm: #delete after: 400.	
-	rightStroke addAlarm: #delete after: 400.! !
-
-!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 4/14/2019 15:27:49'!
-update
-
-	self updateContents.
-	self targetMorph redrawNeeded.! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:29'!
-blankIcon
-
-	^BlankIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:35'!
-booleanIcon
-
-	^BoolIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:41'!
-charIcon
-
-	^CharIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:49'!
-chronIcon
-
-	^ChronIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:55'!
-classIcon
-
-	^ClassIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:01'!
-closureIcon
-
-	^ClosureIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:09'!
-collectionIcon
-
-	^CollectIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:15'!
-complexIcon
-
-	^CpxIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:22'!
-falseIcon
-
-	^FalseIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:28'!
-fileIcon
-
-	^FileIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:36'!
-floatIcon
-
-	^FloatIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:41'!
-folderIcon
-
-	^FolderIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:46'!
-fontIcon
-
-	^FontIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:50'!
-fractionIcon
-
-	^FracIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 12/14/2021 12:40:25'!
-imageIcon
-
-	^ImageIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:22:56'!
-integerIcon
-
-	^IntIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 12/14/2021 12:40:40'!
-layoutIcon
-
-	^LayoutIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:02'!
-nilIcon
-
-	^NilIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:06'!
-objectIcon
-
-	^ObjIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:12'!
-oneOfIcon
-
-	^OneOfIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:17'!
-pointIcon
-
-	^PtIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:26'!
-rangeIcon
-
-	^RngIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:31'!
-streamIcon
-
-	^StreamIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:37'!
-stringIcon
-
-	^StrIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:43'!
-symbolIcon
-
-	^SymIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:49'!
-trueIcon
-
-	^TrueIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:23:54'!
-windowIcon
-
-	^WindowIcon! !
-
-!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'hlsf 12/30/2021 11:00:47'!
-initialize
-"
-	VisualPropertyMenuItem initialize.
-"
-	| dirName |
-	dirName :=  ((self package) fullFileName upToLastPathSeparator), '/icons/'.
-
-	BlankIcon := ImageReadWriter formFromFileNamed: dirName , 'Blank.png'.
-	BoolIcon := ImageReadWriter formFromFileNamed: dirName , 'Bool.png'.
-	CharIcon := ImageReadWriter formFromFileNamed: dirName , 'Char.png'.
-	ChronIcon := ImageReadWriter formFromFileNamed: dirName , 'Chron.png'.
-	ClassIcon := ImageReadWriter formFromFileNamed: dirName , 'Class.png'.
-	ClosureIcon := ImageReadWriter formFromFileNamed: dirName , 'Closure.png'.
-	CollectIcon := ImageReadWriter formFromFileNamed: dirName , 'Collect.png'.
-	CpxIcon := ImageReadWriter formFromFileNamed: dirName , 'Cpx.png'.
-	FalseIcon := ImageReadWriter formFromFileNamed: dirName , 'False.png'.
-	FileIcon := ImageReadWriter formFromFileNamed: dirName , 'File.png'.
-	FloatIcon := ImageReadWriter formFromFileNamed: dirName , 'Float.png'.
-	FolderIcon := ImageReadWriter formFromFileNamed: dirName , 'Folder.png'.
-	FontIcon := ImageReadWriter formFromFileNamed: dirName , 'Font.png'.
-	FracIcon := ImageReadWriter formFromFileNamed: dirName , 'Frac.png'.
-	ImageIcon := ImageReadWriter formFromFileNamed: dirName , 'Graphic.png'.
-	IntIcon := ImageReadWriter formFromFileNamed: dirName , 'Int.png'.
-	LayoutIcon := (ImageReadWriter formFromFileNamed: dirName , 'Effect.png') magnifyTo: 16@16.
-	NilIcon := ImageReadWriter formFromFileNamed: dirName , 'Nil.png'.
-"	ObjIcon := ImageReadWriter formFromFileNamed: dirName , 'Obj.png'."
-	ObjIcon := ImageReadWriter formFromFileNamed: dirName , 'mushroom.png'.
-	OneOfIcon := ImageReadWriter formFromFileNamed: dirName , 'OneOf.png'.
-	PtIcon := ImageReadWriter formFromFileNamed: dirName , 'Pt.png'.
-	RngIcon := ImageReadWriter formFromFileNamed: dirName , 'Rng.png'.
-	StrIcon := ImageReadWriter formFromFileNamed: dirName , 'Str.png'.
-	StreamIcon := ImageReadWriter formFromFileNamed: dirName , 'Stream.png'.
-	SymIcon := ImageReadWriter formFromFileNamed: dirName , 'Sym.png'.
-	TrueIcon := ImageReadWriter formFromFileNamed: dirName , 'True.png'.
-	WindowIcon := ImageReadWriter formFromFileNamed: dirName , 'Window.png'.
-	
-! !
-
-!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 12/7/2016 15:07:44'!
-propName: aSymbol morph: aMorph
-
-	^ self propName: aSymbol morph: aMorph propMeta: MetaProperty default
-! !
-
-!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/12/2016 14:39:37'!
-ivarName: aSymbol morph: aMorph propMeta: aPropertyDescriptor
-	"Instance Variable based accessor"
-	
-	^ self 
-		propName: aSymbol 
-		morph: aMorph 
-		propMeta: aPropertyDescriptor 
-		accessProc: [ ^ aMorph instVarNamed: aSymbol ] 
-		updateProc: [ :newValue | aMorph instVarNamed: aSymbol put: newValue ] ! !
-
-!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/22/2016 19:59:47'!
-propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor
-	"Selector based accessor"
-	
-	| setterSym isEncoded getterProc setterProc |
-	setterSym := (aSymbol , ':') asSymbol.
-	isEncoded := (aPropertyDescriptor isKindOf: MetaPropertyMultiSelect)
-					or: [ aPropertyDescriptor isKindOf: MetaPropertyTransducer ].
-	getterProc := [ aMorph perform: aSymbol ] .
-	setterProc := [ :newValue | aMorph perform: setterSym with: newValue ].
-	^ self 
-		propName: aSymbol 
-		morph: aMorph 
-		propMeta: aPropertyDescriptor 
-		accessProc:
-			(isEncoded 
-				ifFalse: [ getterProc ]
-				ifTrue: [ [ aPropertyDescriptor decodeProc value: (getterProc value) ] ])
-		updateProc: 
-			(isEncoded 
-				ifFalse: [ setterProc ]
-				ifTrue: [ [ :newValue |  setterProc value: (aPropertyDescriptor encodeProc value: newValue) ] ])
-			! !
-
-!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/12/2016 14:39:10'!
-propName: aSymbol 
-morph: aMorph 
-propMeta: aPropertyDescriptor 
-accessProc: getterClosure 
-updateProc: setterClosure 
-
-	"Generalized value accessor"
-	^ self new propName: aSymbol 
-				morph: aMorph
-				propMeta: aPropertyDescriptor 
-				accessProc: getterClosure 
-				updateProc: setterClosure ! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 5/12/2018 19:45:14'!
-icon
-
-	^icon! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 5/12/2018 19:45:42'!
-icon: anIcon
-
-	self setIcon: anIcon! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/2/2016 16:15:02'!
-targetMorph
-
-	^ targetMorph! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/2/2016 16:22:54'!
-value
-	"Answer value of my targetMorph's property or instance variable"
-
-	^ (accessKind = #property)
-		ifTrue:  [ targetMorph valueOfProperty: name ]
-		ifFalse: [ targetMorph instVarNamed:     name ]! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/11/2016 13:53:49'!
-allowsMorphDrop
-	"We don't allow editing by Drop, but answer true here to visually reject and delete dropped morph."
-
-	^ true! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/2/2016 16:05:05'!
-processMouseDown: evt localPosition: localEventPosition
-	"Do nothing upon mouse-down except inform the hand to watch for a 
-	click; wait until an ensuing #click: message gets dispatched"
-"
-	Transcript newLine; show: (self name , ' got #processMouseDown:localPosition:').  
-"
-	evt wasHandled: true.
-	evt hand waitForClicksOrDrag: self
-				event: evt
-				dragSel: #dragEvent:localPosition:
-				clkSel: #mouseButton1Down:localPosition:
-
-! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 11/7/2021 14:17:00'!
-showReject: aMorph
-	"Draw and erase a red X"
-
-	| leftStroke rightStroke mPos mExtent |
-	mPos := aMorph morphPositionInWorld.
-	mExtent := aMorph morphExtentInOwner.
-	leftStroke   := LineMorph 
-						startPoint: mPos - (10@10) 
-						endPoint: (mPos + mExtent + (10@10)) 
-						width: 6
-						color: Color red.
-	rightStroke := LineMorph 
-						startPoint: mPos + (-10 @ (mExtent y + 10))
-						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
-						width: 6
-						color: Color red.
-	leftStroke   openInWorld.
-	rightStroke openInWorld.
-	
-	"NB: Keep Morph when rejected"
-	leftStroke   addAlarm: #delete after: 400.	
-	rightStroke addAlarm: #delete after: 400.
-	
-	PopUpMenu inform: 'You can''t set this'
-	! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/14/2016 13:22:59'!
-wantsDroppedMorph: aMorph event: evt
-	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
-
-	self showReject: aMorph.
-	
-	"Rejecting the drop adds aMorph to its old owner at 0@0."
-	^ false  "Reject the drop"! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 12/2/2016 16:03:28'!
-itemForIVar: aName targetMorph: aMorph
-
-	accessKind := #instanceVariable.
-	targetMorph := aMorph.
-	name := aName.! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 12/2/2016 16:02:32'!
-itemForProperty: aName targetMorph: aMorph
-
-	accessKind := #property.
-	targetMorph := aMorph.
-	name := aName.! !
-
-!OrdinaryPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/2/2016 16:00:46'!
-itemForIVar: aName targetMorph: aMorph
-
-	^self new itemForIVar: aName targetMorph: aMorph! !
-
-!OrdinaryPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/2/2016 16:01:01'!
-itemForProperty: aName targetMorph: aMorph
-
-	^self new itemForProperty: aName targetMorph: aMorph! !
+	self deny: ((MetaProperty metaPropNamed: #acceptsPositivePoint) accepts: -2@3).
+	self deny: ((MetaProperty metaPropNamed: #acceptsPositiveNumber) accepts: -1).! !
 
 !MetaProperty methodsFor: 'testing' stamp: 'KenD 12/4/2016 14:21:39'!
 accepts: newValue
@@ -1893,80 +1973,6 @@ test: aClosure
 
 	^ self new kind: Object test: aClosure! !
 
-!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 12/5/2016 14:19:19'!
-testAccepts
-
-	self assert: ((MetaProperty kind: String) accepts: 'aString').
-	self deny: ((MetaProperty kind: String) accepts: 2@3).
-	self assert: ((MetaProperty kind: String) accepts: #symbol).
-
-	"OneOf choice"
-	self assert: ((MetaPropertyOneOf kind: Symbol choices: #(fee fie fo fum)) accepts: #fie).
-	self deny: ((MetaPropertyOneOf kind: Symbol choices: #(fee fie fo fum)) accepts: #bogus).
-	self deny: ((MetaPropertyOneOf kind: Symbol choices: #(fee fie fo fum)) accepts: 4@5).
-	self deny: ((MetaPropertyOneOf kind: Boolean choices: #(true false)) accepts: nil).
-	self assert: ((MetaPropertyOneOf kind: Boolean choices: #(true false)) accepts: true).
-	self assert: ((MetaPropertyOneOf kind: Boolean choices: #(true false)) accepts: false).
-	self deny: ((MetaPropertyOneOf kind: Boolean choices: #(true false)) accepts: #bogus).
-
-	"Number Range"
-	self assert: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 1.2).
-	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 0.7).
-	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 7).
-	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 4).
-	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: 2@3).
-	self deny: ((MetaPropertyRange kind: Number minValue: 1 maxValue: 3) accepts: #bogus).
-		
-	"Point Range"
-	self assert: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 1@4).
-	self assert: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 4@3).
-	self deny: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 1@5).
-	self deny: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 5@1).
-	self deny: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: -1@1).
-	self assert: ((MetaPropertyRange kind: Point minValue: (0@0) maxValue: (4@4)) accepts: 0.3@1).
-
-
-	"Positive Point"
-	self assert: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: 23@47).
-	self deny: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: -23@47).
-	self deny: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: -23@-47).
-	self deny: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: 1@-1).
-
-	"Pattern Match"
-	self assert: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 'mombazzi').
-	self deny: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 'bamboozle').
-	self deny: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 43).
-! !
-
-!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 12/5/2016 13:55:45'!
-testCreationGuards
-
-	"Kind must be a Class"
-	self should: [ MetaProperty kind: 37 ] raise: Error.
-	self should: [ MetaProperty kind: Color blue ] raise: Error.
-	
-	"Values must be of right kind"
-	self should: [ MetaPropertyFrom kind: Point minValue: Color red ] raise: Error.
-	self should: [ MetaPropertyFrom kind: Number minValue: 3@4 ] raise: Error.
-	self should: [ MetaPropertyOneOf kind: Number choices: #(fee fie fo fum) ] raise: Error.
-	self should: [ MetaPropertyOneOf kind: Number choices: Color green ] raise: Error.
-	self should: [ MetaPropertyRange kind: Number minValue: 1@2 maxValue: 3 ] raise: Error.
-	self should: [ MetaPropertyRange kind: Number minValue: 1 maxValue: 2@3 ] raise: Error.
-	self should: [ MetaPropertyViaTest kind: Number test: Color white ] raise: Error.
-	self should: [ MetaPropertyViaTest kind: Number test: [ :a :b | a + b ] ] raise: Error.
-	self should: [ MetaPropertyViaTest kind: 34 test: [ :a :b | a + b ] ] raise: Error.! !
-
-!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 12/5/2016 13:22:28'!
-testPredefinedMProps
-
-	self assert: ((MetaProperty metaPropNamed: #acceptsString) accepts: 'aString').
-	self assert: ((MetaProperty metaPropNamed: #acceptsColor) accepts: Color blue).
-	self assert: ((MetaProperty metaPropNamed: #acceptsPositivePoint) accepts: 2@3).
-	self assert: ((MetaProperty metaPropNamed: #acceptsPositiveNumber) accepts: 0.1).
-	
-	self deny: ((MetaProperty metaPropNamed: #acceptsPositivePoint) accepts: -2@3).
-	self deny: ((MetaProperty metaPropNamed: #acceptsPositiveNumber) accepts: -1).! !
-
 !ProtoObject methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:11:53'!
 icon
 
@@ -1983,85 +1989,6 @@ morphForDrag
 	
 	^ SignMorph forObject: self
 ! !
-
-!Collection methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:39:28'!
-icon
-
-	^ VisualPropertyMenuItem collectionIcon ! !
-
-!String methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:12:47'!
-icon
-
-	^ VisualPropertyMenuItem stringIcon ! !
-
-!Symbol methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:13:08'!
-icon
-
-	^ VisualPropertyMenuItem symbolIcon ! !
-
-!Stream methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:12:17'!
-icon
-
-	^ VisualPropertyMenuItem streamIcon ! !
-
-!Form methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:47:44'!
-morphForDrag
-	"Answer a morph suitable for DragNDrop"
-	
-	^ ImageMorph new image: self
-! !
-
-!Point methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:11:23'!
-icon
-
-	^ VisualPropertyMenuItem pointIcon ! !
-
-!AbstractFont methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:35:41'!
-icon
-
-	^ VisualPropertyMenuItem fontIcon ! !
-
-!AbstractFont methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:35:51'!
-morphForDrag
-	"Answer a morph suitable for DragNDrop"
-	
-	^ FontMorph font: self
-! !
-
-!Timespan methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:14:27'!
-icon
-
-	^ VisualPropertyMenuItem chronIcon ! !
-
-!Magnitude methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:06:00'!
-icon
-
-	^ VisualPropertyMenuItem integerIcon ! !
-
-!Time methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:14:09'!
-icon
-
-	^ VisualPropertyMenuItem chronIcon ! !
-
-!Float methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:47:15'!
-icon
-
-	^ VisualPropertyMenuItem floatIcon ! !
-
-!Fraction methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:48:18'!
-icon
-
-	^ VisualPropertyMenuItem fractionIcon ! !
-
-!Integer methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:01:28'!
-icon
-
-	^ VisualPropertyMenuItem integerIcon ! !
-
-!BlockClosure methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:37:37'!
-icon
-
-	^ VisualPropertyMenuItem closureIcon ! !
 
 !Boolean methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:38:12'!
 icon
@@ -2089,10 +2016,109 @@ icon
 
 	^ VisualPropertyMenuItem nilIcon ! !
 
+!Magnitude methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:06:00'!
+icon
+
+	^ VisualPropertyMenuItem integerIcon ! !
+
+!Float methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:47:15'!
+icon
+
+	^ VisualPropertyMenuItem floatIcon ! !
+
+!Fraction methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:48:18'!
+icon
+
+	^ VisualPropertyMenuItem fractionIcon ! !
+
+!Integer methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:01:28'!
+icon
+
+	^ VisualPropertyMenuItem integerIcon ! !
+
+!Time methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:14:09'!
+icon
+
+	^ VisualPropertyMenuItem chronIcon ! !
+
 !Character methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:38:55'!
 icon
 
 	^ VisualPropertyMenuItem charIcon ! !
+
+!Timespan methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:14:27'!
+icon
+
+	^ VisualPropertyMenuItem chronIcon ! !
+
+!BlockClosure methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:37:37'!
+icon
+
+	^ VisualPropertyMenuItem closureIcon ! !
+
+!Collection methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:39:28'!
+icon
+
+	^ VisualPropertyMenuItem collectionIcon ! !
+
+!String methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:12:47'!
+icon
+
+	^ VisualPropertyMenuItem stringIcon ! !
+
+!Symbol methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:13:08'!
+icon
+
+	^ VisualPropertyMenuItem symbolIcon ! !
+
+!Stream methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:12:17'!
+icon
+
+	^ VisualPropertyMenuItem streamIcon ! !
+
+!FileIOAccessor methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:46:24'!
+icon
+
+	^ VisualPropertyMenuItem fileIcon ! !
+
+!FileSystemEntry methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:46:46'!
+icon
+
+	^ VisualPropertyMenuItem fileIcon ! !
+
+!DirectoryEntry methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:41:08'!
+icon
+
+	^ VisualPropertyMenuItem folderIcon ! !
+
+!FileEntry methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:46:02'!
+icon
+
+	^ VisualPropertyMenuItem fileIcon ! !
+
+!Form methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:47:44'!
+morphForDrag
+	"Answer a morph suitable for DragNDrop"
+	
+	^ ImageMorph new image: self
+! !
+
+!Point methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:11:23'!
+icon
+
+	^ VisualPropertyMenuItem pointIcon ! !
+
+!AbstractFont methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:35:41'!
+icon
+
+	^ VisualPropertyMenuItem fontIcon ! !
+
+!AbstractFont methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:35:51'!
+morphForDrag
+	"Answer a morph suitable for DragNDrop"
+	
+	^ FontMorph font: self
+! !
 
 !Morph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/17/2021 19:21:31'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
@@ -2143,6 +2169,42 @@ valueWhenDropped
 icon
 
 	^ VisualPropertyMenuItem layoutIcon ! !
+
+!ImageMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:45:11'!
+icon
+
+	^ VisualPropertyMenuItem imageIcon ! !
+
+!ImageMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:49:44'!
+image
+
+	^ self form! !
+
+!ImageMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:49:50'!
+valueWhenDropped
+	"Answer my form (image)"
+	
+	^ self form! !
+
+!LabelMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:03:11'!
+emphasis
+
+	^ emphasis! !
+
+!SystemWindow methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:13:39'!
+labelString
+
+	^ self label! !
+
+!SystemWindow methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:13:44'!
+labelString: aString
+
+	self setLabel: aString! !
+
+!Panel methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:10:58'!
+icon
+
+	^ VisualPropertyMenuItem windowIcon ! !
 
 !MenuMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:06:41'!
 aboutToGrab: aMorph
@@ -2274,68 +2336,12 @@ valueWhenDropped
 
 	^nil! !
 
-!ImageMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:45:11'!
-icon
-
-	^ VisualPropertyMenuItem imageIcon ! !
-
-!ImageMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:49:44'!
-image
-
-	^ self form! !
-
-!ImageMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:49:50'!
-valueWhenDropped
-	"Answer my form (image)"
-	
-	^ self form! !
-
-!LabelMorph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:03:11'!
-emphasis
-
-	^ emphasis! !
-
-!SystemWindow methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:13:39'!
-labelString
-
-	^ self label! !
-
-!SystemWindow methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:13:44'!
-labelString: aString
-
-	self setLabel: aString! !
-
-!Panel methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:10:58'!
-icon
-
-	^ VisualPropertyMenuItem windowIcon ! !
-
 !LayoutSpec methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:44:31'!
 icon
 
 	^ VisualPropertyMenuItem layoutIcon ! !
-
-!FileIOAccessor methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:46:24'!
-icon
-
-	^ VisualPropertyMenuItem fileIcon ! !
-
-!FileSystemEntry methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:46:46'!
-icon
-
-	^ VisualPropertyMenuItem fileIcon ! !
-
-!DirectoryEntry methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:41:08'!
-icon
-
-	^ VisualPropertyMenuItem folderIcon ! !
-
-!FileEntry methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:46:02'!
-icon
-
-	^ VisualPropertyMenuItem fileIcon ! !
-VisualPropertyEditor initialize!
 VisualPropertyMenuItem initialize!
+VisualPropertyEditor initialize!
 MetaProperty initialize!
 MetaPropertyFrom initialize!
 MetaPropertyOneOf initialize!
