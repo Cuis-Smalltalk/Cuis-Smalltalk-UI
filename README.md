@@ -85,6 +85,10 @@ UI-Palette
 - InnerPluggableImagePalette
 - PluggableImagePalette
 
+UI-Shapes
+- BezierQuadraticMorph
+- BezierCubicMorph
+
 ## UI-Tools Packages
 
 Color-Edit-Panel
