@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5053] on 31 January 2022 at 2:56:01 pm'!
+'From Cuis 6.0 [latest update: #5057] on 2 February 2022 at 7:41:08 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 12!
+!provides: 'UI-Shapes' 1 13!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -113,27 +113,23 @@ drawOn: aCanvas
 			quadraticBezierTo: endPoint control: oneControlPoint 
 	]! !
 
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/30/2022 16:04:33'!
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 2/2/2022 19:39:19'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
 	
 	| haloCtlPt |
-	haloCtlPt := self controlPointOneInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self controlPointOneInWorld.
 	(aHalo addControlHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlOne:with: .
 		
-	haloCtlPt := self startPointInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self startPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doStartPoint:with: .
 		
-	haloCtlPt := self endPointInWorld 
-				- aHalo morphPositionInWorld.
-
+	haloCtlPt := aHalo internalizeFromWorld: self endPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doEndPoint:with: .! !
@@ -318,96 +314,52 @@ addPointHandle: aPoint
 		yourself
 ! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 1/30/2022 14:37:11'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'jmv 2/2/2022 19:58:51'!
 doControlOne: evt with: controlPointHandle
 	"Enable Target Morph to follow control point one."
 
-	| controlDelta controlPoint |
 	evt hand obtainHalo: self.	
 	
-	controlDelta _ (evt eventPosition - target controlPointOneInWorld). 
-	
-	(self target yAxisPointsUp) 
-	ifFalse: [
-		controlPoint := self target oneControlPoint + controlDelta.
-	]
-	ifTrue: [
-		controlPoint := self target oneControlPoint + 
-			(controlDelta x @ controlDelta y negated).
-	].
-	self target oneControlPoint: controlPoint.
+	self target oneControlPoint: (self target internalizeFromWorld: evt eventPosition).
 	"Track the hand"
 	controlPointHandle 
 		morphPositionInWorld: evt eventPosition 
 					- (controlPointHandle morphExtent // 2).	
 	self redrawNeeded.! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 1/30/2022 15:05:55'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'jmv 2/2/2022 19:59:16'!
 doControlTwo: evt with: controlPointHandle
 	"Enable Target Morph to follow control point one."
 
-	| controlDelta controlPoint |
 	evt hand obtainHalo: self.	
-	
-	controlDelta _ (evt eventPosition - target controlPointTwoInWorld). 
-	
-	(self target yAxisPointsUp) 
-	ifFalse: [
-		controlPoint := self target twoControlPoint + controlDelta.
-	]
-	ifTrue: [
-		controlPoint := self target twoControlPoint + 
-			(controlDelta x @ controlDelta y negated).
-	].
-	self target twoControlPoint: controlPoint.
+
+	self target twoControlPoint: (self target internalizeFromWorld: evt eventPosition).
 	"Track the hand"
 	controlPointHandle 
 		morphPositionInWorld: evt eventPosition 
 					- (controlPointHandle morphExtent // 2).	
 	self redrawNeeded.! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 1/30/2022 15:56:34'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'jmv 2/2/2022 19:59:33'!
 doEndPoint: evt with: controlPointHandle
 	"Enable Target Morph to follow control point one."
 
-	| controlDelta controlPoint |
 	evt hand obtainHalo: self.	
 	
-	controlDelta _ (evt eventPosition - target endPointInWorld). 
-	
-	(self target yAxisPointsUp) 
-	ifFalse: [
-		controlPoint := self target endPoint + controlDelta.
-	]
-	ifTrue: [
-		controlPoint := self target endPoint + 
-			(controlDelta x @ controlDelta y negated).
-	].
-	self target endPoint: controlPoint.
+	self target endPoint: (self target internalizeFromWorld: evt eventPosition).
 	"Track the hand"
 	controlPointHandle 
 		morphPositionInWorld: evt eventPosition 
 					- (controlPointHandle morphExtent // 2).	
 	self redrawNeeded.! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 1/30/2022 15:55:45'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'jmv 2/2/2022 19:57:35'!
 doStartPoint: evt with: controlPointHandle
 	"Enable Target Morph to follow control point one."
 
-	| controlDelta controlPoint |
 	evt hand obtainHalo: self.	
-	
-	controlDelta _ (evt eventPosition - target startPointInWorld). 
-	
-	(self target yAxisPointsUp) 
-	ifFalse: [
-		controlPoint := self target startPoint + controlDelta.
-	]
-	ifTrue: [
-		controlPoint := self target startPoint + 
-			(controlDelta x @ controlDelta y negated).
-	].
-	self target startPoint: controlPoint.
+
+	self target startPoint: (self target internalizeFromWorld: evt eventPosition).
 	"Track the hand"
 	controlPointHandle 
 		morphPositionInWorld: evt eventPosition 
