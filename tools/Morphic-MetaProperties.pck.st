@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5053] on 29 January 2022 at 3:42:53 pm'!
+'From Cuis 6.0 [latest update: #5053] on 30 January 2022 at 3:19:50 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 106!
+!provides: 'Morphic-MetaProperties' 1 107!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -561,7 +561,7 @@ symbolIcon
 
 	^SymIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 1/29/2022 15:41:22'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 1/30/2022 15:19:43'!
 targetIcon
 
 	^TargetIcon! !
