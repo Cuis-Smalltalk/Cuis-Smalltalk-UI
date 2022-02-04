@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5053] on 30 January 2022 at 3:19:50 pm'!
+'From Cuis 6.0 [latest update: #5057] on 4 February 2022 at 12:25:37 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 107!
+!provides: 'Morphic-MetaProperties' 1 108!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -15,7 +15,7 @@ SystemOrganization addCategory: 'Morphic-MetaProperties'!
 !classDefinition: #VisualPropertyMenuItem category: 'Morphic-MetaProperties'!
 UpdatingMenuItemMorph subclass: #VisualPropertyMenuItem
 	instanceVariableNames: 'metaProperty name prevValue targetMorph accessProc updateProc'
-	classVariableNames: 'BlankIcon BoolIcon CharIcon ChronIcon ClassIcon ClosureIcon CollectIcon CpxIcon FalseIcon FileIcon FloatIcon FolderIcon FontIcon FracIcon ImageIcon IntIcon LayoutIcon NilIcon ObjIcon OneOfIcon PtIcon RngIcon StrIcon StreamIcon SymIcon TargetIcon TrueIcon WindowIcon'
+	classVariableNames: 'BlankIcon BoolIcon CharIcon ChronIcon ClassIcon ClosureIcon CollectIcon CpxIcon FalseIcon FileIcon FloatIcon FolderIcon FontIcon FracIcon GrabLineHorizIcon GrabLineVertIcon ImageIcon IntIcon LayoutIcon NilIcon ObjIcon OneOfIcon PtIcon RngIcon StrIcon StreamIcon SymIcon TargetIcon TrueIcon WindowIcon'
 	poolDictionaries: ''
 	category: 'Morphic-MetaProperties'!
 !classDefinition: 'VisualPropertyMenuItem class' category: 'Morphic-MetaProperties'!
@@ -506,6 +506,16 @@ fractionIcon
 
 	^FracIcon! !
 
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 2/3/2022 15:41:06'!
+grabLineHorizIcon
+
+	^GrabLineHorizIcon ! !
+
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 2/3/2022 15:40:51'!
+grabLineVertIcon
+
+	^GrabLineVertIcon ! !
+
 !VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 12/14/2021 12:40:25'!
 imageIcon
 
@@ -576,7 +586,7 @@ windowIcon
 
 	^WindowIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 1/29/2022 15:40:52'!
+!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 2/3/2022 15:44:44'!
 initialize
 "
 	VisualPropertyMenuItem initialize.
@@ -598,6 +608,8 @@ initialize
 	FolderIcon := ImageReadWriter formFromFileNamed: dirName , 'Folder.png'.
 	FontIcon := ImageReadWriter formFromFileNamed: dirName , 'Font.png'.
 	FracIcon := ImageReadWriter formFromFileNamed: dirName , 'Frac.png'.
+	GrabLineHorizIcon := ImageReadWriter formFromFileNamed: dirName , 'LineGrabHoriz.png'.
+	GrabLineVertIcon := ImageReadWriter formFromFileNamed: dirName , 'LineGrabVert.png'.
 	ImageIcon := ImageReadWriter formFromFileNamed: dirName , 'Graphic.png'.
 	IntIcon := ImageReadWriter formFromFileNamed: dirName , 'Int.png'.
 	LayoutIcon := (ImageReadWriter formFromFileNamed: dirName , 'Effect.png') magnifyTo: 16@16.
