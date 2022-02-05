@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5057] on 5 February 2022 at 2:10:53 pm'!
+'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 2:36:13 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 18!
+!provides: 'UI-Shapes' 1 19!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -36,6 +36,16 @@ PlacedMorph subclass: #CircleShapeMorph
 CircleShapeMorph class
 	instanceVariableNames: ''!
 
+!classDefinition: #LineShapeMorph category: 'UI-Shapes'!
+PlacedMorph subclass: #LineShapeMorph
+	instanceVariableNames: 'startPoint endPoint lineColor lineWidth'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Shapes'!
+!classDefinition: 'LineShapeMorph class' category: 'UI-Shapes'!
+LineShapeMorph class
+	instanceVariableNames: ''!
+
 !classDefinition: #RectangleShapeMorph category: 'UI-Shapes'!
 PlacedMorph subclass: #RectangleShapeMorph
 	instanceVariableNames: 'origin corner fillColor lineColor lineWidth'
@@ -59,6 +69,9 @@ I have two control points.!
 
 !CircleShapeMorph commentStamp: '<historical>' prior: 0!
 I present a vector-based Circle!
+
+!LineShapeMorph commentStamp: '<historical>' prior: 0!
+I present a vector-graphic line!
 
 !RectangleShapeMorph commentStamp: '<historical>' prior: 0!
 I present a vector-graphic rectangle
@@ -117,7 +130,7 @@ startPoint: aPoint
 
 	startPoint := aPoint! !
 
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/30/2022 16:04:33'!
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:25:51'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -137,7 +150,6 @@ addOptionalHandlesTo: aHalo box: box
 		
 	haloCtlPt := self endPointInWorld 
 				- aHalo morphPositionInWorld.
-
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doEndPoint:with: .! !
@@ -417,6 +429,19 @@ drawOn: aCanvas
 			aCanvas circleCenter: center radius: radius
 	]! !
 
+!CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:31:49'!
+rotationCenter
+	"Smooth rotation around the origin.
+	(Optional. See what happens if you delete this method)"
+
+	^ center! !
+
+!CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:31:30'!
+yAxisPointsUp
+	"Math coordiated rather than graphics."
+
+	^ true! !
+
 !CircleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:10:25'!
 initialize
 
@@ -458,6 +483,142 @@ initializeMetaProperties
 	classDict at: #lineColor 
 		put: (propsDict at: #acceptsColor). 
 	classDict at: #fillColor 
+		put: (propsDict at: #acceptsColor). 
+
+
+	! !
+
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:17'!
+endPoint
+
+	^ endPoint! !
+
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:23'!
+endPoint: aPoint
+
+	endPoint := aPoint! !
+
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:31'!
+lineColor 
+
+	^ lineColor ! !
+
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:36'!
+lineColor: aColor
+
+	lineColor := aColor! !
+
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:42'!
+lineWidth
+
+	^ lineWidth! !
+
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:48'!
+lineWidth: positiveNumber
+
+	lineWidth := positiveNumber ! !
+
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:58'!
+startPoint 
+
+	^ startPoint ! !
+
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:23:04'!
+startPoint: aPoint
+
+	startPoint := aPoint! !
+
+!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:25:28'!
+addOptionalHandlesTo: aHalo box: box
+	"Control point is relative to my center.
+	 Translate relative to aHalo"
+	
+	| haloCtlPt |
+	
+	haloCtlPt := self startPointInWorld 
+				- aHalo morphPositionInWorld.
+	(aHalo addPointHandle: haloCtlPt)
+		mouseDownSelector: #startControlPoint:with: ;
+		mouseMoveSelector: #doStartPoint:with: .
+		
+	haloCtlPt := self endPointInWorld 
+				- aHalo morphPositionInWorld.
+	(aHalo addPointHandle: haloCtlPt)
+		mouseDownSelector: #startControlPoint:with: ;
+		mouseMoveSelector: #doEndPoint:with: .! !
+
+!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:24:58'!
+endPointInWorld
+	"Answer end point in World coordinates."
+
+	^ self externalizeToWorld: endPoint! !
+
+!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:25:04'!
+startPointInWorld
+	"Answer start point in World coordinates."
+
+	^ self externalizeToWorld: startPoint! !
+
+!LineShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 14:29:28'!
+drawOn: aCanvas
+
+	aCanvas strokeWidth: lineWidth color: lineColor do: [
+		aCanvas
+				moveTo: startPoint;
+				lineTo: endPoint
+	]! !
+
+!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:30:10'!
+rotationCenter
+	"Smooth rotation around the origin.
+	(Optional. See what happens if you delete this method)"
+
+	^ startPoint! !
+
+!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:31:07'!
+yAxisPointsUp
+	"Math coordiated rather than graphics."
+
+	^ true! !
+
+!LineShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:34:46'!
+initialize
+
+	super initialize.
+	lineColor := Color orange.
+	startPoint := 0@0.
+	endPoint := 84@175.
+	lineWidth := 6.! !
+
+!LineShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 14:23:24'!
+initialize
+	
+	(Smalltalk includesKey: #MetaProperty )
+		ifTrue: [ self initializeMetaProperties ].
+	! !
+
+!LineShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 14:24:04'!
+initializeMetaProperties
+"
+	LineShapeMorph initializeMetaProperties.
+"
+	| classDict propsDict |
+	"Ensure named MetaProperties exist"
+	MetaProperty initializeDictionaries.
+
+	"Seed MetaProperties for known Morphs"
+	propsDict := MetaProperty preDefinedPropsDict.
+	
+	classDict := MetaProperty 
+		metaPropsDictForClass: LineShapeMorph.
+	
+	classDict at: #startPoint 
+		put: (propsDict at: #acceptsPoint). 
+	classDict at: #endPoint 
+		put: (propsDict at: #acceptsPoint). 
+	classDict at: #lineWidth 
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #lineColor 
 		put: (propsDict at: #acceptsColor). 
 
 
@@ -924,4 +1085,5 @@ haloTargetIcon
 BezierQuadraticMorph initialize!
 BezierCubicMorph initialize!
 CircleShapeMorph initialize!
+LineShapeMorph initialize!
 RectangleShapeMorph initialize!
