@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5057] on 5 February 2022 at 1:27:05 pm'!
+'From Cuis 6.0 [latest update: #5057] on 5 February 2022 at 2:10:53 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 17!
+!provides: 'UI-Shapes' 1 18!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -26,9 +26,19 @@ BezierQuadraticMorph subclass: #BezierCubicMorph
 BezierCubicMorph class
 	instanceVariableNames: ''!
 
+!classDefinition: #CircleShapeMorph category: 'UI-Shapes'!
+PlacedMorph subclass: #CircleShapeMorph
+	instanceVariableNames: 'center radius fillColor lineColor lineWidth'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Shapes'!
+!classDefinition: 'CircleShapeMorph class' category: 'UI-Shapes'!
+CircleShapeMorph class
+	instanceVariableNames: ''!
+
 !classDefinition: #RectangleShapeMorph category: 'UI-Shapes'!
 PlacedMorph subclass: #RectangleShapeMorph
-	instanceVariableNames: 'origin corner color lineColor lineWidth'
+	instanceVariableNames: 'origin corner fillColor lineColor lineWidth'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
@@ -47,29 +57,15 @@ I present a Cubic Bezier curve.
 
 I have two control points.!
 
+!CircleShapeMorph commentStamp: '<historical>' prior: 0!
+I present a vector-based Circle!
+
 !RectangleShapeMorph commentStamp: '<historical>' prior: 0!
 I present a vector-graphic rectangle
 
 To move my sides:
   Control point one is rightCenter
   Control point two is bottomCenter!
-
-!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 1/30/2022 13:01:45'!
-yAxisPointsUp
-
-	^true! !
-
-!BezierQuadraticMorph methodsFor: 'initialization' stamp: 'KenD 1/30/2022 13:29:44'!
-initialize
-
-	"Harmless Values"
-	super initialize.
-	self 
-		lineWidth: 6;
-		lineColor: Color green;
-		startPoint: -20 @ -20;
-		endPoint:     50 @ -20;
-		oneControlPoint: 15 @ 200! !
 
 !BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:29:45'!
 endPoint
@@ -121,15 +117,6 @@ startPoint: aPoint
 
 	startPoint := aPoint! !
 
-!BezierQuadraticMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 13:00:46'!
-drawOn: aCanvas
-
-	aCanvas strokeWidth: lineWidth color: lineColor do: [
-		aCanvas 
-			moveTo: startPoint;
-			quadraticBezierTo: endPoint control: oneControlPoint 
-	]! !
-
 !BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/30/2022 16:04:33'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
@@ -173,6 +160,32 @@ startPointInWorld
 
 	^ self externalizeToWorld: startPoint! !
 
+!BezierQuadraticMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 13:00:46'!
+drawOn: aCanvas
+
+	aCanvas strokeWidth: lineWidth color: lineColor do: [
+		aCanvas 
+			moveTo: startPoint;
+			quadraticBezierTo: endPoint control: oneControlPoint 
+	]! !
+
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 1/30/2022 13:01:45'!
+yAxisPointsUp
+
+	^true! !
+
+!BezierQuadraticMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:08:52'!
+initialize
+
+	"Harmless Values"
+	super initialize.
+	self 
+		lineWidth: 6;
+		lineColor: Color green;
+		startPoint: -20 @ -20;
+		endPoint:     50 @ -120;
+		oneControlPoint: 15 @ 200! !
+
 !BezierQuadraticMorph class methodsFor: 'class initialization' stamp: 'KenD 1/28/2022 13:47:38'!
 initialize
 	
@@ -180,7 +193,7 @@ initialize
 		ifTrue: [ self initializeMetaProperties ].
 	! !
 
-!BezierQuadraticMorph class methodsFor: 'class initialization' stamp: 'KenD 1/31/2022 11:32:09'!
+!BezierQuadraticMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:39:58'!
 initializeMetaProperties
 "
 	Bezier1Morph initializeMetaProperties.
@@ -192,35 +205,22 @@ initializeMetaProperties
 	"Seed MetaProperties for known Morphs"
 	propsDict := MetaProperty preDefinedPropsDict.
 	
-	classDict := MetaProperty metaPropsDictForClass: BezierQuadraticMorph.
-	classDict at: #startPoint put: (propsDict at: #acceptsPoint). 
-	classDict at: #endPoint put: (propsDict at: #acceptsPoint). 
-	classDict at: #oneControlPoint put: (propsDict at: #acceptsPoint). 
-	classDict at: #lineWidth put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #lineColor put: (propsDict at: #acceptsColor). 
+	classDict := MetaProperty 
+		metaPropsDictForClass: BezierQuadraticMorph.
+	
+	classDict at: #startPoint 
+		put: (propsDict at: #acceptsPoint). 
+	classDict at: #endPoint 
+		put: (propsDict at: #acceptsPoint). 
+	classDict at: #oneControlPoint 
+		put: (propsDict at: #acceptsPoint). 
+	classDict at: #lineWidth 
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #lineColor 
+		put: (propsDict at: #acceptsColor). 
 
 
 	! !
-
-!BezierCubicMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 14:55:18'!
-drawOn: aCanvas
-
-	aCanvas strokeWidth: lineWidth color: lineColor do: [
-		aCanvas 
-			moveTo: startPoint;
-			cubicBezierTo: endPoint 
-				control1: oneControlPoint 
-				control2: twoControlPoint 
-	]! !
-
-!BezierCubicMorph methodsFor: 'initialization' stamp: 'KenD 1/30/2022 14:59:51'!
-initialize
-
-	super initialize.
-	self 
-		lineColor: Color yellow ;
-		oneControlPoint: 228@75 ;
-		twoControlPoint: 25 @ 160.! !
 
 !BezierCubicMorph methodsFor: 'accessing' stamp: 'KenD 1/30/2022 14:41:44'!
 twoControlPoint
@@ -253,6 +253,26 @@ controlPointTwoInWorld
 
 	^self externalizeToWorld: twoControlPoint ! !
 
+!BezierCubicMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 14:55:18'!
+drawOn: aCanvas
+
+	aCanvas strokeWidth: lineWidth color: lineColor do: [
+		aCanvas 
+			moveTo: startPoint;
+			cubicBezierTo: endPoint 
+				control1: oneControlPoint 
+				control2: twoControlPoint 
+	]! !
+
+!BezierCubicMorph methodsFor: 'initialization' stamp: 'KenD 1/30/2022 14:59:51'!
+initialize
+
+	super initialize.
+	self 
+		lineColor: Color yellow ;
+		oneControlPoint: 228@75 ;
+		twoControlPoint: 25 @ 160.! !
+
 !BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 1/30/2022 14:55:53'!
 initialize
 	
@@ -260,7 +280,7 @@ initialize
 		ifTrue: [ self initializeMetaProperties ].
 	! !
 
-!BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 1/31/2022 11:32:47'!
+!BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:39:25'!
 initializeMetaProperties
 "
 	Bezier2Morph initializeMetaProperties.
@@ -273,21 +293,255 @@ initializeMetaProperties
 	propsDict := MetaProperty preDefinedPropsDict.
 	
 	classDict := MetaProperty metaPropsDictForClass: BezierCubicMorph. 
+	
 	"Note that MetaProperties are inherited.."
-	classDict at: #twoControlPoint put: (propsDict at: #acceptsPoint).  
+	classDict at: #twoControlPoint 
+		put: (propsDict at: #acceptsPoint).  
 
 
 	! !
 
-!RectangleShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 12:58:02'!
-drawOn: aCanvas
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:06'!
+center
 
+	^center! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:22'!
+center: aPoint
+
+	center := aPoint! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:51'!
+fillColor
+
+	^ fillColor! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:57'!
+fillColor: aColor
+
+	fillColor := aColor! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:03'!
+lineColor
+
+	^ lineColor ! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:09'!
+lineColor: aColor
+
+	lineColor := aColor! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:15'!
+lineWidth
+
+	^ lineWidth ! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:22'!
+lineWidth: posiriveNumber
+
+	lineWidth := posiriveNumber! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:42'!
+radius
+
+	^radius ! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:24'!
+radius: aPositiveDistance
+
+	radius := aPositiveDistance! !
+
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:03:05'!
+addOptionalHandlesTo: aHalo box: box
+	"Control point is relative to my center.
+	 Translate relative to aHalo"
+	
+	| haloCtlPt |
+	haloCtlPt := self startPointInWorld 
+				- aHalo morphPositionInWorld.
+	(aHalo addPointHandle: haloCtlPt)
+		mouseDownSelector: #startControlPoint:with: ;
+		mouseMoveSelector: #doStartPoint:with: .
+
+	haloCtlPt := self controlPointOneInWorld 
+				- aHalo morphPositionInWorld.
+	(aHalo addVertLineHandle: haloCtlPt)
+		mouseDownSelector: #startControlPoint:with: ;
+		mouseMoveSelector: #doControlOne:with: .
+		
+
+		
+! !
+
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:50:49'!
+controlPointOneInWorld
+	"Answer radius control point in World coordinates."
+
+	^ self externalizeToWorld: self oneControlPoint ! !
+
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:47:54'!
+oneControlPoint
+	"Answer radius control at 90 drgrees."
+
+	^ (center x + radius) @ (center y) ! !
+
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:47:22'!
+oneControlPoint: aPoint
+	"Set radius from x"
+
+	radius := aPoint x - center x! !
+
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:48:41'!
+startPoint
+
+	^ center! !
+
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:48:57'!
+startPoint: aPoint
+
+	center := aPoint! !
+
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:44:23'!
+startPointInWorld
+	"Answer start point in World coordinates."
+
+	^ self externalizeToWorld: center! !
+
+!CircleShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 13:59:25'!
+drawOn: aCanvas
+ 
 	aCanvas 
-		frameAndFillRectangle:
-			(Rectangle origin: origin corner: corner) 
-		fillColor: color 
-		borderWidth: lineWidth 
-		borderColor: lineColor! !
+		strokeWidth: lineWidth 
+		color: lineColor 
+		fillColor: fillColor do: [
+			aCanvas circleCenter: center radius: radius
+	]! !
+
+!CircleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:10:25'!
+initialize
+
+	super initialize.
+	lineColor := Color red.
+	fillColor := lineColor alpha: 0.4.
+	lineWidth := 6.
+	center := 0@0.
+	radius := 80.! !
+
+!CircleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:34:58'!
+initialize
+	
+	(Smalltalk includesKey: #MetaProperty )
+		ifTrue: [ self initializeMetaProperties ].
+	! !
+
+!CircleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:38:15'!
+initializeMetaProperties
+"
+	CircleShapeMorph initializeMetaProperties.
+"
+	| classDict propsDict |
+	"Ensure named MetaProperties exist"
+	MetaProperty initializeDictionaries.
+
+	"Seed MetaProperties for known Morphs"
+	propsDict := MetaProperty preDefinedPropsDict.
+	
+	classDict := MetaProperty
+		metaPropsDictForClass: CircleShapeMorph.
+		
+	classDict at: #center 
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #radius 
+		put: (propsDict at: #acceptsPositiveNumber ). 
+	classDict at: #lineWidth 
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #lineColor 
+		put: (propsDict at: #acceptsColor). 
+	classDict at: #fillColor 
+		put: (propsDict at: #acceptsColor). 
+
+
+	! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:37:06'!
+bottomCenter
+
+	^(origin x + ((corner x - origin x) // 2) @ corner y)! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
+color
+
+	^ fillColor! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
+color: aColor
+
+	fillColor := aColor! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:04'!
+corner
+
+	^ corner! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:19'!
+corner: aPoint
+
+	corner := aPoint! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:00'!
+endPoint
+
+	^ corner! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:16'!
+endPoint: aPoint
+
+	corner := aPoint! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
+fillColor
+
+	^ fillColor! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
+fillColor: aColor
+
+	fillColor := aColor! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:38:03'!
+lineColor
+
+	^ lineColor ! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:14'!
+lineColor: aColor
+
+	lineColor := aColor! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:37:49'!
+lineWidth
+
+	^ lineWidth ! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:43'!
+lineWidth: posiriveNumber
+
+	lineWidth := posiriveNumber! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:28'!
+origin
+
+	^ origin! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:37'!
+origin: aPoint
+
+	origin := aPoint! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:32:53'!
+rightCenter
+
+	^(corner x @ (corner y - ((corner y - origin y) // 2)))! !
 
 !RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 12:32:55'!
 addOptionalHandlesTo: aHalo box: box
@@ -351,6 +605,16 @@ oneControlPoint: aPoint
 
 	corner := aPoint x @ corner y! !
 
+!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:35:13'!
+startPoint
+
+	^ origin! !
+
+!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:35:05'!
+startPoint: aPoint
+
+	origin := aPoint! !
+
 !RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:53:55'!
 startPointInWorld
 	"Answer start point in World coordinates."
@@ -369,6 +633,16 @@ twoControlPoint: aPoint
 
 	corner := corner x @ aPoint y! !
 
+!RectangleShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 13:29:34'!
+drawOn: aCanvas
+
+	aCanvas 
+		frameAndFillRectangle:
+			(Rectangle origin: origin corner: corner) 
+		fillColor: fillColor 
+		borderWidth: lineWidth 
+		borderColor: lineColor! !
+
 !RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/4/2022 12:19:24'!
 rotationCenter
 	"Smooth rotation around the origin.
@@ -386,105 +660,15 @@ yAxisPointsUp
 
 	^ true! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:37:06'!
-bottomCenter
-
-	^(origin x + ((corner x - origin x) // 2) @ corner y)! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:38:17'!
-color
-
-	^ color! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:39:57'!
-color: aColor
-
-	color := aColor! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:04'!
-corner
-
-	^ corner! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:19'!
-corner: aPoint
-
-	corner := aPoint! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:00'!
-endPoint
-
-	^ corner! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:16'!
-endPoint: aPoint
-
-	corner := aPoint! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:10:40'!
-fillColor
-
-	^ color! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:10:50'!
-fillColor: aColor
-
-	color := aColor! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:38:03'!
-lineColor
-
-	^ lineColor ! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:14'!
-lineColor: aColor
-
-	lineColor := aColor! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:37:49'!
-lineWidth
-
-	^ lineWidth ! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:43'!
-lineWidth: posiriveNumber
-
-	lineWidth := posiriveNumber! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:28'!
-origin
-
-	^ origin! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:37'!
-origin: aPoint
-
-	origin := aPoint! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:32:53'!
-rightCenter
-
-	^(corner x @ (corner y - ((corner y - origin y) // 2)))! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:35:13'!
-startPoint
-
-	^ origin! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:35:05'!
-startPoint: aPoint
-
-	origin := aPoint! !
-
-!RectangleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 13:05:59'!
+!RectangleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 13:34:09'!
 initialize
 
 	super initialize.
 	origin := 0@0. 
 	corner :=  150@90.
 	lineColor := Color blue.
-	lineWidth := 4.
-	color := lineColor alpha: 0.4. ! !
+	lineWidth := 6.
+	fillColor := lineColor alpha: 0.4. ! !
 
 !RectangleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:07:11'!
 initialize
@@ -493,7 +677,7 @@ initialize
 		ifTrue: [ self initializeMetaProperties ].
 	! !
 
-!RectangleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:11:13'!
+!RectangleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:39:12'!
 initializeMetaProperties
 "
 	RectangleShapeMorph initializeMetaProperties.
@@ -505,12 +689,19 @@ initializeMetaProperties
 	"Seed MetaProperties for known Morphs"
 	propsDict := MetaProperty preDefinedPropsDict.
 	
-	classDict := MetaProperty metaPropsDictForClass: RectangleShapeMorph .
-	classDict at: #origin put: (propsDict at: #acceptsPoint). 
-	classDict at: #corner put: (propsDict at: #acceptsPoint). 
-	classDict at: #lineWidth put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #lineColor put: (propsDict at: #acceptsColor). 
-	classDict at: #fillColor put: (propsDict at: #acceptsColor). 
+	classDict := MetaProperty 
+		metaPropsDictForClass: RectangleShapeMorph.
+		
+	classDict at: #origin 
+		put: (propsDict at: #acceptsPoint). 
+	classDict at: #corner
+		put: (propsDict at: #acceptsPoint). 
+	classDict at: #lineWidth 
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #lineColor 
+		put: (propsDict at: #acceptsColor). 
+	classDict at: #fillColor
+		put: (propsDict at: #acceptsColor). 
 
 
 	! !
@@ -732,4 +923,5 @@ haloTargetIcon
 		ifAbsentPut: [ VisualPropertyMenuItem targetIcon ]! !
 BezierQuadraticMorph initialize!
 BezierCubicMorph initialize!
+CircleShapeMorph initialize!
 RectangleShapeMorph initialize!
