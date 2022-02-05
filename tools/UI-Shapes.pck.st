@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 2:36:13 pm'!
+'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 2:48:35 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 19!
+!provides: 'UI-Shapes' 1 20!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -130,26 +130,23 @@ startPoint: aPoint
 
 	startPoint := aPoint! !
 
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:25:51'!
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:44:11'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
 	
 	| haloCtlPt |
-	haloCtlPt := self controlPointOneInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self controlPointOneInWorld.
 	(aHalo addControlHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlOne:with: .
 		
-	haloCtlPt := self startPointInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self startPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doStartPoint:with: .
 		
-	haloCtlPt := self endPointInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self endPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doEndPoint:with: .! !
@@ -244,14 +241,13 @@ twoControlPoint: aPoint
 
 	twoControlPoint := aPoint ! !
 
-!BezierCubicMorph methodsFor: 'control points' stamp: 'KenD 1/30/2022 15:07:09'!
+!BezierCubicMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:44:28'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
 	
 	| haloCtlPt |
-	haloCtlPt := self controlPointTwoInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self controlPointTwoInWorld.
 
 	super addOptionalHandlesTo:  aHalo box: box.
 	
@@ -363,20 +359,18 @@ radius: aPositiveDistance
 
 	radius := aPositiveDistance! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:03:05'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:45:02'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
 	
 	| haloCtlPt |
-	haloCtlPt := self startPointInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self startPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doStartPoint:with: .
 
-	haloCtlPt := self controlPointOneInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self controlPointOneInWorld.
 	(aHalo addVertLineHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlOne:with: .
@@ -528,21 +522,19 @@ startPoint: aPoint
 
 	startPoint := aPoint! !
 
-!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:25:28'!
+!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:43:21'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
 	
 	| haloCtlPt |
 	
-	haloCtlPt := self startPointInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self startPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doStartPoint:with: .
 		
-	haloCtlPt := self endPointInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self endPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doEndPoint:with: .! !
@@ -704,32 +696,28 @@ rightCenter
 
 	^(corner x @ (corner y - ((corner y - origin y) // 2)))! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 12:32:55'!
+!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/5/2022 14:46:10'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
 	
 	| haloCtlPt |
-	haloCtlPt := self startPointInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self startPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doStartPoint:with: .
 		
-	haloCtlPt := self endPointInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self endPointInWorld.
 	(aHalo addPointHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doEndPoint:with: .
 
-	haloCtlPt := self controlPointOneInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self controlPointOneInWorld.
 	(aHalo addVertLineHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlOne:with: .
 		
-	haloCtlPt := self controlPointTwoInWorld 
-				- aHalo morphPositionInWorld.
+	haloCtlPt := aHalo internalizeFromWorld: self controlPointTwoInWorld.
 	(aHalo addHorizLineHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlTwo:with: .
