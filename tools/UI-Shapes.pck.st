@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 2:48:35 pm'!
+'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 3:20:44 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 20!
+!provides: 'UI-Shapes' 1 21!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -453,7 +453,7 @@ initialize
 		ifTrue: [ self initializeMetaProperties ].
 	! !
 
-!CircleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:38:15'!
+!CircleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 15:19:02'!
 initializeMetaProperties
 "
 	CircleShapeMorph initializeMetaProperties.
@@ -469,7 +469,7 @@ initializeMetaProperties
 		metaPropsDictForClass: CircleShapeMorph.
 		
 	classDict at: #center 
-		put: (propsDict at: #acceptsPositiveNumber). 
+		put: (propsDict at: #acceptsPoint). 
 	classDict at: #radius 
 		put: (propsDict at: #acceptsPositiveNumber ). 
 	classDict at: #lineWidth 
