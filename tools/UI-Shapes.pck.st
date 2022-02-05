@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 3:20:44 pm'!
+'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 3:37:11 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 21!
+!provides: 'UI-Shapes' 1 22!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -809,13 +809,13 @@ yAxisPointsUp
 
 	^ true! !
 
-!RectangleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 13:34:09'!
+!RectangleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 15:35:49'!
 initialize
 
 	super initialize.
 	origin := 0@0. 
 	corner :=  150@90.
-	lineColor := Color blue.
+	lineColor := Color cyan.
 	lineWidth := 6.
 	fillColor := lineColor alpha: 0.4. ! !
 
