@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 4:00:57 pm'!
+'From Cuis 6.0 [latest update: #5050] on 6 February 2022 at 3:52:22 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 23!
+!provides: 'UI-Shapes' 1 24!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -231,6 +231,25 @@ initializeMetaProperties
 
 	! !
 
+!BezierQuadraticMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:30:56'!
+example1
+"
+	self example1 openInWorld
+"
+	^ self new! !
+
+!BezierQuadraticMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:36:54'!
+example2
+"
+	self example2 openInWorld
+"
+	^ self new ::
+		lineWidth: 6;
+		lineColor: Color orange;
+		startPoint: 0 @ 0;
+		endPoint:     100 @ 100;
+		oneControlPoint: 100 @ 0! !
+
 !BezierCubicMorph methodsFor: 'accessing' stamp: 'KenD 1/30/2022 14:41:44'!
 twoControlPoint
 
@@ -280,6 +299,39 @@ initialize
 		lineColor: Color yellow ;
 		oneControlPoint: 228@75 ;
 		twoControlPoint: 25 @ 160.! !
+
+!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:35:51'!
+example1
+"
+	self example1 openInWorld
+"
+	^ self new! !
+
+!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:37:48'!
+example2
+"
+	self example2 openInWorld
+"
+	^ self new ::
+		lineWidth: 6;
+		lineColor: Color orange;
+		startPoint: 0 @ 0;
+		endPoint:     100 @ 100;
+		oneControlPoint: 50 @ 0;
+		twoControlPoint: 100 @ 50! !
+
+!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:38:34'!
+example3
+"
+	self example3 openInWorld
+"
+	^ self new ::
+		lineWidth: 6;
+		lineColor: Color orange;
+		startPoint: 0 @ 0;
+		endPoint:     100 @ 100;
+		oneControlPoint: 100 @ 0;
+		twoControlPoint: 100 @ 0! !
 
 !BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 1/30/2022 14:55:53'!
 initialize
@@ -482,6 +534,19 @@ initializeMetaProperties
 
 	! !
 
+!CircleShapeMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:45:16'!
+example1
+"
+	self example1 openInWorld
+"
+	^ self new ::
+		center: 0 @0;
+		radius: 100;
+		lineWidth: 5;
+		lineColor: Color black;
+		fillColor: (Color black muchLighter alpha: 0.6)
+		! !
+
 !LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:17'!
 endPoint
 
@@ -615,6 +680,17 @@ initializeMetaProperties
 
 
 	! !
+
+!LineShapeMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:47:45'!
+example1
+"
+	self example1 openInWorld
+"
+	^ self new ::
+		startPoint: 0@0;
+		endPoint: 100@100;
+		lineWidth: 10;
+		lineColor: Color black! !
 
 !RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:37:06'!
 bottomCenter
@@ -844,6 +920,18 @@ initializeMetaProperties
 
 
 	! !
+
+!RectangleShapeMorph class methodsFor: 'as yet unclassified' stamp: 'hlsf 2/6/2022 15:51:32'!
+example1
+"
+	self example1 openInWorld
+"
+	^ self new ::
+		origin: 0@0;
+		corner: 100@100;
+		lineWidth: 6;
+		lineColor: Color orange;
+		fillColor: (Color orange muchLighter alpha: 0.6)! !
 
 !HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 1/29/2022 16:40:25'!
 addControlHandle: aPoint
