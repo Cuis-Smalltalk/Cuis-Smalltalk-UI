@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 3:37:11 pm'!
+'From Cuis 6.0 [latest update: #5062] on 5 February 2022 at 4:00:57 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 22!
+!provides: 'UI-Shapes' 1 23!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -621,16 +621,6 @@ bottomCenter
 
 	^(origin x + ((corner x - origin x) // 2) @ corner y)! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
-color
-
-	^ fillColor! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
-color: aColor
-
-	fillColor := aColor! !
-
 !RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:04'!
 corner
 
@@ -696,7 +686,7 @@ rightCenter
 
 	^(corner x @ (corner y - ((corner y - origin y) // 2)))! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/5/2022 14:46:10'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:46:10'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -724,59 +714,59 @@ addOptionalHandlesTo: aHalo box: box
 		
 ! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:46:12'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:46:12'!
 controlPointOneInWorld
 	"Answer control point one in World coordinates."
 
 	^ self externalizeToWorld: self rightCenter ! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:51:08'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:51:08'!
 controlPointTwoInWorld
 	"Answer control point one in World coordinates"
 
 	^self externalizeToWorld: self bottomCenter ! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:53:43'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:53:43'!
 endPointInWorld
 	"Answer end point in World coordinates."
 
 	^ self externalizeToWorld: corner! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 13:42:20'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 13:42:20'!
 oneControlPoint
 	"Answer control point one line grab right."
 
 	^ self rightCenter ! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 13:45:12'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 13:45:12'!
 oneControlPoint: aPoint
 	"Reset my right line"
 
 	corner := aPoint x @ corner y! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:35:13'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:35:13'!
 startPoint
 
 	^ origin! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:35:05'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:35:05'!
 startPoint: aPoint
 
 	origin := aPoint! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 11:53:55'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:53:55'!
 startPointInWorld
 	"Answer start point in World coordinates."
 
 	^ self externalizeToWorld: origin! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 13:42:58'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 13:42:58'!
 twoControlPoint
 	"Answer control point one line grab botton."
 
 	^ self bottomCenter ! !
 
-!RectangleShapeMorph methodsFor: 'comtrol points' stamp: 'KenD 2/4/2022 13:44:21'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 13:44:21'!
 twoControlPoint: aPoint
 	"Reset my bottom line"
 
