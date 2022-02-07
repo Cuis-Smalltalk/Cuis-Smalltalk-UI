@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5064] on 7 February 2022 at 11:31:28 am'!
+'From Cuis 6.0 [latest update: #5064] on 7 February 2022 at 12:26:48 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 7!
+!provides: 'Color-Edit-Panel' 1 8!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -1293,10 +1293,10 @@ open
 "	
 	^ self open: self defaultColor! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/29/2021 11:09:29'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 2/7/2022 12:25:02'!
 open: model
 
-	^ self open: self defaultColor label: 'Color Editor'! !
+	^ self open: model label: 'Color Editor'! !
 
 !ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 1/10/2022 13:22:18'!
 openWithColor: aColor
