@@ -1,98 +1,98 @@
-'From Cuis 6.0 [latest update: #5050] on 27 January 2022 at 9:01:29 pm'!
+'From Cuis 6.0 [latest update: #5062] on 6 February 2022 at 4:39:55 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 16!
+!provides: 'UI-Click-Select' 1 17!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
-SystemOrganization addCategory: #'UI-Click-Select'!
+SystemOrganization addCategory: 'UI-Click-Select'!
 
 
-!classDefinition: #CheckGroup category: #'UI-Click-Select'!
+!classDefinition: #CheckGroup category: 'UI-Click-Select'!
 LayoutMorph subclass: #CheckGroup
 	instanceVariableNames: 'list font buttonOnLeft buttons'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'CheckGroup class' category: #'UI-Click-Select'!
+!classDefinition: 'CheckGroup class' category: 'UI-Click-Select'!
 CheckGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #RadioGroup category: #'UI-Click-Select'!
+!classDefinition: #RadioGroup category: 'UI-Click-Select'!
 CheckGroup subclass: #RadioGroup
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'RadioGroup class' category: #'UI-Click-Select'!
+!classDefinition: 'RadioGroup class' category: 'UI-Click-Select'!
 RadioGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #DropDownButtonMorph category: #'UI-Click-Select'!
+!classDefinition: #DropDownButtonMorph category: 'UI-Click-Select'!
 LayoutMorph subclass: #DropDownButtonMorph
 	instanceVariableNames: 'model dropDownList setMorphIndex button'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'DropDownButtonMorph class' category: #'UI-Click-Select'!
+!classDefinition: 'DropDownButtonMorph class' category: 'UI-Click-Select'!
 DropDownButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #InnerListOfMorph category: #'UI-Click-Select'!
+!classDefinition: #InnerListOfMorph category: 'UI-Click-Select'!
 LayoutMorph subclass: #InnerListOfMorph
 	instanceVariableNames: 'highlightedRow selectedRow'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'InnerListOfMorph class' category: #'UI-Click-Select'!
+!classDefinition: 'InnerListOfMorph class' category: 'UI-Click-Select'!
 InnerListOfMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #MultiSelectMenu category: #'UI-Click-Select'!
-MenuMorph subclass: #MultiSelectMenu
-	instanceVariableNames: 'choices seed result'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Click-Select'!
-!classDefinition: 'MultiSelectMenu class' category: #'UI-Click-Select'!
-MultiSelectMenu class
-	instanceVariableNames: ''!
-
-!classDefinition: #PluggableListOfMorph category: #'UI-Click-Select'!
+!classDefinition: #PluggableListOfMorph category: 'UI-Click-Select'!
 PluggableListMorph subclass: #PluggableListOfMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'PluggableListOfMorph class' category: #'UI-Click-Select'!
+!classDefinition: 'PluggableListOfMorph class' category: 'UI-Click-Select'!
 PluggableListOfMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CheckButtonMorph category: #'UI-Click-Select'!
+!classDefinition: #MultiSelectMenu category: 'UI-Click-Select'!
+MenuMorph subclass: #MultiSelectMenu
+	instanceVariableNames: 'choices seed result'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'MultiSelectMenu class' category: 'UI-Click-Select'!
+MultiSelectMenu class
+	instanceVariableNames: ''!
+
+!classDefinition: #CheckButtonMorph category: 'UI-Click-Select'!
 BoxedMorph subclass: #CheckButtonMorph
 	instanceVariableNames: 'isSelected'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'CheckButtonMorph class' category: #'UI-Click-Select'!
+!classDefinition: 'CheckButtonMorph class' category: 'UI-Click-Select'!
 CheckButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #RadioButtonMorph category: #'UI-Click-Select'!
+!classDefinition: #RadioButtonMorph category: 'UI-Click-Select'!
 CheckButtonMorph subclass: #RadioButtonMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'RadioButtonMorph class' category: #'UI-Click-Select'!
+!classDefinition: 'RadioButtonMorph class' category: 'UI-Click-Select'!
 RadioButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PaletteModel category: #'UI-Click-Select'!
+!classDefinition: #PaletteModel category: 'UI-Click-Select'!
 Object subclass: #PaletteModel
 	instanceVariableNames: 'palette selectedColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'PaletteModel class' category: #'UI-Click-Select'!
+!classDefinition: 'PaletteModel class' category: 'UI-Click-Select'!
 PaletteModel class
 	instanceVariableNames: ''!
 
@@ -117,6 +117,10 @@ I manage a RadioGroup -- a Group of RadioButtons, each with a label.!
 !InnerListOfMorph commentStamp: '<historical>' prior: 0!
 The morph that displays the list of Morph in a PluggableListOfMorph.!
 
+!PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
+I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
+My width is adjusted to the larger morph of my list.!
+
 !MultiSelectMenu commentStamp: '<historical>' prior: 0!
 I am used to relate a set of names to an integer incoding, where each  symbolic name is realated to a bit.
 
@@ -136,10 +140,6 @@ For example, TextEmphasis codes are a bit ORing of values:
  2r00100000	32 Subscript      
  2r01000000	64 	with ST-80 Glyphs
  !
-
-!PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
-I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
-My width is adjusted to the larger morph of my list.!
 
 !CheckButtonMorph commentStamp: '<historical>' prior: 0!
 I am simple check button!
@@ -766,6 +766,54 @@ includeInNewMorphMenu
 new
 	^ self newColumn! !
 
+!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
+getList
+	getListSelector 		ifNil: [^ #()].
+	list _ model perform: getListSelector.
+	list ifNil: [^ #()].	
+	scroller removeAllMorphs.
+	list do: [:aMorph | 	self addToScroller: aMorph].
+	self suitedExtent.
+	^ list! !
+
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:39:41'!
+initialize
+	super initialize.
+	self hHideScrollBar.! !
+
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
+innerMorphClass
+	^ InnerListOfMorph ! !
+
+!PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
+is: aSymbol
+	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:30'!
+minimumItemExtent
+"the minimum list item extent to consider to fit in the UI"
+	^ scroller minimumWidth @ scroller maximumItemHeight ! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
+scrollDeltaHeight
+	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/22/2022 10:47:06'!
+suitedExtent
+	self morphHeight: (extent y min: scroller totalHeight max: 100).
+	self morphWidth: self minimumExtent x + scroller minimumWidth! !
+
+!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 1/20/2022 11:09:13'!
+example1
+"
+	self example1 openInWorld
+"
+	^ PluggableListOfMorph 
+		model: PaletteModel new
+		listGetter: #palette
+		indexGetter: #colorIndex
+		indexSetter: #colorIndex:! !
+
 !MultiSelectMenu methodsFor: 'events-processing' stamp: 'KenD 12/17/2016 14:36:43'!
 accept
 
@@ -940,54 +988,6 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
-getList
-	getListSelector 		ifNil: [^ #()].
-	list _ model perform: getListSelector.
-	list ifNil: [^ #()].	
-	scroller removeAllMorphs.
-	list do: [:aMorph | 	self addToScroller: aMorph].
-	self suitedExtent.
-	^ list! !
-
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:39:41'!
-initialize
-	super initialize.
-	self hHideScrollBar.! !
-
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
-innerMorphClass
-	^ InnerListOfMorph ! !
-
-!PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
-is: aSymbol
-	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:30'!
-minimumItemExtent
-"the minimum list item extent to consider to fit in the UI"
-	^ scroller minimumWidth @ scroller maximumItemHeight ! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
-scrollDeltaHeight
-	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/22/2022 10:47:06'!
-suitedExtent
-	self morphHeight: (extent y min: scroller totalHeight max: 100).
-	self morphWidth: self minimumExtent x + scroller minimumWidth! !
-
-!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 1/20/2022 11:09:13'!
-example1
-"
-	self example1 openInWorld
-"
-	^ PluggableListOfMorph 
-		model: PaletteModel new
-		listGetter: #palette
-		indexGetter: #colorIndex
-		indexSetter: #colorIndex:! !
-
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:31:34'!
 defaultBorderWidth
 
@@ -1160,3 +1160,14 @@ initialize
 			borderWidth: 1;
 			borderColor: Color black;
 			yourself]! !
+
+!ScrollBar methodsFor: '*ui-click-select' stamp: 'KenD 2/6/2022 16:10:17'!
+value
+	
+	^value! !
+
+!ScrollBar methodsFor: '*ui-click-select' stamp: 'KenD 2/6/2022 15:12:26'!
+value: zeroToOne
+
+	self flag: #addToBase.
+	value := zeroToOne min: 1.0 max: 0.0! !
