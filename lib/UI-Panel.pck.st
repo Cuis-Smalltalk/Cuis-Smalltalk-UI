@@ -1,130 +1,130 @@
-'From Cuis 6.0 [latest update: #5041] on 11 January 2022 at 3:29:12 pm'!
+'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 1:20:38 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 19!
+!provides: 'UI-Panel' 1 20!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
-SystemOrganization addCategory: #'UI-Panel'!
+SystemOrganization addCategory: 'UI-Panel'!
 
 
-!classDefinition: #PluggableScrollBar category: #'UI-Panel'!
+!classDefinition: #PluggableScrollBar category: 'UI-Panel'!
 ScrollBar subclass: #PluggableScrollBar
 	instanceVariableNames: 'refreshValueSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableScrollBar class' category: #'UI-Panel'!
+!classDefinition: 'PluggableScrollBar class' category: 'UI-Panel'!
 PluggableScrollBar class
 	instanceVariableNames: ''!
 
-!classDefinition: #Panel category: #'UI-Panel'!
+!classDefinition: #Panel category: 'UI-Panel'!
 PluggableMorph subclass: #Panel
 	instanceVariableNames: 'widgetsColor titleMorph layoutMorph stayUp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'Panel class' category: #'UI-Panel'!
+!classDefinition: 'Panel class' category: 'UI-Panel'!
 Panel class
 	instanceVariableNames: ''!
 
-!classDefinition: #DialogPanel category: #'UI-Panel'!
+!classDefinition: #DialogPanel category: 'UI-Panel'!
 Panel subclass: #DialogPanel
 	instanceVariableNames: 'buttonArea'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'DialogPanel class' category: #'UI-Panel'!
+!classDefinition: 'DialogPanel class' category: 'UI-Panel'!
 DialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #EditPanel category: #'UI-Panel'!
+!classDefinition: #EditPanel category: 'UI-Panel'!
 DialogPanel subclass: #EditPanel
 	instanceVariableNames: 'editModel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'EditPanel class' category: #'UI-Panel'!
+!classDefinition: 'EditPanel class' category: 'UI-Panel'!
 EditPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueEntryPanel category: #'UI-Panel'!
+!classDefinition: #ValueEntryPanel category: 'UI-Panel'!
 DialogPanel subclass: #ValueEntryPanel
 	instanceVariableNames: 'kind'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'ValueEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'ValueEntryPanel class' category: 'UI-Panel'!
 ValueEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #CharacterEntryPanel category: #'UI-Panel'!
+!classDefinition: #CharacterEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #CharacterEntryPanel
 	instanceVariableNames: 'characterEditMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'CharacterEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'CharacterEntryPanel class' category: 'UI-Panel'!
 CharacterEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PointEntryPanel category: #'UI-Panel'!
+!classDefinition: #PointEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PointEntryPanel
 	instanceVariableNames: 'xEntryMorph yEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PointEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PointEntryPanel class' category: 'UI-Panel'!
 PointEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveFloatEntryPanel category: #'UI-Panel'!
+!classDefinition: #PositiveFloatEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PositiveFloatEntryPanel
 	instanceVariableNames: 'numberEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveFloatEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PositiveFloatEntryPanel class' category: 'UI-Panel'!
 PositiveFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveIntegerEntryPanel category: #'UI-Panel'!
+!classDefinition: #PositiveIntegerEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PositiveIntegerEntryPanel
 	instanceVariableNames: 'numberEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveIntegerEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PositiveIntegerEntryPanel class' category: 'UI-Panel'!
 PositiveIntegerEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringEntryPanel category: #'UI-Panel'!
+!classDefinition: #StringEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #StringEntryPanel
 	instanceVariableNames: 'stringEditMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'StringEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'StringEntryPanel class' category: 'UI-Panel'!
 StringEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPanel category: #'UI-Panel'!
+!classDefinition: #WizardPanel category: 'UI-Panel'!
 DialogPanel subclass: #WizardPanel
 	instanceVariableNames: 'pages currentPageIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPanel class' category: #'UI-Panel'!
+!classDefinition: 'WizardPanel class' category: 'UI-Panel'!
 WizardPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPage category: #'UI-Panel'!
+!classDefinition: #WizardPage category: 'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPage class' category: #'UI-Panel'!
+!classDefinition: 'WizardPage class' category: 'UI-Panel'!
 WizardPage class
 	instanceVariableNames: ''!
 
@@ -208,12 +208,15 @@ model: thang setValueSelector: setValueSym refreshValueSelector: getValueSym
 	setValueSelector := setValueSym.
 	refreshValueSelector := getValueSym ! !
 
-!PluggableScrollBar methodsFor: 'model access' stamp: 'KenD 11/25/2013 18:42'!
+!PluggableScrollBar methodsFor: 'model access' stamp: 'KenD 2/8/2022 07:47:53'!
 refreshValueFromModel
 	"Called externally to reset value from model"
 
 	refreshValueSelector ifNotNil: [
-		self value:  (model perform: refreshValueSelector) ]! !
+		self 
+			value:  (model perform: refreshValueSelector) ;
+			computeSlider.
+	]! !
 
 !PluggableScrollBar class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:06'!
 includeInNewMorphMenu

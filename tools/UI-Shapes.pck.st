@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5050] on 6 February 2022 at 3:52:22 pm'!
+'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 1:20:41 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 24!
+!provides: 'UI-Shapes' 1 25!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -475,12 +475,11 @@ drawOn: aCanvas
 			aCanvas circleCenter: center radius: radius
 	]! !
 
-!CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:31:49'!
+!CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 13:12:13'!
 rotationCenter
-	"Smooth rotation around the origin.
-	(Optional. See what happens if you delete this method)"
+	"Smooth rotation around the origin."
 
-	^ center! !
+	^ 0@0! !
 
 !CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:31:30'!
 yAxisPointsUp

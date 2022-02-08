@@ -1,4 +1,4 @@
-'From Cuis 6.0 [latest update: #5066] on 8 February 2022 at 11:17:26 am'!
+'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 11:32:06 am'!
 'Description I supply simple click-select elements.'!
 !provides: 'UI-Click-Select' 1 18!
 !requires: 'Cuis-Base' 60 5031 nil!

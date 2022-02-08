@@ -1,4 +1,4 @@
-'From Cuis 6.0 [latest update: #5066] on 8 February 2022 at 11:17:20 am'!
+'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 11:32:01 am'!
 'Description I supply the ColorEditor Panel'!
 !provides: 'Color-Edit-Panel' 1 9!
 !requires: 'UI-DragAndDrop' 1 3 nil!
