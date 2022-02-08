@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5064] on 7 February 2022 at 12:26:48 pm'!
+'From Cuis 6.0 [latest update: #5066] on 8 February 2022 at 11:17:20 am'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 8!
+!provides: 'Color-Edit-Panel' 1 9!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -901,7 +901,7 @@ buildAlphaSwatch
 	^alphaFrame
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/7/2022 11:11:42'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/8/2022 07:47:20'!
 buildColorPaneColumn
 
 	| selector column hexDisplayLayout  |
@@ -930,8 +930,7 @@ buildColorPaneColumn
 		morphExtent: (256 @ ScrollBar scrollbarThickness) ;   "Horizontal"
 		setProperty: #balloonText toValue: 'set alpha transparency' ;
 		adoptWidgetsColor: Color orange darker darker ;
-		refreshValueFromModel ;
-		computeSlider . 
+		refreshValueFromModel . 
 	
 	column := LayoutMorph newColumn.
 	column

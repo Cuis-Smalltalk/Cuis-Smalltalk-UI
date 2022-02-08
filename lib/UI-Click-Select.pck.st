@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 6 February 2022 at 4:39:55 pm'!
+'From Cuis 6.0 [latest update: #5066] on 8 February 2022 at 11:17:26 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 17!
+!provides: 'UI-Click-Select' 1 18!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -1161,13 +1161,14 @@ initialize
 			borderColor: Color black;
 			yourself]! !
 
-!ScrollBar methodsFor: '*ui-click-select' stamp: 'KenD 2/6/2022 16:10:17'!
+!ScrollBar methodsFor: '*ui-click-select' stamp: 'KenD 2/8/2022 07:52:42'!
 value
 	
+	self flag: #moveToBase.
 	^value! !
 
-!ScrollBar methodsFor: '*ui-click-select' stamp: 'KenD 2/6/2022 15:12:26'!
+!ScrollBar methodsFor: '*ui-click-select' stamp: 'KenD 2/8/2022 07:52:32'!
 value: zeroToOne
 
-	self flag: #addToBase.
+	self flag: #moveToBase.
 	value := zeroToOne min: 1.0 max: 0.0! !
