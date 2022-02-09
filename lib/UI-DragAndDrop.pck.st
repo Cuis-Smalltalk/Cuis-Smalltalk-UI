@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5065] on 9 February 2022 at 6:51:32 am'!
+'From Cuis 6.0 [latest update: #5062] on 9 February 2022 at 3:52:25 pm'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 10!
+!provides: 'UI-DragAndDrop' 1 11!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-DragAndDrop'!
 
@@ -308,7 +308,7 @@ forObject: anObject withName: aString
 	object := anObject.
 	self contents: aString asString! !
 
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:50:12'!
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 14:50:43'!
 dropAction: aDropTargetMorph
 	"Find accepting MetaProperties of target morph
 	 and allow user to choose action."
@@ -329,9 +329,12 @@ dropAction: aDropTargetMorph
 	self delete.
 	selection := PopUpMenu withCaption: 'Choose setter' 
 						chooseFrom: choices.
-	(selection = 1) ifFalse: [ "1 -> Cancel" | propName setterSym |
+	(selection = 1) ifFalse: [ "1 -> Cancel" | propName setterSym metaProp |
 		propName := choices at: selection.
 		setterSym := (propName , ':') asSymbol.
+		metaProp := metaPropsForMyValue at: propName.
+		(metaProp isKindOf: MetaPropertyMultiSelect)
+			ifTrue: [myValue := metaProp encodeProc value: myValue].
 		aDropTargetMorph targetMorph 
 			perform: setterSym
 			with: myValue ;
