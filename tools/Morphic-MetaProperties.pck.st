@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5057] on 4 February 2022 at 12:25:37 pm'!
+'From Cuis 6.0 [latest update: #5062] on 9 February 2022 at 2:52:26 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 108!
+!provides: 'Morphic-MetaProperties' 1 110!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -342,7 +342,7 @@ undo
 
 	self targetMorph setProperty: self name  toValue: self prevValue! !
 
-!VisualPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 4/14/2019 16:09:36'!
+!VisualPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 2/9/2022 13:51:19'!
 propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor accessProc: getterClosure updateProc: setterClosure
 
 	super initialize.
@@ -357,7 +357,9 @@ propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor accessProc: getter
 							ifNil: [60] 
 							ifNotNil: [(self owner morphWidth) - 30]) );
 		setIcon: prevValue icon;
-		target: self selector: #edit arguments: nil.
+		target: self selector: #edit arguments: nil;
+		"Show menuItems are special by text color"
+		color: ((Color r: 0.6 g: 0.07 b: 0.6) adjustBrightness:  -0.2)
 ! !
 
 !VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 4/14/2019 16:19:18'!
@@ -1735,11 +1737,13 @@ kind: aClass choices: aCollection
 
 	^ self new kind: aClass choices: aCollection! !
 
-!MetaPropertyMultiSelect methodsFor: 'testing' stamp: 'KenD 12/18/2016 15:19:50'!
+!MetaPropertyMultiSelect methodsFor: 'testing' stamp: 'KenD 2/9/2022 07:14:04'!
 accepts: newValue
 
 	| encoding  |
-	(self encodingInRange: newValue) ifTrue: [ ^ true ]. "already encoded"
+	((super accepts: newValue)
+		or: [self encodingInRange: newValue])
+		ifTrue: [ ^ true ]. "single choice or already encoded"
 	
 	"test via decodeProc"
 	[ 
@@ -1770,14 +1774,14 @@ encodeProc
 
 	^ encodeProc ! !
 
-!MetaPropertyMultiSelect methodsFor: 'editing' stamp: 'KenD 12/18/2016 14:44:23'!
+!MetaPropertyMultiSelect methodsFor: 'editing' stamp: 'KenD 2/9/2022 14:36:05'!
 edit: myMorph menuItem: item
 
 	| menu encodedResult |
 	menu := (MultiSelectMenu 
-							choices: choiceCollection
-							seed: (self encodeProc value: item propertyValue)
-							title: item name asString).
+					choices: choiceCollection
+					seed: (self encodeProc value: item propertyValue)
+					title: item name asString).
 	encodedResult := menu invokeModal.
 	item propertyValue: encodedResult. 
 	myMorph redrawNeeded.! !
@@ -1797,7 +1801,22 @@ multiChoiceFrom: aCollection encodeProc: encoder decodeProc: decoder
 
 ! !
 
-!MetaPropertyMultiSelect class methodsFor: 'class initialization' stamp: 'KenD 4/14/2019 14:18:34'!
+!MetaPropertyMultiSelect methodsFor: 'initialization' stamp: 'KenD 2/9/2022 07:25:21'!
+multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decoder
+
+	super kind: aClass choices: aCollection.
+	encodeProc := encoder.
+	decodeProc := decoder.
+	maxValue := (1 bitShift: (aCollection size)) - 1. "bitMask"
+	
+	((encoder isKindOf: BlockClosure) and: [ encoder numArgs = 1 ])
+		ifFalse: [ self error: 'Encoder should be a closure of 1 argument: ', encoder printString ].
+	((decoder isKindOf: BlockClosure) and: [ decoder numArgs = 1 ])
+		ifFalse: [ self error: 'Decoder should be a closure of 1 argument: ', decoder printString ].
+
+! !
+
+!MetaPropertyMultiSelect class methodsFor: 'class initialization' stamp: 'KenD 2/9/2022 07:30:47'!
 addToInitialDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1809,13 +1828,14 @@ addToInitialDictionaries
 	props  at: #acceptsEmphasis 
 			put: (MetaPropertyMultiSelect 
 				multiChoiceFrom: TextEmphasis choices 
+				kind: Symbol
 				encodeProc:
 				 [ :intOrString |
 					(intOrString isKindOf: Integer) 
 						ifTrue: [ intOrString ]
 						ifFalse: [ (intOrString isKindOf: String) 
 									ifTrue:  [ TextEmphasis codeForChoice: intOrString ]
-									ifFalse: [ 0 ]
+									ifFalse: [ -1 ]
 								]
 				]
 				decodeProc: [ :encoded | 
@@ -1828,6 +1848,11 @@ addToInitialDictionaries
 multiChoiceFrom: aCollection encodeProc: encoder decodeProc: decoder
 
 	^ self new multiChoiceFrom: aCollection encodeProc: encoder decodeProc: decoder! !
+
+!MetaPropertyMultiSelect class methodsFor: 'instance creation' stamp: 'KenD 2/9/2022 07:24:48'!
+multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decoder
+
+	^ self new multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decoder! !
 
 !MetaPropertyRange methodsFor: 'testing' stamp: 'KenD 12/4/2016 14:43:49'!
 accepts: newValue

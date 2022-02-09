@@ -1,50 +1,64 @@
-'From Cuis 6.0 [latest update: #5031] on 1 January 2022 at 8:11:45 am'!
+'From Cuis 6.0 [latest update: #5065] on 9 February 2022 at 6:51:32 am'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 8!
+!provides: 'UI-DragAndDrop' 1 10!
 !requires: 'Cuis-Base' 60 5031 nil!
-SystemOrganization addCategory: #'UI-DragAndDrop'!
+SystemOrganization addCategory: 'UI-DragAndDrop'!
 
 
-!classDefinition: #SignMorph category: #'UI-DragAndDrop'!
-HoverHelpMorph subclass: #SignMorph
-	instanceVariableNames: 'object'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-DragAndDrop'!
-!classDefinition: 'SignMorph class' category: #'UI-DragAndDrop'!
-SignMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #ClickColorMorph category: #'UI-DragAndDrop'!
+!classDefinition: #ClickColorMorph category: 'UI-DragAndDrop'!
 ImageMorph subclass: #ClickColorMorph
 	instanceVariableNames: 'colorTargetMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-DragAndDrop'!
-!classDefinition: 'ClickColorMorph class' category: #'UI-DragAndDrop'!
+!classDefinition: 'ClickColorMorph class' category: 'UI-DragAndDrop'!
 ClickColorMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #DropColorMorph category: #'UI-DragAndDrop'!
+!classDefinition: #DropColorMorph category: 'UI-DragAndDrop'!
 ImageMorph subclass: #DropColorMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-DragAndDrop'!
-!classDefinition: 'DropColorMorph class' category: #'UI-DragAndDrop'!
+!classDefinition: 'DropColorMorph class' category: 'UI-DragAndDrop'!
 DropColorMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #FontMorph category: #'UI-DragAndDrop'!
+!classDefinition: #SignMorph category: 'UI-DragAndDrop'!
+HoverHelpMorph subclass: #SignMorph
+	instanceVariableNames: 'object'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-DragAndDrop'!
+!classDefinition: 'SignMorph class' category: 'UI-DragAndDrop'!
+SignMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #FontMorph category: 'UI-DragAndDrop'!
 BoxedMorph subclass: #FontMorph
 	instanceVariableNames: 'labelMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-DragAndDrop'!
-!classDefinition: 'FontMorph class' category: #'UI-DragAndDrop'!
+!classDefinition: 'FontMorph class' category: 'UI-DragAndDrop'!
 FontMorph class
 	instanceVariableNames: ''!
 
+
+!ClickColorMorph commentStamp: '<historical>' prior: 0!
+I am clicked upon to set my colorTargetMorph to my color.
+
+I am used to select/set a color, not to be dragged.  Note DropColorMorph.!
+
+!DropColorMorph commentStamp: '<historical>' prior: 0!
+I am picked up to be dropped on another morph.
+
+I change that morph's color to my color.
+
+See method #dropAction:
+
+Note: To click-select a color, see ClickColorMorph!
 
 !SignMorph commentStamp: '<historical>' prior: 0!
 My instances are visual proxy's for objects which do not have a visual representation.
@@ -63,20 +77,6 @@ Examples:
   (SignMorph forObject: 'Ball of string') openInHand.
   (EllipseMorph initializedInstance signMorphForMe) openInHand.
 !
-
-!ClickColorMorph commentStamp: '<historical>' prior: 0!
-I am clicked upon to set my colorTargetMorph to my color.
-
-I am used to select/set a color, not to be dragged.  Note DropColorMorph.!
-
-!DropColorMorph commentStamp: '<historical>' prior: 0!
-I am picked up to be dropped on another morph.
-
-I change that morph's color to my color.
-
-See method #dropAction:
-
-Note: To click-select a color, see ClickColorMorph!
 
 !FontMorph commentStamp: 'jmv 6/11/2020 16:48:37' prior: 0!
 My instances display 'AbBbCc $123' using my specified font an emphysis.
@@ -97,103 +97,6 @@ name
 initializedInstance
 
 	^ self font: FontFamily defaultFamilyAndPointSize! !
-
-!SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 16:58'!
-object
-
-	^ object! !
-
-!SignMorph methodsFor: 'delegation' stamp: 'KenD 10/5/2013 16:58'!
-doesNotUnderstand: aMessage
-	"Delegate operations to the object I represent and Answer the result."
-
-	^ aMessage sendTo: object.! !
-
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 12/20/2021 15:49:48'!
-forObject: anObject
-
-	| nameString |
-	
-	nameString := anObject name ifNotNil: [ :name | name ] ifNil: [ anObject printString ].
-	super initialize.  "Initialize extent as required by #redrawNeeded"
-	object := anObject.
-	self contents: nameString
-! !
-
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 12/20/2021 15:51:46'!
-forObject: anObject withName: aString
-
-	super initialize.  "Initialize extent as required by #redrawNeeded"
-	object := anObject.
-	self contents: aString asString! !
-
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 8/20/2015 08:21'!
-rejectDropMorphEvent: dropEvent
-	"The receiver has been rejected.  Disappear"
-	
-"	Transcript newLine; show: 'SignMorph>>rejectDropMorphEvent'. "
-	self hide; delete.
-	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
-! !
-
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/6/2016 18:53:56'!
-valueWhenDropped
-
-	^ self object ! !
-
-!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
-contents: someString
-
-	Error signal: 'USE: ', self name asString, ' forObject: anObject'
-	! !
-
-!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:52'!
-forObject: anObject
-
-	^ self basicNew forObject: anObject ! !
-
-!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 17:28'!
-forObject: anObject withName: aString
-
-	^ self basicNew forObject: anObject withName: aString! !
-
-!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
-new
-
-	Error signal: 'USE: ', self name asString, ' forObject: anObject'
-	! !
-
-!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:54:53'!
-example1
-" self example1 openInWorld "
-	^ SignMorph forObject: Preferences standardListFont
-! !
-
-!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:54:49'!
-example2
-" self example2 openInWorld "
-	^ SignMorph forObject: #giveMeASign! !
-
-!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:55:49'!
-example3
-" self example3 openInWorld "
-	| rect |
-	rect _ Rectangle origin: 1@2 corner: 2@3.
-	^ SignMorph 
-		forObject: rect 
-		withName: 'aRectangle(' , rect hash asString, ')' ! !
-
-!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:56:22'!
-example4
-" self example4 openInWorld "
-	| rect |
-	rect _ Rectangle origin: 1@2 corner: 2@3.
-	^ SignMorph forObject: rect! !
-
-!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/5/2013 16:55'!
-includeInNewMorphMenu 
-
-	^ false! !
 
 !ClickColorMorph methodsFor: 'event handling testing' stamp: 'KenD 2/29/2020 09:22:26'!
 handlesMouseDown: aMouseButtonEvent
@@ -376,6 +279,149 @@ includeInNewMorphMenu
 	
 	^ false! !
 
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 16:58'!
+object
+
+	^ object! !
+
+!SignMorph methodsFor: 'delegation' stamp: 'KenD 10/5/2013 16:58'!
+doesNotUnderstand: aMessage
+	"Delegate operations to the object I represent and Answer the result."
+
+	^ aMessage sendTo: object.! !
+
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 12/20/2021 15:49:48'!
+forObject: anObject
+
+	| nameString |
+	
+	nameString := anObject name ifNotNil: [ :name | name ] ifNil: [ anObject printString ].
+	super initialize.  "Initialize extent as required by #redrawNeeded"
+	object := anObject.
+	self contents: nameString
+! !
+
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 12/20/2021 15:51:46'!
+forObject: anObject withName: aString
+
+	super initialize.  "Initialize extent as required by #redrawNeeded"
+	object := anObject.
+	self contents: aString asString! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:50:12'!
+dropAction: aDropTargetMorph
+	"Find accepting MetaProperties of target morph
+	 and allow user to choose action."
+	
+	| metaPropsForMyValue myValue choices selection |
+	(Smalltalk includesKey: #MetaProperty) ifFalse: [^nil ].
+	
+	myValue := self valueWhenDropped.
+	metaPropsForMyValue := 
+		(MetaProperty metaPropsForMorph:  aDropTargetMorph targetMorph)
+			select: [ :metaProp | metaProp accepts: myValue ]. 
+	(metaPropsForMyValue size isZero) ifTrue: [^nil ].
+	
+	choices := OrderedCollection with: #Cancel.
+	choices addAll: (metaPropsForMyValue keys).
+	
+	"I am being carried by the hand.  Disappear and let user make a choice."
+	self delete.
+	selection := PopUpMenu withCaption: 'Choose setter' 
+						chooseFrom: choices.
+	(selection = 1) ifFalse: [ "1 -> Cancel" | propName setterSym |
+		propName := choices at: selection.
+		setterSym := (propName , ':') asSymbol.
+		aDropTargetMorph targetMorph 
+			perform: setterSym
+			with: myValue ;
+			triggerEvent: #propertyChanged.
+	].! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 8/20/2015 08:21'!
+rejectDropMorphEvent: dropEvent
+	"The receiver has been rejected.  Disappear"
+	
+"	Transcript newLine; show: 'SignMorph>>rejectDropMorphEvent'. "
+	self hide; delete.
+	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
+! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/6/2016 18:53:56'!
+valueWhenDropped
+
+	^ self object ! !
+
+!SignMorph methodsFor: 'as yet unclassified' stamp: 'KenD 2/9/2022 06:34:16'!
+wantsToBeDroppedInto: aMorph
+	"Who do I wish to be dropped onto?"
+
+	((Smalltalk includesKey: #MorphEditLens) "May not be present"
+		and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
+			ifTrue: [ self dropAction: aMorph ].
+		
+	(aMorph valueOfProperty: #dropAction ifAbsent: [ nil ])
+		ifNotNil: [ :dropAction | 
+					dropAction value: aMorph value: self object.
+					self rejectDropMorphEvent: nil. 
+				 ].
+				
+	^ false  "Default is to be rejected after doing the drop action"! !
+
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
+contents: someString
+
+	Error signal: 'USE: ', self name asString, ' forObject: anObject'
+	! !
+
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:52'!
+forObject: anObject
+
+	^ self basicNew forObject: anObject ! !
+
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 17:28'!
+forObject: anObject withName: aString
+
+	^ self basicNew forObject: anObject withName: aString! !
+
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
+new
+
+	Error signal: 'USE: ', self name asString, ' forObject: anObject'
+	! !
+
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:54:53'!
+example1
+" self example1 openInWorld "
+	^ SignMorph forObject: Preferences standardListFont
+! !
+
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:54:49'!
+example2
+" self example2 openInWorld "
+	^ SignMorph forObject: #giveMeASign! !
+
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:55:49'!
+example3
+" self example3 openInWorld "
+	| rect |
+	rect _ Rectangle origin: 1@2 corner: 2@3.
+	^ SignMorph 
+		forObject: rect 
+		withName: 'aRectangle(' , rect hash asString, ')' ! !
+
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:56:22'!
+example4
+" self example4 openInWorld "
+	| rect |
+	rect _ Rectangle origin: 1@2 corner: 2@3.
+	^ SignMorph forObject: rect! !
+
+!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/5/2013 16:55'!
+includeInNewMorphMenu 
+
+	^ false! !
+
 !FontMorph methodsFor: 'geometry' stamp: 'KenD 11/7/2021 14:16:20'!
 adjustExtent 
 	"Some aspect of my font has changed. Don't shrink beyond minimum"
@@ -467,10 +513,67 @@ string: aString
 	self labelMorph contents: aString.
 	self adjustExtent ! !
 
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:50:39'!
+dropAction: aDropTargetMorph
+	"Find accepting MetaProperties of target morph
+	 and allow user to choose action."
+	
+	| metaPropsForMyValue myValue choices selection |
+	(Smalltalk includesKey: #MetaProperty) ifFalse: [^nil ].
+	
+	myValue := self valueWhenDropped.
+	metaPropsForMyValue := 
+		(MetaProperty metaPropsForMorph:  
+				aDropTargetMorph targetMorph)
+			select: [ :metaProp | metaProp accepts: myValue ]. 
+	(metaPropsForMyValue size isZero) ifTrue: [^nil ].
+	
+	choices := OrderedCollection with: #Cancel.
+	choices addAll: (metaPropsForMyValue keys).
+	
+	"I am being carried by the hand.  Disappear and let user make a choice."
+	self delete.
+	selection := PopUpMenu withCaption: 'Choose setter' 
+						chooseFrom: choices.
+	(selection = 1) ifFalse: [ "1 -> Cancel" | propName setterSym |
+		propName := choices at: selection.
+		setterSym := (propName , ':') asSymbol.
+		aDropTargetMorph targetMorph 
+			perform: setterSym
+			with: myValue ;
+			triggerEvent: #propertyChanged.
+	].! !
+
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:40:11'!
+rejectDropMorphEvent: dropEvent
+	"The receiver has been rejected.  Disappear"
+
+	self hide; delete.
+	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
+! !
+
 !FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/6/2016 18:56:31'!
 valueWhenDropped
 
 	^ self font! !
+
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:41:50'!
+wantsToBeDroppedInto: aMorph
+	"Who do I wish to be dropped onto?"
+
+	((Smalltalk includesKey: #MorphEditLens) "May not be present"
+		and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
+			ifTrue: [ self dropAction: aMorph ].
+		
+	(aMorph valueOfProperty: #dropAction ifAbsent: [ nil ])
+		ifNotNil: [ :dropAction | 
+					dropAction 
+						value: aMorph 
+						value: self valueWhenDropped.
+					self rejectDropMorphEvent: nil. 
+				 ].
+				
+	^ false  "Default is to be rejected after doing the drop action"! !
 
 !FontMorph class methodsFor: 'defaults' stamp: 'KenD 11/29/2016 09:25:45'!
 defaultEmphasis

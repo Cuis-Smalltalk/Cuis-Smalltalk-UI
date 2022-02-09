@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 11:32:01 am'!
+'From Cuis 6.0 [latest update: #5062] on 9 February 2022 at 2:52:20 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 9!
+!provides: 'Color-Edit-Panel' 1 10!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -877,7 +877,13 @@ sliderColumn
 
 	^ sliderColumn! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/7/2022 11:18:07'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 2/9/2022 13:50:51'!
+swatchBorderColor
+
+	"Match with Visual Menu Item text color"
+	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
+
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/9/2022 13:47:01'!
 buildAlphaSwatch
 	"Display swatch of current color including alpha value."
 	
@@ -885,9 +891,9 @@ buildAlphaSwatch
 		DropColorMorph fromColor: model color.
 		
 	alphaFrame := FrameMorph new ::
-		morphExtent: alphaSwatch morphExtent + 4;
-		borderColor: Color black; 
-		borderWidth: 2; 	
+		morphExtent: alphaSwatch morphExtent + 8;
+		borderColor: self swatchBorderColor; 
+		borderWidth: 4; 	
 		"Make color swatch draggable"
 		setProperty: #allowsSubmorphDrag 
 				toValue: true;
@@ -895,7 +901,7 @@ buildAlphaSwatch
 	
 	alphaFrame addMorph: alphaSwatch.
 	alphaSwatch 
-		morphPosition: 2@2 ;
+		morphPosition: 4@4 ;
 		setBalloonText: 'Color plus ˆ' .
 	
 	^alphaFrame
@@ -1036,22 +1042,22 @@ buildSliderColumn
 
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/7/2022 11:31:13'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/9/2022 13:46:10'!
 buildSwatchLayout
 	"Display swatch of current color and closest named color"
 
 	| swatchLayout labelColumn colorFrame closeColorFrame |
 	closeColorSwatch := DropColorMorph fromColor: model color "baseColor".
 	closeColorFrame := FrameMorph new ::
-		morphExtent: closeColorSwatch morphExtent + 4;
-		borderColor: Color black; 
-		borderWidth: 2; 	
+		morphExtent: closeColorSwatch morphExtent + 8;
+		borderColor: self swatchBorderColor; 
+		borderWidth: 4; 	
 		"Make color swatch draggable"
 		setProperty: #allowsSubmorphDrag toValue: true;
 		yourself.
 	closeColorFrame addMorph: closeColorSwatch.
 	closeColorSwatch 
-		morphPosition: 2@2;
+		morphPosition: 4@4;
 		setBalloonText: 'Closest Web Color' .
 	labelColumn        := LayoutMorph newColumn.
 	closeColorLabel   := LabelMorph new contents: ''.
@@ -1063,15 +1069,15 @@ buildSwatchLayout
 		addMorph: closeColorLabel   layoutSpec: (LayoutSpec keepMorphExtent).
 		
 	colorFrame := FrameMorph new ::
-		morphExtent: colorSwatch morphExtent + 4;
-		borderWidth: 2; 	
-		borderColor: Color black;
+		morphExtent: colorSwatch morphExtent + 8;
+		borderWidth: 4; 	
+		borderColor: self swatchBorderColor;
 		"Make color swatch draggable"
 		setProperty: #allowsSubmorphDrag toValue: true;
 		yourself.
 	colorFrame addMorph: colorSwatch.
 	colorSwatch 
-		morphPosition: 2@2 ;
+		morphPosition: 4@4 ;
 		setBalloonText: 'Color without ˆ' .
 
 	swatchLayout := LayoutMorph newRow.

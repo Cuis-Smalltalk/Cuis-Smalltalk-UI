@@ -1,22 +1,22 @@
-'From Cuis 6.0 [latest update: #5031] on 1 January 2022 at 8:11:49 am'!
+'From Cuis 6.0 [latest update: #5065] on 9 February 2022 at 7:01:39 am'!
 'Description I am a translucent editing lens for a morph.
 
 I display SVG control points and allow change, e.g. to bezier curves.
 
 I also allow one to drop morphs which make changes to myMorph.
 Each such morph has property DropActionMorph set to true.'!
-!provides: 'UI-Edit-Lens' 1 4!
+!provides: 'UI-Edit-Lens' 1 6!
 !requires: 'UI-DragAndDrop' 1 7 nil!
-SystemOrganization addCategory: #'UI-Edit-Lens'!
+SystemOrganization addCategory: 'UI-Edit-Lens'!
 
 
-!classDefinition: #MorphEditLens category: #'UI-Edit-Lens'!
+!classDefinition: #MorphEditLens category: 'UI-Edit-Lens'!
 SystemWindow subclass: #MorphEditLens
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Edit-Lens'!
-!classDefinition: 'MorphEditLens class' category: #'UI-Edit-Lens'!
+!classDefinition: 'MorphEditLens class' category: 'UI-Edit-Lens'!
 MorphEditLens class
 	instanceVariableNames: ''!
 
@@ -46,11 +46,21 @@ allowsMorphDrop
 
 	^ true! !
 
-!MorphEditLens methodsFor: 'dropping/grabbing' stamp: 'KenD 12/3/2013 19:32'!
+!MorphEditLens methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:30:20'!
 wantsDroppedMorph: aMorph event: evt
 	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
 
-	^ (aMorph hasProperty: #DropActionMorph)! !
+	^ (aMorph hasProperty: #DropActionMorph)
+	or: [(Smalltalk includesKey: #MetaProperty)
+		and: [((MetaProperty metaPropsForMorph: 
+					self targetMorph)
+				detect: [ :metaProp | 
+						metaProp accepts: 
+						  aMorph valueWhenDropped] 
+				ifNone: [^false]).
+			^true
+		]
+	]! !
 
 !MorphEditLens methodsFor: 'event handling' stamp: 'KenD 7/27/2015 16:25'!
 showHaloButtonClicked
@@ -109,7 +119,7 @@ initialize
 
 ! !
 
-!MorphEditLens methodsFor: 'initialization' stamp: 'KenD 11/7/2021 14:19:28'!
+!MorphEditLens methodsFor: 'initialization' stamp: 'KenD 2/9/2022 06:59:56'!
 openFor: aMorph
 
 	self targetMorph: aMorph.
@@ -122,8 +132,8 @@ openFor: aMorph
 		morphExtent: aMorph morphExtentInOwner + self boxExtent;
 		setLabel: ('Morph Lens: ', (aMorph printStringLimitedTo: 64));
 		openInWorld; "Ignores settings; RESET them!!!!"
-		morphPosition: aMorph morphPositionInWorld - self boxExtent ;
-		morphExtent: aMorph morphExtentInOwner + self boxExtent;
+		morphPosition: aMorph morphPositionInWorld - (2 * self boxExtent) ;
+		morphExtent: aMorph morphExtentInOwner + (3 * self boxExtent);
 		color: (Color teal alpha: 0.3);
 		refreshSubmorphs;
 		yourself
