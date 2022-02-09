@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 1:20:38 pm'!
+'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 5:43:38 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 20!
+!provides: 'UI-Panel' 1 21!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -207,6 +207,16 @@ model: thang setValueSelector: setValueSym refreshValueSelector: getValueSym
 	model := thang.
 	setValueSelector := setValueSym.
 	refreshValueSelector := getValueSym ! !
+
+!PluggableScrollBar methodsFor: 'accessing' stamp: 'KenD 2/8/2022 17:40:04'!
+value
+	
+	^value! !
+
+!PluggableScrollBar methodsFor: 'accessing' stamp: 'KenD 2/8/2022 17:38:53'!
+value: zeroToOne
+
+	value := zeroToOne min: 1.0 max: 0.0! !
 
 !PluggableScrollBar methodsFor: 'model access' stamp: 'KenD 2/8/2022 07:47:53'!
 refreshValueFromModel

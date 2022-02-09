@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5041] on 17 January 2022 at 12:50:49 pm'!
+'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 5:43:14 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 13!
+!provides: 'UI-Base-Morphs' 1 14!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -603,6 +603,11 @@ drawOn: aCanvas
 
 !EllipseMorph methodsFor: 'geometry testing' stamp: 'jmv 10/7/2009 23:21'!
 isOrthoRectangularMorph
+	^false! !
+
+!EllipseMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:32:49'!
+knowsOwnLocalBounds
+
 	^false! !
 
 !EllipseMorph methodsFor: 'geometry testing' stamp: 'pb 3/17/2020 13:36:07'!

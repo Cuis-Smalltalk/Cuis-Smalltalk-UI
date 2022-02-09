@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 1:20:41 pm'!
+'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 5:43:44 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 25!
+!provides: 'UI-Shapes' 1 26!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!
@@ -177,6 +177,11 @@ drawOn: aCanvas
 			moveTo: startPoint;
 			quadraticBezierTo: endPoint control: oneControlPoint 
 	]! !
+
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:33:40'!
+knowsOwnLocalBounds
+
+	^false! !
 
 !BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 1/30/2022 13:01:45'!
 yAxisPointsUp
@@ -487,6 +492,11 @@ yAxisPointsUp
 
 	^ true! !
 
+!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:34:53'!
+knowsOwnLocalBounds
+
+	^false! !
+
 !CircleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:10:25'!
 initialize
 
@@ -623,6 +633,11 @@ drawOn: aCanvas
 				moveTo: startPoint;
 				lineTo: endPoint
 	]! !
+
+!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 17:35:06'!
+knowsOwnLocalBounds
+
+	^false! !
 
 !LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:30:10'!
 rotationCenter
@@ -856,6 +871,11 @@ drawOn: aCanvas
 		fillColor: fillColor 
 		borderWidth: lineWidth 
 		borderColor: lineColor! !
+
+!RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 17:35:18'!
+knowsOwnLocalBounds
+
+	^false! !
 
 !RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/4/2022 12:19:24'!
 rotationCenter
