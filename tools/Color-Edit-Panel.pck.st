@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 9 February 2022 at 2:52:20 pm'!
+'From Cuis 6.0 [latest update: #5062] on 10 February 2022 at 1:29:18 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 10!
+!provides: 'Color-Edit-Panel' 1 11!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -883,7 +883,7 @@ swatchBorderColor
 	"Match with Visual Menu Item text color"
 	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/9/2022 13:47:01'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/10/2022 13:21:04'!
 buildAlphaSwatch
 	"Display swatch of current color including alpha value."
 	
@@ -897,6 +897,11 @@ buildAlphaSwatch
 		"Make color swatch draggable"
 		setProperty: #allowsSubmorphDrag 
 				toValue: true;
+		"Flash when mouseover"
+		setProperty: #handlesMouseOver: 
+				toValue: true;
+		setProperty: #mouseEnter:   
+				toValue: [ :ignoredEvent | alphaFrame flash ];
 		yourself.
 	
 	alphaFrame addMorph: alphaSwatch.
@@ -1042,7 +1047,7 @@ buildSliderColumn
 
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/9/2022 13:46:10'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/10/2022 13:28:18'!
 buildSwatchLayout
 	"Display swatch of current color and closest named color"
 
@@ -1054,8 +1059,14 @@ buildSwatchLayout
 		borderWidth: 4; 	
 		"Make color swatch draggable"
 		setProperty: #allowsSubmorphDrag toValue: true;
+		"Flash when mouseover"
+		setProperty: #handlesMouseOver: 
+				toValue: true;
 		yourself.
-	closeColorFrame addMorph: closeColorSwatch.
+	closeColorFrame 
+		addMorph: closeColorSwatch;
+		setProperty: #mouseEnter:   
+			toValue: [ :ignoredEvent | closeColorFrame flash ].
 	closeColorSwatch 
 		morphPosition: 4@4;
 		setBalloonText: 'Closest Web Color' .
@@ -1074,8 +1085,14 @@ buildSwatchLayout
 		borderColor: self swatchBorderColor;
 		"Make color swatch draggable"
 		setProperty: #allowsSubmorphDrag toValue: true;
+		"Flash when mouseover"
+		setProperty: #handlesMouseOver: 
+				toValue: true;
 		yourself.
-	colorFrame addMorph: colorSwatch.
+	colorFrame 
+		addMorph: colorSwatch;
+		setProperty: #mouseEnter:   
+			toValue: [ :ignoredEvent | colorFrame flash ].
 	colorSwatch 
 		morphPosition: 4@4 ;
 		setBalloonText: 'Color without ˆ' .
