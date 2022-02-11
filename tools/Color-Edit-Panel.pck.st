@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 10 February 2022 at 1:29:18 pm'!
+'From Cuis 6.0 [latest update: #5062] on 11 February 2022 at 1:19:08 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 11!
+!provides: 'Color-Edit-Panel' 1 12!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -883,7 +883,7 @@ swatchBorderColor
 	"Match with Visual Menu Item text color"
 	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/10/2022 13:21:04'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/11/2022 13:18:15'!
 buildAlphaSwatch
 	"Display swatch of current color including alpha value."
 	
@@ -907,7 +907,9 @@ buildAlphaSwatch
 	alphaFrame addMorph: alphaSwatch.
 	alphaSwatch 
 		morphPosition: 4@4 ;
-		setBalloonText: 'Color plus ˆ' .
+		setBalloonText: 
+'Drag:
+Color plus ˆ' .
 	
 	^alphaFrame
 	! !
@@ -1047,7 +1049,7 @@ buildSliderColumn
 
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/10/2022 13:28:18'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/11/2022 13:17:54'!
 buildSwatchLayout
 	"Display swatch of current color and closest named color"
 
@@ -1069,7 +1071,9 @@ buildSwatchLayout
 			toValue: [ :ignoredEvent | closeColorFrame flash ].
 	closeColorSwatch 
 		morphPosition: 4@4;
-		setBalloonText: 'Closest Web Color' .
+		setBalloonText: 
+'Drag:
+Closest Web Color' .
 	labelColumn        := LayoutMorph newColumn.
 	closeColorLabel   := LabelMorph new contents: ''.
 	labelColumn
@@ -1095,7 +1099,9 @@ buildSwatchLayout
 			toValue: [ :ignoredEvent | colorFrame flash ].
 	colorSwatch 
 		morphPosition: 4@4 ;
-		setBalloonText: 'Color without ˆ' .
+		setBalloonText: 
+'Drag: 
+Color without ˆ' .
 
 	swatchLayout := LayoutMorph newRow.
 	^ swatchLayout 
