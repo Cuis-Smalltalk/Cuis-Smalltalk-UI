@@ -37,6 +37,7 @@ UI-Base-Morphs
 
 UI-Click-Select
 - MultiMenuSelectMenu
+- PluggableCheckboxMorph
 - CheckGroup
 - RadioGroup
 - CheckButtonMorph
