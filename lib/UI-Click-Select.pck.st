@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5050] on 12 February 2022 at 11:39:22 am'!
+'From Cuis 6.0 [latest update: #5050] on 12 February 2022 at 11:45:14 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 18!
+!provides: 'UI-Click-Select' 1 19!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -457,15 +457,9 @@ example3
 			each when: #checkSelection send: #show: to: Transcript].
 	^ group! !
 
-!CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 09:57:22'!
+!CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:42:30'!
 fromList: buttonLabels
-	"Add label list as array of symbols to a new instance of me"
-
-	| listOfSymbols |
-	listOfSymbols := OrderedCollection new.
-	buttonLabels do: [ :each | listOfSymbols add: each asSymbol ].
-	
-	^ self newColumn fromList: listOfSymbols asArray ! !
+	^ self fromList: buttonLabels buttonOnLeft: true! !
 
 !CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:28:06'!
 fromList: buttonLabels buttonOnLeft: boolean
@@ -485,13 +479,9 @@ fromMorphsDict: aDictionaryOfMorphs
 
 	^ self newColumn fromMorphDict: aDictionaryOfMorphs ! !
 
-!CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:28:22'!
+!CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:43:05'!
 fromMorphsDict: aDictionaryOfMorphs buttonOnLeft: boolean
-	"Add dict of (name->morph) to a new instance of me"
-
-	^ self newColumn 
-		buttonOnLeft: boolean;
-		fromMorphDict: aDictionaryOfMorphs ! !
+	^ self fromList: aDictionaryOfMorphs buttonOnLeft: true! !
 
 !CheckGroup class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:07'!
 includeInNewMorphMenu
@@ -551,7 +541,7 @@ example2
 		setBalloonText: 'I am a check box illustrated with a morph.';
 		yourself! !
 
-!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:31:59'!
+!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:44:58'!
 model: aModel getSelected: getter setSelected: setter label: aMorphOrString
 	| checkbox |
 	(aMorphOrString is: #String) ifTrue: [		
@@ -560,7 +550,7 @@ model: aModel getSelected: getter setSelected: setter label: aMorphOrString
 	(aMorphOrString is: #Morph) ifTrue: [
 		checkbox _ self fromMorphsDict: 	
 			(Dictionary  newFromPairs: {aMorphOrString printString .  aMorphOrString})].
-	aMorphOrString ifNil: [^ self error: 'Label must be a string or a morph'].
+	aMorphOrString ifNil: [self error: 'Label must be a string or a morph'].
 	checkbox model: aModel ;
 		getSelected: getter;
 		setSelected: setter.
