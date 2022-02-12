@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5050] on 12 February 2022 at 11:08:15 am'!
+'From Cuis 6.0 [latest update: #5050] on 12 February 2022 at 11:39:22 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 17!
+!provides: 'UI-Click-Select' 1 18!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -446,6 +446,17 @@ example2
 	
 	^pallet! !
 
+!CheckGroup class methodsFor: 'examples' stamp: 'hlsf 2/12/2022 11:29:15'!
+example3
+"
+	self example3 openInWorld
+"
+	| group |
+	group _ self fromList: #('Cuis-Smalltalk' 'Pharo' 'Squeak') buttonOnLeft: false.
+	group 	buttons do: [:each | 
+			each when: #checkSelection send: #show: to: Transcript].
+	^ group! !
+
 !CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 09:57:22'!
 fromList: buttonLabels
 	"Add label list as array of symbols to a new instance of me"
@@ -456,11 +467,31 @@ fromList: buttonLabels
 	
 	^ self newColumn fromList: listOfSymbols asArray ! !
 
+!CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:28:06'!
+fromList: buttonLabels buttonOnLeft: boolean
+	"Add label list as array of symbols to a new instance of me"
+
+	| listOfSymbols |
+	listOfSymbols := OrderedCollection new.
+	buttonLabels do: [ :each | listOfSymbols add: each asSymbol ].
+	
+	^ self newColumn
+		buttonOnLeft: boolean;
+		 fromList: listOfSymbols asArray ! !
+
 !CheckGroup class methodsFor: 'instance creation' stamp: 'KenD 10/31/2021 08:46:21'!
 fromMorphsDict: aDictionaryOfMorphs
 	"Add dict of (name->morph) to a new instance of me"
 
 	^ self newColumn fromMorphDict: aDictionaryOfMorphs ! !
+
+!CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:28:22'!
+fromMorphsDict: aDictionaryOfMorphs buttonOnLeft: boolean
+	"Add dict of (name->morph) to a new instance of me"
+
+	^ self newColumn 
+		buttonOnLeft: boolean;
+		fromMorphDict: aDictionaryOfMorphs ! !
 
 !CheckGroup class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:07'!
 includeInNewMorphMenu
@@ -520,11 +551,11 @@ example2
 		setBalloonText: 'I am a check box illustrated with a morph.';
 		yourself! !
 
-!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 10:51:34'!
+!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:31:59'!
 model: aModel getSelected: getter setSelected: setter label: aMorphOrString
 	| checkbox |
 	(aMorphOrString is: #String) ifTrue: [		
-		checkbox _ self fromList: (Array with: aMorphOrString)	].
+		checkbox _ self fromList: (Array with: aMorphOrString)	 buttonOnLeft: false].
 	
 	(aMorphOrString is: #Morph) ifTrue: [
 		checkbox _ self fromMorphsDict: 	
