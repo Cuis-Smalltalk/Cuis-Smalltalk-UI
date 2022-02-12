@@ -1,98 +1,118 @@
-'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 5:43:20 pm'!
+'From Cuis 6.0 [latest update: #5050] on 12 February 2022 at 11:08:15 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 19!
+!provides: 'UI-Click-Select' 1 17!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
-SystemOrganization addCategory: 'UI-Click-Select'!
+SystemOrganization addCategory: #'UI-Click-Select'!
 
 
-!classDefinition: #CheckGroup category: 'UI-Click-Select'!
+!classDefinition: #CheckGroup category: #'UI-Click-Select'!
 LayoutMorph subclass: #CheckGroup
 	instanceVariableNames: 'list font buttonOnLeft buttons'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'CheckGroup class' category: 'UI-Click-Select'!
+!classDefinition: 'CheckGroup class' category: #'UI-Click-Select'!
 CheckGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #RadioGroup category: 'UI-Click-Select'!
+!classDefinition: #PluggableCheckboxMorph category: #'UI-Click-Select'!
+CheckGroup subclass: #PluggableCheckboxMorph
+	instanceVariableNames: 'model getSelected setSelected'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'PluggableCheckboxMorph class' category: #'UI-Click-Select'!
+PluggableCheckboxMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #RadioGroup category: #'UI-Click-Select'!
 CheckGroup subclass: #RadioGroup
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'RadioGroup class' category: 'UI-Click-Select'!
+!classDefinition: 'RadioGroup class' category: #'UI-Click-Select'!
 RadioGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #DropDownButtonMorph category: 'UI-Click-Select'!
+!classDefinition: #DropDownButtonMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #DropDownButtonMorph
 	instanceVariableNames: 'model dropDownList setMorphIndex button'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'DropDownButtonMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'DropDownButtonMorph class' category: #'UI-Click-Select'!
 DropDownButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #InnerListOfMorph category: 'UI-Click-Select'!
+!classDefinition: #InnerListOfMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #InnerListOfMorph
 	instanceVariableNames: 'highlightedRow selectedRow'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'InnerListOfMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'InnerListOfMorph class' category: #'UI-Click-Select'!
 InnerListOfMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableListOfMorph category: 'UI-Click-Select'!
-PluggableListMorph subclass: #PluggableListOfMorph
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Click-Select'!
-!classDefinition: 'PluggableListOfMorph class' category: 'UI-Click-Select'!
-PluggableListOfMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #MultiSelectMenu category: 'UI-Click-Select'!
+!classDefinition: #MultiSelectMenu category: #'UI-Click-Select'!
 MenuMorph subclass: #MultiSelectMenu
 	instanceVariableNames: 'choices seed result'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'MultiSelectMenu class' category: 'UI-Click-Select'!
+!classDefinition: 'MultiSelectMenu class' category: #'UI-Click-Select'!
 MultiSelectMenu class
 	instanceVariableNames: ''!
 
-!classDefinition: #CheckButtonMorph category: 'UI-Click-Select'!
+!classDefinition: #PluggableListOfMorph category: #'UI-Click-Select'!
+PluggableListMorph subclass: #PluggableListOfMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'PluggableListOfMorph class' category: #'UI-Click-Select'!
+PluggableListOfMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #CheckButtonMorph category: #'UI-Click-Select'!
 BoxedMorph subclass: #CheckButtonMorph
 	instanceVariableNames: 'isSelected'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'CheckButtonMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'CheckButtonMorph class' category: #'UI-Click-Select'!
 CheckButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #RadioButtonMorph category: 'UI-Click-Select'!
+!classDefinition: #RadioButtonMorph category: #'UI-Click-Select'!
 CheckButtonMorph subclass: #RadioButtonMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'RadioButtonMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'RadioButtonMorph class' category: #'UI-Click-Select'!
 RadioButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PaletteModel category: 'UI-Click-Select'!
+!classDefinition: #OnOffModel category: #'UI-Click-Select'!
+Object subclass: #OnOffModel
+	instanceVariableNames: 'state'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'OnOffModel class' category: #'UI-Click-Select'!
+OnOffModel class
+	instanceVariableNames: ''!
+
+!classDefinition: #PaletteModel category: #'UI-Click-Select'!
 Object subclass: #PaletteModel
 	instanceVariableNames: 'palette selectedColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'PaletteModel class' category: 'UI-Click-Select'!
+!classDefinition: 'PaletteModel class' category: #'UI-Click-Select'!
 PaletteModel class
 	instanceVariableNames: ''!
 
@@ -111,15 +131,17 @@ iVars:
  buttons - cached array of buttons
 !
 
+!PluggableCheckboxMorph commentStamp: 'hlsf 2/12/2022 10:40:13' prior: 0!
+A unique pluggable checkbox with a label or a morph.!
+
 !RadioGroup commentStamp: '<historical>' prior: 0!
 I manage a RadioGroup -- a Group of RadioButtons, each with a label.!
 
+!DropDownButtonMorph commentStamp: '<historical>' prior: 0!
+A button with a dropdown list of Morphs to select from.!
+
 !InnerListOfMorph commentStamp: '<historical>' prior: 0!
 The morph that displays the list of Morph in a PluggableListOfMorph.!
-
-!PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
-I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
-My width is adjusted to the larger morph of my list.!
 
 !MultiSelectMenu commentStamp: '<historical>' prior: 0!
 I am used to relate a set of names to an integer incoding, where each  symbolic name is realated to a bit.
@@ -141,11 +163,18 @@ For example, TextEmphasis codes are a bit ORing of values:
  2r01000000	64 	with ST-80 Glyphs
  !
 
+!PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
+I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
+My width is adjusted to the larger morph of my list.!
+
 !CheckButtonMorph commentStamp: '<historical>' prior: 0!
 I am simple check button!
 
 !RadioButtonMorph commentStamp: '<historical>' prior: 0!
 I am a very simple radio button.!
+
+!OnOffModel commentStamp: '<historical>' prior: 0!
+I am a model representing a boolean state!
 
 !PaletteModel commentStamp: '<historical>' prior: 0!
 I am a model presenting a list of color!
@@ -174,11 +203,6 @@ buttons
 
 	^ buttons! !
 
-!CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/20/2013 13:56'!
-buttons: arrayOfRadioButtons
-
-	buttons := arrayOfRadioButtons.! !
-
 !CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/19/2013 19:46'!
 font
 
@@ -194,36 +218,6 @@ list
 	"Answer my array of label symbols"
 
 	^ list! !
-
-!CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 21:00:41'!
-list: arrayOfSymbols
-	"Set up my submorphs from arrayOfSymbols"
-
-	| maxStringWidth labelLayout buttonList labelList |
-	maxStringWidth := 0.
-	self removeAllMorphs; "Don't keep old stuff."
-		 setList: arrayOfSymbols.
-	buttonList  := OrderedCollection new.
-	labelList    := OrderedCollection new.
-	arrayOfSymbols do: [ :labelSym | | newRow label button |
-		newRow := self newButtonRow.
-		button := self newButton.
-		label := LabelMorph contents: labelSym asString font: self font.
-		maxStringWidth := maxStringWidth max: (self font widthOfString: labelSym).
-		self registerEventsFor: label with: button.
-		self pack: button and: label in: newRow.
-		buttonList add: button.
-		labelList add: label.
-		self addMorph: newRow 	].
-	self buttons: buttonList asArray.
-	self registerEvents.
-	
-	"Make all labels have same width"
-	labelLayout := LayoutSpec 
-			fixedWidth: maxStringWidth + 4
-			fixedHeight: self font lineSpacing 
-			offAxisEdgeWeight: #center.
-	labelList do: [ :label | label layoutSpec: labelLayout ].! !
 
 !CheckGroup methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:18'!
 rowFor: aSymbol
@@ -244,12 +238,37 @@ buttonOnLeft: aBoolean
 
 	buttonOnLeft := aBoolean ! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'KenD 11/19/2013 19:48'!
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/12/2022 09:57:22'!
 fromList: arrayOfSymbols
+	"Set up my submorphs from arrayOfSymbols"
 
-	self list: arrayOfSymbols ! !
+	| maxStringWidth labelLayout buttonList labelList |
+	maxStringWidth := 0.
+	self removeAllMorphs. "Don't keep old stuff."
+	list _ arrayOfSymbols.
+	buttonList  := OrderedCollection new.
+	labelList    := OrderedCollection new.
+	arrayOfSymbols do: [ :labelSym | | newRow label button |
+		newRow := self newButtonRow.
+		button := self newButton.
+		label := LabelMorph contents: labelSym asString font: self font.
+		maxStringWidth := maxStringWidth max: (self font widthOfString: labelSym).
+		self registerEventsFor: label with: button.
+		self pack: button and: label in: newRow.
+		buttonList add: button.
+		labelList add: label.
+		self addMorph: newRow 	].
+	buttons _ buttonList asArray.
+	self registerEvents.
+	
+	"Make all labels have same width"
+	labelLayout := LayoutSpec 
+			fixedWidth: maxStringWidth + 4
+			fixedHeight: self font lineSpacing 
+			offAxisEdgeWeight: #center.
+	labelList do: [ :label | label layoutSpec: labelLayout ].! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 12:41:53'!
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/12/2022 11:06:16'!
 fromMorphDict: morphDict
 	"Set up my submorphs from collectionOfMorphs"
 	
@@ -259,23 +278,22 @@ fromMorphDict: morphDict
 	morphDict keysAndValuesDo: [ :aName :aMorph | | newRow button |
 		newRow := self newButtonRow.
 		button := self newButton.
-		aMorph setBalloonText: aName.
 		self registerEventsFor: aMorph with: button.
 		self pack: button and: aMorph in: newRow.
 		buttonList add: button.
 		morphList add: aName.
 		self addMorph: newRow 	].
-	self buttons: buttonList asArray.
+	buttons _ buttonList asArray.
 	self registerEvents.
-	self setList: morphList asArray! !
+	list _ morphList asArray! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'KenD 6/1/2020 15:05:24'!
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/12/2022 09:51:42'!
 initialize
 	"Initialize self to harmless values"
 	
 	super initialize.
-	self setList: #(); "see #list: setter"
-		 setFont: Preferences standardButtonFont;
+	list _ #().
+	self    setFont: Preferences standardButtonFont;
 		 buttonOnLeft: true;
 		 separation: 2@2;
 		 color: Color transparent! !
@@ -307,11 +325,6 @@ pack: button and: aMorph in: row
 setFont: aFont
 
 	font := aFont ! !
-
-!CheckGroup methodsFor: 'initialization' stamp: 'KenD 11/20/2013 15:06'!
-setList: arrayOfSymbols
-
-	list := arrayOfSymbols ! !
 
 !CheckGroup methodsFor: 'geometry' stamp: 'hlsf 1/27/2022 12:35:39'!
 naturalHeight
@@ -433,13 +446,13 @@ example2
 	
 	^pallet! !
 
-!CheckGroup class methodsFor: 'instance creation' stamp: 'KenD 11/19/2013 19:38'!
-fromList: buttonLables
+!CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 09:57:22'!
+fromList: buttonLabels
 	"Add label list as array of symbols to a new instance of me"
 
 	| listOfSymbols |
 	listOfSymbols := OrderedCollection new.
-	buttonLables do: [ :each | listOfSymbols add: each asSymbol ].
+	buttonLabels do: [ :each | listOfSymbols add: each asSymbol ].
 	
 	^ self newColumn fromList: listOfSymbols asArray ! !
 
@@ -454,6 +467,75 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
+
+!PluggableCheckboxMorph methodsFor: 'accessing' stamp: 'hlsf 2/12/2022 09:41:40'!
+getSelected: aSymbol
+	getSelected _ aSymbol ! !
+
+!PluggableCheckboxMorph methodsFor: 'accessing' stamp: 'hlsf 2/12/2022 10:20:21'!
+model: aModel
+	model ifNotNil: [model removeActionsWithReceiver: self].
+	aModel ifNotNil: [aModel addDependent: self].
+	model _ aModel! !
+
+!PluggableCheckboxMorph methodsFor: 'accessing' stamp: 'hlsf 2/12/2022 09:41:44'!
+setSelected: aSymbol
+	setSelected _ aSymbol ! !
+
+!PluggableCheckboxMorph methodsFor: 'events' stamp: 'hlsf 2/12/2022 10:28:52'!
+newSelection: radioButton
+	super newSelection: radioButton.
+	model perform: setSelected with: radioButton isSelected! !
+
+!PluggableCheckboxMorph methodsFor: 'updating' stamp: 'hlsf 2/12/2022 10:39:11'!
+update: aSymbol
+	super update: aSymbol.
+	aSymbol == setSelected 
+		ifTrue: [self buttons first selected: (model perform: getSelected)]. "No event, or ping-ping between model and view"
+	self redrawNeeded.! !
+
+!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 2/12/2022 10:58:05'!
+example1
+"
+	self example1 openInWorld
+"
+	^ self 
+		model: OnOffModel new
+		getSelected:  #state
+		setSelected:  #state:
+		label: 'I like Cuis-Smalltalk'::
+		setBalloonText: 'I am a check box illustrated with a text label.';
+		yourself! !
+
+!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 2/12/2022 11:00:25'!
+example2
+"
+	self example2 openInWorld
+"
+	^ self 
+		model: OnOffModel new
+		getSelected:  #state
+		setSelected:  #state:
+		label: (ImageMorph new image: (Theme current globeIcon magnifyTo: 32@32)) ::
+		setBalloonText: 'I am a check box illustrated with a morph.';
+		yourself! !
+
+!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 10:51:34'!
+model: aModel getSelected: getter setSelected: setter label: aMorphOrString
+	| checkbox |
+	(aMorphOrString is: #String) ifTrue: [		
+		checkbox _ self fromList: (Array with: aMorphOrString)	].
+	
+	(aMorphOrString is: #Morph) ifTrue: [
+		checkbox _ self fromMorphsDict: 	
+			(Dictionary  newFromPairs: {aMorphOrString printString .  aMorphOrString})].
+	aMorphOrString ifNil: [^ self error: 'Label must be a string or a morph'].
+	checkbox model: aModel ;
+		getSelected: getter;
+		setSelected: setter.
+	"Update the view"
+	aModel changed: setter.
+	^ checkbox ! !
 
 !RadioGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:42'!
 buttonClass
@@ -766,54 +848,6 @@ includeInNewMorphMenu
 new
 	^ self newColumn! !
 
-!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
-getList
-	getListSelector 		ifNil: [^ #()].
-	list _ model perform: getListSelector.
-	list ifNil: [^ #()].	
-	scroller removeAllMorphs.
-	list do: [:aMorph | 	self addToScroller: aMorph].
-	self suitedExtent.
-	^ list! !
-
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:39:41'!
-initialize
-	super initialize.
-	self hHideScrollBar.! !
-
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
-innerMorphClass
-	^ InnerListOfMorph ! !
-
-!PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
-is: aSymbol
-	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:30'!
-minimumItemExtent
-"the minimum list item extent to consider to fit in the UI"
-	^ scroller minimumWidth @ scroller maximumItemHeight ! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
-scrollDeltaHeight
-	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/22/2022 10:47:06'!
-suitedExtent
-	self morphHeight: (extent y min: scroller totalHeight max: 100).
-	self morphWidth: self minimumExtent x + scroller minimumWidth! !
-
-!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 1/20/2022 11:09:13'!
-example1
-"
-	self example1 openInWorld
-"
-	^ PluggableListOfMorph 
-		model: PaletteModel new
-		listGetter: #palette
-		indexGetter: #colorIndex
-		indexSetter: #colorIndex:! !
-
 !MultiSelectMenu methodsFor: 'events-processing' stamp: 'KenD 12/17/2016 14:36:43'!
 accept
 
@@ -988,6 +1022,54 @@ includeInNewMorphMenu
 	
 	^ false! !
 
+!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
+getList
+	getListSelector 		ifNil: [^ #()].
+	list _ model perform: getListSelector.
+	list ifNil: [^ #()].	
+	scroller removeAllMorphs.
+	list do: [:aMorph | 	self addToScroller: aMorph].
+	self suitedExtent.
+	^ list! !
+
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:39:41'!
+initialize
+	super initialize.
+	self hHideScrollBar.! !
+
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
+innerMorphClass
+	^ InnerListOfMorph ! !
+
+!PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
+is: aSymbol
+	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:30'!
+minimumItemExtent
+"the minimum list item extent to consider to fit in the UI"
+	^ scroller minimumWidth @ scroller maximumItemHeight ! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
+scrollDeltaHeight
+	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/22/2022 10:47:06'!
+suitedExtent
+	self morphHeight: (extent y min: scroller totalHeight max: 100).
+	self morphWidth: self minimumExtent x + scroller minimumWidth! !
+
+!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 1/20/2022 11:09:13'!
+example1
+"
+	self example1 openInWorld
+"
+	^ PluggableListOfMorph 
+		model: PaletteModel new
+		listGetter: #palette
+		indexGetter: #colorIndex
+		indexSetter: #colorIndex:! !
+
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:31:34'!
 defaultBorderWidth
 
@@ -1045,11 +1127,9 @@ isSelected
 
 	^ isSelected ! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 12:03:23'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 2/12/2022 10:38:24'!
 isSelected: aBoolean
-	(isSelected := aBoolean)
-		ifFalse: [self fillColor: self defaultColor] 
-		ifTrue: [	self fillColor: Color black]. 
+	self selected: aBoolean.
 	self triggerEvent: #checkSelection with: self
 ! !
 
@@ -1059,6 +1139,13 @@ select
 
 	(self isSelected) ifFalse: [ self isSelected: true ]
 ! !
+
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 2/12/2022 10:36:41'!
+selected: aBoolean
+"Do not emit event. Should it not be the prerogative of the model?"
+	(isSelected _ aBoolean)
+		ifFalse: [self fillColor: self defaultColor] 
+		ifTrue: [	self fillColor: Color black]. ! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:49'!
 toggleSelection
@@ -1135,9 +1222,19 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 		ifTrue: [ self isSelected: true ]
 ! !
 
-!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 1/20/2022 10:54:53'!
-colorIndex
-	^ selectedColor ! !
+!OnOffModel methodsFor: 'as yet unclassified' stamp: 'hlsf 2/12/2022 10:49:08'!
+initialize
+	super initialize.
+	state _ false! !
+
+!OnOffModel methodsFor: 'as yet unclassified' stamp: 'hlsf 2/12/2022 10:46:49'!
+state
+	^ state! !
+
+!OnOffModel methodsFor: 'as yet unclassified' stamp: 'hlsf 2/12/2022 10:48:42'!
+state: aBoolean
+	state _ aBoolean.
+	self changed: #state: "Inform any interested view we have changed our state"! !
 
 !PaletteModel methodsFor: 'accessing' stamp: 'hlsf 1/22/2022 12:32:14'!
 colorIndex: index
