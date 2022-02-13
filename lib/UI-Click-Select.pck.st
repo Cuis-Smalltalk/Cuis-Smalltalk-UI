@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5050] on 12 February 2022 at 11:45:14 am'!
+'From Cuis 6.0 [latest update: #5050] on 13 February 2022 at 11:45:53 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 19!
+!provides: 'UI-Click-Select' 1 20!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -628,19 +628,22 @@ example2
 	
 	^pallet! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 11:11:50'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 2/13/2022 10:04:07'!
 toggleDropDownList
-	dropDownList visible: dropDownList visible not.
-	dropDownList visible 
-		ifTrue: [	dropDownList morphPosition: self morphPositionInWorld + self morphBottomLeft]! !
+	dropDownList owner 
+		ifNil: [	
+			dropDownList 
+				openInWorld;
+				morphPosition: self morphPositionInWorld + self morphBottomLeft]
+		ifNotNil: [dropDownList delete]! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 12:13:01'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 2/13/2022 09:50:08'!
 update: action
 	super update: action.
 	action == setMorphIndex 
 		ifTrue: [
 			self updateButton.
-			dropDownList hide]! !
+			dropDownList delete]! !
 
 !DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 1/22/2022 15:23:51'!
 updateButton
@@ -664,7 +667,7 @@ model: anObject
 	anObject ifNotNil: [anObject addDependent: self].
 	model _ anObject! !
 
-!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/21/2022 10:25:21'!
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 2/13/2022 10:36:33'!
 defaultBorderWidth
 	"answer the default border width for the receiver"
 	^ 0! !
@@ -674,7 +677,7 @@ defaultColor
 	"answer the default color/fill style for the receiver"
 	^ `Color lightGray`! !
 
-!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 15:28:39'!
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 2/13/2022 10:34:12'!
 installButtons
 	|  arrowButton |
 	button _ PluggableButtonMorph new ::
@@ -687,7 +690,7 @@ installButtons
 		model: self;
 		action: #toggleDropDownList;
 		morphExtent: Theme current scrollbarThickness asPoint.
-	self separation: dropDownList scroller xSeparation @ 4.
+	self separation: 0 @ 4.
 	self 
 		addMorph: button 
 		layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: #center).
@@ -696,14 +699,11 @@ installButtons
 		layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: #center).
 	self morphExtent: 0@0. "Shrink to the minimum"! !
 
-!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:07:10'!
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 2/13/2022 09:49:32'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 	self model: anObject.
 	setMorphIndex _ setSelectionSel .
 	dropDownList _ PluggableListOfMorph model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel.
-	dropDownList 
-		openInWorld; 
-		hide.
 	self installButtons! !
 
 !DropDownButtonMorph methodsFor: 'submorphs-add/remove' stamp: 'hlsf 1/22/2022 11:27:41'!
@@ -1256,6 +1256,10 @@ state
 state: aBoolean
 	state _ aBoolean.
 	self changed: #state: "Inform any interested view we have changed our state"! !
+
+!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 2/13/2022 09:48:04'!
+colorIndex
+	^ selectedColor! !
 
 !PaletteModel methodsFor: 'accessing' stamp: 'hlsf 1/22/2022 12:32:14'!
 colorIndex: index
