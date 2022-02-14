@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5050] on 13 February 2022 at 11:45:53 am'!
+'From Cuis 6.0 [latest update: #5050] on 14 February 2022 at 11:50:22 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 20!
+!provides: 'UI-Click-Select' 1 21!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -233,16 +233,26 @@ symbolForButton: radioButton
 
 	^ self list at: (self buttons indexOf: radioButton)! !
 
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/14/2022 11:36:10'!
+adjustLabels: labelList to: maxStringWidth
+| labelLayout |
+	"Make all labels have same width"
+	labelLayout := LayoutSpec 
+			fixedWidth: maxStringWidth + 4
+			fixedHeight: self font lineSpacing 
+			offAxisEdgeWeight: #center.
+	labelList do: [ :label | label layoutSpec: labelLayout ].! !
+
 !CheckGroup methodsFor: 'initialization' stamp: 'KenD 11/20/2013 15:05'!
 buttonOnLeft: aBoolean
 
 	buttonOnLeft := aBoolean ! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/12/2022 09:57:22'!
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/14/2022 11:36:41'!
 fromList: arrayOfSymbols
 	"Set up my submorphs from arrayOfSymbols"
 
-	| maxStringWidth labelLayout buttonList labelList |
+	| maxStringWidth buttonList labelList |
 	maxStringWidth := 0.
 	self removeAllMorphs. "Don't keep old stuff."
 	list _ arrayOfSymbols.
@@ -260,13 +270,7 @@ fromList: arrayOfSymbols
 		self addMorph: newRow 	].
 	buttons _ buttonList asArray.
 	self registerEvents.
-	
-	"Make all labels have same width"
-	labelLayout := LayoutSpec 
-			fixedWidth: maxStringWidth + 4
-			fixedHeight: self font lineSpacing 
-			offAxisEdgeWeight: #center.
-	labelList do: [ :label | label layoutSpec: labelLayout ].! !
+	self adjustLabels: labelList to: maxStringWidth ! !
 
 !CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/12/2022 11:06:16'!
 fromMorphDict: morphDict
@@ -514,6 +518,10 @@ update: aSymbol
 	aSymbol == setSelected 
 		ifTrue: [self buttons first selected: (model perform: getSelected)]. "No event, or ping-ping between model and view"
 	self redrawNeeded.! !
+
+!PluggableCheckboxMorph methodsFor: 'initialization' stamp: 'hlsf 2/14/2022 11:38:47'!
+adjustLabels: labels to: number
+" We want to be free to adjust as we wish later. So do nothing "! !
 
 !PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 2/12/2022 10:58:05'!
 example1
