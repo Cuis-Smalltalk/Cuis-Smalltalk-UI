@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5050] on 14 February 2022 at 11:50:22 am'!
+'From Cuis 6.0 [latest update: #5050] on 15 February 2022 at 10:16:00 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 21!
+!provides: 'UI-Click-Select' 1 22!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -74,6 +74,16 @@ PluggableListMorph subclass: #PluggableListOfMorph
 	category: 'UI-Click-Select'!
 !classDefinition: 'PluggableListOfMorph class' category: #'UI-Click-Select'!
 PluggableListOfMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #PluggableDropDownListOfMorph category: #'UI-Click-Select'!
+PluggableListOfMorph subclass: #PluggableDropDownListOfMorph
+	instanceVariableNames: 'prevKbdFocus prevMouseFocus'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'PluggableDropDownListOfMorph class' category: #'UI-Click-Select'!
+PluggableDropDownListOfMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #CheckButtonMorph category: #'UI-Click-Select'!
@@ -166,6 +176,9 @@ For example, TextEmphasis codes are a bit ORing of values:
 !PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
 I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
 My width is adjusted to the larger morph of my list.!
+
+!PluggableDropDownListOfMorph commentStamp: '<historical>' prior: 0!
+I am a list of Morph with a modal behavior. When the user outisde of me, I am deleted.!
 
 !CheckButtonMorph commentStamp: '<historical>' prior: 0!
 I am simple check button!
@@ -636,13 +649,16 @@ example2
 	
 	^pallet! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 2/13/2022 10:04:07'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 2/15/2022 22:12:19'!
 toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
 			dropDownList 
-				openInWorld;
-				morphPosition: self morphPositionInWorld + self morphBottomLeft]
+				popUpAt: self morphPositionInWorld 
+					+ self morphBottomLeft 
+					- (dropDownList scroller xSeparation @0) 
+				forHand:  self activeHand
+				in: self runningWorld]
 		ifNotNil: [dropDownList delete]! !
 
 !DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 2/13/2022 09:50:08'!
@@ -707,11 +723,15 @@ installButtons
 		layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: #center).
 	self morphExtent: 0@0. "Shrink to the minimum"! !
 
-!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 2/13/2022 09:49:32'!
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 2/15/2022 22:00:48'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 	self model: anObject.
 	setMorphIndex _ setSelectionSel .
-	dropDownList _ PluggableListOfMorph model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel.
+	dropDownList _ PluggableDropDownListOfMorph 
+		model: anObject 
+		listGetter: getListSel 
+		indexGetter: getSelectionSel 
+		indexSetter: setSelectionSel.
 	self installButtons! !
 
 !DropDownButtonMorph methodsFor: 'submorphs-add/remove' stamp: 'hlsf 1/22/2022 11:27:41'!
@@ -1098,6 +1118,44 @@ example1
 		listGetter: #palette
 		indexGetter: #colorIndex
 		indexSetter: #colorIndex:! !
+
+!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 2/15/2022 22:09:04'!
+deleteIfPopUp: evt
+	self delete.
+	evt ifNotNil: [ evt hand ifNotNil: [ :h | h releaseMouseFocus: self ]]! !
+
+!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 2/15/2022 22:06:23'!
+fitInWorld
+	| delta trialRect |
+	trialRect _ Rectangle origin: self morphPosition extent: extent.
+	delta _ trialRect amountToTranslateWithin: owner displayBounds.
+	self morphPosition: trialRect origin + delta.! !
+
+!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 2/15/2022 22:07:00'!
+popUpAt: position forHand: hand in: aWorld
+	aWorld addMorphFront: self position: position.
+	self fitInWorld.
+	prevKbdFocus _ hand keyboardFocus.
+	prevMouseFocus _ hand mouseFocus.
+	hand newMouseFocus: self;
+		newKeyboardFocus: self
+	
+	! !
+
+!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 2/15/2022 22:11:19'!
+mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
+	"Handle a mouse down event."
+	(self includesPixel: aMouseButtonEvent eventPosition) 
+		ifFalse: [
+			self deleteIfPopUp: aMouseButtonEvent.
+			self activeHand 
+				newKeyboardFocus: prevKbdFocus;
+				newMouseFocus: prevMouseFocus.
+			^ self ]. 
+		
+	"No click outside, handle normally"
+	super mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition 
+! !
 
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:31:34'!
 defaultBorderWidth
