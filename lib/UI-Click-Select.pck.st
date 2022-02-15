@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5050] on 15 February 2022 at 10:16:00 pm'!
+'From Cuis 6.0 [latest update: #5050] on 16 February 2022 at 12:27:04 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 22!
+!provides: 'UI-Click-Select' 1 23!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1142,8 +1142,8 @@ popUpAt: position forHand: hand in: aWorld
 	
 	! !
 
-!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 2/15/2022 22:11:19'!
-mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
+!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 2/16/2022 00:25:44'!
+mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	"Handle a mouse down event."
 	(self includesPixel: aMouseButtonEvent eventPosition) 
 		ifFalse: [
@@ -1154,7 +1154,7 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 			^ self ]. 
 		
 	"No click outside, handle normally"
-	super mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition 
+	super mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition 
 ! !
 
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:31:34'!
