@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 5:43:38 pm'!
+'From Cuis 6.0 [latest update: #5090] on 1 March 2022 at 9:48:44 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 21!
+!provides: 'UI-Panel' 1 22!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1305,33 +1305,33 @@ wizard: aWizard
 	wizard _ aWizard 
 	! !
 
-!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 11/19/2021 10:43:55'!
+!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 3/1/2022 21:48:15'!
 applyButton
 	^ (PluggableButtonMorph 
 		model: wizard
 		action: #apply
-		label: 'Apply' translated) enableSelector: #isReadyToApply! !
+		label: 'Apply') enableSelector: #isReadyToApply! !
 
-!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 11/3/2021 18:42:26'!
+!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 3/1/2022 21:47:54'!
 cancelButton
 	^ PluggableButtonMorph 
 		model: wizard
 		action: #cancel
-		label: 'Cancel' translated! !
+		label: 'Cancel'! !
 
-!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 10/31/2021 12:21:19'!
+!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 3/1/2022 21:48:01'!
 nextButton
 	^ PluggableButtonMorph 
 		model: wizard
 		action: #nextPage
-		label: 'Next' translated.! !
+		label: 'Next'! !
 
-!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 10/31/2021 12:21:34'!
+!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 3/1/2022 21:48:07'!
 previousButton
 	^ PluggableButtonMorph 
 		model: wizard
 		action: #previousPage
-		label: 'Previous' translated.! !
+		label: 'Previous'! !
 
 !WizardPage methodsFor: 'initialization' stamp: 'hlsf 11/3/2021 15:20:49'!
 applyPage: string
