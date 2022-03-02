@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5090] on 2 March 2022 at 7:02:05 am'!
+'From Cuis 6.0 [latest update: #5090] on 2 March 2022 at 7:40:45 am'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 12!
+!provides: 'UI-DragAndDrop' 1 13!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-DragAndDrop'!
 
@@ -288,6 +288,17 @@ contents: aString
 object
 
 	^ object! !
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/2/2022 07:22:44'!
+propertyValue
+
+	^ self object! !
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/2/2022 07:13:35'!
+propertyValue: newValue
+
+	object := newValue.
+	self contents: newValue printString! !
 
 !SignMorph methodsFor: 'delegation' stamp: 'KenD 10/5/2013 16:58'!
 doesNotUnderstand: aMessage

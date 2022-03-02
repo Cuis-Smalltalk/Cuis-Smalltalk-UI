@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5090] on 1 March 2022 at 9:48:44 pm'!
+'From Cuis 6.0 [latest update: #5090] on 2 March 2022 at 7:40:52 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 22!
+!provides: 'UI-Panel' 1 23!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -886,7 +886,7 @@ newButtonArea
 checkValidity: aModel
 	self subclassResponsibility ! !
 
-!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/30/2021 11:30:25'!
+!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 3/2/2022 07:37:44'!
 open: aModel label: stringName
 	self checkValidity: aModel propertyValue.
 	^ super open: aModel label: stringName! !
@@ -943,12 +943,15 @@ checkValidity: aChar
 		ifFalse: [ self error: 'I require a Character: ' , aChar printString ].
 ! !
 
-!CharacterEntryPanel class methodsFor: 'examples' stamp: 'hlsf 12/27/2021 11:09:15'!
+!CharacterEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/2/2022 07:25:51'!
 example1
 " 
 	CharacterEntryPanel example1 openInWorld 
 "
-	^ self open: Character space label: 'Key in a character'! !
+	| model |
+	model := SignMorph forObject: Character space.
+	model openInWorld.
+	^ self open: model label: 'Key in a character'! !
 
 !PointEntryPanel methodsFor: 'events' stamp: 'KenD 4/28/2019 18:50:41'!
 accept
@@ -1002,13 +1005,16 @@ checkValidity: aPoint
 	(aPoint isKindOf: Point) ifFalse: [ self error: 'I require a Point: ' , aPoint printString ].
 ! !
 
-!PointEntryPanel class methodsFor: 'examples' stamp: 'hlsf 12/27/2021 11:09:19'!
+!PointEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/2/2022 07:17:38'!
 example1
 " 
 	PointEntryPanel example1 openInWorld 
 "
+	| model |
+	model := SignMorph forObject: (10@200).
+	model openInWorld.
 	^  self
-		open: 10@200
+		open: model
 		label: 'Point Value' ! !
 
 !PositiveFloatEntryPanel methodsFor: 'events' stamp: 'KenD 1/11/2022 14:33:48'!
@@ -1106,19 +1112,25 @@ checkValidity: aNumber
 	(aNumber isKindOf: Integer) ifFalse: [ self error: 'I require a Positive Integer: ' , aNumber printString ].
 	(aNumber >= 0) ifFalse: [ self error: 'I require a Positive Integer: ' , aNumber printString ]! !
 
-!PositiveIntegerEntryPanel class methodsFor: 'examples' stamp: 'hlsf 12/27/2021 11:09:30'!
+!PositiveIntegerEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/2/2022 07:27:26'!
 example1
 "
 	PositiveIntegerEntryPanel example1 openInWorld
 "
-	^ self open: 152 label: 'Edit a positive integer'! !
+	| model |
+	model := SignMorph forObject: 152.
+	model openInWorld.
+	^ self open: model label: 'Edit a positive integer'! !
 
-!PositiveIntegerEntryPanel class methodsFor: 'examples' stamp: 'hlsf 12/27/2021 11:09:38'!
+!PositiveIntegerEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/2/2022 07:39:37'!
 example2
 "
 	PositiveIntegerEntryPanel example2 openInWorld
 "
-	^ self open: -152 label: 'Can''t negative integer'! !
+	| model |
+	model := SignMorph forObject: -152.
+	"Expect failed invariant"
+	^ self open: model label: 'Can''t negative integer'! !
 
 !StringEntryPanel methodsFor: 'events' stamp: 'KenD 4/28/2019 18:52:43'!
 accept
@@ -1172,12 +1184,15 @@ stringEditMorph
 
 	^ stringEditMorph ! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 12/27/2021 11:09:47'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/2/2022 07:30:31'!
 example1
 "
 	StringEntryPanel example1 openInWorld 
 "
-	^ self open: 'Smalltalk' label: 'Cuis language is...'! !
+	| model |
+	model := SignMorph forObject: 'Cuis Smalltalk'.
+	model openInWorld.
+	model openInWorld.	^ self open: model  label: 'The Smalltalk I use is...'! !
 
 !StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:55:39'!
 checkValidity: aString
