@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 9 February 2022 at 3:52:25 pm'!
+'From Cuis 6.0 [latest update: #5090] on 2 March 2022 at 7:02:05 am'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 11!
+!provides: 'UI-DragAndDrop' 1 12!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-DragAndDrop'!
 
@@ -278,6 +278,11 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/1/2022 14:31:22'!
+contents: aString
+
+	self contents: aString wrappedTo: nil! !
 
 !SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 16:58'!
 object
