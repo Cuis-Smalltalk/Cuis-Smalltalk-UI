@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5090] on 2 March 2022 at 7:40:52 am'!
+'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:46 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 23!
+!provides: 'UI-Panel' 1 24!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -151,7 +151,10 @@ Examples:
   LayoutSpecEditPanel open: (LayoutSpec useAll).!
 
 !ValueEntryPanel commentStamp: '<historical>' prior: 0!
-I am an abstract class for editing simple values.!
+I am an abstract class for editing simple values.
+
+I take a model which has accessors #propertyValue and #propertyValue:
+which get and set the value I am editing.!
 
 !CharacterEntryPanel commentStamp: '<historical>' prior: 0!
 I provide for editing/changing a single character.!

@@ -1,11 +1,11 @@
-'From Cuis 6.0 [latest update: #5065] on 9 February 2022 at 7:01:39 am'!
+'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:37 pm'!
 'Description I am a translucent editing lens for a morph.
 
 I display SVG control points and allow change, e.g. to bezier curves.
 
 I also allow one to drop morphs which make changes to myMorph.
 Each such morph has property DropActionMorph set to true.'!
-!provides: 'UI-Edit-Lens' 1 6!
+!provides: 'UI-Edit-Lens' 1 7!
 !requires: 'UI-DragAndDrop' 1 7 nil!
 SystemOrganization addCategory: 'UI-Edit-Lens'!
 
@@ -45,6 +45,15 @@ allowsMorphDrop
 	"Answer whether we accept dropping morphs. By default answer false."
 
 	^ true! !
+
+!MorphEditLens methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:54:14'!
+processDropMorph: aDropEvent
+	"I have already expressed a desire for the drop. Just do it."
+	
+	| dropedMorph |
+	dropedMorph := aDropEvent contents.
+	aDropEvent wasHandled: true.
+	dropedMorph dropAction: self  ! !
 
 !MorphEditLens methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:30:20'!
 wantsDroppedMorph: aMorph event: evt
