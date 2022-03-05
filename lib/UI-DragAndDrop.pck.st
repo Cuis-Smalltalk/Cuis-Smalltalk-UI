@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5090] on 2 March 2022 at 7:40:45 am'!
+'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:32 pm'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 13!
+!provides: 'UI-DragAndDrop' 1 14!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-DragAndDrop'!
 
@@ -222,11 +222,24 @@ dropAction: aDropTargetMorph
 
 	aDropTargetMorph refreshSubmorphs.! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/13/2016 19:43:45'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/4/2022 13:42:58'!
+processDropMorph: aDropEvent
+	"I have already expressed a desire for the drop. Just do it."
+	
+	| dropedMorph dropAction |
+	dropedMorph := aDropEvent contents.
+	dropAction := self valueOfProperty: #dropAction ifAbsent: [ nil ]. 
+	aDropEvent wasHandled: (dropAction notNil).
+	dropAction ifNotNil: [ :doIt |
+		doIt value: dropedMorph value:  dropedMorph valueWhenDropped.
+	 ]
+! !
+
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:58:08'!
 rejectDropMorphEvent: evt
 	"Rejected drop of me.  Remove me from the hand."
 	
-	self hide; delete.
+	self showReject; hide; delete.
 	self world ifNotNil: [ :w | w activeHand removeMorph: self ]
 ! !
 
@@ -235,21 +248,22 @@ valueWhenDropped
 
 	^ self color! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/20/2021 18:48:32'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:30:30'!
 wantsToBeDroppedInto: aMorph
 	"Who do I wish to be dropped onto?"
 
 	((Smalltalk includesKey: #MorphEditLens) "May not be present"
-		and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
-			ifTrue: [ self dropAction: aMorph ].
+	 and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
+		ifTrue: [ ^true ].
 		
-	(aMorph valueOfProperty: #dropAction ifAbsent: [ nil ])
-		ifNotNil: [ :dropAction | 
-					dropAction value: aMorph value: self color.
-					self rejectDropMorphEvent: nil. 
-				 ].
+	(aMorph hasProperty: #dropAction)
+		ifTrue: [ ^true ].
+		
+	((Smalltalk includesKey: #VisualPropertyMenuItem)
+	 and: [ aMorph isKindOf: (Smalltalk at: #VisualPropertyMenuItem) ])
+		ifTrue: [ ^true ].
 				
-	^ false  "Default is to be rejected after doing the drop action"! !
+	^ false ! !
 
 !DropColorMorph methodsFor: 'initialization' stamp: 'KenD 12/24/2013 17:03'!
 fromColor: aColor
@@ -357,12 +371,18 @@ dropAction: aDropTargetMorph
 			triggerEvent: #propertyChanged.
 	].! !
 
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 8/20/2015 08:21'!
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:35:29'!
+justDroppedInto: newOwnerMorph event: anEvent 
+	"This message is sent to a dropped morph after it has been dropped on -- and been accepted by -- a drop-sensitive morph"
+
+	self showAcceptAndDeleteSelf ! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:57:57'!
 rejectDropMorphEvent: dropEvent
 	"The receiver has been rejected.  Disappear"
 	
 "	Transcript newLine; show: 'SignMorph>>rejectDropMorphEvent'. "
-	self hide; delete.
+	self showReject; hide; delete.
 	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
 ! !
 
@@ -371,21 +391,22 @@ valueWhenDropped
 
 	^ self object ! !
 
-!SignMorph methodsFor: 'as yet unclassified' stamp: 'KenD 2/9/2022 06:34:16'!
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:30:50'!
 wantsToBeDroppedInto: aMorph
 	"Who do I wish to be dropped onto?"
 
 	((Smalltalk includesKey: #MorphEditLens) "May not be present"
-		and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
-			ifTrue: [ self dropAction: aMorph ].
+	 and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
+		ifTrue: [ ^true ].
 		
-	(aMorph valueOfProperty: #dropAction ifAbsent: [ nil ])
-		ifNotNil: [ :dropAction | 
-					dropAction value: aMorph value: self object.
-					self rejectDropMorphEvent: nil. 
-				 ].
+	(aMorph hasProperty: #dropAction)
+		ifTrue: [ ^true ].
+		
+	((Smalltalk includesKey: #VisualPropertyMenuItem)
+	 and: [ aMorph isKindOf: (Smalltalk at: #VisualPropertyMenuItem) ])
+		ifTrue: [ ^true ].
 				
-	^ false  "Default is to be rejected after doing the drop action"! !
+	^ false! !
 
 !SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
 contents: someString
@@ -563,11 +584,11 @@ dropAction: aDropTargetMorph
 			triggerEvent: #propertyChanged.
 	].! !
 
-!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:40:11'!
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:57:37'!
 rejectDropMorphEvent: dropEvent
 	"The receiver has been rejected.  Disappear"
 
-	self hide; delete.
+	self showReject; hide; delete.
 	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
 ! !
 
@@ -576,23 +597,22 @@ valueWhenDropped
 
 	^ self font! !
 
-!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:41:50'!
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:30:39'!
 wantsToBeDroppedInto: aMorph
 	"Who do I wish to be dropped onto?"
 
 	((Smalltalk includesKey: #MorphEditLens) "May not be present"
-		and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
-			ifTrue: [ self dropAction: aMorph ].
+	 and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
+		ifTrue: [ ^true ].
 		
-	(aMorph valueOfProperty: #dropAction ifAbsent: [ nil ])
-		ifNotNil: [ :dropAction | 
-					dropAction 
-						value: aMorph 
-						value: self valueWhenDropped.
-					self rejectDropMorphEvent: nil. 
-				 ].
+	(aMorph hasProperty: #dropAction)
+		ifTrue: [ ^true ].
+		
+	((Smalltalk includesKey: #VisualPropertyMenuItem)
+	 and: [ aMorph isKindOf: (Smalltalk at: #VisualPropertyMenuItem) ])
+		ifTrue: [ ^true ].
 				
-	^ false  "Default is to be rejected after doing the drop action"! !
+	^ false! !
 
 !FontMorph class methodsFor: 'defaults' stamp: 'KenD 11/29/2016 09:25:45'!
 defaultEmphasis
@@ -643,7 +663,81 @@ example2
 		string: 'Bold, Italic and Underline'
 ! !
 
+!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/3/2022 11:57:28'!
+showAccept
+	"I have just been dropped.
+	Draw and erase a green box ."
+
+	| hilightMorph mPos mExtent |
+	mPos     := self morphPositionInWorld.
+	mExtent := self morphExtentInOwner.
+	hilightMorph := FrameMorph new.
+	hilightMorph   borderWidth: 6;
+					borderColor: Color green;
+					morphExtent: mExtent + 6;
+					openInWorld;
+					morphPosition: mPos - (6@6). "surround aMorph"
+
+	hilightMorph addAlarm: #delete after: 400.! !
+
+!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/3/2022 11:56:45'!
+showAcceptAndDeleteSelf
+	"I have just been dropped.
+	Draw and erase a green box and delete self."
+
+	| hilightMorph mPos mExtent |
+	mPos     := self morphPositionInWorld.
+	mExtent := self morphExtentInOwner.
+	hilightMorph := FrameMorph new.
+	hilightMorph   borderWidth: 6;
+					borderColor: Color green;
+					morphExtent: mExtent + 6;
+					openInWorld;
+					morphPosition: mPos - (6@6). "surround aMorph"
+
+	self               addAlarm: #delete after: 200.
+	hilightMorph addAlarm: #delete after: 400.! !
+
+!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/3/2022 11:39:25'!
+showReject
+	"Draw and erase a red X"
+
+	| leftStroke rightStroke mPos mExtent |
+	mPos := self morphPositionInWorld.
+	mExtent := self morphExtentInOwner.
+	"Show a red X"
+	leftStroke   := LineMorph 
+						startPoint: mPos - (10@10) 
+						endPoint: (mPos + mExtent + (10@10)) 
+						width: 6
+						color: Color red.
+	rightStroke := LineMorph 
+						startPoint: mPos + (-10 @ (mExtent y + 10))
+						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
+						width: 6
+						color: Color red.
+	leftStroke   openInWorld.
+	rightStroke openInWorld.
+	
+	"NB: Keep Morph when rejected"
+	leftStroke   addAlarm: #delete after: 400.	
+	rightStroke addAlarm: #delete after: 400.
+	! !
+
 !Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 1/1/2022 08:04:09'!
 signMorphForMe
 
 	^ SignMorph forObject: self! !
+
+!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/4/2022 12:56:00'!
+wantsDroppedMorph: aMorph event: evt
+	"Return true if the receiver wishes to accept the given morph, 
+	 which is being dropped by a hand in response to the given event. 
+	Note that for a successful drop operation both parties need to agree. 
+	The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self.
+	 Individual Morpks may override by setting the corresponding property
+	 to an appropriate two argument closure."
+
+	^self valueOfProperty: #wantsDroppedMorph:event:
+		 ifPresentDo: [ :wantsMorphEvt | wantsMorphEvt value: aMorph value: evt ]
+		 ifAbsent: [ true ]! !

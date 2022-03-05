@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 9 February 2022 at 2:52:26 pm'!
+'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:25 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 110!
+!provides: 'Morphic-MetaProperties' 1 111!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -273,11 +273,29 @@ targetMorph
 
 	^ targetMorph ! !
 
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:42:26'!
+acceptDroppingMorph: aMorph event: evt
+	"This message is sent when a morph is dropped onto 
+	 a morph that has agreed to accept the dropped morph 
+	 by responding 'true' to the wantsDroppedMorph:event: message."
+	
+	self dropAction: aMorph! !
+
 !VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 11/28/2016 16:38:00'!
 allowsMorphDrop
 	"Answer whether we accept dropping morphs. Redefined to answer true."
 
 	^ true! !
+
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:45:58'!
+processDropMorph: aDropEvent
+	"I have already expressed a desire for the drop. Just do it."
+	
+	| dropedMorph |
+	dropedMorph := aDropEvent contents.
+	aDropEvent wasHandled: true.
+	self propertyValue: dropedMorph valueWhenDropped.
+	dropedMorph showAcceptAndDeleteSelf.! !
 
 !VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/7/2016 14:55:23'!
 processMouseDown: evt localPosition: localEventPosition
@@ -294,30 +312,11 @@ processMouseDown: evt localPosition: localEventPosition
 
 ! !
 
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/18/2016 15:39:20'!
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:18:28'!
 wantsDroppedMorph: aMorph event: evt
 	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
 
-
-	(self allowsValue: aMorph valueWhenDropped)
-		ifTrue: [ 
-"
-	Transcript newLine ; show: 'wantsDroppedMorph:event YES ', aMorph printString .
-"
-			self propertyValue: aMorph valueWhenDropped.
-			self showAccept: aMorph. 
-			"Rejecting the drop adds aMorph to its old owner at 0@0.
-			 So we accept the drop, but then delete aMorph.  
-			This is done in #showAccept."
-			^ true  
-	 	]
-		ifFalse: [
-"
-	Transcript newLine ; show: 'wantsDroppedMorph:event NO ', aMorph printString .
-"
-			self showReject: aMorph.
-			^ false
-		].
+	^ self allowsValue: aMorph valueWhenDropped
 	
 ! !
 
@@ -389,48 +388,6 @@ updateContents
 	self morphWidth: myWidth.
 	self contents: ( self displayStringForWidth: (myWidth - 20) ). "space for icon + border"
 	self setIcon: (self propertyValue icon)! !
-
-!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 11/7/2021 14:17:09'!
-showAccept: aMorph
-	"Draw and erase a green box"
-
-	| hilightMorph mPos mExtent |
-	mPos     := aMorph morphPositionInWorld.
-	mExtent := aMorph morphExtentInOwner.
-	hilightMorph := FrameMorph new.
-	hilightMorph   borderWidth: 6;
-					borderColor: Color green;
-					morphExtent: mExtent + 6;
-					openInWorld;
-					morphPosition: mPos - (6@6). "surround aMorph"
-
-	aMorph        addAlarm: #delete after: 200.
-	hilightMorph addAlarm: #delete after: 400.! !
-
-!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 11/7/2021 14:17:15'!
-showReject: aMorph
-	"Draw and erase a red X"
-
-	| leftStroke rightStroke mPos mExtent |
-	mPos := aMorph morphPositionInWorld.
-	mExtent := aMorph morphExtentInOwner.
-	"Show a red X"
-	leftStroke   := LineMorph 
-						startPoint: mPos - (10@10) 
-						endPoint: (mPos + mExtent + (10@10)) 
-						width: 6
-						color: Color red.
-	rightStroke := LineMorph 
-						startPoint: mPos + (-10 @ (mExtent y + 10))
-						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
-						width: 6
-						color: Color red.
-	leftStroke   openInWorld.
-	rightStroke openInWorld.
-	
-	"NB: Keep Morph when rejected"
-	leftStroke   addAlarm: #delete after: 400.	
-	rightStroke addAlarm: #delete after: 400.! !
 
 !VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 4/14/2019 15:27:49'!
 update
@@ -756,11 +713,11 @@ showReject: aMorph
 	PopUpMenu inform: 'You can''t set this'
 	! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 12/14/2016 13:22:59'!
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:40:22'!
 wantsDroppedMorph: aMorph event: evt
 	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
 
-	self showReject: aMorph.
+"	self showReject: aMorph."
 	
 	"Rejecting the drop adds aMorph to its old owner at 0@0."
 	^ false  "Reject the drop"! !

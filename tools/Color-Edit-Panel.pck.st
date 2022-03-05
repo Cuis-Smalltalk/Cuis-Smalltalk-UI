@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5062] on 11 February 2022 at 1:19:08 pm'!
+'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:18 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 12!
+!provides: 'Color-Edit-Panel' 1 13!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -142,6 +142,19 @@ allowsSubmorphDrag
 	"Click and hold"
 
 	^ true! !
+
+!ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 13:43:07'!
+processDropMorph: aDropEvent
+	"I have already expressed a desire for the drop. Just do it."
+	
+	| dropedMorph dropAction |
+	dropedMorph := aDropEvent contents.
+	dropAction := self valueOfProperty: #dropAction ifAbsent: [ nil ]. 
+	aDropEvent wasHandled: (dropAction notNil).
+	dropAction ifNotNil: [ :doIt |
+		doIt value: dropedMorph value:  dropedMorph valueWhenDropped.
+	 ]
+! !
 
 !ColorPaneMorph methodsFor: 'private' stamp: 'KenD 12/5/2013 20:50'!
 colorConstructors
@@ -957,7 +970,7 @@ buildColorPaneColumn
 	
 	^ column! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/7/2022 11:23:21'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 3/4/2022 13:29:22'!
 buildMorphicWindow
 " Our layout is a bit different to a traditional dialog, so we override as 
 we don't need button area at the bottom and main panel is a row of morphs." 
@@ -973,7 +986,7 @@ we don't need button area at the bottom and main panel is a row of morphs."
 		send: #refreshColor 
 		to: self.
 	^self
-		makeColorSwatchDroppable;
+		colorSwatchesBeDroppable;
 		refreshCloseColor;
 		yourself
 ! !
@@ -1171,6 +1184,22 @@ colorSwatchExtent
 
 	^ 64 @ 64! !
 
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 3/4/2022 13:32:24'!
+colorSwatchesBeDroppable
+
+	{alphaSwatch. colorPane. colorSwatch.} do: [ :dropTarget | 
+		dropTarget
+			setProperty:  #'allowsMorphDrop' toValue: true;
+			setProperty: #wantsDroppedMorph:event: 
+				toValue: [ :dropMorph :evt | dropMorph valueWhenDropped isKindOf: Color] ;
+			setProperty: #dropAction 
+				toValue: [ :dropMorph :colorValue |
+					self setColor: colorValue. 
+					dropMorph showAcceptAndDeleteSelf.
+				]
+	].
+! !
+
 !ColorEditorPanel methodsFor: 'initialization' stamp: 'hlsf 12/29/2021 10:17:42'!
 defaultAlignement
 	^ #rowLeft! !
@@ -1197,23 +1226,6 @@ initialize
 		yourself
 
 	! !
-
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 12/13/2016 19:54:33'!
-makeColorSwatchDroppable
-
-	self colorSwatch 
-		setProperty:  #'allowsMorphDrop' toValue: true;
-		setProperty: #dropAction toValue: [ :aMorph :colorValue |
-			(colorValue isKindOf: Color)
-				ifTrue: [ self setColor: colorValue ]. "else ignore"
-		].
-	
-	self colorPane 
-		setProperty:  #'allowsMorphDrop' toValue: true;
-		setProperty: #dropAction toValue: [ :aMorph :colorValue |
-			(colorValue isKindOf: Color)
-				ifTrue: [ self setColor: colorValue ]. "else ignore"
-		].! !
 
 !ColorEditorPanel methodsFor: 'initialization' stamp: 'hlsf 12/29/2021 10:42:37'!
 model: aColor
