@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:25 pm'!
+'From Cuis 6.0 [latest update: #5091] on 6 March 2022 at 7:56:34 am'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 111!
+!provides: 'Morphic-MetaProperties' 1 112!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -30,6 +30,16 @@ MenuItemMorph subclass: #OrdinaryPropertyMenuItem
 	category: 'Morphic-MetaProperties'!
 !classDefinition: 'OrdinaryPropertyMenuItem class' category: 'Morphic-MetaProperties'!
 OrdinaryPropertyMenuItem class
+	instanceVariableNames: ''!
+
+!classDefinition: #MorphMessageBox category: 'Morphic-MetaProperties'!
+WorkspaceWindow subclass: #MorphMessageBox
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Morphic-MetaProperties'!
+!classDefinition: 'MorphMessageBox class' category: 'Morphic-MetaProperties'!
+MorphMessageBox class
 	instanceVariableNames: ''!
 
 !classDefinition: #VisualPropertyEditor category: 'Morphic-MetaProperties'!
@@ -140,6 +150,9 @@ ivars:
 My instances supply menu iterms which can have their values dragged for DragNDrop.
 
 My accessKind is either #property #instanceVar.!
+
+!MorphMessageBox commentStamp: '<historical>' prior: 0!
+I am a Workspace specialized to send a message to a Morph.!
 
 !VisualPropertyEditor commentStamp: '<historical>' prior: 0!
 My instances present the public visual properties of Morphs -- those which have MetaProperties.
@@ -745,6 +758,46 @@ itemForIVar: aName targetMorph: aMorph
 itemForProperty: aName targetMorph: aMorph
 
 	^self new itemForProperty: aName targetMorph: aMorph! !
+
+!MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 3/6/2022 07:55:01'!
+boxExtent
+	"answer the extent to use in all the buttons. 
+	 
+	the label height is used to be proportional to the fonts preferences"
+	| e |
+	e _ Preferences windowTitleFont lineSpacing.
+	^e@e! !
+
+!MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 9/30/2016 17:06:54'!
+minimumExtent
+
+	^ 700@(self boxExtent y * 2.3)! !
+
+!MorphMessageBox methodsFor: 'initialization' stamp: 'KenD 9/30/2016 15:28:45'!
+initialize
+
+	super initialize.
+	self morphExtent: self minimumExtent.! !
+
+!MorphMessageBox class methodsFor: 'instance creation' stamp: 'KenD 9/30/2016 16:59:14'!
+openForMorph: aMorph
+"
+	MorphMessageBox openForMorph: EllipseMorph initializedInstance.
+"
+	| morphName win work textModelMorph |
+	morphName := aMorph nameForWorkspace.
+	work := Workspace new contents: ''.
+	win := self editText: work label: 'Message for ', morphName wrap: false.
+	textModelMorph := win layoutMorph submorphs at: 1.
+	win morphExtent: win minimumExtent.
+	textModelMorph editor afterSelectionInsertAndSelect: morphName , ' '; 
+	afterSelectionInsertAndSelect: ' '.
+		"deselectAndPlaceCursorAt: (morphName size + 2) ."
+	(win model  bindingOf: morphName) value: aMorph.
+	win changed: #actualContents.
+	win activateAndSendTopToBack: true.
+	self runningWorld activeHand newMouseFocus: win.
+	^win! !
 
 !VisualPropertyEditor methodsFor: 'dropping/grabbing' stamp: 'KenD 4/12/2019 15:45:56'!
 aboutToGrab: aMorph
@@ -2128,6 +2181,11 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 			 ]
 		ifFalse: [ aCustomMenu add: 'edit my layoutSpec' action: #editMyLayoutSpec ]! !
 
+!Morph methodsFor: '*morphic-metaproperties' stamp: 'KenD 3/6/2022 07:52:19'!
+messageWindow
+
+	^ MorphMessageBox openForMorph: self! !
+
 !Morph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:09:08'!
 morphForDrag
 	"Answer a morph suitable for DragNDrop"
@@ -2138,6 +2196,20 @@ morphForDrag
 	
 	
 ! !
+
+!Morph methodsFor: '*morphic-metaproperties' stamp: 'KenD 3/6/2022 07:52:08'!
+nameForWorkspace
+	"Answer a name suitable for a Workspace variable"
+	| displayName |
+	displayName := self name.
+	^ displayName 
+		ifNotNil: [ | name |
+			name := displayName asIdentifier: false.
+			(name size < 1)
+			ifTrue: [ self class name asLowercase , self identityHash asString ]
+			ifFalse: [ name at: 1 put:  (name at: 1) asLowercase. name ]
+		] 
+		ifNil: [ self class name asLowercase , self identityHash asString ]! !
 
 !Morph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:09:14'!
 openVisualPropertyEditor
