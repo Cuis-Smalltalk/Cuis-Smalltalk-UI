@@ -729,15 +729,3 @@ signMorphForMe
 
 	^ SignMorph forObject: self! !
 
-!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/4/2022 12:56:00'!
-wantsDroppedMorph: aMorph event: evt
-	"Return true if the receiver wishes to accept the given morph, 
-	 which is being dropped by a hand in response to the given event. 
-	Note that for a successful drop operation both parties need to agree. 
-	The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self.
-	 Individual Morpks may override by setting the corresponding property
-	 to an appropriate two argument closure."
-
-	^self valueOfProperty: #wantsDroppedMorph:event:
-		 ifPresentDo: [ :wantsMorphEvt | wantsMorphEvt value: aMorph value: evt ]
-		 ifAbsent: [ true ]! !
