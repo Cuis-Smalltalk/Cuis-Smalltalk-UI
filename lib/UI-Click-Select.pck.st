@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5090] on 3 March 2022 at 10:37:43 am'!
+'From Cuis 6.0 [latest update: #5091] on 12 March 2022 at 4:56:57 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 24!
+!provides: 'UI-Click-Select' 1 25!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -649,16 +649,15 @@ example2
 	
 	^pallet! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 2/15/2022 22:12:19'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'jmv 3/11/2022 11:08:20'!
 toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
-			dropDownList 
-				popUpAt: self morphPositionInWorld 
+			
+			self world addMorphFront: dropDownList position: 
+				self morphPositionInWorld 
 					+ self morphBottomLeft 
-					- (dropDownList scroller xSeparation @0) 
-				forHand:  self activeHand
-				in: self runningWorld]
+					- (dropDownList scroller xSeparation @0) ]
 		ifNotNil: [dropDownList delete]! !
 
 !DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 2/13/2022 09:50:08'!
@@ -945,63 +944,11 @@ example1
 		indexGetter: #colorIndex
 		indexSetter: #colorIndex:! !
 
-!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 2/15/2022 22:09:04'!
-deleteIfPopUp: evt
-	self delete.
-	evt ifNotNil: [ evt hand ifNotNil: [ :h | h releaseMouseFocus: self ]]! !
+!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'jmv 3/11/2022 11:09:23'!
+keyboardFocusChange: aBoolean
 
-!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 2/15/2022 22:06:23'!
-fitInWorld
-	| delta trialRect |
-	trialRect _ Rectangle origin: self morphPosition extent: extent.
-	delta _ trialRect amountToTranslateWithin: owner displayBounds.
-	self morphPosition: trialRect origin + delta.! !
-
-!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 3/3/2022 08:43:11'!
-popUpAt: position forHand: hand in: aWorld
-	aWorld addMorphFront: self position: position.
-	self fitInWorld.
-	prevKbdFocus _ hand keyboardFocus.
-	prevMouseFocus _ hand mouseFocus.
-	hand newMouseFocus: self ;
-		newKeyboardFocus: self
-	
-	! !
-
-!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 3/3/2022 10:28:03'!
-mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
-	(scrollBar 	includesPixel: aMouseButtonEvent eventPosition)
-		ifTrue: [scrollBar mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition].
-	aMouseButtonEvent hand newMouseFocus: self
-! !
-
-!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 3/3/2022 10:30:37'!
-mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
-	"Handle a mouse up event."
-	(self includesPixel: aMouseButtonEvent eventPosition) 
-		ifFalse: [
-			self deleteIfPopUp: aMouseButtonEvent.
-			self activeHand 
-				newKeyboardFocus: prevKbdFocus;
-				newMouseFocus: prevMouseFocus.
-			^ self ]. 
-	"No click outside, handle normally"
-	(scroller 	includesPixel: aMouseButtonEvent eventPosition)
-		ifTrue: [super mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition].
-	aMouseButtonEvent hand newMouseFocus: self
-! !
-
-!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 3/3/2022 10:24:53'!
-mouseButton2Up: aMouseButtonEvent localPosition: localEventPosition
-	super mouseButton2Up: aMouseButtonEvent localPosition: localEventPosition .
-	aMouseButtonEvent hand newMouseFocus: self
-! !
-
-!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 3/3/2022 10:25:16'!
-mouseButton3Up: aMouseButtonEvent localPosition: localEventPosition
-	super mouseButton3Up: aMouseButtonEvent localPosition: localEventPosition .
-	aMouseButtonEvent hand newMouseFocus: self
-! !
+	aBoolean ifFalse: [
+		self delete ].! !
 
 !MultiSelectMenu methodsFor: 'events-processing' stamp: 'KenD 12/17/2016 14:36:43'!
 accept
