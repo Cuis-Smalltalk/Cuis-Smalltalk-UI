@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 11 March 2022 at 4:16:37 pm'!
+'From Cuis 6.0 [latest update: #5093] on 12 March 2022 at 2:49:55 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 113!
+!provides: 'Morphic-MetaProperties' 1 114!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -8,6 +8,7 @@
 !requires: 'UI-Entry' 1 7 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
+!requires: 'Morphic-Packager' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 18 nil!
 SystemOrganization addCategory: 'Morphic-MetaProperties'!
 
@@ -2167,7 +2168,7 @@ morphForDrag
 	^ FontMorph font: self
 ! !
 
-!Morph methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/17/2021 19:21:31'!
+!Morph methodsFor: '*morphic-metaproperties' stamp: 'KenD 3/12/2022 14:49:14'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
 	"Add morph-specific items to the given menu which was invoked by the given hand.  This method provides is invoked both from the halo-menu and from the control-menu regimes."
 
@@ -2177,7 +2178,8 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		ifTrue: [ aCustomMenu addVisualProperties;
 				  addLine;
 				  add: 'show target halo' action: #addHalo;
-				  add: 'show DropTarget for me' action: #showDropTarget
+				  add: 'show DropTarget for me' action: #showDropTarget;
+				  add: 'save me as a Package' action: #saveAsPackage
 			 ]
 		ifFalse: [ aCustomMenu add: 'edit my layoutSpec' action: #editMyLayoutSpec ]! !
 
