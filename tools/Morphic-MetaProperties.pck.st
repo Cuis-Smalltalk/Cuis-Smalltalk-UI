@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5091] on 6 March 2022 at 7:56:34 am'!
+'From Cuis 6.0 [latest update: #5093] on 11 March 2022 at 4:16:37 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 112!
+!provides: 'Morphic-MetaProperties' 1 113!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -333,15 +333,6 @@ wantsDroppedMorph: aMorph event: evt
 	
 ! !
 
-!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 11/28/2016 16:37:33'!
-allowsValue: aValue
-
-	^ self metaProperty accepts: aValue! !
-
-!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 4/13/2019 14:30:25'!
-is: aSymbol
-	^ aSymbol == #VisualPropertyMenuItem or: [ super is: aSymbol ]! !
-
 !VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 12/18/2016 13:05:45'!
 edit
 
@@ -354,7 +345,13 @@ undo
 
 	self targetMorph setProperty: self name  toValue: self prevValue! !
 
-!VisualPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 2/9/2022 13:51:19'!
+!VisualPropertyMenuItem methodsFor: 'events-processing' stamp: 'KenD 4/14/2019 15:27:49'!
+update
+
+	self updateContents.
+	self targetMorph redrawNeeded.! !
+
+!VisualPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 3/11/2022 16:14:35'!
 propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor accessProc: getterClosure updateProc: setterClosure
 
 	super initialize.
@@ -371,8 +368,17 @@ propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor accessProc: getter
 		setIcon: prevValue icon;
 		target: self selector: #edit arguments: nil;
 		"Show menuItems are special by text color"
-		color: ((Color r: 0.6 g: 0.07 b: 0.6) adjustBrightness:  -0.2)
+		color: DropColorMorph swatchBorderColor 
 ! !
+
+!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 11/28/2016 16:37:33'!
+allowsValue: aValue
+
+	^ self metaProperty accepts: aValue! !
+
+!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 4/13/2019 14:30:25'!
+is: aSymbol
+	^ aSymbol == #VisualPropertyMenuItem or: [ super is: aSymbol ]! !
 
 !VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 4/14/2019 16:19:18'!
 displayStringForWidth: maxWidth
@@ -401,12 +407,6 @@ updateContents
 	self morphWidth: myWidth.
 	self contents: ( self displayStringForWidth: (myWidth - 20) ). "space for icon + border"
 	self setIcon: (self propertyValue icon)! !
-
-!VisualPropertyMenuItem methodsFor: 'events' stamp: 'KenD 4/14/2019 15:27:49'!
-update
-
-	self updateContents.
-	self targetMorph redrawNeeded.! !
 
 !VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:21:29'!
 blankIcon

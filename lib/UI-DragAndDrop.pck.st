@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:32 pm'!
+'From Cuis 6.0 [latest update: #5093] on 11 March 2022 at 4:16:41 pm'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 14!
+!provides: 'UI-DragAndDrop' 1 15!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-DragAndDrop'!
 
@@ -273,11 +273,14 @@ fromColor: aColor
 		image: (self color icon magnifyTo: 32@32)
 	! !
 
-!DropColorMorph methodsFor: 'initialization' stamp: 'KenD 12/13/2016 17:54:27'!
+!DropColorMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:29:05'!
 initialize
 
 	super initialize.
-	self setProperty: #DropActionMorph toValue: #setColor:! !
+	self 
+		setProperty: #DropActionMorph toValue: #setColor: ;
+		borderWidth: 4;
+		borderColor: self class swatchBorderColor ! !
 
 !DropColorMorph class methodsFor: 'instance creation' stamp: 'KenD 7/24/2015 11:20'!
 fromColor: aColor
@@ -292,6 +295,12 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
+
+!DropColorMorph class methodsFor: 'accessing' stamp: 'KenD 3/11/2022 15:27:33'!
+swatchBorderColor
+	"Match with Visual Menu Item text color"
+	
+	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
 
 !SignMorph methodsFor: 'accessing' stamp: 'KenD 3/1/2022 14:31:22'!
 contents: aString
@@ -320,7 +329,19 @@ doesNotUnderstand: aMessage
 
 	^ aMessage sendTo: object.! !
 
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 12/20/2021 15:49:48'!
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:03'!
+defaultBorderColor
+
+	^ DropColorMorph swatchBorderColor 
+! !
+
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:16'!
+defaultBorderWidth
+
+	^ 4
+! !
+
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:31'!
 forObject: anObject
 
 	| nameString |
@@ -331,7 +352,7 @@ forObject: anObject
 	self contents: nameString
 ! !
 
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 12/20/2021 15:51:46'!
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:41'!
 forObject: anObject withName: aString
 
 	super initialize.  "Initialize extent as required by #redrawNeeded"
@@ -408,6 +429,19 @@ wantsToBeDroppedInto: aMorph
 				
 	^ false! !
 
+!SignMorph methodsFor: 'drawing' stamp: 'KenD 3/11/2022 16:04:04'!
+drawOn: aCanvas
+	"Add border to inherited"
+	| r |
+	r _ self morphLocalBounds.
+	"aCanvas roundRect: r color: self color radius: 4."
+	aCanvas frameAndFillRectangle: r fillColor: self color borderWidth: borderWidth borderColor: borderColor.
+	aCanvas
+		textComposition: textComposition
+		bounds: (r insetBy: 4)
+		color: `Color black`
+		selectionColor: (Theme current textHighlightFocused: false)! !
+
 !SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
 contents: someString
 
@@ -482,12 +516,15 @@ labelMorphOffset
 defaultColor
 	^ super defaultColor muchLighter ! !
 
-!FontMorph methodsFor: 'initialization' stamp: 'KenD 11/29/2016 10:08:49'!
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:32:19'!
 font: aFont emphasis: emphasisCode
 
-	self font: aFont emphasis: emphasisCode string: self class defaultString ! !
+	self 
+		font: aFont emphasis: emphasisCode string: self class defaultString;
+		borderWidth: 4;
+		borderColor: DropColorMorph swatchBorderColor ! !
 
-!FontMorph methodsFor: 'initialization' stamp: 'KenD 10/16/2020 14:54:01'!
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:33:04'!
 font: aFont emphasis: emphasisCode string: aString
 	"I am a UI Morph showing a LabelMorph.
 	Make it so."
@@ -496,8 +533,12 @@ font: aFont emphasis: emphasisCode string: aString
 				initWithContents: aString 
 				font: aFont 
 				emphasis: emphasisCode.
-	self morphExtent: self minimumExtent.
-	self addMorph: labelMorph.
+	self 
+		morphExtent: self minimumExtent;
+		addMorph: labelMorph;
+		borderWidth: 4;
+		borderColor: DropColorMorph swatchBorderColor.
+		
 	labelMorph morphPosition: self labelMorphOffset.! !
 
 !FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:53:07'!
