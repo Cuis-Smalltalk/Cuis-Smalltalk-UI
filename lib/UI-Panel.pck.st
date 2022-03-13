@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:46 pm'!
+'From Cuis 6.0 [latest update: #5093] on 13 March 2022 at 7:34:11 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 24!
+!provides: 'UI-Panel' 1 25!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -182,6 +182,17 @@ It emits event when
  - the user changes the page with the next and previous buttons
  - the user press apply and cancel
 !
+
+!Panel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 07:30:33'!
+initializedInstance
+"
+	self initializedInstance openInHand.
+"
+	| panel |
+	panel _ Panel new.
+	panel 	titleMorph showButtonsNamed: #(#close).
+	^ panel
+		! !
 
 !Panel methodsFor: 'printing' stamp: 'KenD 4/24/2015 16:04'!
 printOn: aStream 
@@ -577,7 +588,7 @@ defaultSeparation
 
 	^ 10 "Pixels between controls/layouts"! !
 
-!Panel methodsFor: 'initialization' stamp: 'KenD 10/25/2021 15:46:25'!
+!Panel methodsFor: 'initialization' stamp: 'KenD 3/13/2022 07:27:59'!
 initialize
 	"Initialize a system window. Add label, stripes, etc., if desired"
 
@@ -592,17 +603,12 @@ initialize
 
 	super addMorph: titleMorph.
 
-	"by default"
-	self beColumn.
-! !
-
-!Panel methodsFor: 'initialization' stamp: 'KenD 4/18/2015 18:30'!
-openInWorld
-	"Ensure all widgets have proper colors before opening"
+	^self 
+		beColumn;  "by default"
+		widgetsColor: self windowColor;
+		yourself
 	
-	self widgetsColor: self windowColor.
-	super openInWorld.
-	^ self! !
+! !
 
 !Panel methodsFor: 'testing' stamp: 'KenD 12/9/2013 16:45'!
 is: aSymbol
@@ -733,6 +739,11 @@ open: model label: aString
 		openInWorld;
 		yourself! !
 
+!Panel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:31:29'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	^ true! !
+
 !DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 12/27/2021 10:25:05'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
@@ -757,6 +768,11 @@ newPane
 refreshView
 
 	self subclassResponsibility ! !
+
+!DialogPanel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:31:41'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	^ false! !
 
 !EditPanel methodsFor: 'accessing' stamp: 'KenD 7/4/2015 08:58'!
 editModel
@@ -1273,6 +1289,11 @@ minimumExtent
 
 !WizardPanel methodsFor: 'testing' stamp: 'hlsf 12/25/2021 16:53:33'!
 isReadyToApply
+	^ false! !
+
+!WizardPanel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:32:09'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
 !WizardPanel class methodsFor: 'examples' stamp: 'hlsf 12/27/2021 11:09:57'!
