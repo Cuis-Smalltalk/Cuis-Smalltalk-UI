@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 13 March 2022 at 7:34:11 am'!
+'From Cuis 6.0 [latest update: #5093] on 13 March 2022 at 12:51:49 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 25!
+!provides: 'UI-Panel' 1 26!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -722,7 +722,7 @@ open: model
 
 	^self open: model label: nil! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'hlsf 12/30/2021 10:09:42'!
+!Panel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 12:50:12'!
 open: model label: aString
 
 	|  window |
@@ -736,6 +736,7 @@ open: model label: aString
 					initialFrameFor: window 
 					initialExtent: window minimumExtent 
 					world: self runningWorld ) topLeft;
+		widgetsColor: window windowColor;
 		openInWorld;
 		yourself! !
 
