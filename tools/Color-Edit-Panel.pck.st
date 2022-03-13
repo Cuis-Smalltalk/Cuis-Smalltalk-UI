@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:18 pm'!
+'From Cuis 6.0 [latest update: #5093] on 13 March 2022 at 10:48:51 am'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 13!
+!provides: 'Color-Edit-Panel' 1 14!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -927,7 +927,7 @@ Color plus ˆ' .
 	^alphaFrame
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/8/2022 07:47:20'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 3/13/2022 10:42:34'!
 buildColorPaneColumn
 
 	| selector column hexDisplayLayout  |
@@ -942,11 +942,12 @@ buildColorPaneColumn
 	
 	hexDisplayLayout := LayoutMorph newRow.
 	hexDisplayLayout
-	     layoutSpec: (LayoutSpec 
+		layoutSpec: (LayoutSpec 
 							proportionalWidth: 0.2 
 							proportionalHeight: 0.1
 							offAxisEdgeWeight: #center);
 		separation: 1;
+		color: Color transparent;
 		addMorph: (LabelMorph new contents: '16r') layoutSpec: (LayoutSpec keepMorphExtent);
 		addMorph: self rgbString;
 		addMorph: (LabelMorph new contents: ' hexRGB').
