@@ -37,7 +37,7 @@ VisualPropertyEditor class >> initialize
   classDict at: #borderWidth put: (propsDict at: #acceptsPositiveInteger).
 ````
 
-To get the complete selt of MetaProperties for a Morph, one
+To get the complete set of MetaProperties for a Morph, one
 gathers based on the class and its superclasses.
 ````Smalltalk
 MetaProperty class >> metaPropsForMorph: aMorph
@@ -88,3 +88,5 @@ VisualPropertyMenuItem >>
 ````
 
 That's it!  That is the gist of how a Morph's visual properties are handled.
+
+You can use **senders** to find how the above is used.
