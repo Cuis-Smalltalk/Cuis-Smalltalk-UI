@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 13 March 2022 at 10:48:51 am'!
+'From Cuis 6.0 [latest update: #5093] on 13 March 2022 at 12:51:42 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 14!
+!provides: 'Color-Edit-Panel' 1 15!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -111,9 +111,12 @@ I am just a way to get a Color palette.  See my class side.!
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorEditor.!
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/29/2021 11:21:25'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 12:45:22'!
 initializedInstance
- | panel |
+"
+	self initializedInstance openInWorld.
+"
+ 	| panel |
 	panel _ self new
 		model: self defaultColor ;
 		buildMorphicWindow.
