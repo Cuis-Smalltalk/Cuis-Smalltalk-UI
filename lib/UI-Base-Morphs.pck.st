@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 5:43:14 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 7:41:47 am'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 14!
+!provides: 'UI-Base-Morphs' 1 15!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -595,11 +595,14 @@ example1
 	^ label
 	! !
 
-!EllipseMorph methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 09:38:39'!
+!EllipseMorph methodsFor: 'drawing' stamp: 'HAW 3/14/2022 08:51:49'!
 drawOn: aCanvas 
-	| radius |
-	radius _ extent // 2.
-	aCanvas ellipseCenter: radius radius: radius borderWidth: borderWidth borderColor: borderColor fillColor: color! !
+
+	| rx ry |
+	
+	rx _ extent x //2.
+	ry _ extent y // 2.
+	aCanvas ellipseCenterX: rx y: ry rx: rx ry: ry borderWidth: borderWidth borderColor: borderColor fillColor: color! !
 
 !EllipseMorph methodsFor: 'geometry testing' stamp: 'jmv 10/7/2009 23:21'!
 isOrthoRectangularMorph
