@@ -118,3 +118,39 @@ Morphic-MetaProperties
 UI-Edit-Lens
 - MorphEditLens
 
+## Morph Visual Properties
+
+Visual Proprtties of a Morph are in most cases simple values.
+
+This allows to create a simple way to more fluidly view and gain access.
+
+Visual Properties can be annotated with MetaProperties so that
+their construction menu allows easy access.
+
+The MetaProperties package is loaded with other 'UI-Tools'.
+
+```smalltalk
+Feature require: 'UI-Tools'.
+```
+Once you have done this, you cag open the World Menu and get a New Morph.
+
+If you then command-click on this Morph, you see the construction handles.
+
+Clicking on the blue Menu button, you will get the Morph's menu.
+Click the push-pin on the upper right to keep this menu around.
+
+Here is a view with a LabelMorph, an EllipseMorph, their associated menus,
+as well as Color Palette and a Color Editor Panel.
+
+![Visual Morph Properties](MorphVisualProps.jpeg)
+
+The _purple_ menu items are Visual Properties.
+
+Clicking on such a VisualPropertyMenuItem gives
+either an editor or a choice of selection palettes.
+
+You can also _drag_ values to or from a VisualPropertyMenuItem
+to transfer values.
+
+You can drag a Color to or from from the Color Editor or from a Color Palette
+and drop onto any area which takes a Color.
