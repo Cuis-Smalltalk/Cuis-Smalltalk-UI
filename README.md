@@ -154,3 +154,13 @@ to transfer values.
 
 You can drag a Color to or from from the Color Editor or from a Color Palette
 and drop onto any area which takes a Color.
+
+Also included is the package 'Morphic-Packager'.
+Note the "save me as a Package" menu item.
+This lets you save a composit Morph (one with submorphs) as a Package
+which in turn requires the packages which contain the code implementing
+the composit Morph.
+
+One can then go to a base image and "Feature require:" the created Package
+whose initializer restores the saved composit Morph.
+
