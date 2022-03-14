@@ -155,6 +155,11 @@ to transfer values.
 You can drag a Color to or from from the Color Editor or from a Color Palette
 and drop onto any area which takes a Color.
 
+The basic mechanics of this are descrobed in files
+'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI/blob/main/VisualMetaPropGist.md'
+and
+'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/DragAndDrop.md' 
+
 Also included is the package 'Morphic-Packager'.
 Note the "save me as a Package" menu item.
 This lets you save a composit Morph (one with submorphs) as a Package
