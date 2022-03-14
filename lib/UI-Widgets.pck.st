@@ -1,9 +1,9 @@
-'From Cuis 6.0 [latest update: #5087] on 24 February 2022 at 10:59:19 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:30 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 8!
+!provides: 'UI-Widgets' 1 9!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'Collections-CompactArrays' 1 13 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
 
@@ -378,6 +378,11 @@ example2
 	wheel := WheelMorph target: model.
 	wheel beVertical.
 	^ wheel! !
+
+!WheelMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:09:32'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
 
 !ChevronMorph methodsFor: 'drawing' stamp: 'hlsf 12/9/2021 15:39:04'!
 drawMyShapeOn: canvas with: background

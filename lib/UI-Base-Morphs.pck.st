@@ -1,4 +1,4 @@
-'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 7:41:47 am'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:03 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
 !provides: 'UI-Base-Morphs' 1 15!
 !requires: 'Cuis-Base' 60 5031 nil!
@@ -422,6 +422,11 @@ buttonNames
 
 	^ #( close collapse expand windowMenu pin showHalo )! !
 
+!WindowTitleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:01:10'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
 !WindowTitleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 4/28/2015 18:45'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
@@ -595,14 +600,16 @@ example1
 	^ label
 	! !
 
-!EllipseMorph methodsFor: 'drawing' stamp: 'HAW 3/14/2022 08:51:49'!
-drawOn: aCanvas 
+!SqueezeLabelMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:58:16'!
+categoryInNewMorphMenu
 
-	| rx ry |
-	
-	rx _ extent x //2.
-	ry _ extent y // 2.
-	aCanvas ellipseCenterX: rx y: ry rx: rx ry: ry borderWidth: borderWidth borderColor: borderColor fillColor: color! !
+	^ 'User Interface'! !
+
+!EllipseMorph methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 09:38:39'!
+drawOn: aCanvas 
+	| radius |
+	radius _ extent // 2.
+	aCanvas ellipseCenter: radius radius: radius borderWidth: borderWidth borderColor: borderColor fillColor: color! !
 
 !EllipseMorph methodsFor: 'geometry testing' stamp: 'jmv 10/7/2009 23:21'!
 isOrthoRectangularMorph

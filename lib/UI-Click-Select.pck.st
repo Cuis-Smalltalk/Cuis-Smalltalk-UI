@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5091] on 12 March 2022 at 4:56:57 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:07 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 25!
+!provides: 'UI-Click-Select' 1 26!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -191,6 +191,21 @@ I am a model representing a boolean state!
 
 !PaletteModel commentStamp: '<historical>' prior: 0!
 I am a model presenting a list of color!
+
+!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:41:13'!
+initializedInstance
+
+	^self example1! !
+
+!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:40:33'!
+initializedInstance
+
+	^self example1! !
+
+!DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:41:58'!
+initializedInstance
+
+	^self example1! !
 
 !CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:54'!
 buttonClass
@@ -579,6 +594,17 @@ model: aModel getSelected: getter setSelected: setter label: aMorphOrString
 	aModel changed: setter.
 	^ checkbox ! !
 
+!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:10'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:39:48'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
+
 !RadioGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:42'!
 buttonClass
 " What kind of button am I, check or radio? "
@@ -648,6 +674,17 @@ example2
 		to:  statusLabel.
 	
 	^pallet! !
+
+!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:20'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:40:06'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
 
 !DropDownButtonMorph methodsFor: 'action' stamp: 'jmv 3/11/2022 11:08:20'!
 toggleDropDownList
@@ -748,9 +785,15 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 new
 	^ self newRow! !
 
-!DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/21/2022 10:28:14'!
+!DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:35'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:41:52'!
 includeInNewMorphMenu
-	^ false! !
+	
+	^ true! !
 
 !DropDownButtonMorph class methodsFor: 'examples' stamp: 'hlsf 1/22/2022 10:46:18'!
 example1

@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5031] on 31 December 2021 at 12:43:55 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:20 pm'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 10!
+!provides: 'UI-Palette' 1 11!
 !requires: 'UI-Click-Select' 1 1 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 7 nil!
@@ -60,16 +60,6 @@ ImagePickerPanel subclass: #PickAColorPalette
 PickAColorPalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #PickAnIconPalette category: 'UI-Palette'!
-ImagePickerPanel subclass: #PickAnIconPalette
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Palette'!
-!classDefinition: 'PickAnIconPalette class' category: 'UI-Palette'!
-PickAnIconPalette class
-	instanceVariableNames: ''!
-
 !classDefinition: #PickALargerIconPalette category: 'UI-Palette'!
 ImagePickerPanel subclass: #PickALargerIconPalette
 	instanceVariableNames: ''
@@ -78,6 +68,16 @@ ImagePickerPanel subclass: #PickALargerIconPalette
 	category: 'UI-Palette'!
 !classDefinition: 'PickALargerIconPalette class' category: 'UI-Palette'!
 PickALargerIconPalette class
+	instanceVariableNames: ''!
+
+!classDefinition: #PickAnIconPalette category: 'UI-Palette'!
+ImagePickerPanel subclass: #PickAnIconPalette
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Palette'!
+!classDefinition: 'PickAnIconPalette class' category: 'UI-Palette'!
+PickAnIconPalette class
 	instanceVariableNames: ''!
 
 
@@ -97,12 +97,12 @@ I am just a way of getting an initializedInstance from the New Morph.. menu..
 
 See my class side.!
 
-!PickAnIconPalette commentStamp: '<historical>' prior: 0!
+!PickALargerIconPalette commentStamp: '<historical>' prior: 0!
 I am just a way of getting an initializedInstance from the New Morph.. menu..  
 
 See my class side.!
 
-!PickALargerIconPalette commentStamp: '<historical>' prior: 0!
+!PickAnIconPalette commentStamp: '<historical>' prior: 0!
 I am just a way of getting an initializedInstance from the New Morph.. menu..  
 
 See my class side.!
@@ -112,15 +112,15 @@ initializedInstance
 
 	^ super namedColors! !
 
-!PickAnIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:02'!
-initializedInstance
-
-	^ super namedIcons ! !
-
 !PickALargerIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:27'!
 initializedInstance
 
 	^ super largerIcons ! !
+
+!PickAnIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:02'!
+initializedInstance
+
+	^ super namedIcons ! !
 
 !PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 5/11/2019 01:39:50'!
 aboutToGrab: aMorph
@@ -596,19 +596,34 @@ transducer: imageProcessor
 		yourself
 		! !
 
+!PickAColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:17'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
 !PickAColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:28:49'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:03'!
+!PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:23'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:12'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:12'!
+!PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:30'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:03'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	

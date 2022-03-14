@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 13 March 2022 at 12:51:42 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:21:57 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 15!
+!provides: 'Color-Edit-Panel' 1 16!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -1352,11 +1352,21 @@ defaultColor
 
 	^ Color  r: 16r40/255 g: 16rA5/255 b: 16rD0/255.! !
 
+!ColorEditorPanel class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:02:52'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
 !ColorEditorPanel class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:09'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
+
+!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:08'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
 
 !ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/24/2013 17:55'!
 includeInNewMorphMenu

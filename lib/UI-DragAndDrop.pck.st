@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 11 March 2022 at 4:16:41 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:11 pm'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 15!
+!provides: 'UI-DragAndDrop' 1 16!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-DragAndDrop'!
 
@@ -491,6 +491,11 @@ example4
 	rect _ Rectangle origin: 1@2 corner: 2@3.
 	^ SignMorph forObject: rect! !
 
+!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:56:49'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
 !SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/5/2013 16:55'!
 includeInNewMorphMenu 
 
@@ -703,6 +708,11 @@ example2
 			+ AbstractFont underlinedCode 
 		string: 'Bold, Italic and Underline'
 ! !
+
+!FontMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:56:21'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
 
 !Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/3/2022 11:57:28'!
 showAccept

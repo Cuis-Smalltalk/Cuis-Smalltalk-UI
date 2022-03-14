@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5065] on 8 February 2022 at 5:43:44 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:26 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 26!
+!provides: 'UI-Shapes' 1 27!
 !requires: 'Morphic-MetaProperties' 1 106 nil!
 !requires: 'VectorGraphics' 1 333 nil!
 SystemOrganization addCategory: 'UI-Shapes'!

@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 13 March 2022 at 12:51:49 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:23 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 26!
+!provides: 'UI-Panel' 1 27!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -739,6 +739,11 @@ open: model label: aString
 		widgetsColor: window windowColor;
 		openInWorld;
 		yourself! !
+
+!Panel class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:02:35'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
 
 !Panel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:31:29'!
 includeInNewMorphMenu

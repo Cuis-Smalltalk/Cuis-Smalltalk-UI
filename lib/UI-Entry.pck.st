@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5053] on 30 January 2022 at 3:48:19 pm'!
+'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:18 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 12!
+!provides: 'UI-Entry' 1 13!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -803,6 +803,11 @@ example2
 		borderWidth: 1.5;
 		borderColor: Color red.
 	^ editor! !
+
+!OneLineEditorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:12:23'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
 
 !SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 2/28/2015 11:04'!
 disablesEdition
