@@ -1,4 +1,4 @@
-'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:18 pm'!
+'From Cuis 6.0 [latest update: #5094] on 17 March 2022 at 5:45:07 pm'!
 'Description I supply simple text entry fields.'!
 !provides: 'UI-Entry' 1 13!
 !requires: 'Cuis-Base' 60 5031 nil!
@@ -804,11 +804,6 @@ example2
 		borderColor: Color red.
 	^ editor! !
 
-!OneLineEditorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:12:23'!
-categoryInNewMorphMenu
-
-	^ 'User Interface'! !
-
 !SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 2/28/2015 11:04'!
 disablesEdition
 
@@ -1181,6 +1176,19 @@ floatDefault: aReal  maxNumChars: numChars
 		value: aReal 
 		validator: [ :str |  [ str asNumber ] on: Error do: [ aReal ] ] 
 		toString:  [ :n | n printStringFractionDigits: 4 ]! !
+
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'hlsf 3/17/2022 17:07:32'!
+floatRangeFrom: min to: max maxNumChars: numChars
+	"min..max"
+
+	^ self new ::
+		legalChars: '-12345.67890'  
+		numCharsToHold: numChars
+		value: min
+		validator: [ :str | | val | 
+			val := [ str asNumber ] on: Error do: [ -1 ].
+			(val between: min and: max) ifFalse: [ nil ] ifTrue: [ val] 		] 
+		toString: [ :n | n printStringFractionDigits: 4 ]! !
 
 !SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 11/23/2013 20:01'!
 hexEntryOfSize: numChars
