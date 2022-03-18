@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5094] on 17 March 2022 at 5:45:07 pm'!
+'From Cuis 6.0 [latest update: #5094] on 17 March 2022 at 11:34:49 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 13!
+!provides: 'UI-Entry' 1 14!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -425,6 +425,16 @@ measureContents
 
 	f _ self fontToUse.
 	^((f widthOfString: contents) max: 3)  @ f lineSpacing.! !
+
+!OneLineEditorMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:21:02'!
+setValue: newContents
+"For compatibility"
+	^ self contents: newContents ! !
+
+!OneLineEditorMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:19:38'!
+value
+"For compatibility"
+	^ self contents! !
 
 !OneLineEditorMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:10:12'!
 characterIndexAtPoint: aPoint
