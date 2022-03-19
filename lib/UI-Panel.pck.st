@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5091] on 19 March 2022 at 11:42:20 am'!
+'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 5:17:23 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 32!
+!provides: 'UI-Panel' 1 34!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -68,6 +68,16 @@ ValueEntryPanel subclass: #CharacterEntryPanel
 CharacterEntryPanel class
 	instanceVariableNames: ''!
 
+!classDefinition: #FloatEntryPanel category: 'UI-Panel'!
+ValueEntryPanel subclass: #FloatEntryPanel
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'FloatEntryPanel class' category: 'UI-Panel'!
+FloatEntryPanel class
+	instanceVariableNames: ''!
+
 !classDefinition: #PointEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PointEntryPanel
 	instanceVariableNames: 'xEntryMorph yEntryMorph'
@@ -128,6 +138,16 @@ DialogPanel subclass: #WizardPanel
 WizardPanel class
 	instanceVariableNames: ''!
 
+!classDefinition: #ValueHolder category: 'UI-Panel'!
+Object subclass: #ValueHolder
+	instanceVariableNames: 'action property'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'ValueHolder class' category: 'UI-Panel'!
+ValueHolder class
+	instanceVariableNames: ''!
+
 !classDefinition: #WizardPage category: 'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
@@ -171,6 +191,9 @@ which get and set the value I am editing.
 !CharacterEntryPanel commentStamp: '<historical>' prior: 0!
 I provide for editing/changing a single character.!
 
+!FloatEntryPanel commentStamp: '<historical>' prior: 0!
+I edit floats!
+
 !PointEntryPanel commentStamp: '<historical>' prior: 0!
 I am a panel for filling in a Point value.
 
@@ -179,10 +202,13 @@ My xEntryMorph and yEntryMorph hold the current points x@y value.
 !
 
 !PositiveFloatEntryPanel commentStamp: '<historical>' prior: 0!
-I edit a real number in the interval [min ; max]!
+I edit positif floats!
 
 !PositiveIntegerEntryPanel commentStamp: '<historical>' prior: 0!
 I edit positive integers!
+
+!RangeFloatEntryPanel commentStamp: '<historical>' prior: 0!
+I edit a real number in the interval [min ; max]!
 
 !StringEntryPanel commentStamp: '<historical>' prior: 0!
 I allow a user to edit a string!
@@ -1001,6 +1027,16 @@ example1
 	model openInWorld.
 	^ self open: model label: 'Key in a character'! !
 
+!FloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 16:54:16'!
+initializeEntry
+	entry := SimpleNumberEntryMorph floatDefault: 1.0 maxNumChars: 8
+! !
+
+!FloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 16:59:38'!
+checkValidity: aNumber
+	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Number ' , aNumber printString ].
+	! !
+
 !PointEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:24:48'!
 accept	
 	self delete.
@@ -1165,6 +1201,18 @@ example2
 	model openInWorld.
 	^ self open: model between: 0 and: 1 label: 'Edit a value in [0 ; 1]'! !
 
+!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 15:16:10'!
+example3
+"
+	RangeFloatEntryPanel example3
+"
+	| model panel |
+	model _ ValueHolder with: 3.1415.
+	model inspect.
+	panel _ self open: model between: 3 and: 4 label: 'Edit a value for pi'.
+	model action: [ panel openInWorld]. "Panel is usually closed when property edited in the model, open it again"
+	^ panel ! !
+
 !StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:20:29'!
 initializeEntry
 	entry := OneLineEditorMorph contents: '' .
@@ -1295,6 +1343,24 @@ example1
 		addPage: ((WizardPage applyPage: 'Final page' on: wizard) 
 			contents: 'Another description for apply page').
 	^ wizard! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 15:11:33'!
+action: aBlock
+	action _ aBlock ! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 15:11:08'!
+propertyValue
+	^ property ! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 15:10:58'!
+propertyValue: aValue
+	property _ aValue.
+	action ifNotNil: [action valueWithPossibleArgument: property]! !
+
+!ValueHolder class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 15:13:22'!
+with: aProperty
+	^ self new :: 
+		propertyValue: aProperty ! !
 
 !WizardPage methodsFor: 'accessing' stamp: 'hlsf 10/31/2021 20:47:46'!
 buttons
