@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 5:17:23 pm'!
+'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 4:38:52 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 34!
+!provides: 'UI-Panel' 1 33!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -68,16 +68,6 @@ ValueEntryPanel subclass: #CharacterEntryPanel
 CharacterEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatEntryPanel category: 'UI-Panel'!
-ValueEntryPanel subclass: #FloatEntryPanel
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Panel'!
-!classDefinition: 'FloatEntryPanel class' category: 'UI-Panel'!
-FloatEntryPanel class
-	instanceVariableNames: ''!
-
 !classDefinition: #PointEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PointEntryPanel
 	instanceVariableNames: 'xEntryMorph yEntryMorph'
@@ -138,16 +128,6 @@ DialogPanel subclass: #WizardPanel
 WizardPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueHolder category: 'UI-Panel'!
-Object subclass: #ValueHolder
-	instanceVariableNames: 'action property'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Panel'!
-!classDefinition: 'ValueHolder class' category: 'UI-Panel'!
-ValueHolder class
-	instanceVariableNames: ''!
-
 !classDefinition: #WizardPage category: 'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
@@ -191,9 +171,6 @@ which get and set the value I am editing.
 !CharacterEntryPanel commentStamp: '<historical>' prior: 0!
 I provide for editing/changing a single character.!
 
-!FloatEntryPanel commentStamp: '<historical>' prior: 0!
-I edit floats!
-
 !PointEntryPanel commentStamp: '<historical>' prior: 0!
 I am a panel for filling in a Point value.
 
@@ -202,13 +179,10 @@ My xEntryMorph and yEntryMorph hold the current points x@y value.
 !
 
 !PositiveFloatEntryPanel commentStamp: '<historical>' prior: 0!
-I edit positif floats!
+I edit a real number in the interval [min ; max]!
 
 !PositiveIntegerEntryPanel commentStamp: '<historical>' prior: 0!
 I edit positive integers!
-
-!RangeFloatEntryPanel commentStamp: '<historical>' prior: 0!
-I edit a real number in the interval [min ; max]!
 
 !StringEntryPanel commentStamp: '<historical>' prior: 0!
 I allow a user to edit a string!
@@ -1006,9 +980,10 @@ valueWhenDropped
 		ifNotNil: [ :m | m propertyValue: (entry value at: 1) ] 
 		ifNil: [ '_' ]! !
 
-!CharacterEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:23:35'!
+!CharacterEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:40:29'!
 initializeEntry
-	entry := SimpleNumberEntryMorph singleCharSelection: $c
+	entry := SimpleNumberEntryMorph singleCharSelection: $c.
+	entry getsCrEsc: self
 ! !
 
 !CharacterEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:45'!
@@ -1027,16 +1002,6 @@ example1
 	model openInWorld.
 	^ self open: model label: 'Key in a character'! !
 
-!FloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 16:54:16'!
-initializeEntry
-	entry := SimpleNumberEntryMorph floatDefault: 1.0 maxNumChars: 8
-! !
-
-!FloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 16:59:38'!
-checkValidity: aNumber
-	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Number ' , aNumber printString ].
-	! !
-
 !PointEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:24:48'!
 accept	
 	self delete.
@@ -1049,10 +1014,12 @@ valueWhenDropped
 		ifNotNil: [ :m | m propertyValue: 	(xEntryMorph value @ yEntryMorph value) ] 
 		ifNil: [ 0@0 ]! !
 
-!PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:25:22'!
+!PointEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:47:03'!
 initializeEntry
 	xEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
-	yEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8! !
+	yEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
+	xEntryMorph getsCrEsc: self.
+	yEntryMorph getsCrEsc: self! !
 
 !PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 12/30/2021 11:13:39'!
 model: aModel
@@ -1092,9 +1059,10 @@ example1
 		open: model
 		label: 'Point Value' ! !
 
-!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:26:21'!
+!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:41:18'!
 initializeEntry
-	entry := SimpleNumberEntryMorph positiveFloatDefault: 1.0 maxNumChars: 8
+	entry := SimpleNumberEntryMorph positiveFloatDefault: 1.0 maxNumChars: 8.
+	entry getsCrEsc: self
 ! !
 
 !PositiveFloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:29:38'!
@@ -1122,9 +1090,10 @@ example2
 	model openInWorld.
 	^ self open: model label: 'Edit a positive float'! !
 
-!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:26:27'!
+!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:47:28'!
 initializeEntry
-	entry := SimpleNumberEntryMorph integerDefault: 0 maxNumChars: 8! !
+	entry := SimpleNumberEntryMorph integerDefault: 0 maxNumChars: 8.
+	entry getsCrEsc: self! !
 
 !PositiveIntegerEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:53:21'!
 checkValidity: aNumber
@@ -1156,9 +1125,10 @@ min: aMinFloat max: aMaxFloat
 	min _ aMinFloat.
 	max _ aMaxFloat ! !
 
-!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 11:23:35'!
+!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:47:42'!
 initializeEntry
-	entry _ SimpleNumberEntryMorph floatRangeFrom: min to: max maxNumChars: 10! !
+	entry _ SimpleNumberEntryMorph floatRangeFrom: min to: max maxNumChars: 10.
+	entry getsCrEsc: self! !
 
 !RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:41:15'!
 checkValidity: aNumber between: min and: max
@@ -1191,7 +1161,7 @@ example1
 	model openInWorld.
 	^ self open: model between: 0 and: 1 label: 'Edit a value in [0 ; 1]'! !
 
-!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 11:41:31'!
+!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/19/2022 16:04:46'!
 example2
 "
 	RangeFloatEntryPanel example2
@@ -1199,27 +1169,17 @@ example2
 	| model |
 	model := SignMorph forObject: 1.15.
 	model openInWorld.
-	^ self open: model between: 0 and: 1 label: 'Edit a value in [0 ; 1]'! !
+	^ self open: model between: 0 and: 5 label: 'Edit a value in [0 ; 5]'! !
 
-!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 15:16:10'!
-example3
-"
-	RangeFloatEntryPanel example3
-"
-	| model panel |
-	model _ ValueHolder with: 3.1415.
-	model inspect.
-	panel _ self open: model between: 3 and: 4 label: 'Edit a value for pi'.
-	model action: [ panel openInWorld]. "Panel is usually closed when property edited in the model, open it again"
-	^ panel ! !
-
-!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:20:29'!
+!StringEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:51:00'!
 initializeEntry
 	entry := OneLineEditorMorph contents: '' .
-	entry layoutSpec: 
-		(LayoutSpec 
-			proportionalWidth: 1 
-			fixedHeight: Preferences windowTitleFont lineSpacing )! !
+	entry 
+		layoutSpec: 
+			(LayoutSpec 
+				proportionalWidth: 1 
+				fixedHeight: Preferences windowTitleFont lineSpacing );
+		crAction: [ self accept ]! !
 
 !StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 3/19/2022 10:19:10'!
 newPane
@@ -1235,7 +1195,7 @@ newPane
 	
 	^ entryLayout ! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/17/2022 21:23:01'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/19/2022 16:36:56'!
 example1
 "
 	StringEntryPanel example1 
@@ -1243,7 +1203,22 @@ example1
 	| model |
 	model := SignMorph forObject: 'Cuis Smalltalk'.
 	model openInWorld.
+	"I use a SqueezeLabelMorph in my title"
 	^ self open: model  label: 'The Smalltalk I use is...'! !
+
+!StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/19/2022 16:37:30'!
+example2
+"
+	StringEntryPanel example2
+"
+	| model panel |
+	model := SignMorph forObject: 'Cuis Smalltalk'.
+	model openInWorld.
+	panel := self open: model  label: 'The Smalltalk I use is...' .
+	"I use a LabelMorph so my title does not shrink"
+	panel titleMorph dontShrinkTitle.
+	panel morphExtent: panel minimumExtent.
+	^panel! !
 
 !StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:55:39'!
 checkValidity: aString
@@ -1343,24 +1318,6 @@ example1
 		addPage: ((WizardPage applyPage: 'Final page' on: wizard) 
 			contents: 'Another description for apply page').
 	^ wizard! !
-
-!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 15:11:33'!
-action: aBlock
-	action _ aBlock ! !
-
-!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 15:11:08'!
-propertyValue
-	^ property ! !
-
-!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 15:10:58'!
-propertyValue: aValue
-	property _ aValue.
-	action ifNotNil: [action valueWithPossibleArgument: property]! !
-
-!ValueHolder class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 15:13:22'!
-with: aProperty
-	^ self new :: 
-		propertyValue: aProperty ! !
 
 !WizardPage methodsFor: 'accessing' stamp: 'hlsf 10/31/2021 20:47:46'!
 buttons

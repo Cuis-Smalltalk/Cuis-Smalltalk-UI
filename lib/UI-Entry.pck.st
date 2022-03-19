@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5091] on 19 March 2022 at 11:42:25 am'!
+'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 4:38:46 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 16!
+!provides: 'UI-Entry' 1 17!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -29,7 +29,7 @@ OneLineEditorMorph class
 
 !classDefinition: #SimpleNumberEntryMorph category: 'UI-Entry'!
 OneLineEditorMorph subclass: #SimpleNumberEntryMorph
-	instanceVariableNames: 'entryChars numCharsToHold theValue validator toString valueAccessor valueUpdator'
+	instanceVariableNames: 'getsCrEsc entryChars numCharsToHold theValue validator toString valueAccessor valueUpdator'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
@@ -52,6 +52,7 @@ I am a simple numeric entry form.  I display and accept numeric values.
 See class side for examples.
 
 iVars
+  getsCrEsc - nil or object which implements methods #cancel (ESC) and #accept (CR)
   entryChars - legal input characters, e.g. '1234567890ABCDEFabcdef'
   numCharsToHold - nil or number of chanrs for fixed size of field
   value - current value, defaulting to 0 (zero)
@@ -833,6 +834,18 @@ fontToUse
 
 	^ Preferences standardListFont ! !
 
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/19/2022 15:37:46'!
+getsCrEsc
+	"Answer nil or object implementing #accept and #cancel"
+	
+	^ getsCrEsc! !
+
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/19/2022 15:38:22'!
+getsCrEsc: whoToNotify
+	"Answer set to nil or object implementing #accept and #cancel"
+	
+	getsCrEsc := whoToNotify! !
+
 !SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/25/2019 10:08:07'!
 measureContents
 	| myFont |
@@ -934,9 +947,17 @@ minumExtent
 
 	^ self measureContents + self extentBorder ! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'NM 1/21/2022 16:07:38'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 3/19/2022 15:44:03'!
 keyStroke: aKeyboardEvent
 	"Check for legal char if in ASCII range, else let super so it"
+	
+	(self getsCrEsc) "Check for CR->accept or Esc->cancel"
+		ifNotNil: [ :whoToInform |
+			(aKeyboardEvent isEsc) 
+				ifTrue: [ whoToInform cancel. ^self].
+			(aKeyboardEvent isReturnKey)
+				ifTrue: [ whoToInform accept. ^self].
+		].
 	
 	(aKeyboardEvent isKeystroke) 
 		ifTrue: [ | keyChar |
@@ -979,7 +1000,7 @@ refreshValueFrom: model
 				self redrawNeeded
 	]! !
 
-!SimpleNumberEntryMorph methodsFor: 'initialization' stamp: 'NM 1/21/2022 16:08:29'!
+!SimpleNumberEntryMorph methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:39:48'!
 legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue validator: aClosureToValidate toString: aClosureForString
 
 	". the character Backspace is always allowd to permit deletion "
@@ -988,14 +1009,16 @@ legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue val
 	theValue := initialValue.
 	validator := aClosureToValidate.
 	toString := aClosureForString.
-	self contents: (self toString value: initialValue).
-	self color: Color black.
-	self crAction: [ | newString newVal |
-		newString := self editor string.
-		(newString size = 0)
-			ifTrue: [ newVal := nil ] "Empty String"
-			ifFalse: [ newVal := self validator value: newString ].
-		newVal ifNil: [ self flash.  "rejected"
+	self 
+		contents: (self toString value: initialValue);
+		getsCrEsc: nil;
+		color: Color black;
+		crAction: [ | newString newVal |
+			newString := self editor string.
+			(newString size = 0)
+				ifTrue: [ newVal := nil ] "Empty String"
+				ifFalse: [ newVal := self validator value: newString ].
+			newVal ifNil: [ 	self flash.  "rejected"
 						self contents: (self toString value: self value).
 				 ]
 				 ifNotNil: [ self setValue: newVal ]. "accepted"
@@ -1010,13 +1033,13 @@ legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue val
 	].
 ! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 11:05:30'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 3/19/2022 15:36:26'!
 circleDegrees
 " SimpleNumberEntryMorph circleDegrees openInWorld "
 "Answer 0..360.0 or nil"
 	^ self new
 			legalChars: '12345.67890'
-		     numCharsToHold: 5 
+		     	numCharsToHold: 5 
 			value: 0 
 			validator: [ :str | | degrees |
 				degrees := [ str asNumber ] on: Error do: [ -1 ].
@@ -1153,14 +1176,14 @@ percentInteger
 			] 
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 11:11:23'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 3/19/2022 15:51:35'!
 rgbOneOf
 " SimpleNumberEntryMorph rgbOneOf openInWorld "
 "Answer 0..255 or nil"
 
 	^ self new
 			legalChars: '1234567890'
-		     numCharsToHold: 3 
+		     	numCharsToHold: 3 
 			value: 0 
 			validator: [ :str | | val |
 				 val := [str asNumber ] on: Error do: [ -1 ].

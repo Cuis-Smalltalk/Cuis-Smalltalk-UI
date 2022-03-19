@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:03 pm'!
+'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 4:38:41 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 15!
+!provides: 'UI-Base-Morphs' 1 16!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -176,7 +176,7 @@ color
 
 	^ Color transparent ! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 1/17/2022 12:43:06'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 3/19/2022 16:31:22'!
 dontShrinkTitle
 
 	| oldTitle |
@@ -185,7 +185,11 @@ dontShrinkTitle
 				contents: titleMorph contents 
 				font: titleMorph font
 				"emphasis: titleMorph emphasis" .
-	self replaceSubmorph: oldTitle by: titleMorph! !
+	self 
+		replaceSubmorph: oldTitle by: titleMorph;
+		morphExtent: self minimumExtent; "recalculate"
+		redrawNeeded.
+		! !
 
 !WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 11/7/2021 14:14:49'!
 height
@@ -242,7 +246,7 @@ minimumButtonsExtent
 	width := (numButtons * self buttonExtent x) + (numButtons + 2 * self buttonSeparation).
 	^ width @ height! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 11/23/2016 14:52:05'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 3/19/2022 16:35:47'!
 minimumExtent
 
 	| minButtonExt minTitleExt |
@@ -251,15 +255,12 @@ minimumExtent
 	^ (minButtonExt x + minTitleExt x) 
      	   @ (minButtonExt y max: minTitleExt y)! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'jmv 4/25/2019 10:08:37'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 3/19/2022 16:26:52'!
 minimumTitleExtent
-	"My titleString can shrink a bit but not completely"
-	| font |
-	font := Preferences windowTitleFont.
-
-	"Keep space for 8 characters"
-	^ (8 * (font widthOf: $A)) @ (4 + font lineSpacing)
-	! !
+	"My titleMorph may be a LabelMorph or a SqueezeLabelMorph.
+	 It knows.."
+	
+	^ titleMorph ifNil: [ 100 @ 30 ] ifNotNil: [ :t | t 	minimumExtent ]! !
 
 !WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 4/23/2015 16:21'!
 closeButtonClicked
