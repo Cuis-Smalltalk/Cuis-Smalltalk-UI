@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5094] on 17 March 2022 at 11:45:07 pm'!
+'From Cuis 6.0 [latest update: #5091] on 19 March 2022 at 11:42:20 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 31!
+!provides: 'UI-Panel' 1 32!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -50,7 +50,7 @@ EditPanel class
 
 !classDefinition: #ValueEntryPanel category: 'UI-Panel'!
 DialogPanel subclass: #ValueEntryPanel
-	instanceVariableNames: 'kind'
+	instanceVariableNames: 'entry'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -60,7 +60,7 @@ ValueEntryPanel class
 
 !classDefinition: #CharacterEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #CharacterEntryPanel
-	instanceVariableNames: 'characterEditMorph'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -80,7 +80,7 @@ PointEntryPanel class
 
 !classDefinition: #PositiveFloatEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PositiveFloatEntryPanel
-	instanceVariableNames: 'numberEntryMorph'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -90,7 +90,7 @@ PositiveFloatEntryPanel class
 
 !classDefinition: #PositiveIntegerEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PositiveIntegerEntryPanel
-	instanceVariableNames: 'numberEntryMorph'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -98,9 +98,19 @@ ValueEntryPanel subclass: #PositiveIntegerEntryPanel
 PositiveIntegerEntryPanel class
 	instanceVariableNames: ''!
 
+!classDefinition: #RangeFloatEntryPanel category: 'UI-Panel'!
+ValueEntryPanel subclass: #RangeFloatEntryPanel
+	instanceVariableNames: 'min max'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'RangeFloatEntryPanel class' category: 'UI-Panel'!
+RangeFloatEntryPanel class
+	instanceVariableNames: ''!
+
 !classDefinition: #StringEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #StringEntryPanel
-	instanceVariableNames: 'stringEditMorph'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -154,7 +164,9 @@ Examples:
 I am an abstract class for editing simple values.
 
 I take a model which has accessors #propertyValue and #propertyValue:
-which get and set the value I am editing.!
+which get and set the value I am editing.
+
+- entry the morph I am using to edit the model!
 
 !CharacterEntryPanel commentStamp: '<historical>' prior: 0!
 I provide for editing/changing a single character.!
@@ -167,7 +179,7 @@ My xEntryMorph and yEntryMorph hold the current points x@y value.
 !
 
 !PositiveFloatEntryPanel commentStamp: '<historical>' prior: 0!
-I edit positive real numbers!
+I edit a real number in the interval [min ; max]!
 
 !PositiveIntegerEntryPanel commentStamp: '<historical>' prior: 0!
 I edit positive integers!
@@ -610,6 +622,16 @@ initialize
 	
 ! !
 
+!Panel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 11:14:01'!
+openInWorld
+	self morphPosition: 
+			(RealEstateAgent 
+					initialFrameFor: self 
+					initialExtent: self minimumExtent 
+					world: self runningWorld ) topLeft;
+		widgetsColor: self windowColor.
+	super 	openInWorld! !
+
 !Panel methodsFor: 'testing' stamp: 'KenD 12/9/2013 16:45'!
 is: aSymbol
 	^ aSymbol == #Panel or: [ super is: aSymbol ]! !
@@ -722,23 +744,15 @@ open: model
 
 	^self open: model label: nil! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 12:50:12'!
+!Panel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:21:28'!
 open: model label: aString
-
 	|  window |
-	window _ self new.
-	window
+	window _ self new ::
 		model: model;
 		buildMorphicWindow.
 	aString ifNotNil: [ window setLabel: aString ].
-	^ window 	morphPosition: 
-			(RealEstateAgent 
-					initialFrameFor: window 
-					initialExtent: window minimumExtent 
-					world: self runningWorld ) topLeft;
-		widgetsColor: window windowColor;
-		openInWorld;
-		yourself! !
+	window openInWorld.
+	^ window! !
 
 !Panel class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:02:35'!
 categoryInNewMorphMenu
@@ -870,26 +884,22 @@ newButtonArea
 		color: self widgetsColor.
 	^ buttonArea! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/17/2022 23:31:00'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:22:27'!
 accept
 	self delete.
-	self model 
-		ifNotNil: [ :myModel | 
-			myModel propertyValue: self editor value 
-		].! !
+	self model 		ifNotNil: [ :myModel | 			
+		myModel propertyValue: entry value 		].! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'KenD 12/22/2016 15:24:13'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:22:36'!
 cancel
-
 	self delete! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/17/2022 23:33:24'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:22:12'!
 valueWhenDropped
 	
 	^ self model  
-		ifNotNil: [ :m | 
-			m propertyValue: self editor value 
-		] ifNil: [ self editor value ]! !
+		ifNotNil: [ :m | 	m propertyValue: entry value ] 
+		ifNil: [ entry value ]! !
 
 !ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 12/25/2021 10:30:40'!
 newButtonArea
@@ -917,73 +927,62 @@ newButtonArea
 		
 	^ buttonArea ! !
 
-!ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 3/17/2022 23:15:29'!
+!ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 3/19/2022 10:22:57'!
 newPane
-
 	| entryLayout |
 	entryLayout := LayoutMorph newRow.
 	entryLayout 
 		separation: self defaultSeparation;
 		axisEdgeWeight: #center;
-		addMorph: self editor ; "set in #initialize"
+		addMorph: entry ; "set in #initialize"
 		color: (Color transparent).
-	
 	^ entryLayout ! !
 
-!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/17/2022 23:10:24'!
+!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:19:26'!
 initialize
-	self initializeEditor.
+	self initializeEntry.
 	super initialize.
 ! !
 
-!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/17/2022 23:10:38'!
-initializeEditor
+!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:19:26'!
+initializeEntry
 	self subclassResponsibility 
 ! !
 
-!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/17/2022 23:25:26'!
+!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:23:21'!
 model: aModel
 	super model: aModel.
-	self editor ifNotNil: [:editor | editor setValue: aModel propertyValue]! !
+	entry ifNotNil: [:anEntry | anEntry setValue: aModel propertyValue]! !
 
-!ValueEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:24:48'!
-editor
+!ValueEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 10:21:04'!
+entry
 "Subclass should redefine if needed"
-	^ nil! !
+	^ entry! !
 
 !ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:25'!
 checkValidity: aModel
 	self subclassResponsibility ! !
 
-!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/17/2022 17:51:38'!
+!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 10:59:27'!
 open: aModel label: stringName
 	self checkValidity: aModel propertyValue.
-	super open: aModel label: stringName.! !
+	^ super open: aModel label: stringName.! !
 
-!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 3/17/2022 23:14:28'!
+!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:23:54'!
 accept
-	
 	self delete.
-	self model 
-		ifNotNil: [ :myModel | 
-			myModel propertyValue: (self editor value at: 1) 
-		].! !
+	self model ifNotNil: [ :myModel | 
+		myModel propertyValue: (entry value at: 1) ]! !
 
-!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 3/17/2022 23:14:32'!
+!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:24:16'!
 valueWhenDropped
-	
 	self model 
-		ifNotNil: [ :m | 
-			m propertyValue: (self editor value at: 1) 
-		] ifNil: [ '_' ].! !
+		ifNotNil: [ :m | m propertyValue: (entry value at: 1) ] 
+		ifNil: [ '_' ]! !
 
-!CharacterEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:14:12'!
-editor
-	^ characterEditMorph! !
-
-!CharacterEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/17/2022 23:09:48'!
-initializeEditor
-	characterEditMorph := (SimpleNumberEntryMorph singleCharSelection: $c).
+!CharacterEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:23:35'!
+initializeEntry
+	entry := SimpleNumberEntryMorph singleCharSelection: $c
 ! !
 
 !CharacterEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:45'!
@@ -1002,29 +1001,22 @@ example1
 	model openInWorld.
 	^ self open: model label: 'Key in a character'! !
 
-!PointEntryPanel methodsFor: 'events' stamp: 'KenD 4/28/2019 18:50:41'!
-accept
-	
+!PointEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:24:48'!
+accept	
 	self delete.
-	self model 
-		ifNotNil: [ :myModel | 
-			myModel propertyValue: 
-				(xEntryMorph value @ yEntryMorph value) 
-		].! !
+	self model ifNotNil: [ :myModel | 
+		myModel propertyValue: (xEntryMorph value @ yEntryMorph value) ]! !
 
-!PointEntryPanel methodsFor: 'events' stamp: 'KenD 3/18/2019 17:03:19'!
+!PointEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:25:11'!
 valueWhenDropped
-
 	self model 
-		ifNotNil: [ :m | 
-			m propertyValue: 
-				(xEntryMorph value @ yEntryMorph value) 
-		] ifNil: [ 0@0 ]! !
+		ifNotNil: [ :m | m propertyValue: 	(xEntryMorph value @ yEntryMorph value) ] 
+		ifNil: [ 0@0 ]! !
 
-!PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/17/2022 23:10:57'!
-initializeEditor
-	xEntryMorph := (SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8).
-	yEntryMorph := (SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8)! !
+!PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:25:22'!
+initializeEntry
+	xEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
+	yEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8! !
 
 !PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 12/30/2021 11:13:39'!
 model: aModel
@@ -1064,30 +1056,39 @@ example1
 		open: model
 		label: 'Point Value' ! !
 
-!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/17/2022 23:11:13'!
-initializeEditor
-	numberEntryMorph := 
-		(SimpleNumberEntryMorph 
-			positiveFloatDefault: 1.0 
-			maxNumChars: 8)
+!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:26:21'!
+initializeEntry
+	entry := SimpleNumberEntryMorph positiveFloatDefault: 1.0 maxNumChars: 8
 ! !
-
-!PositiveFloatEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:15:54'!
-editor
-	^ numberEntryMorph ! !
 
 !PositiveFloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:29:38'!
 checkValidity: aNumber
 	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Positive Number ' , aNumber printString ].
 	(aNumber >= 0) ifFalse: [ self error: 'I require a Positive Number: ' , aNumber printString ]! !
 
-!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/17/2022 23:11:29'!
-initializeEditor
-	numberEntryMorph := (SimpleNumberEntryMorph integerDefault: 0 maxNumChars: 8)! !
+!PositiveFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 11:25:47'!
+example1
+"
+	PositiveFloatEntryPanel example1
+"
+	| model |
+	model := SignMorph forObject: 3.1415.
+	model openInWorld.
+	^ self open: model label: 'Edit a positive float'! !
 
-!PositiveIntegerEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:36:13'!
-editor
-	^ numberEntryMorph! !
+!PositiveFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 11:31:13'!
+example2
+"
+	PositiveFloatEntryPanel example2
+"
+	| model |
+	model := SignMorph forObject: -3.1415.
+	model openInWorld.
+	^ self open: model label: 'Edit a positive float'! !
+
+!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:26:27'!
+initializeEntry
+	entry := SimpleNumberEntryMorph integerDefault: 0 maxNumChars: 8! !
 
 !PositiveIntegerEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:53:21'!
 checkValidity: aNumber
@@ -1114,15 +1115,65 @@ example2
 	"Expect failed invariant"
 	^ self open: model label: 'Can''t negative integer'! !
 
-!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/17/2022 23:11:55'!
-initializeEditor
-	stringEditMorph := OneLineEditorMorph contents: '' .
-	stringEditMorph layoutSpec: 
+!RangeFloatEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 10:55:50'!
+min: aMinFloat max: aMaxFloat
+	min _ aMinFloat.
+	max _ aMaxFloat ! !
+
+!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 11:23:35'!
+initializeEntry
+	entry _ SimpleNumberEntryMorph floatRangeFrom: min to: max maxNumChars: 10! !
+
+!RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:41:15'!
+checkValidity: aNumber between: min and: max
+	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Number ' , aNumber printString ].
+	(aNumber between: min and: max) ifFalse: [
+		self error: aNumber printString, ' is not in [ ', min printString, ' ; ', max printString, ' ]']
+		! !
+
+!RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:38:55'!
+open: aModel between: aMin and: aMax label: stringName
+| panel |
+	self checkValidity: aModel propertyValue between: aMin and: aMax.
+	panel _ self basicNew :: 
+		min: aMin max: aMax;
+		initialize ;
+		model: aModel;
+		buildMorphicWindow.
+	stringName ifNotNil: [panel setLabel: stringName].
+	panel openInWorld.
+	^ panel
+		! !
+
+!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 11:41:38'!
+example1
+"
+	RangeFloatEntryPanel example1
+"
+	| model |
+	model := SignMorph forObject: 0.15.
+	model openInWorld.
+	^ self open: model between: 0 and: 1 label: 'Edit a value in [0 ; 1]'! !
+
+!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 11:41:31'!
+example2
+"
+	RangeFloatEntryPanel example2
+"
+	| model |
+	model := SignMorph forObject: 1.15.
+	model openInWorld.
+	^ self open: model between: 0 and: 1 label: 'Edit a value in [0 ; 1]'! !
+
+!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:20:29'!
+initializeEntry
+	entry := OneLineEditorMorph contents: '' .
+	entry layoutSpec: 
 		(LayoutSpec 
 			proportionalWidth: 1 
 			fixedHeight: Preferences windowTitleFont lineSpacing )! !
 
-!StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 3/17/2022 23:17:26'!
+!StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 3/19/2022 10:19:10'!
 newPane
 
 	| entryLayout |
@@ -1130,16 +1181,11 @@ newPane
 	entryLayout 
 		separation: self defaultSeparation;
 		axisEdgeWeight: #rowLeft;
-		addMorph: self editor ; "set in #initialize"
+		addMorph: self entry ; "set in #initialize"
 		color: Color transparent;
 		borderColor: Color black.
 	
 	^ entryLayout ! !
-
-!StringEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:16:48'!
-editor
-
-	^ stringEditMorph ! !
 
 !StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/17/2022 21:23:01'!
 example1
