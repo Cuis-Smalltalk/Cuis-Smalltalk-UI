@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 3:38:18 pm'!
+'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 5:17:23 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 33!
+!provides: 'UI-Panel' 1 34!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -66,6 +66,16 @@ ValueEntryPanel subclass: #CharacterEntryPanel
 	category: 'UI-Panel'!
 !classDefinition: 'CharacterEntryPanel class' category: 'UI-Panel'!
 CharacterEntryPanel class
+	instanceVariableNames: ''!
+
+!classDefinition: #FloatEntryPanel category: 'UI-Panel'!
+ValueEntryPanel subclass: #FloatEntryPanel
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'FloatEntryPanel class' category: 'UI-Panel'!
+FloatEntryPanel class
 	instanceVariableNames: ''!
 
 !classDefinition: #PointEntryPanel category: 'UI-Panel'!
@@ -181,6 +191,9 @@ which get and set the value I am editing.
 !CharacterEntryPanel commentStamp: '<historical>' prior: 0!
 I provide for editing/changing a single character.!
 
+!FloatEntryPanel commentStamp: '<historical>' prior: 0!
+I edit floats!
+
 !PointEntryPanel commentStamp: '<historical>' prior: 0!
 I am a panel for filling in a Point value.
 
@@ -189,10 +202,13 @@ My xEntryMorph and yEntryMorph hold the current points x@y value.
 !
 
 !PositiveFloatEntryPanel commentStamp: '<historical>' prior: 0!
-I edit a real number in the interval [min ; max]!
+I edit positif floats!
 
 !PositiveIntegerEntryPanel commentStamp: '<historical>' prior: 0!
 I edit positive integers!
+
+!RangeFloatEntryPanel commentStamp: '<historical>' prior: 0!
+I edit a real number in the interval [min ; max]!
 
 !StringEntryPanel commentStamp: '<historical>' prior: 0!
 I allow a user to edit a string!
@@ -1010,6 +1026,16 @@ example1
 	model := SignMorph forObject: Character space.
 	model openInWorld.
 	^ self open: model label: 'Key in a character'! !
+
+!FloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 16:54:16'!
+initializeEntry
+	entry := SimpleNumberEntryMorph floatDefault: 1.0 maxNumChars: 8
+! !
+
+!FloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 16:59:38'!
+checkValidity: aNumber
+	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Number ' , aNumber printString ].
+	! !
 
 !PointEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:24:48'!
 accept	
