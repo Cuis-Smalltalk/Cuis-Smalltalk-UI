@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5094] on 17 March 2022 at 11:34:49 pm'!
+'From Cuis 6.0 [latest update: #5091] on 19 March 2022 at 11:42:25 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 14!
+!provides: 'UI-Entry' 1 16!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -490,7 +490,7 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 		line: x0+halfW@bottom to: x1+halfW@(top+w)
 		width: w color: textCursorColor! !
 
-!OneLineEditorMorph methodsFor: 'drawing' stamp: 'KenD 10/23/2020 13:50:33'!
+!OneLineEditorMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:09:04'!
 drawOn: aCanvas
 	self hasSelection ifTrue: [ self drawSelectionOn: aCanvas ].
 	self hasTextCursor ifTrue: [ self drawTextCursorOn: aCanvas ].
@@ -501,7 +501,7 @@ drawOn: aCanvas
 		color: color.
 	(borderWidth > 0) ifTrue: [
 		aCanvas
-			frameRectangle: (0@0 extent: extent)
+			frameRectangle: ((0@0 extent: extent) expandBy: 2)
 			color: borderColor
 			borderWidth: borderWidth
 			borderStyleSymbol: #simple ]! !
@@ -520,14 +520,14 @@ drawSelectionOn: aCanvas
 		fillRectangle: (leftX+1 @ 1 corner: (rightX + 2) @ (bottom + 2))
 		color: (Theme current textHighlightFocused: self hasKeyboardFocus)! !
 
-!OneLineEditorMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:07:30'!
+!OneLineEditorMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:04:40'!
 drawTextCursorOn: aCanvas
 	|  bottom x |
 
 	showTextCursor ifTrue: [
 		bottom _ self baseFont lineSpacing.
 		x _ self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
-		self displayTextCursorAtX: x top: 0 bottom: bottom emphasis: emphasis on: aCanvas ]! !
+		self displayTextCursorAtX: x + 1 top: 0 bottom: bottom emphasis: emphasis on: aCanvas ]! !
 
 !OneLineEditorMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 08:43'!
 clickAndHalf: aMouseButtonEvent localPosition: localEventPosition
@@ -593,6 +593,10 @@ mouseMove: aMouseMoveEvent localPosition: localEventPosition
 	aMouseMoveEvent mouseButton1Pressed ifFalse: [ ^ self ].
 	self handleInteraction: [
 		self editor mouseMove: aMouseMoveEvent index: (self characterIndexAtPoint: localEventPosition) ]! !
+
+!OneLineEditorMorph methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:08:33'!
+defaultBorderWidth
+	^ Theme current buttonBorderWidth! !
 
 !OneLineEditorMorph methodsFor: 'initialization' stamp: 'cbr 12/3/2010 23:29'!
 defaultColor
@@ -894,9 +898,8 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 	"Displace my text 4@4 from parent"
 	super displayTextCursorAtX: x + 4 top: top + 2 bottom: bottom + 2 emphasis: anEmphasis on: aCanvas! !
 
-!SimpleNumberEntryMorph methodsFor: 'drawing' stamp: 'KenD 11/7/2021 14:19:33'!
+!SimpleNumberEntryMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:34:24'!
 drawOn: aCanvas
-
 	self hasSelection     ifTrue: [ self drawSelectionOn: aCanvas ].
 	self hasTextCursor ifTrue: [ self drawTextCursorOn: aCanvas ].
 	aCanvas
@@ -904,12 +907,12 @@ drawOn: aCanvas
 		at: 4@4
 		font: self fontToUse
 		color: color.
-		
-	aCanvas
-		frameRectangle: (0@0 extent: self morphExtentInOwner)
-		color: Color black
-		borderWidth: 2
-		borderStyleSymbol: #simple
+	(borderWidth > 0) ifTrue: [	
+		aCanvas
+			frameRectangle: (0@0 extent: self morphExtentInOwner)
+			color:borderColor
+			borderWidth: borderWidth
+			borderStyleSymbol: #simple]
 ! !
 
 !SimpleNumberEntryMorph methodsFor: 'drawing' stamp: 'KenD 6/1/2020 15:47:50'!
