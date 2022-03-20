@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 4:38:52 pm'!
+'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 8:43:03 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 33!
+!provides: 'UI-Panel' 1 34!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -980,10 +980,10 @@ valueWhenDropped
 		ifNotNil: [ :m | m propertyValue: (entry value at: 1) ] 
 		ifNil: [ '_' ]! !
 
-!CharacterEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:40:29'!
+!CharacterEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:05'!
 initializeEntry
 	entry := SimpleNumberEntryMorph singleCharSelection: $c.
-	entry getsCrEsc: self
+	entry acceptCancelReceiver: self
 ! !
 
 !CharacterEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:45'!
@@ -1014,12 +1014,12 @@ valueWhenDropped
 		ifNotNil: [ :m | m propertyValue: 	(xEntryMorph value @ yEntryMorph value) ] 
 		ifNil: [ 0@0 ]! !
 
-!PointEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:47:03'!
+!PointEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:13'!
 initializeEntry
 	xEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
 	yEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
-	xEntryMorph getsCrEsc: self.
-	yEntryMorph getsCrEsc: self! !
+	xEntryMorph acceptCancelReceiver: self.
+	yEntryMorph acceptCancelReceiver: self! !
 
 !PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 12/30/2021 11:13:39'!
 model: aModel
@@ -1059,10 +1059,10 @@ example1
 		open: model
 		label: 'Point Value' ! !
 
-!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:41:18'!
+!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:18'!
 initializeEntry
 	entry := SimpleNumberEntryMorph positiveFloatDefault: 1.0 maxNumChars: 8.
-	entry getsCrEsc: self
+	entry acceptCancelReceiver: self
 ! !
 
 !PositiveFloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:29:38'!
@@ -1090,10 +1090,10 @@ example2
 	model openInWorld.
 	^ self open: model label: 'Edit a positive float'! !
 
-!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:47:28'!
+!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:25'!
 initializeEntry
 	entry := SimpleNumberEntryMorph integerDefault: 0 maxNumChars: 8.
-	entry getsCrEsc: self! !
+	entry acceptCancelReceiver: self! !
 
 !PositiveIntegerEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:53:21'!
 checkValidity: aNumber
@@ -1125,10 +1125,10 @@ min: aMinFloat max: aMaxFloat
 	min _ aMinFloat.
 	max _ aMaxFloat ! !
 
-!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:47:42'!
+!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:29'!
 initializeEntry
 	entry _ SimpleNumberEntryMorph floatRangeFrom: min to: max maxNumChars: 10.
-	entry getsCrEsc: self! !
+	entry acceptCancelReceiver: self! !
 
 !RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:41:15'!
 checkValidity: aNumber between: min and: max

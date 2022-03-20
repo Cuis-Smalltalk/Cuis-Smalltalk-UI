@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 4:38:46 pm'!
+'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 8:42:58 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 17!
+!provides: 'UI-Entry' 1 18!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -19,7 +19,7 @@ SimpleEditor class
 
 !classDefinition: #OneLineEditorMorph category: 'UI-Entry'!
 BoxedMorph subclass: #OneLineEditorMorph
-	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction'
+	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction acceptCancelReceiver'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
@@ -29,7 +29,7 @@ OneLineEditorMorph class
 
 !classDefinition: #SimpleNumberEntryMorph category: 'UI-Entry'!
 OneLineEditorMorph subclass: #SimpleNumberEntryMorph
-	instanceVariableNames: 'getsCrEsc entryChars numCharsToHold theValue validator toString valueAccessor valueUpdator'
+	instanceVariableNames: 'entryChars numCharsToHold theValue validator toString valueAccessor valueUpdator'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
@@ -819,6 +819,18 @@ example2
 		borderColor: Color red.
 	^ editor! !
 
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 08:37:39'!
+acceptCancelReceiver
+	"Answer nil or object implementing #accept and #cancel"
+	
+	^ acceptCancelReceiver! !
+
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 08:38:03'!
+acceptCancelReceiver: whoToNotify
+	"Answer set to nil or object implementing #accept and #cancel"
+	
+	acceptCancelReceiver := whoToNotify! !
+
 !SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 2/28/2015 11:04'!
 disablesEdition
 
@@ -833,18 +845,6 @@ entryChars
 fontToUse
 
 	^ Preferences standardListFont ! !
-
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/19/2022 15:37:46'!
-getsCrEsc
-	"Answer nil or object implementing #accept and #cancel"
-	
-	^ getsCrEsc! !
-
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/19/2022 15:38:22'!
-getsCrEsc: whoToNotify
-	"Answer set to nil or object implementing #accept and #cancel"
-	
-	getsCrEsc := whoToNotify! !
 
 !SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/25/2019 10:08:07'!
 measureContents
@@ -947,11 +947,11 @@ minumExtent
 
 	^ self measureContents + self extentBorder ! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 3/19/2022 15:44:03'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 08:38:32'!
 keyStroke: aKeyboardEvent
 	"Check for legal char if in ASCII range, else let super so it"
 	
-	(self getsCrEsc) "Check for CR->accept or Esc->cancel"
+	(self acceptCancelReceiver) "Check for CR->accept or Esc->cancel"
 		ifNotNil: [ :whoToInform |
 			(aKeyboardEvent isEsc) 
 				ifTrue: [ whoToInform cancel. ^self].
@@ -1000,7 +1000,7 @@ refreshValueFrom: model
 				self redrawNeeded
 	]! !
 
-!SimpleNumberEntryMorph methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:39:48'!
+!SimpleNumberEntryMorph methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:35'!
 legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue validator: aClosureToValidate toString: aClosureForString
 
 	". the character Backspace is always allowd to permit deletion "
@@ -1011,7 +1011,7 @@ legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue val
 	toString := aClosureForString.
 	self 
 		contents: (self toString value: initialValue);
-		getsCrEsc: nil;
+		acceptCancelReceiver: nil;
 		color: Color black;
 		crAction: [ | newString newVal |
 			newString := self editor string.
