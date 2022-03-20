@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 8:43:03 am'!
+'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 4:11:53 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 34!
+!provides: 'UI-Panel' 1 36!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -992,13 +992,13 @@ checkValidity: aChar
 		ifFalse: [ self error: 'I require a Character: ' , aChar printString ].
 ! !
 
-!CharacterEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/17/2022 21:23:26'!
+!CharacterEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/20/2022 15:58:16'!
 example1
 " 
 	CharacterEntryPanel example1 
 "
 	| model |
-	model := SignMorph forObject: Character space.
+	model := SignMorph forObject: $A.
 	model openInWorld.
 	^ self open: model label: 'Key in a character'! !
 
@@ -1059,8 +1059,9 @@ example1
 		open: model
 		label: 'Point Value' ! !
 
-!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:18'!
+!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 16:01:08'!
 initializeEntry
+
 	entry := SimpleNumberEntryMorph positiveFloatDefault: 1.0 maxNumChars: 8.
 	entry acceptCancelReceiver: self
 ! !
@@ -1125,8 +1126,9 @@ min: aMinFloat max: aMaxFloat
 	min _ aMinFloat.
 	max _ aMaxFloat ! !
 
-!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:29'!
+!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 16:02:44'!
 initializeEntry
+
 	entry _ SimpleNumberEntryMorph floatRangeFrom: min to: max maxNumChars: 10.
 	entry acceptCancelReceiver: self! !
 
@@ -1171,15 +1173,16 @@ example2
 	model openInWorld.
 	^ self open: model between: 0 and: 5 label: 'Edit a value in [0 ; 5]'! !
 
-!StringEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/19/2022 15:51:00'!
+!StringEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 16:03:00'!
 initializeEntry
+
 	entry := OneLineEditorMorph contents: '' .
 	entry 
 		layoutSpec: 
 			(LayoutSpec 
 				proportionalWidth: 1 
 				fixedHeight: Preferences windowTitleFont lineSpacing );
-		crAction: [ self accept ]! !
+		acceptCancelReceiver: self! !
 
 !StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 3/19/2022 10:19:10'!
 newPane
@@ -1195,7 +1198,7 @@ newPane
 	
 	^ entryLayout ! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/19/2022 16:36:56'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/20/2022 16:05:08'!
 example1
 "
 	StringEntryPanel example1 
@@ -1204,7 +1207,7 @@ example1
 	model := SignMorph forObject: 'Cuis Smalltalk'.
 	model openInWorld.
 	"I use a SqueezeLabelMorph in my title"
-	^ self open: model  label: 'The Smalltalk I use is...'! !
+	^ self open: model  label: 'The Smalltalk I use'! !
 
 !StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/19/2022 16:37:30'!
 example2

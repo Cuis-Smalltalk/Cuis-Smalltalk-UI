@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 8:42:58 am'!
+'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 4:11:48 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 18!
+!provides: 'UI-Entry' 1 20!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -355,6 +355,18 @@ includeInNewMorphMenu
 	
 	^ false! !
 
+!OneLineEditorMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:52'!
+acceptCancelReceiver
+	"Answer nil or object implementing #accept and #cancel"
+	
+	^ acceptCancelReceiver! !
+
+!OneLineEditorMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:59'!
+acceptCancelReceiver: whoToNotify
+	"Answer set to nil or object implementing #accept and #cancel"
+	
+	acceptCancelReceiver := whoToNotify! !
+
 !OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 6/11/2020 16:50:03'!
 baseFont
 
@@ -534,13 +546,22 @@ drawTextCursorOn: aCanvas
 clickAndHalf: aMouseButtonEvent localPosition: localEventPosition
 	self handleInteraction: [ self editor clickAndHalf ]! !
 
-!OneLineEditorMorph methodsFor: 'events' stamp: 'jmv 1/5/2021 14:34:30'!
+!OneLineEditorMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 11:35:24'!
 keyStroke: aKeyboardEvent
 	"Handle a keystroke event."
 
 	(self focusKeyboardFor: aKeyboardEvent)
 		ifTrue: [ ^ self ].
-
+	
+	"Check for acceptCancelReceiver"
+	(self acceptCancelReceiver) "Check for CR->accept or Esc->cancel"
+		ifNotNil: [ :whoToInform |
+			(aKeyboardEvent isEsc) 
+				ifTrue: [ whoToInform cancel. ^self].
+			(aKeyboardEvent isReturnKey)
+				ifTrue: [ whoToInform accept. ^self].
+		].
+	
 	"Return - check for special action
 	Note: Code below assumes that this was some
 	input field reacting on Return."
@@ -819,18 +840,6 @@ example2
 		borderColor: Color red.
 	^ editor! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 08:37:39'!
-acceptCancelReceiver
-	"Answer nil or object implementing #accept and #cancel"
-	
-	^ acceptCancelReceiver! !
-
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 08:38:03'!
-acceptCancelReceiver: whoToNotify
-	"Answer set to nil or object implementing #accept and #cancel"
-	
-	acceptCancelReceiver := whoToNotify! !
-
 !SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 2/28/2015 11:04'!
 disablesEdition
 
@@ -947,35 +956,21 @@ minumExtent
 
 	^ self measureContents + self extentBorder ! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 08:38:32'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 15:56:48'!
 keyStroke: aKeyboardEvent
 	"Check for legal char if in ASCII range, else let super so it"
 	
-	(self acceptCancelReceiver) "Check for CR->accept or Esc->cancel"
-		ifNotNil: [ :whoToInform |
-			(aKeyboardEvent isEsc) 
-				ifTrue: [ whoToInform cancel. ^self].
-			(aKeyboardEvent isReturnKey)
-				ifTrue: [ whoToInform accept. ^self].
-		].
-	
-	(aKeyboardEvent isKeystroke) 
-		ifTrue: [ | keyChar |
-			keyChar := aKeyboardEvent keyCharacter.
-			". to permit character deletion with backspace " 
-			(keyChar = Character backspace) ifTrue: [ ^ super keyStroke: aKeyboardEvent  ].
-			(self entryChars includes: keyChar)
-				ifFalse: [ "reject"
-					self flash.
-					^ self
-				]
-				ifTrue: [ "Allow selection replacement"
-						((self hasSelection not) 
-						and: [self contents size >= self numCharsToHold])
-							ifTrue: [ self flash. ^ self ]
-				]
-		].
+	((aKeyboardEvent isEsc)
+	  or: [aKeyboardEvent isReturnKey]
+	    or: [aKeyboardEvent isBackspace])
+		ifTrue: [ ^super keyStroke: aKeyboardEvent ].
 
+	(aKeyboardEvent isKeystroke
+	    and: [ self entryChars includes: aKeyboardEvent keyCharacter ]
+		and: [self contents size < self numCharsToHold])
+			ifFalse: [  self flash. ^self ]. "reject"
+		
+	"else OK to add"
 	super keyStroke: aKeyboardEvent! !
 
 !SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 12/19/2013 17:14'!
@@ -1358,7 +1353,7 @@ realFactor: factorMax maxNumChars: numChars
 			] 
 			toString: [ :n | n asFloat printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 3/29/2017 13:56:25'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 3/20/2022 15:59:57'!
 singleCharSelection: aChar
 	"Really a character editor"
 
@@ -1366,7 +1361,7 @@ singleCharSelection: aChar
 			legalChars: '1234567890',
 						'abcdefghijklmnopqrstuvwxyz',
 						'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 
-		     numCharsToHold: 1 
+		     	numCharsToHold: 1 
 			value: aChar 
 			validator: [ :str | str  ]
 			toString: [ :c | c asString ]! !
