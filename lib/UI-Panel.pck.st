@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 21 March 2022 at 3:33:40 pm'!
+'From Cuis 6.0 [latest update: #5093] on 21 March 2022 at 3:42:45 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 38!
+!provides: 'UI-Panel' 1 39!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -206,6 +206,9 @@ I edit a real number greater than zero!
 
 !PositiveIntegerEntryPanel commentStamp: '<historical>' prior: 0!
 I edit positive integers!
+
+!RangeFloatEntryPanel commentStamp: '<historical>' prior: 0!
+I edit a real number in the interval [min ; max]!
 
 !StringEntryPanel commentStamp: '<historical>' prior: 0!
 I allow a user to edit a string!
