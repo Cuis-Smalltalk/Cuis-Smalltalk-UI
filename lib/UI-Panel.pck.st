@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 4:11:53 pm'!
+'From Cuis 6.0 [latest update: #5093] on 21 March 2022 at 3:15:33 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 36!
+!provides: 'UI-Panel' 1 37!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -126,6 +126,16 @@ DialogPanel subclass: #WizardPanel
 	category: 'UI-Panel'!
 !classDefinition: 'WizardPanel class' category: 'UI-Panel'!
 WizardPanel class
+	instanceVariableNames: ''!
+
+!classDefinition: #ValueHolder category: 'UI-Panel'!
+Object subclass: #ValueHolder
+	instanceVariableNames: 'action property'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'ValueHolder class' category: 'UI-Panel'!
+ValueHolder class
 	instanceVariableNames: ''!
 
 !classDefinition: #WizardPage category: 'UI-Panel'!
@@ -1173,6 +1183,18 @@ example2
 	model openInWorld.
 	^ self open: model between: 0 and: 5 label: 'Edit a value in [0 ; 5]'! !
 
+!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/21/2022 15:11:59'!
+example3
+"
+	RangeFloatEntryPanel example3
+"
+	| model panel |
+	model _ ValueHolder with: 3.1415.
+	model inspect.
+	panel _ self open: model between: 3 and: 4 label: 'Edit a value for pi'.
+	model action: [ panel openInWorld]. "Panel is usually closed when property edited in the model, open it again"
+	^ panel! !
+
 !StringEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 16:03:00'!
 initializeEntry
 
@@ -1321,6 +1343,27 @@ example1
 		addPage: ((WizardPage applyPage: 'Final page' on: wizard) 
 			contents: 'Another description for apply page').
 	^ wizard! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:07'!
+action: aBlock
+	action _ aBlock! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:28'!
+propertyValue
+
+	^ property! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:47'!
+propertyValue: aValue
+
+	property _ aValue.
+	action ifNotNil: [action valueWithPossibleArgument: property]! !
+
+!ValueHolder class methodsFor: 'instance creation' stamp: 'KenD 3/21/2022 15:11:17'!
+with: aProperty
+
+	^ self new :: 
+		propertyValue: aProperty! !
 
 !WizardPage methodsFor: 'accessing' stamp: 'hlsf 10/31/2021 20:47:46'!
 buttons
