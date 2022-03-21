@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 4:11:48 pm'!
+'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 6:51:38 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 20!
+!provides: 'UI-Entry' 1 21!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -793,6 +793,11 @@ stopBlinking
 selectAll
 	self editor selectAll.
 	self redrawNeeded! !
+
+!OneLineEditorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/20/2022 18:50:06'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
 
 !OneLineEditorMorph class methodsFor: 'instance creation' stamp: 'jmv 3/16/2011 10:25'!
 contents: aString
