@@ -61,12 +61,15 @@ UI-Panel
 - DialogPanel
 - EditPanel
 - ValueEntryPanel
+- FloatEntryPanel
+- RangeFloatEntryPanel
 - CharacterEntryPanel
 - PointEntryPanel
 - PositiveIntegerEntryPanel
 - PositiveFloatEntryPanel
 - StringEntryPanel
 - PluggableScrollBar
+- ValueHolder
 
 UI-Widgets
 - WheelMorph
