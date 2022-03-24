@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:07 pm'!
+'From Cuis 6.0 [latest update: #5094] on 24 March 2022 at 11:25:23 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 26!
+!provides: 'UI-Click-Select' 1 27!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -551,6 +551,17 @@ update: aSymbol
 adjustLabels: labels to: number
 " We want to be free to adjust as we wish later. So do nothing "! !
 
+!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:10'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:39:48'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
+
 !PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 2/12/2022 10:58:05'!
 example1
 "
@@ -594,17 +605,6 @@ model: aModel getSelected: getter setSelected: setter label: aMorphOrString
 	aModel changed: setter.
 	^ checkbox ! !
 
-!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:10'!
-categoryInNewMorphMenu
-
-	^ 'User Interface'! !
-
-!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:39:48'!
-includeInNewMorphMenu
-	"Return true for all classes that can be instantiated from the menu"
-	
-	^ true! !
-
 !RadioGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:42'!
 buttonClass
 " What kind of button am I, check or radio? "
@@ -631,6 +631,17 @@ registerEventsFor: aMorph with: aButton
 	aMorph 
 		setProperty: #'mouseButton1Up:localPosition:'
 		toValue: [ :event :position |  aButton select ]! !
+
+!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:20'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:40:06'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
 
 !RadioGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 20:50:25'!
 example1
@@ -675,17 +686,6 @@ example2
 	
 	^pallet! !
 
-!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:20'!
-categoryInNewMorphMenu
-
-	^ 'User Interface'! !
-
-!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:40:06'!
-includeInNewMorphMenu
-	"Return true for all classes that can be instantiated from the menu"
-	
-	^ true! !
-
 !DropDownButtonMorph methodsFor: 'action' stamp: 'jmv 3/11/2022 11:08:20'!
 toggleDropDownList
 	dropDownList owner 
@@ -726,6 +726,10 @@ model: anObject
 	model ifNotNil: [model removeActionsWithReceiver: self].
 	anObject ifNotNil: [anObject addDependent: self].
 	model _ anObject! !
+
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 3/24/2022 11:12:26'!
+autoDeselect: aBoolean
+	dropDownList autoDeselect: aBoolean ! !
 
 !DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 2/13/2022 10:36:33'!
 defaultBorderWidth
@@ -775,16 +779,6 @@ delete
 	super delete.
 	dropDownList delete! !
 
-!DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:23:52'!
-model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
-	"Create a 'pluggable' list view on the given model parameterized by the given message selectors."
-	^self new
-		model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel ! !
-
-!DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:27:53'!
-new
-	^ self newRow! !
-
 !DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:35'!
 categoryInNewMorphMenu
 
@@ -794,6 +788,16 @@ categoryInNewMorphMenu
 includeInNewMorphMenu
 	
 	^ true! !
+
+!DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:23:52'!
+model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+	"Create a 'pluggable' list view on the given model parameterized by the given message selectors."
+	^self new
+		model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel ! !
+
+!DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:27:53'!
+new
+	^ self newRow! !
 
 !DropDownButtonMorph class methodsFor: 'examples' stamp: 'hlsf 1/22/2022 10:46:18'!
 example1
