@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 21 March 2022 at 3:42:45 pm'!
+'From Cuis 6.0 [latest update: #5094] on 25 March 2022 at 11:30:30 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 39!
+!provides: 'UI-Panel' 1 40!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -126,6 +126,16 @@ ValueEntryPanel subclass: #StringEntryPanel
 	category: 'UI-Panel'!
 !classDefinition: 'StringEntryPanel class' category: 'UI-Panel'!
 StringEntryPanel class
+	instanceVariableNames: ''!
+
+!classDefinition: #TextEntryPanel category: 'UI-Panel'!
+StringEntryPanel subclass: #TextEntryPanel
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'TextEntryPanel class' category: 'UI-Panel'!
+TextEntryPanel class
 	instanceVariableNames: ''!
 
 !classDefinition: #WizardPanel category: 'UI-Panel'!
@@ -1276,6 +1286,38 @@ example2
 checkValidity: aString
 	(aString isKindOf: String) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
 
+!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/25/2022 10:28:31'!
+initializeEntry
+
+	entry := TextModelMorph withText: '' .
+	entry 
+		layoutSpec: 
+			(LayoutSpec 
+				proportionalWidth: 1 
+				fixedHeight: Preferences windowTitleFont lineSpacing * 4 )! !
+
+!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/25/2022 10:46:01'!
+model: aModel
+	"Set my model and make me me a dependent of the given object."
+
+	model ifNotNil: [model removeActionsWithReceiver: self].
+	aModel ifNotNil: [aModel addDependent: self].
+	model _ aModel	.
+	entry ifNotNil: [:anEntry | anEntry scroller contents: aModel propertyValue]! !
+
+!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 3/25/2022 11:16:17'!
+accept
+	self delete.
+	self model 		ifNotNil: [ :myModel | 			
+		myModel propertyValue: entry scroller contents asString		].! !
+
+!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 3/25/2022 11:16:53'!
+valueWhenDropped
+	
+	^ self model  
+		ifNotNil: [ :m | 	m propertyValue: entry scroller contents asString ] 
+		ifNil: [ entry scroller contents asString]! !
+
 !WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 12/27/2021 10:25:18'!
 newButtonArea
 "Ask the current page its buttons, if any"
@@ -1499,3 +1541,7 @@ standardPage: aString on: aWizard
 		wizard: aWizard ;
 		standardPage: aString;
 		yourself! !
+
+!InnerTextMorph methodsFor: '*UI-Panel' stamp: 'hlsf 3/25/2022 11:16:07'!
+contents
+	^ model actualContents ! !
