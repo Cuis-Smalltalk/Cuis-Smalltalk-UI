@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5094] on 25 March 2022 at 11:30:30 am'!
+'From Cuis 6.0 [latest update: #5094] on 26 March 2022 at 11:26:13 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 40!
+!provides: 'UI-Panel' 1 41!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1004,6 +1004,16 @@ open: aModel label: stringName
 	self checkValidity: aModel propertyValue.
 	^ super open: aModel label: stringName.! !
 
+!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/26/2022 11:26:00'!
+openWide: aModel label: stringName
+"My title is not shrinked, the dialog is extended as necessary to have the tile completely readable"
+	| panel |
+	panel _ self open: aModel label: stringName.
+	panel titleMorph dontShrinkTitle.
+	panel morphExtent: panel minimumExtent.
+	^panel
+	! !
+
 !CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:23:54'!
 accept
 	self delete.
@@ -1268,19 +1278,25 @@ example1
 	"I use a SqueezeLabelMorph in my title"
 	^ self open: model  label: 'The Smalltalk I use'! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/19/2022 16:37:30'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/26/2022 11:24:25'!
 example2
 "
 	StringEntryPanel example2
 "
-	| model panel |
+	| model |
 	model := SignMorph forObject: 'Cuis Smalltalk'.
 	model openInWorld.
-	panel := self open: model  label: 'The Smalltalk I use is...' .
-	"I use a LabelMorph so my title does not shrink"
-	panel titleMorph dontShrinkTitle.
-	panel morphExtent: panel minimumExtent.
-	^panel! !
+	self openWide: model  label: 'The Smalltalk I use is...' .! !
+
+!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/26/2022 11:24:43'!
+example3
+"
+	StringEntryPanel example3
+"
+	| model |
+	model := ValueHolder with: 'a file name'.
+	model action: [:value | Transcript show: value].
+	self openWide: model  label: 'Name the sktech to keep, thiis is a long title'! !
 
 !StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:55:39'!
 checkValidity: aString
