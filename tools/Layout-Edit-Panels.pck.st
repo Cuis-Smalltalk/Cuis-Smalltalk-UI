@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5031] on 31 December 2021 at 12:42:29 pm'!
+'From Cuis 6.0 [latest update: #5095] on 26 March 2022 at 9:29:33 am'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'Layout-Edit-Panels' 1 8!
+!provides: 'Layout-Edit-Panels' 1 9!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
@@ -132,7 +132,7 @@ separationArea: newSeparationArea
 
 	separationArea := newSeparationArea! !
 
-!LayoutMorphEditPanel methodsFor: 'private' stamp: 'KenD 12/13/2016 19:18:31'!
+!LayoutMorphEditPanel methodsFor: 'private' stamp: 'KenD 3/26/2022 09:28:57'!
 colorMorph
 	"Answer a framed color swatch"
 	
@@ -143,18 +143,21 @@ colorMorph
 	imageMorph setProperty: #dropAction 
 				   toValue: [ :aMorph :colorValue |
 								(colorValue isKindOf: Color)
-									ifTrue: [ self modelColor: colorValue ]. 
-									"else ignore"
+									ifTrue: [ 
+										self modelColor: colorValue.
+										aMorph showAcceptAndDeleteSelf
+									]
+									ifFalse: [ aMorph showReject ].
 							].
 	frameMorph := FrameMorph new ::
 		morphExtent: 68@68;
-		borderColor: Color black; 
+		borderColor: Color transparent; 
 		borderWidth: 2; 
 		yourself.
 	frameMorph addMorph: imageMorph.
 	imageMorph morphPosition: 2@2.
 	
-	"Make color swatch draggable"
+	"An imvisible FrameMorph is uses to make contained color swatch draggable"
 	frameMorph setProperty: #allowsSubmorphDrag toValue: true.
 
 	^ frameMorph
