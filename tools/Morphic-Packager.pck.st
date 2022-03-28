@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5093] on 12 March 2022 at 2:59:15 pm'!
+'From Cuis 6.0 [latest update: #5095] on 26 March 2022 at 12:57:11 pm'!
 'Description Save combined Morph into a package which requires its dependent code.
-Restore via 
+Restore via
   Feature require: <package>'!
-!provides: 'Morphic-Packager' 1 12!
+!provides: 'Morphic-Packager' 1 14!
 !requires: 'Cuis-Base' 60 5092 nil!
 SystemOrganization addCategory: 'Morphic-Packager'!
 
@@ -54,7 +54,7 @@ packagesFromDumpOnFile: morphObjectFileEntry object: aMorph
 		
 	! !
 
-!Morph methodsFor: '*morphic-packager' stamp: 'KenD 3/12/2022 14:32:43'!
+!Morph methodsFor: '*morphic-packager' stamp: 'KenD 3/26/2022 12:50:44'!
 packageFileEntry: packageFileEntry 
 requires: packRequires 
 forLoadofName: packageName
@@ -97,10 +97,15 @@ Object subclass: #{1}
 !!{1} class methodsFor: ''class initialization'' stamp: ''{2}''!!
 initialize
 
+   | filePrefix |
+	
+    filePrefix := (CodePackage installedPackages at: #{1})
+		fullFileName pathAndLocalName at: 1.
     [
         (Delay forSeconds: 1) wait.
         UISupervisor whenUIinSafeState: [
-	    (ReferenceStream restoreFromFile: ''{1}.obj'' asFileEntry) openInWorld 
+	    (ReferenceStream restoreFromFile: (filePrefix asString , ''/{1}.obj'') asFileEntry) 
+		  openInWorld 
 	]
     ] fork!! !!
 
