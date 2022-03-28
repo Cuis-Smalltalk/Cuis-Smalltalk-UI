@@ -1,9 +1,9 @@
-'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:30 pm'!
+'From Cuis 6.0 [latest update: #5096] on 28 March 2022 at 11:28:35 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 9!
+!provides: 'UI-Widgets' 1 10!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
 
@@ -751,6 +751,10 @@ gap
 innerRadius
 	^ innerRadius ifNil: [innerRadius _ extent // 2 - buttonSize]! !
 
+!CircularToolbarMorph methodsFor: 'accessing' stamp: 'hlsf 3/28/2022 11:19:16'!
+layerNumber
+	^ 30! !
+
 !CircularToolbarMorph methodsFor: 'accessing' stamp: 'hlsf 6/7/2020 18:15:42'!
 privateButtonSize: anInteger
 	buttonSize _ anInteger! !
@@ -793,11 +797,6 @@ initialize
 		self addMorph: closeButton.
 		closeButton morphPosition: closeButton morphExtent // -2] 
 	! !
-
-!CircularToolbarMorph methodsFor: 'initialization' stamp: 'hlsf 10/2/2021 12:16:46'!
-openInWorld: aWorld
-	super openInWorld: aWorld.
-	self startStepping: #comeToFront stepTime: 10.! !
 
 !CircularToolbarMorph methodsFor: 'change reporting' stamp: 'hlsf 10/10/2021 12:06:25'!
 addedMorph: aMorph
