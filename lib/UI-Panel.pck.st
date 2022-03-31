@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5094] on 26 March 2022 at 11:26:13 am'!
+'From Cuis 6.0 [latest update: #5096] on 30 March 2022 at 6:12:24 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 41!
+!provides: 'UI-Panel' 1 42!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!

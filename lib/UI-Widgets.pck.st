@@ -1,11 +1,21 @@
-'From Cuis 6.0 [latest update: #5096] on 28 March 2022 at 11:28:35 am'!
+'From Cuis 6.0 [latest update: #5096] on 31 March 2022 at 3:39:19 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 10!
+!provides: 'UI-Widgets' 1 12!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
+
+!classDefinition: #ButtonMorph category: 'UI-Widgets'!
+PluggableButtonMorph subclass: #ButtonMorph
+	instanceVariableNames: 'selectedColor argument'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Widgets'!
+!classDefinition: 'ButtonMorph class' category: 'UI-Widgets'!
+ButtonMorph class
+	instanceVariableNames: ''!
 
 !classDefinition: #WheelMorph category: 'UI-Widgets'!
 BoxedMorph subclass: #WheelMorph
@@ -68,6 +78,9 @@ WaitSpinner class
 	instanceVariableNames: 'spinners isSpinnerRunning process'!
 
 
+!ButtonMorph commentStamp: 'hlsf 3/31/2022 15:07:04' prior: 0!
+An iconic button!
+
 !WheelMorph commentStamp: 'hlsf 1/5/2022 12:29:58' prior: 0!
 A wheel widget control. I can be used in two different ways:
 - I send a message directly to a target with a quantity, each time I am rolled,
@@ -112,6 +125,46 @@ See my Class side:
 	WaitSpinner start.  "Show animated WaitSpinner"
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
+
+!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:17:21'!
+adoptWidgetsColor: paneColor
+"Does not honour hit"! !
+
+!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:19:42'!
+argument: aSymbol
+	argument _ aSymbol ! !
+
+!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:00:05'!
+selectedColor
+	^ selectedColor ifNil: [selectedColor _ color darker]! !
+
+!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:14:21'!
+selectedColor: aColor
+	selectedColor _ aColor ! !
+
+!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 3/31/2022 15:15:34'!
+drawMyShapeOn: canvas with: background
+	| borderStyleSymbol |
+	borderStyleSymbol _ self isPressed ifFalse: [ #raised ] ifTrue: [ #inset ].
+	canvas
+		fillRectangle: self morphLocalBounds
+		color: background 
+		borderWidth: borderWidth
+		borderStyleSymbol: borderStyleSymbol
+		baseColorForBorder: borderColor ! !
+
+!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 3/31/2022 15:06:18'!
+drawOn: canvas
+	mouseIsOver | self getState 
+		ifTrue:  [self drawMyShapeOn: canvas with: self selectedColor]
+		ifFalse: [self drawMyShapeOn: canvas with: self color].
+	icon ifNotNil: [canvas image: icon at: (extent - icon extent // 2)]! !
+
+!ButtonMorph methodsFor: 'private' stamp: 'hlsf 3/31/2022 15:20:12'!
+getState
+	^ stateSelector 
+		ifNil: [false]
+		ifNotNil: [model perform: stateSelector withPossiblyWrongSizedArguments: {argument}]! !
 
 !WheelMorph methodsFor: 'accessing'!
 actionSelector
