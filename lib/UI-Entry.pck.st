@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 20 March 2022 at 6:51:38 pm'!
+'From Cuis 6.0 [latest update: #5096] on 1 April 2022 at 12:56:35 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 21!
+!provides: 'UI-Entry' 1 22!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -17,18 +17,18 @@ Editor subclass: #SimpleEditor
 SimpleEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #OneLineEditorMorph category: 'UI-Entry'!
-BoxedMorph subclass: #OneLineEditorMorph
+!classDefinition: #TextEntryMorph category: 'UI-Entry'!
+BoxedMorph subclass: #TextEntryMorph
 	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction acceptCancelReceiver'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'OneLineEditorMorph class' category: 'UI-Entry'!
-OneLineEditorMorph class
+!classDefinition: 'TextEntryMorph class' category: 'UI-Entry'!
+TextEntryMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #SimpleNumberEntryMorph category: 'UI-Entry'!
-OneLineEditorMorph subclass: #SimpleNumberEntryMorph
+TextEntryMorph subclass: #SimpleNumberEntryMorph
 	instanceVariableNames: 'entryChars numCharsToHold theValue validator toString valueAccessor valueUpdator'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -41,7 +41,7 @@ SimpleNumberEntryMorph class
 !SimpleEditor commentStamp: '<historical>' prior: 0!
 See comment in Editor!
 
-!OneLineEditorMorph commentStamp: '<historical>' prior: 0!
+!TextEntryMorph commentStamp: '<historical>' prior: 0!
 A plain text editor for Morphic. Handles only one line. Does not handle fonts/styles, alignment, Smalltalk utilities and any other advanced stuff in TextModelMorph. Just a simple text editor.
 
 Can optionally include a crAction: a zero argument closure, to be evaluated on Cr keystroke.!
@@ -355,29 +355,29 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:52'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:52'!
 acceptCancelReceiver
 	"Answer nil or object implementing #accept and #cancel"
 	
 	^ acceptCancelReceiver! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:59'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:59'!
 acceptCancelReceiver: whoToNotify
 	"Answer set to nil or object implementing #accept and #cancel"
 	
 	acceptCancelReceiver := whoToNotify! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 6/11/2020 16:50:03'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 6/11/2020 16:50:03'!
 baseFont
 
 	font ifNil: [ font _ FontFamily defaultFamilyAndPointSize ].
 	^font! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 3/16/2011 10:34'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 3/16/2011 10:34'!
 contents
 	^contents! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 3/16/2011 10:41'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 3/16/2011 10:41'!
 contents: newContents 
 	contents _ (newContents is: #Text)
 		ifTrue: [
@@ -390,40 +390,50 @@ contents: newContents
 	self fitContents.
 	self redrawNeeded! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 1/5/2013 14:23'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 1/5/2013 14:23'!
 crAction
 	"Answer the optional Cr action"
 	^crAction! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 1/5/2013 14:24'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 1/5/2013 14:24'!
 crAction: aBlock
 	
 	crAction := aBlock! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 9/6/2017 10:02:09'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 9/6/2017 10:02:09'!
 disableEditing
 	self setProperty: #disablesEditing toValue: true.
 	self stopBlinking! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 12/4/2011 22:25'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 12/4/2011 22:25'!
 editor
 	"Return my current editor, or install a new one."
 	editor ifNil: [ self installEditor ].
 	^editor! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 1/1/2015 21:16'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/1/2022 12:53:24'!
+emphasis
+	
+	^ emphasis! !
+
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/1/2022 12:53:43'!
+emphasis: emphasisCode
+	
+	emphasis := emphasisCode! !
+
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 1/1/2015 21:16'!
 fitContents
 	"Measures contents later at #minimumExtent"
 	self morphExtent: 0@0! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 11/5/2008 13:18'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 11/5/2008 13:18'!
 fontToUse
 
 	^ (emphasis isNil or: [emphasis = 0]) 
 		ifTrue: [ self baseFont ]
 		ifFalse: [ self baseFont emphasized: emphasis ]! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 3/17/2011 07:58'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 3/17/2011 07:58'!
 keyboardFocusWatcher: aMorph
 	"We are usually used as a part of a bigger morph.
 	Usually, that morph would be interested in us changing keyboard focus.
@@ -432,24 +442,24 @@ keyboardFocusWatcher: aMorph
 		- There are too many evens already defined. It would be good to reduce that."
 	keyboardFocusWatcher _ aMorph! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'jmv 4/25/2019 10:10:16'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/25/2019 10:10:16'!
 measureContents
 	| f |
 
 	f _ self fontToUse.
 	^((f widthOfString: contents) max: 3)  @ f lineSpacing.! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:21:02'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:21:02'!
 setValue: newContents
 "For compatibility"
 	^ self contents: newContents ! !
 
-!OneLineEditorMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:19:38'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:19:38'!
 value
 "For compatibility"
 	^ self contents! !
 
-!OneLineEditorMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:10:12'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:10:12'!
 characterIndexAtPoint: aPoint
 
 	| line block f |
@@ -471,7 +481,7 @@ characterIndexAtPoint: aPoint
 
 	^ block stringIndex! !
 
-!OneLineEditorMorph methodsFor: 'drawing' stamp: 'jmv 10/16/2013 22:37'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'jmv 10/16/2013 22:37'!
 displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 	| textCursorColor x1 isBold isItalic x0 h w halfW r d |
 	isBold _ anEmphasis allMask: 1.
@@ -503,7 +513,7 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 		line: x0+halfW@bottom to: x1+halfW@(top+w)
 		width: w color: textCursorColor! !
 
-!OneLineEditorMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:09:04'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:09:04'!
 drawOn: aCanvas
 	self hasSelection ifTrue: [ self drawSelectionOn: aCanvas ].
 	self hasTextCursor ifTrue: [ self drawTextCursorOn: aCanvas ].
@@ -519,7 +529,7 @@ drawOn: aCanvas
 			borderWidth: borderWidth
 			borderStyleSymbol: #simple ]! !
 
-!OneLineEditorMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:07:24'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:07:24'!
 drawSelectionOn: aCanvas
 	| rightX leftX bottom |
 
@@ -533,7 +543,7 @@ drawSelectionOn: aCanvas
 		fillRectangle: (leftX+1 @ 1 corner: (rightX + 2) @ (bottom + 2))
 		color: (Theme current textHighlightFocused: self hasKeyboardFocus)! !
 
-!OneLineEditorMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:04:40'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:04:40'!
 drawTextCursorOn: aCanvas
 	|  bottom x |
 
@@ -542,11 +552,11 @@ drawTextCursorOn: aCanvas
 		x _ self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
 		self displayTextCursorAtX: x + 1 top: 0 bottom: bottom emphasis: emphasis on: aCanvas ]! !
 
-!OneLineEditorMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 08:43'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 08:43'!
 clickAndHalf: aMouseButtonEvent localPosition: localEventPosition
 	self handleInteraction: [ self editor clickAndHalf ]! !
 
-!OneLineEditorMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 11:35:24'!
+!TextEntryMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 11:35:24'!
 keyStroke: aKeyboardEvent
 	"Handle a keystroke event."
 
@@ -577,7 +587,7 @@ keyStroke: aKeyboardEvent
 	self updateFromContents.
 	super keyStroke: aKeyboardEvent  "sends to keyStroke event handler, if any"! !
 
-!OneLineEditorMorph methodsFor: 'events' stamp: 'jmv 1/14/2013 22:27'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 1/14/2013 22:27'!
 mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 	"Make this TextMorph be the keyboard input focus, if it isn't already,
 		and repond to the text selection gesture."
@@ -596,36 +606,36 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 		dblClkNHalfSel: nil
 		tripleClkSel: nil! !
 
-!OneLineEditorMorph methodsFor: 'events' stamp: 'jmv 1/14/2013 23:16'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 1/14/2013 23:16'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 
 	super mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition.
 	self pauseBlinking
 ! !
 
-!OneLineEditorMorph methodsFor: 'events' stamp: 'jmv 8/20/2012 18:07'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/20/2012 18:07'!
 mouseEnter: event
 	super mouseEnter: event.
 	Preferences focusFollowsMouse
 		ifTrue: [ event hand newKeyboardFocus: self ]! !
 
-!OneLineEditorMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 13:20'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 13:20'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
 
 	aMouseMoveEvent mouseButton1Pressed ifFalse: [ ^ self ].
 	self handleInteraction: [
 		self editor mouseMove: aMouseMoveEvent index: (self characterIndexAtPoint: localEventPosition) ]! !
 
-!OneLineEditorMorph methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:08:33'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:08:33'!
 defaultBorderWidth
 	^ Theme current buttonBorderWidth! !
 
-!OneLineEditorMorph methodsFor: 'initialization' stamp: 'cbr 12/3/2010 23:29'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'cbr 12/3/2010 23:29'!
 defaultColor
 	"answer the default color/fill style for the receiver"
 	^ Theme current text! !
 
-!OneLineEditorMorph methodsFor: 'initialization' stamp: 'jmv 11/5/2008 12:15'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 11/5/2008 12:15'!
 initWithContents: aString font: aFont emphasis: emphasisCode 
 	self initialize.
 	
@@ -633,7 +643,7 @@ initWithContents: aString font: aFont emphasis: emphasisCode
 	emphasis _ emphasisCode.
 	self contents: aString! !
 
-!OneLineEditorMorph methodsFor: 'initialization' stamp: 'jmv 10/16/2013 22:19'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 10/16/2013 22:19'!
 initialize
 	super initialize.
 	contents _ ''.
@@ -641,26 +651,26 @@ initialize
 	emphasis _ 0.
 	showTextCursor _ false. "Should never be nil"! !
 
-!OneLineEditorMorph methodsFor: 'event handling testing' stamp: 'jmv 9/6/2017 10:02:10'!
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 9/6/2017 10:02:10'!
 disablesEditing
 
 	^self hasProperty: #disablesEditing! !
 
-!OneLineEditorMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
 handlesKeyboard
 
 	^self visible! !
 
-!OneLineEditorMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
 handlesMouseDown: aMouseButtonEvent
 	^ true! !
 
-!OneLineEditorMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
 handlesMouseOver: evt
 	"implements #mouseEnter: and/or #mouseLeave:"
 	^true! !
 
-!OneLineEditorMorph methodsFor: 'events-processing' stamp: 'jmv 12/28/2011 22:45'!
+!TextEntryMorph methodsFor: 'events-processing' stamp: 'jmv 12/28/2011 22:45'!
 focusKeyboardFor: aKeyboardEvent
 	"If aKeyboardEvent tab or shift-tab use it to navigate keyboard focus.
 	ctrl key ignored."
@@ -672,13 +682,13 @@ focusKeyboardFor: aKeyboardEvent
 			^ true ].
 	^super focusKeyboardFor: aKeyboardEvent! !
 
-!OneLineEditorMorph methodsFor: 'events-processing' stamp: 'KenD 10/29/2015 20:43'!
+!TextEntryMorph methodsFor: 'events-processing' stamp: 'KenD 10/29/2015 20:43'!
 fontPreferenceChanged
 
 	font := nil.
 	self baseFont.! !
 
-!OneLineEditorMorph methodsFor: 'events-processing' stamp: 'jmv 3/6/2015 08:59'!
+!TextEntryMorph methodsFor: 'events-processing' stamp: 'jmv 3/6/2015 08:59'!
 keyboardFocusChange: aBoolean 
 	aBoolean
 		ifTrue: [
@@ -693,7 +703,7 @@ keyboardFocusChange: aBoolean
 				keyboardFocusWatcher lostFocus: self ]].
 	self redrawNeeded! !
 
-!OneLineEditorMorph methodsFor: 'editing' stamp: 'jmv 10/16/2013 21:03'!
+!TextEntryMorph methodsFor: 'editing' stamp: 'jmv 10/16/2013 21:03'!
 handleInteraction: interactionBlock
 	"Perform the changes in interactionBlock, noting any change in selection
 	and possibly a change in the size of the composition"
@@ -709,17 +719,17 @@ handleInteraction: interactionBlock
 			editor _ oldEditor	"since it may have been changed while in block"].
 	self redrawNeeded! !
 
-!OneLineEditorMorph methodsFor: 'testing' stamp: 'jmv 11/5/2008 12:41'!
+!TextEntryMorph methodsFor: 'testing' stamp: 'jmv 11/5/2008 12:41'!
 hasSelection
 
 	^editor notNil and: [editor hasSelection]! !
 
-!OneLineEditorMorph methodsFor: 'testing' stamp: 'jmv 10/16/2013 22:18'!
+!TextEntryMorph methodsFor: 'testing' stamp: 'jmv 10/16/2013 22:18'!
 hasTextCursor
 
 	^ self hasKeyboardFocus and: [editor notNil and: [editor hasSelection not]]! !
 
-!OneLineEditorMorph methodsFor: 'unaccepted edits' stamp: 'jmv 3/14/2011 09:21'!
+!TextEntryMorph methodsFor: 'unaccepted edits' stamp: 'jmv 3/14/2011 09:21'!
 hasUnacceptedEdits: aBoolean
 	"Set the hasUnacceptedEdits flag to the given value. "
 	
@@ -727,7 +737,7 @@ hasUnacceptedEdits: aBoolean
 	"Not used in this morph, as it doesn't do accept / cancel"
 	self redrawNeeded! !
 
-!OneLineEditorMorph methodsFor: 'private' stamp: 'jmv 12/4/2011 22:25'!
+!TextEntryMorph methodsFor: 'private' stamp: 'jmv 12/4/2011 22:25'!
 installEditor
 	"Install an editor for my contents.  This constitutes 'hasFocus'.
 	If priorEditor is not nil, then initialize the new editor from its state.
@@ -738,26 +748,26 @@ installEditor
 	self redrawNeeded.
 	^editor! !
 
-!OneLineEditorMorph methodsFor: 'private' stamp: 'jmv 12/29/2011 15:05'!
+!TextEntryMorph methodsFor: 'private' stamp: 'jmv 12/29/2011 15:05'!
 updateFromContents
 
 	"O contents deberia ser un StringHolder????"
 	contents _ self editor string.
 	self redrawNeeded! !
 
-!OneLineEditorMorph methodsFor: 'geometry' stamp: 'KenD 10/26/2020 12:18:58'!
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 10/26/2020 12:18:58'!
 minimumExtent
 
 	^ self measureContents + self extentBorder ! !
 
-!OneLineEditorMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
 onBlinkCursor
 	"Blink the cursor"
 	showTextCursor _ showTextCursor not | pauseBlinking.
 	pauseBlinking _ false.
 	textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r]! !
 
-!OneLineEditorMorph methodsFor: 'blink cursor' stamp: 'jmv 3/6/2015 08:59'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 3/6/2015 08:59'!
 pauseBlinking
 	"Show a solid cursor (non blinking) for a short while"
 	pauseBlinking _ true.
@@ -767,12 +777,12 @@ pauseBlinking
 			showTextCursor _ true.
 			textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r ]]]! !
 
-!OneLineEditorMorph methodsFor: 'blink cursor' stamp: 'jmv 9/6/2017 10:02:15'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 9/6/2017 10:02:15'!
 showsBlinkingCursor
 
 	^self handlesKeyboard and: [ self disablesEditing not ]! !
 
-!OneLineEditorMorph methodsFor: 'blink cursor' stamp: 'jmv 2/2/2014 22:20'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 2/2/2014 22:20'!
 startBlinking
 	"And show the cursor"
 	pauseBlinking _ true.
@@ -780,7 +790,7 @@ startBlinking
 	showTextCursor _ true.
 	self startStepping: #onBlinkCursor stepTime: 500! !
 
-!OneLineEditorMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
 stopBlinking
 	"And do not show cursor anymore."
 	self stopStepping: #onBlinkCursor.
@@ -789,52 +799,52 @@ stopBlinking
 		showTextCursor _ false.
 		textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r ]]! !
 
-!OneLineEditorMorph methodsFor: 'typing/selecting keys' stamp: 'jmv 3/16/2011 10:45'!
+!TextEntryMorph methodsFor: 'typing/selecting keys' stamp: 'jmv 3/16/2011 10:45'!
 selectAll
 	self editor selectAll.
 	self redrawNeeded! !
 
-!OneLineEditorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/20/2022 18:50:06'!
+!TextEntryMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/20/2022 18:50:06'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!OneLineEditorMorph class methodsFor: 'instance creation' stamp: 'jmv 3/16/2011 10:25'!
+!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 3/16/2011 10:25'!
 contents: aString
 	" 'StringMorph contents: str' is faster than 'StringMorph new contents: str' 
 	(OneLineEditorMorph contents: 'Some string') openInWorld
 	"
 	^ self contents: aString font: nil! !
 
-!OneLineEditorMorph class methodsFor: 'instance creation' stamp: 'jmv 11/4/2008 12:47'!
+!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 11/4/2008 12:47'!
 contents: aString font: aFont
 	^ self basicNew initWithContents: aString font: aFont emphasis: 0! !
 
-!OneLineEditorMorph class methodsFor: 'instance creation' stamp: 'jmv 11/4/2008 12:47'!
+!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 11/4/2008 12:47'!
 contents: aString font: aFont emphasis: emphasisCode
 	^ self basicNew initWithContents: aString font: aFont emphasis: emphasisCode! !
 
-!OneLineEditorMorph class methodsFor: 'instance creation' stamp: 'KenD 1/1/2022 08:14:30'!
+!TextEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/1/2022 08:14:30'!
 new
 	^self contents: 'edit one line'! !
 
-!OneLineEditorMorph class methodsFor: 'examples' stamp: 'KenD 1/1/2022 08:13:22'!
+!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 4/1/2022 12:28:17'!
 example1
 "
-	OneLineEditorMorph example1 openInWorld 
+	TextEntryMorph example1 openInWorld 
 "
-	^ OneLineEditorMorph new
+	^ TextEntryMorph new
 		borderWidth: 0.5;
 		borderColor: Color blue;
 		yourself! !
 
-!OneLineEditorMorph class methodsFor: 'examples' stamp: 'KenD 1/1/2022 08:13:55'!
+!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 4/1/2022 12:28:12'!
 example2
 " 
-	OneLineEditorMorph example2 openInWorld 
+	TextEntryMorph example2 openInWorld 
 "
 | editor |
-	editor _ OneLineEditorMorph 
+	editor _ TextEntryMorph 
 		contents: 'Cuis-Smalltalk rocks' 
 		font: FontFamily defaultFamilyAndPointSize 
 		emphasis: AbstractFont boldCode.
