@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 12 March 2022 at 2:49:55 pm'!
+'From Cuis 6.0 [latest update: #5096] on 1 April 2022 at 12:56:26 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 114!
+!provides: 'Morphic-MetaProperties' 1 115!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -1179,7 +1179,7 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 12/31/2021 13:22:05'!
+!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 4/1/2022 12:54:52'!
 initialize
 "
 	VisualPropertyEditor initialize.
@@ -1257,10 +1257,10 @@ initialize
 	classDict at: #font put: (propsDict at: #acceptsFont).
 	classDict at: #emphasis put: (propsDict at: #acceptsEmphasis). 
 "	
-	classDict := MetaProperty metaPropsDictForClass: OneLineEditorMorph.
+	classDict := MetaProperty metaPropsDictForClass: TextEntryMorph.
 	classDict at: #contents put: (propsDict at: #acceptsString).
 	classDict at: #font put: (propsDict at: #acceptsFont).
-	classDict at: #emphasis put: (propsDict at: #acceptsEmphasis). 
+	classDict at: #emphasis put: (propsDict at: #acceptsEmphasis).
 
 	classDict := MetaProperty metaPropsDictForClass: VisualPropertyEditor .
 	classDict at: #showAllIvars put: (propsDict at: #acceptsBoolean).

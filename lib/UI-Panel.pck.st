@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5096] on 1 April 2022 at 12:10:48 pm'!
+'From Cuis 6.0 [latest update: #5096] on 1 April 2022 at 12:56:53 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 43!
+!provides: 'UI-Panel' 1 44!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -264,18 +264,21 @@ printOn: aStream
 		print: self label;
 		nextPutAll: ')'! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/1/2022 11:54:11'!
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:18'!
 defaultColor
+
 	^ Color transparent ! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/1/2022 11:52:54'!
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:24'!
 initialize
+
 	super initialize.
 	self separation: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/1/2022 11:59:47'!
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:32:31'!
 with: labelsAndControls
-| labelMorphs labelWidth |
+
+	| labelMorphs labelWidth |
 	labelMorphs _ labelsAndControls collect: [:assoc | LabelMorph contents: assoc key].
 	labelWidth _ labelMorphs max: [:each | each morphWidth].
 	labelMorphs withIndexDo: [:label :i | | row height control | 
@@ -283,23 +286,24 @@ with: labelsAndControls
 		height _ label morphHeight max: control morphHeight.
 		row _ LayoutMorph newRow separation: 4.
 		row 
-			color: Color transparent ;
+			color: self defaultColor;
 			addMorph: label fixedWidth: labelWidth;
 			addMorphUseAll: control.
 		self addMorph: row fixedHeight: height]! !
 
-!LabelGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/1/2022 11:52:20'!
+!LabelGroup class methodsFor: 'instance creation' stamp: 'KenD 4/1/2022 12:29:53'!
 newWith: labelsAndControls
-"key: label, value: control morph"
+	"key: label, value: control morph"
+	
 	^ self newColumn with: labelsAndControls! !
 
-!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 4/1/2022 11:48:03'!
+!LabelGroup class methodsFor: 'examples' stamp: 'KenD 4/1/2022 12:30:11'!
 example1
 "
-	self example1 openInWorld
+	LabelGroup example1 openInWorld
 "
 	^ self newWith: {
-		'Name' -> (OneLineEditorMorph contents: '').
+		'Name' -> (TextEntryMorph contents: '').
 		'Description' -> (TextModelMorph withText: '')	}! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
@@ -1293,10 +1297,10 @@ example3
 	model action: [ panel openInWorld]. "Panel is usually closed when property edited in the model, open it again"
 	^ panel! !
 
-!StringEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 16:03:00'!
+!StringEntryPanel methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:27:41'!
 initializeEntry
 
-	entry := OneLineEditorMorph contents: '' .
+	entry := TextEntryMorph contents: '' .
 	entry 
 		layoutSpec: 
 			(LayoutSpec 
