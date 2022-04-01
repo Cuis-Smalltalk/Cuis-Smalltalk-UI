@@ -1,12 +1,22 @@
-'From Cuis 6.0 [latest update: #5096] on 30 March 2022 at 6:12:24 pm'!
+'From Cuis 6.0 [latest update: #5096] on 1 April 2022 at 12:10:48 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 42!
+!provides: 'UI-Panel' 1 43!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: 'UI-Panel'!
 
+
+!classDefinition: #LabelGroup category: 'UI-Panel'!
+LayoutMorph subclass: #LabelGroup
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'LabelGroup class' category: 'UI-Panel'!
+LabelGroup class
+	instanceVariableNames: ''!
 
 !classDefinition: #PluggableScrollBar category: 'UI-Panel'!
 ScrollBar subclass: #PluggableScrollBar
@@ -169,6 +179,9 @@ WizardPage class
 	instanceVariableNames: ''!
 
 
+!LabelGroup commentStamp: '<historical>' prior: 0!
+A morph laid out with a column of labels and a column of associated controls.!
+
 !PluggableScrollBar commentStamp: '<historical>' prior: 0!
 I am a ScrollBar which can get new values from my model.!
 
@@ -250,6 +263,44 @@ printOn: aStream
 	aStream
 		print: self label;
 		nextPutAll: ')'! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/1/2022 11:54:11'!
+defaultColor
+	^ Color transparent ! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/1/2022 11:52:54'!
+initialize
+	super initialize.
+	self separation: 2! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/1/2022 11:59:47'!
+with: labelsAndControls
+| labelMorphs labelWidth |
+	labelMorphs _ labelsAndControls collect: [:assoc | LabelMorph contents: assoc key].
+	labelWidth _ labelMorphs max: [:each | each morphWidth].
+	labelMorphs withIndexDo: [:label :i | | row height control | 
+		control _ (labelsAndControls at: i) value.
+		height _ label morphHeight max: control morphHeight.
+		row _ LayoutMorph newRow separation: 4.
+		row 
+			color: Color transparent ;
+			addMorph: label fixedWidth: labelWidth;
+			addMorphUseAll: control.
+		self addMorph: row fixedHeight: height]! !
+
+!LabelGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/1/2022 11:52:20'!
+newWith: labelsAndControls
+"key: label, value: control morph"
+	^ self newColumn with: labelsAndControls! !
+
+!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 4/1/2022 11:48:03'!
+example1
+"
+	self example1 openInWorld
+"
+	^ self newWith: {
+		'Name' -> (OneLineEditorMorph contents: '').
+		'Description' -> (TextModelMorph withText: '')	}! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
 fontPreferenceChanged
