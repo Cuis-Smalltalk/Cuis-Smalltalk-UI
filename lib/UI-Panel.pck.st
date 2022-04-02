@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 2:43:12 pm'!
+'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 9:40:55 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 45!
+!provides: 'UI-Panel' 1 46!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -287,13 +287,13 @@ newWith: labelsAndControls
 	
 	^ self newColumn with: labelsAndControls! !
 
-!LabelGroup class methodsFor: 'examples' stamp: 'KenD 4/1/2022 12:30:11'!
+!LabelGroup class methodsFor: 'examples' stamp: 'KenD 4/2/2022 09:34:21'!
 example1
 "
 	LabelGroup example1 openInWorld
 "
 	^ self newWith: {
-		'Name' -> (TextEntryMorph contents: '').
+		'Name' -> (TextEntryMorph contents: 'send $25 for your name here').
 		'Description' -> (TextModelMorph withText: '')	}! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
