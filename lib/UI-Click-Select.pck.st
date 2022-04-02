@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5094] on 24 March 2022 at 11:25:23 am'!
+'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 12:18:24 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 27!
+!provides: 'UI-Click-Select' 1 29!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -46,6 +46,16 @@ LayoutMorph subclass: #DropDownButtonMorph
 DropDownButtonMorph class
 	instanceVariableNames: ''!
 
+!classDefinition: #DropDownListMorph category: 'UI-Click-Select'!
+DropDownButtonMorph subclass: #DropDownListMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'DropDownListMorph class' category: 'UI-Click-Select'!
+DropDownListMorph class
+	instanceVariableNames: ''!
+
 !classDefinition: #InnerListOfMorph category: 'UI-Click-Select'!
 LayoutMorph subclass: #InnerListOfMorph
 	instanceVariableNames: 'highlightedRow selectedRow'
@@ -54,6 +64,16 @@ LayoutMorph subclass: #InnerListOfMorph
 	category: 'UI-Click-Select'!
 !classDefinition: 'InnerListOfMorph class' category: 'UI-Click-Select'!
 InnerListOfMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #PluggableDropDownListMorph category: 'UI-Click-Select'!
+PluggableListMorph subclass: #PluggableDropDownListMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'PluggableDropDownListMorph class' category: 'UI-Click-Select'!
+PluggableDropDownListMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #PluggableListOfMorph category: 'UI-Click-Select'!
@@ -68,7 +88,7 @@ PluggableListOfMorph class
 
 !classDefinition: #PluggableDropDownListOfMorph category: 'UI-Click-Select'!
 PluggableListOfMorph subclass: #PluggableDropDownListOfMorph
-	instanceVariableNames: 'prevKbdFocus prevMouseFocus'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -118,7 +138,7 @@ OnOffModel class
 
 !classDefinition: #PaletteModel category: 'UI-Click-Select'!
 Object subclass: #PaletteModel
-	instanceVariableNames: 'palette selectedColor'
+	instanceVariableNames: 'palette selectedColor paletteNames'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -149,6 +169,9 @@ I manage a RadioGroup -- a Group of RadioButtons, each with a label.!
 
 !DropDownButtonMorph commentStamp: '<historical>' prior: 0!
 A button with a dropdown list of Morphs to select from.!
+
+!DropDownListMorph commentStamp: '<historical>' prior: 0!
+A button with a dropdown list to select from.!
 
 !InnerListOfMorph commentStamp: '<historical>' prior: 0!
 The morph that displays the list of Morph in a PluggableListOfMorph.!
@@ -686,11 +709,10 @@ example2
 	
 	^pallet! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'jmv 3/11/2022 11:08:20'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 4/2/2022 12:16:28'!
 toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
-			
 			self world addMorphFront: dropDownList position: 
 				self morphPositionInWorld 
 					+ self morphBottomLeft 
@@ -741,7 +763,7 @@ defaultColor
 	"answer the default color/fill style for the receiver"
 	^ `Color lightGray`! !
 
-!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 2/13/2022 10:34:12'!
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 12:03:37'!
 installButtons
 	|  arrowButton |
 	button _ PluggableButtonMorph new ::
@@ -809,6 +831,46 @@ example1
 		listGetter: #palette
 		indexGetter: #colorIndex
 		indexSetter: #colorIndex:! !
+
+!DropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 12:09:21'!
+model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+	self model: anObject.
+	setMorphIndex _ setSelectionSel .
+	dropDownList _ PluggableDropDownListMorph 
+		model: anObject 
+		listGetter: getListSel 
+		indexGetter: getSelectionSel 
+		indexSetter: setSelectionSel
+		mainView: nil
+		menuGetter: nil
+		keystrokeAction: nil.		
+	self installButtons! !
+
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/2/2022 11:49:59'!
+toggleDropDownList
+	dropDownList owner 
+		ifNil: [	
+			self world addMorphFront: dropDownList position: 
+				self morphPositionInWorld 
+					+ self morphBottomLeft]
+		ifNotNil: [dropDownList delete]! !
+
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/2/2022 12:14:34'!
+updateButton
+	| label |
+	label _ dropDownList getCurrentSelectionIndex = 0
+		ifTrue: ['']
+		ifFalse: [dropDownList getListItem: dropDownList getCurrentSelectionIndex].
+	button label: label;
+		morphExtent: dropDownList scroller desiredWidth @ FontFamily defaultPointSize;
+		redrawNeeded! !
+
+!DropDownListMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 11:49:07'!
+example1
+"
+	self example1 openInWorld
+"
+	^ self model: PaletteModel		 new listGetter: #paletteNames indexGetter: #colorIndex indexSetter: #colorIndex:! !
 
 !InnerListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/20/2022 11:08:38'!
 defaultColor
@@ -943,6 +1005,10 @@ includeInNewMorphMenu
 new
 	^ self newColumn! !
 
+!PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!
+keyboardFocusChange: aBoolean
+	aBoolean ifFalse: [		self delete ].! !
+
 !PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
 getList
 	getListSelector 		ifNil: [^ #()].
@@ -991,11 +1057,9 @@ example1
 		indexGetter: #colorIndex
 		indexSetter: #colorIndex:! !
 
-!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'jmv 3/11/2022 11:09:23'!
+!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 4/2/2022 12:08:25'!
 keyboardFocusChange: aBoolean
-
-	aBoolean ifFalse: [
-		self delete ].! !
+	aBoolean ifFalse: [		self delete ].! !
 
 !MultiSelectMenu methodsFor: 'events-processing' stamp: 'KenD 12/17/2016 14:36:43'!
 accept
@@ -1351,11 +1415,16 @@ colorIndex: index
 palette
 	^ palette ! !
 
-!PaletteModel methodsFor: 'initialization' stamp: 'hlsf 1/20/2022 10:54:14'!
+!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 11:47:54'!
+paletteNames
+	^ paletteNames ! !
+
+!PaletteModel methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 11:47:32'!
 initialize
 	super initialize.
 	selectedColor _ 1.
-	palette _ #(#blue #white #red #green #black #orange) collect: [ :aColor |
+	paletteNames _ #(#blue #white #red #green #black #orange).
+	palette _ paletteNames collect: [ :aColor |
 		BoxedMorph new ::
 			morphExtent: 80@15;
 			color: (Color perform: aColor);
