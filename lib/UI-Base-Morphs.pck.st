@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 19 March 2022 at 4:38:41 pm'!
+'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 2:43:05 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 16!
+!provides: 'UI-Base-Morphs' 1 17!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -65,6 +65,26 @@ LineMorph subclass: #PointerLineMorph
 PointerLineMorph class
 	instanceVariableNames: ''!
 
+!classDefinition: #ListModel category: 'UI-Base-Morphs'!
+Object subclass: #ListModel
+	instanceVariableNames: 'collection selectedIndex paletteNames'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Base-Morphs'!
+!classDefinition: 'ListModel class' category: 'UI-Base-Morphs'!
+ListModel class
+	instanceVariableNames: ''!
+
+!classDefinition: #ValueHolder category: 'UI-Base-Morphs'!
+Object subclass: #ValueHolder
+	instanceVariableNames: 'action property'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Base-Morphs'!
+!classDefinition: 'ValueHolder class' category: 'UI-Base-Morphs'!
+ValueHolder class
+	instanceVariableNames: ''!
+
 
 !WindowTitleMorph commentStamp: '<historical>' prior: 0!
 I hold and layout the title section of windows/panels.
@@ -98,6 +118,9 @@ I am a line from my start point to my end point.!
 
 !PointerLineMorph commentStamp: '<historical>' prior: 0!
 I am a LineMorph which has a "pointer" morph which I maintain in position at my endpoint.!
+
+!ListModel commentStamp: '<historical>' prior: 0!
+I am a model presenting a list of color!
 
 !SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 12/13/2021 13:28:42'!
 initializedInstance
@@ -1080,4 +1103,55 @@ example1
   PointerLineMorph example1 openInWorld 
 "
 	^ super example1! !
+
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:30:19'!
+list
+	^ collection! !
+
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:28:20'!
+list: aCollection
+	collection _ aCollection ! !
+
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:28:03'!
+listIndex
+	^ selectedIndex! !
+
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:28:03'!
+listIndex: index
+	selectedIndex _ index.
+	"Inform any interested view we changed the selected item"
+	self changed: #listIndex:! !
+
+!ListModel methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 14:42:09'!
+initialize
+	super initialize.
+	selectedIndex _ 1! !
+
+!ListModel class methodsFor: 'instance creation' stamp: 'hlsf 4/2/2022 14:28:53'!
+with: aCollection
+	^ self new ::
+		list: aCollection ;
+		yourself! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:07'!
+action: aBlock
+	action _ aBlock! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:28'!
+propertyValue
+
+	^ property! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:38:35'!
+propertyValue: aValue
+
+	property _ aValue.
+	self changed: #propertyValue:. "Inform any interested view we have changed our state"
+	action ifNotNil: [action valueWithPossibleArgument: property]! !
+
+!ValueHolder class methodsFor: 'instance creation' stamp: 'KenD 3/21/2022 15:11:17'!
+with: aProperty
+
+	^ self new :: 
+		propertyValue: aProperty! !
 FrameMorph initialize!
