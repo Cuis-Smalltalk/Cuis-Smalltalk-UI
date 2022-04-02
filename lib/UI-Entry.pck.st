@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 1 April 2022 at 12:56:35 pm'!
+'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 9:40:51 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 22!
+!provides: 'UI-Entry' 1 23!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -19,7 +19,7 @@ SimpleEditor class
 
 !classDefinition: #TextEntryMorph category: 'UI-Entry'!
 BoxedMorph subclass: #TextEntryMorph
-	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction acceptCancelReceiver'
+	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction acceptCancelReceiver backgroundColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
@@ -426,6 +426,16 @@ fitContents
 	"Measures contents later at #minimumExtent"
 	self morphExtent: 0@0! !
 
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/2/2022 08:26:08'!
+font
+
+	^ font! !
+
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/2/2022 08:25:56'!
+font: aFont
+
+	font := aFont! !
+
 !TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 11/5/2008 13:18'!
 fontToUse
 
@@ -513,8 +523,13 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 		line: x0+halfW@bottom to: x1+halfW@(top+w)
 		width: w color: textCursorColor! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:09:04'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 4/2/2022 08:56:10'!
 drawOn: aCanvas
+	aCanvas 
+		frameAndFillGlobalRect: (self morphPositionInWorld extent: self morphExtentInWorld)
+		fillColor: backgroundColor 
+		borderWidth: 0
+		color: Color transparent.
 	self hasSelection ifTrue: [ self drawSelectionOn: aCanvas ].
 	self hasTextCursor ifTrue: [ self drawTextCursorOn: aCanvas ].
 	aCanvas
@@ -626,6 +641,11 @@ mouseMove: aMouseMoveEvent localPosition: localEventPosition
 	self handleInteraction: [
 		self editor mouseMove: aMouseMoveEvent index: (self characterIndexAtPoint: localEventPosition) ]! !
 
+!TextEntryMorph methodsFor: 'initialization' stamp: 'KenD 4/2/2022 08:24:32'!
+defaultBackgroundColor
+
+	^ Theme current textPane ! !
+
 !TextEntryMorph methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:08:33'!
 defaultBorderWidth
 	^ Theme current buttonBorderWidth! !
@@ -643,13 +663,14 @@ initWithContents: aString font: aFont emphasis: emphasisCode
 	emphasis _ emphasisCode.
 	self contents: aString! !
 
-!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 10/16/2013 22:19'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'KenD 4/2/2022 08:42:39'!
 initialize
 	super initialize.
 	contents _ ''.
 	font _ nil.
 	emphasis _ 0.
-	showTextCursor _ false. "Should never be nil"! !
+	showTextCursor _ false. "Should never be nil"
+	backgroundColor := self defaultBackgroundColor.! !
 
 !TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 9/6/2017 10:02:10'!
 disablesEditing
