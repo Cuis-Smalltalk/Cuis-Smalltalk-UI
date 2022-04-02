@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5096] on 1 April 2022 at 12:56:53 pm'!
+'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 2:43:12 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 44!
+!provides: 'UI-Panel' 1 45!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -156,16 +156,6 @@ DialogPanel subclass: #WizardPanel
 	category: 'UI-Panel'!
 !classDefinition: 'WizardPanel class' category: 'UI-Panel'!
 WizardPanel class
-	instanceVariableNames: ''!
-
-!classDefinition: #ValueHolder category: 'UI-Panel'!
-Object subclass: #ValueHolder
-	instanceVariableNames: 'action property'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Panel'!
-!classDefinition: 'ValueHolder class' category: 'UI-Panel'!
-ValueHolder class
 	instanceVariableNames: ''!
 
 !classDefinition: #WizardPage category: 'UI-Panel'!
@@ -1483,27 +1473,6 @@ example1
 		addPage: ((WizardPage applyPage: 'Final page' on: wizard) 
 			contents: 'Another description for apply page').
 	^ wizard! !
-
-!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:07'!
-action: aBlock
-	action _ aBlock! !
-
-!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:28'!
-propertyValue
-
-	^ property! !
-
-!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:47'!
-propertyValue: aValue
-
-	property _ aValue.
-	action ifNotNil: [action valueWithPossibleArgument: property]! !
-
-!ValueHolder class methodsFor: 'instance creation' stamp: 'KenD 3/21/2022 15:11:17'!
-with: aProperty
-
-	^ self new :: 
-		propertyValue: aProperty! !
 
 !WizardPage methodsFor: 'accessing' stamp: 'hlsf 10/31/2021 20:47:46'!
 buttons

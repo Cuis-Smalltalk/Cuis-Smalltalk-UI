@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 12:18:24 pm'!
+'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 2:43:07 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 29!
+!provides: 'UI-Click-Select' 1 30!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -126,26 +126,6 @@ CheckButtonMorph subclass: #RadioButtonMorph
 RadioButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #OnOffModel category: 'UI-Click-Select'!
-Object subclass: #OnOffModel
-	instanceVariableNames: 'state'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Click-Select'!
-!classDefinition: 'OnOffModel class' category: 'UI-Click-Select'!
-OnOffModel class
-	instanceVariableNames: ''!
-
-!classDefinition: #PaletteModel category: 'UI-Click-Select'!
-Object subclass: #PaletteModel
-	instanceVariableNames: 'palette selectedColor paletteNames'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Click-Select'!
-!classDefinition: 'PaletteModel class' category: 'UI-Click-Select'!
-PaletteModel class
-	instanceVariableNames: ''!
-
 
 !CheckGroup commentStamp: '<historical>' prior: 0!
 I manage a CheckGroup -- a Group of CheckButtons, each with a label.
@@ -208,12 +188,6 @@ I am simple check button!
 
 !RadioButtonMorph commentStamp: '<historical>' prior: 0!
 I am a very simple radio button.!
-
-!OnOffModel commentStamp: '<historical>' prior: 0!
-I am a model representing a boolean state!
-
-!PaletteModel commentStamp: '<historical>' prior: 0!
-I am a model presenting a list of color!
 
 !PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:41:13'!
 initializedInstance
@@ -585,28 +559,28 @@ includeInNewMorphMenu
 	
 	^ true! !
 
-!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 2/12/2022 10:58:05'!
+!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:37:47'!
 example1
 "
 	self example1 openInWorld
 "
 	^ self 
-		model: OnOffModel new
-		getSelected:  #state
-		setSelected:  #state:
+		model: (ValueHolder with: true)
+		getSelected:  #propertyValue
+		setSelected:  #propertyValue:
 		label: 'I like Cuis-Smalltalk'::
 		setBalloonText: 'I am a check box illustrated with a text label.';
 		yourself! !
 
-!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 2/12/2022 11:00:25'!
+!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:40:24'!
 example2
 "
 	self example2 openInWorld
 "
 	^ self 
-		model: OnOffModel new
-		getSelected:  #state
-		setSelected:  #state:
+		model: (ValueHolder with: false)
+		getSelected:  #propertyValue
+		setSelected:  #propertyValue:
 		label: (ImageMorph new image: (Theme current globeIcon magnifyTo: 32@32)) ::
 		setBalloonText: 'I am a check box illustrated with a morph.';
 		yourself! !
@@ -749,6 +723,12 @@ model: anObject
 	anObject ifNotNil: [anObject addDependent: self].
 	model _ anObject! !
 
+!DropDownButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:22:45'!
+selectedItem
+	^ dropDownList getCurrentSelectionIndex = 0
+		ifTrue: [nil]
+		ifFalse: [dropDownList getListItem: dropDownList getCurrentSelectionIndex]! !
+
 !DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 3/24/2022 11:12:26'!
 autoDeselect: aBoolean
 	dropDownList autoDeselect: aBoolean ! !
@@ -821,16 +801,24 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 new
 	^ self newRow! !
 
-!DropDownButtonMorph class methodsFor: 'examples' stamp: 'hlsf 1/22/2022 10:46:18'!
+!DropDownButtonMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:33:06'!
 example1
 "
 	self example1 openInWorld
 "
+| palette |
+	palette _ #(#blue #white #red #green #black #orange) collect: [ :aColor |
+		BoxedMorph new ::
+			morphExtent: 80@15;
+			color: (Color perform: aColor);
+			borderWidth: 1;
+			borderColor: Color black;
+			yourself].
 	^ DropDownButtonMorph 
-		model: PaletteModel new
-		listGetter: #palette
-		indexGetter: #colorIndex
-		indexSetter: #colorIndex:! !
+		model: (ListModel with: palette)
+		listGetter: #list
+		indexGetter: #listIndex
+		indexSetter: #listIndex:! !
 
 !DropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 12:09:21'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
@@ -865,12 +853,16 @@ updateButton
 		morphExtent: dropDownList scroller desiredWidth @ FontFamily defaultPointSize;
 		redrawNeeded! !
 
-!DropDownListMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 11:49:07'!
+!DropDownListMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:36:05'!
 example1
 "
 	self example1 openInWorld
 "
-	^ self model: PaletteModel		 new listGetter: #paletteNames indexGetter: #colorIndex indexSetter: #colorIndex:! !
+	^ self 
+		model: (ListModel with: #(#blue #white #red #green #black #orange) )
+		listGetter: #list 
+		indexGetter: #listIndex 
+		indexSetter: #listIndex:! !
 
 !InnerListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/20/2022 11:08:38'!
 defaultColor
@@ -1046,16 +1038,24 @@ suitedExtent
 	self morphHeight: (extent y min: scroller totalHeight max: 100).
 	self morphWidth: self minimumExtent x + scroller minimumWidth! !
 
-!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 1/20/2022 11:09:13'!
+!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:35:12'!
 example1
 "
 	self example1 openInWorld
 "
+| palette |
+	palette _ #(#blue #white #red #green #black #orange) collect: [ :aColor |
+		BoxedMorph new ::
+			morphExtent: 80@15;
+			color: (Color perform: aColor);
+			borderWidth: 1;
+			borderColor: Color black;
+			yourself].
 	^ PluggableListOfMorph 
-		model: PaletteModel new
-		listGetter: #palette
-		indexGetter: #colorIndex
-		indexSetter: #colorIndex:! !
+		model: (ListModel with: palette)
+		listGetter: #list
+		indexGetter: #listIndex
+		indexSetter: #listIndex:! !
 
 !PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 4/2/2022 12:08:25'!
 keyboardFocusChange: aBoolean
@@ -1386,48 +1386,3 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	((self coversPixel: aMouseButtonEvent eventPosition) and: [self isSelected not])
 		ifTrue: [ self isSelected: true ]
 ! !
-
-!OnOffModel methodsFor: 'as yet unclassified' stamp: 'hlsf 2/12/2022 10:49:08'!
-initialize
-	super initialize.
-	state _ false! !
-
-!OnOffModel methodsFor: 'as yet unclassified' stamp: 'hlsf 2/12/2022 10:46:49'!
-state
-	^ state! !
-
-!OnOffModel methodsFor: 'as yet unclassified' stamp: 'hlsf 2/12/2022 10:48:42'!
-state: aBoolean
-	state _ aBoolean.
-	self changed: #state: "Inform any interested view we have changed our state"! !
-
-!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 2/13/2022 09:48:04'!
-colorIndex
-	^ selectedColor! !
-
-!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 1/22/2022 12:32:14'!
-colorIndex: index
-	selectedColor _ index.
-	"Inform any interested view we changed the selected item"
-	self changed: #colorIndex:! !
-
-!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 1/20/2022 10:49:48'!
-palette
-	^ palette ! !
-
-!PaletteModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 11:47:54'!
-paletteNames
-	^ paletteNames ! !
-
-!PaletteModel methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 11:47:32'!
-initialize
-	super initialize.
-	selectedColor _ 1.
-	paletteNames _ #(#blue #white #red #green #black #orange).
-	palette _ paletteNames collect: [ :aColor |
-		BoxedMorph new ::
-			morphExtent: 80@15;
-			color: (Color perform: aColor);
-			borderWidth: 1;
-			borderColor: Color black;
-			yourself]! !
