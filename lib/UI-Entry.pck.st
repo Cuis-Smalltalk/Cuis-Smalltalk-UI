@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 9:40:51 am'!
+'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 6:04:55 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 23!
+!provides: 'UI-Entry' 1 24!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -15,6 +15,16 @@ Editor subclass: #SimpleEditor
 	category: 'UI-Entry'!
 !classDefinition: 'SimpleEditor class' category: 'UI-Entry'!
 SimpleEditor class
+	instanceVariableNames: ''!
+
+!classDefinition: #LabelGroup category: 'UI-Entry'!
+LayoutMorph subclass: #LabelGroup
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Entry'!
+!classDefinition: 'LabelGroup class' category: 'UI-Entry'!
+LabelGroup class
 	instanceVariableNames: ''!
 
 !classDefinition: #TextEntryMorph category: 'UI-Entry'!
@@ -40,6 +50,9 @@ SimpleNumberEntryMorph class
 
 !SimpleEditor commentStamp: '<historical>' prior: 0!
 See comment in Editor!
+
+!LabelGroup commentStamp: '<historical>' prior: 0!
+A morph laid out with a column of labels and a column of associated controls.!
 
 !TextEntryMorph commentStamp: '<historical>' prior: 0!
 A plain text editor for Morphic. Handles only one line. Does not handle fonts/styles, alignment, Smalltalk utilities and any other advanced stuff in TextModelMorph. Just a simple text editor.
@@ -354,6 +367,48 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:18'!
+defaultColor
+
+	^ Color transparent ! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:24'!
+initialize
+
+	super initialize.
+	self separation: 2! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:32:31'!
+with: labelsAndControls
+
+	| labelMorphs labelWidth |
+	labelMorphs _ labelsAndControls collect: [:assoc | LabelMorph contents: assoc key].
+	labelWidth _ labelMorphs max: [:each | each morphWidth].
+	labelMorphs withIndexDo: [:label :i | | row height control | 
+		control _ (labelsAndControls at: i) value.
+		height _ label morphHeight max: control morphHeight.
+		row _ LayoutMorph newRow separation: 4.
+		row 
+			color: self defaultColor;
+			addMorph: label fixedWidth: labelWidth;
+			addMorphUseAll: control.
+		self addMorph: row fixedHeight: height]! !
+
+!LabelGroup class methodsFor: 'instance creation' stamp: 'KenD 4/1/2022 12:29:53'!
+newWith: labelsAndControls
+	"key: label, value: control morph"
+	
+	^ self newColumn with: labelsAndControls! !
+
+!LabelGroup class methodsFor: 'examples' stamp: 'KenD 4/2/2022 09:34:21'!
+example1
+"
+	LabelGroup example1 openInWorld
+"
+	^ self newWith: {
+		'Name' -> (TextEntryMorph contents: 'send $25 for your name here').
+		'Description' -> (TextModelMorph withText: '')	}! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:52'!
 acceptCancelReceiver
