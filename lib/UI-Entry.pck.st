@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 6:04:55 pm'!
+'From Cuis 6.0 [latest update: #5096] on 3 April 2022 at 12:38:41 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 24!
+!provides: 'UI-Entry' 1 25!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -578,13 +578,12 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 		line: x0+halfW@bottom to: x1+halfW@(top+w)
 		width: w color: textCursorColor! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 4/2/2022 08:56:10'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 4/3/2022 12:30:47'!
 drawOn: aCanvas
-	aCanvas 
-		frameAndFillGlobalRect: (self morphPositionInWorld extent: self morphExtentInWorld)
-		fillColor: backgroundColor 
-		borderWidth: 0
-		color: Color transparent.
+
+	aCanvas
+		fillRectangle: (0@0 extent: extent)
+		color: backgroundColor.
 	self hasSelection ifTrue: [ self drawSelectionOn: aCanvas ].
 	self hasTextCursor ifTrue: [ self drawTextCursorOn: aCanvas ].
 	aCanvas
