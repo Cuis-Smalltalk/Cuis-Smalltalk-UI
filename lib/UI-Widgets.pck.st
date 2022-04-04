@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 31 March 2022 at 3:39:19 pm'!
+'From Cuis 6.0 [latest update: #5096] on 4 April 2022 at 1:03:12 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 12!
+!provides: 'UI-Widgets' 1 13!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
@@ -9,7 +9,7 @@ SystemOrganization addCategory: 'UI-Widgets'!
 
 !classDefinition: #ButtonMorph category: 'UI-Widgets'!
 PluggableButtonMorph subclass: #ButtonMorph
-	instanceVariableNames: 'selectedColor argument'
+	instanceVariableNames: 'selectedColor stateArgument actionArgument'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
@@ -78,8 +78,11 @@ WaitSpinner class
 	instanceVariableNames: 'spinners isSpinnerRunning process'!
 
 
-!ButtonMorph commentStamp: 'hlsf 3/31/2022 15:07:04' prior: 0!
-An iconic button!
+!ButtonMorph commentStamp: '<historical>' prior: 0!
+An iconic button
+
+- stateArgument: an optional argument for the state selector
+- actionSelector: an optional argument for the action selector!
 
 !WheelMorph commentStamp: 'hlsf 1/5/2022 12:29:58' prior: 0!
 A wheel widget control. I can be used in two different ways:
@@ -126,13 +129,19 @@ See my Class side:
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
 
+!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/4/2022 12:40:20'!
+actionArgument: anObject
+	actionArgument _ anObject! !
+
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:17:21'!
 adoptWidgetsColor: paneColor
 "Does not honour hit"! !
 
-!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:19:42'!
-argument: aSymbol
-	argument _ aSymbol ! !
+!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/4/2022 12:49:17'!
+performAction
+	self isEnabled ifFalse: [^ self].
+	actionSelector ifNotNil: [
+		model perform: actionSelector withPossiblyWrongSizedArguments: {actionArgument}]! !
 
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:00:05'!
 selectedColor
@@ -141,6 +150,10 @@ selectedColor
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:14:21'!
 selectedColor: aColor
 	selectedColor _ aColor ! !
+
+!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/4/2022 12:40:34'!
+stateArgument: anObject
+	stateArgument _ anObject! !
 
 !ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 3/31/2022 15:15:34'!
 drawMyShapeOn: canvas with: background
@@ -160,11 +173,11 @@ drawOn: canvas
 		ifFalse: [self drawMyShapeOn: canvas with: self color].
 	icon ifNotNil: [canvas image: icon at: (extent - icon extent // 2)]! !
 
-!ButtonMorph methodsFor: 'private' stamp: 'hlsf 3/31/2022 15:20:12'!
+!ButtonMorph methodsFor: 'private' stamp: 'hlsf 4/4/2022 12:30:57'!
 getState
 	^ stateSelector 
 		ifNil: [false]
-		ifNotNil: [model perform: stateSelector withPossiblyWrongSizedArguments: {argument}]! !
+		ifNotNil: [model perform: stateSelector withPossiblyWrongSizedArguments: {stateArgument}]! !
 
 !WheelMorph methodsFor: 'accessing'!
 actionSelector
