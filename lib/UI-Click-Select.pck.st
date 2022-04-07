@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 2:43:07 pm'!
+'From Cuis 6.0 [latest update: #5096] on 7 April 2022 at 11:58:01 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 30!
+!provides: 'UI-Click-Select' 1 31!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -843,7 +843,7 @@ toggleDropDownList
 					+ self morphBottomLeft]
 		ifNotNil: [dropDownList delete]! !
 
-!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/2/2022 12:14:34'!
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/4/2022 19:18:41'!
 updateButton
 	| label |
 	label _ dropDownList getCurrentSelectionIndex = 0

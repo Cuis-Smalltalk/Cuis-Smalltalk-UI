@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 6:05:02 pm'!
+'From Cuis 6.0 [latest update: #5096] on 7 April 2022 at 3:55:29 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 47!
+!provides: 'UI-Panel' 1 48!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -790,11 +790,11 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 12/27/2021 10:25:05'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/7/2022 15:51:37'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
 	self newPane ifNotNil: [:pane | layoutMorph 		addMorphUseAll: pane].
-	self newButtonArea ifNotNil: [:buttons | layoutMorph addMorphKeepMorphHeight: self newButtonArea].
+	self newButtonArea ifNotNil: [:buttons | layoutMorph addMorphKeepMorphHeight: buttons].
 	layoutMorph 		separation: self defaultSeparation;
 		axisEdgeWeight: #center;
 		adoptWidgetsColor: self widgetsColor.
@@ -1390,9 +1390,9 @@ delete
 	super delete.
 	self releaseActionMap ! !
 
-!WizardPanel methodsFor: 'open/close' stamp: 'hlsf 12/29/2021 10:20:37'!
+!WizardPanel methodsFor: 'open/close' stamp: 'hlsf 4/7/2022 15:54:46'!
 minimumExtent
-	^ 550@350 ! !
+	^ 550 @ (350 max: super minimumExtent y)! !
 
 !WizardPanel methodsFor: 'testing' stamp: 'hlsf 12/25/2021 16:53:33'!
 isReadyToApply
