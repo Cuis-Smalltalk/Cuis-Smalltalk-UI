@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 3 April 2022 at 12:38:41 pm'!
+'From Cuis 6.0 [latest update: #5096] on 7 April 2022 at 12:33:57 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 25!
+!provides: 'UI-Entry' 1 27!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -395,20 +395,28 @@ with: labelsAndControls
 			addMorphUseAll: control.
 		self addMorph: row fixedHeight: height]! !
 
-!LabelGroup class methodsFor: 'instance creation' stamp: 'KenD 4/1/2022 12:29:53'!
-newWith: labelsAndControls
+!LabelGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/7/2022 11:53:10'!
+with: labelsAndControls
 	"key: label, value: control morph"
 	
 	^ self newColumn with: labelsAndControls! !
 
-!LabelGroup class methodsFor: 'examples' stamp: 'KenD 4/2/2022 09:34:21'!
+!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 4/7/2022 12:32:54'!
 example1
 "
 	LabelGroup example1 openInWorld
 "
-	^ self newWith: {
+	^ self with: {
 		'Name' -> (TextEntryMorph contents: 'send $25 for your name here').
-		'Description' -> (TextModelMorph withText: '')	}! !
+		'Description' -> (TextModelMorph withText: '' ::
+			emptyTextDisplayMessage: 'Why Smalltalk?')	 .
+		'Smalltalk variants' ->   (PluggableListMorph 
+			model: (ListModel with: #('Cuis-Smalltalk' 'Pharo' 'Squeak' 'Amber' 'Dolphin' 'GNU Smalltalk')) 
+			listGetter: #list 
+			indexGetter: #listIndex 
+			indexSetter: #listIndex: ) }::
+		color: Color lightYellow ;
+		yourself! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:52'!
 acceptCancelReceiver
