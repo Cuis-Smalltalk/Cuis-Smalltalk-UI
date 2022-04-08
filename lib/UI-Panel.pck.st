@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5096] on 7 April 2022 at 3:55:29 pm'!
+'From Cuis 6.0 [latest update: #5096] on 8 April 2022 at 12:20:07 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 48!
+!provides: 'UI-Panel' 1 49!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -162,8 +162,9 @@ WizardPage class
 !PluggableScrollBar commentStamp: '<historical>' prior: 0!
 I am a ScrollBar which can get new values from my model.!
 
-!Panel commentStamp: '<historical>' prior: 0!
-I present a view of pickable images
+!Panel commentStamp: 'hlsf 4/8/2022 12:19:51' prior: 0!
+- I present morphs in a panel. (see buildMorphicWindow)
+- I am decorated with a window title with optional buttons
 !
 
 !DialogPanel commentStamp: '<historical>' prior: 0!
