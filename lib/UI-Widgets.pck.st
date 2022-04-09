@@ -1,15 +1,15 @@
-'From Cuis 6.0 [latest update: #5096] on 4 April 2022 at 1:03:12 pm'!
+'From Cuis 6.0 [latest update: #5096] on 9 April 2022 at 9:16:05 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 13!
+!provides: 'UI-Widgets' 1 14!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'Collections-CompactArrays' 1 13 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
 
 !classDefinition: #ButtonMorph category: 'UI-Widgets'!
 PluggableButtonMorph subclass: #ButtonMorph
-	instanceVariableNames: 'selectedColor stateArgument actionArgument'
+	instanceVariableNames: 'selectedColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
@@ -129,19 +129,9 @@ See my Class side:
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
 
-!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/4/2022 12:40:20'!
-actionArgument: anObject
-	actionArgument _ anObject! !
-
-!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:17:21'!
+!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/9/2022 21:15:36'!
 adoptWidgetsColor: paneColor
-"Does not honour hit"! !
-
-!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/4/2022 12:49:17'!
-performAction
-	self isEnabled ifFalse: [^ self].
-	actionSelector ifNotNil: [
-		model perform: actionSelector withPossiblyWrongSizedArguments: {actionArgument}]! !
+"Does not honour it"! !
 
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:00:05'!
 selectedColor
@@ -150,10 +140,6 @@ selectedColor
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 3/31/2022 15:14:21'!
 selectedColor: aColor
 	selectedColor _ aColor ! !
-
-!ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/4/2022 12:40:34'!
-stateArgument: anObject
-	stateArgument _ anObject! !
 
 !ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 3/31/2022 15:15:34'!
 drawMyShapeOn: canvas with: background
@@ -172,12 +158,6 @@ drawOn: canvas
 		ifTrue:  [self drawMyShapeOn: canvas with: self selectedColor]
 		ifFalse: [self drawMyShapeOn: canvas with: self color].
 	icon ifNotNil: [canvas image: icon at: (extent - icon extent // 2)]! !
-
-!ButtonMorph methodsFor: 'private' stamp: 'hlsf 4/4/2022 12:30:57'!
-getState
-	^ stateSelector 
-		ifNil: [false]
-		ifNotNil: [model perform: stateSelector withPossiblyWrongSizedArguments: {stateArgument}]! !
 
 !WheelMorph methodsFor: 'accessing'!
 actionSelector
