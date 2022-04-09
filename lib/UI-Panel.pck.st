@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5096] on 8 April 2022 at 12:20:07 pm'!
+'From Cuis 6.0 [latest update: #5096] on 9 April 2022 at 10:40:17 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 49!
+!provides: 'UI-Panel' 1 50!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -771,11 +771,12 @@ open: model
 
 	^self open: model label: nil! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:21:28'!
+!Panel class methodsFor: 'instance creation' stamp: 'hlsf 4/9/2022 10:11:28'!
 open: model label: aString
 	|  window |
-	window _ self new ::
+	window _ self basicNew ::
 		model: model;
+		initialize;
 		buildMorphicWindow.
 	aString ifNotNil: [ window setLabel: aString ].
 	window openInWorld.
@@ -911,20 +912,20 @@ newButtonArea
 		color: self widgetsColor.
 	^ buttonArea! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:22:27'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:20:51'!
 accept
 	self delete.
-	self model 		ifNotNil: [ :myModel | 			
+	model 	ifNotNil: [ :myModel | 			
 		myModel propertyValue: entry value 		].! !
 
 !ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:22:36'!
 cancel
 	self delete! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:22:12'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:21:04'!
 valueWhenDropped
 	
-	^ self model  
+	^ model  
 		ifNotNil: [ :m | 	m propertyValue: entry value ] 
 		ifNil: [ entry value ]! !
 
@@ -965,26 +966,10 @@ newPane
 		color: (Color transparent).
 	^ entryLayout ! !
 
-!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:19:26'!
-initialize
-	self initializeEntry.
-	super initialize.
-! !
-
-!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:19:26'!
-initializeEntry
-	self subclassResponsibility 
-! !
-
 !ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:23:21'!
 model: aModel
 	super model: aModel.
 	entry ifNotNil: [:anEntry | anEntry setValue: aModel propertyValue]! !
-
-!ValueEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 10:21:04'!
-entry
-"Subclass should redefine if needed"
-	^ entry! !
 
 !ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:25'!
 checkValidity: aModel
@@ -1005,10 +990,10 @@ openWide: aModel label: stringName
 	^panel
 	! !
 
-!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:23:54'!
+!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:14:42'!
 accept
 	self delete.
-	self model ifNotNil: [ :myModel | 
+	model ifNotNil: [ :myModel | 
 		myModel propertyValue: (entry value at: 1) ]! !
 
 !CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:24:16'!
@@ -1017,10 +1002,13 @@ valueWhenDropped
 		ifNotNil: [ :m | m propertyValue: (entry value at: 1) ] 
 		ifNil: [ '_' ]! !
 
-!CharacterEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:05'!
-initializeEntry
-	entry := SimpleNumberEntryMorph singleCharSelection: $c.
-	entry acceptCancelReceiver: self
+!CharacterEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:15:29'!
+initialize
+	super initialize .
+	entry _ SimpleNumberEntryMorph singleCharSelection: $c ::
+		setValue: model propertyValue;
+		acceptCancelReceiver: self;
+		yourself
 ! !
 
 !CharacterEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:45'!
@@ -1039,11 +1027,23 @@ example1
 	model openInWorld.
 	^ self open: model label: 'Key in a character'! !
 
-!FloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/21/2022 15:30:11'!
-initializeEntry
+!FloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:18:43'!
+initialize
+	super initialize.
+	entry _ SimpleNumberEntryMorph floatDefault: 1.0 maxNumChars: 8 ::
+		setValue: model propertyValue;
+		acceptCancelReceiver: self;
+		yourself! !
 
-	entry := SimpleNumberEntryMorph floatDefault: 1.0 maxNumChars: 8.
-	entry acceptCancelReceiver: self! !
+!FloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:34:50'!
+example1
+" 
+	FloatEntryPanel example1 
+"
+	| model |
+	model := SignMorph forObject: 3.1.
+	model openInWorld.
+	^ self open: model label: 'A better PI'! !
 
 !FloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 3/21/2022 15:32:16'!
 checkValidity: aNumber
@@ -1062,18 +1062,17 @@ valueWhenDropped
 		ifNotNil: [ :m | m propertyValue: 	(xEntryMorph value @ yEntryMorph value) ] 
 		ifNil: [ 0@0 ]! !
 
-!PointEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:13'!
-initializeEntry
-	xEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
-	yEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
-	xEntryMorph acceptCancelReceiver: self.
-	yEntryMorph acceptCancelReceiver: self! !
-
-!PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 12/30/2021 11:13:39'!
-model: aModel
-	super model: aModel.
-	xEntryMorph setValue: aModel propertyValue x.
-	yEntryMorph setValue: aModel propertyValue y! !
+!PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:17:10'!
+initialize
+	super initialize.
+	xEntryMorph _ SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8 ::
+		setValue: model propertyValue x;
+		acceptCancelReceiver: self;
+		yourself.	
+	yEntryMorph _ SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8 ::
+		setValue: model propertyValue y;
+		acceptCancelReceiver: self;
+		yourself! !
 
 !PointEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 12/25/2021 16:47:44'!
 newPane
@@ -1107,11 +1106,13 @@ example1
 		open: model
 		label: 'Point Value' ! !
 
-!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 16:01:08'!
-initializeEntry
-
-	entry := SimpleNumberEntryMorph positiveFloatDefault: 1.0 maxNumChars: 8.
-	entry acceptCancelReceiver: self
+!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:18:52'!
+initialize
+	super initialize.
+	entry _ SimpleNumberEntryMorph positiveFloatDefault: 1.0 maxNumChars: 8 ::
+		setValue: model propertyValue;
+		acceptCancelReceiver: self;
+		yourself
 ! !
 
 !PositiveFloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:29:38'!
@@ -1139,10 +1140,13 @@ example2
 	model openInWorld.
 	^ self open: model label: 'Edit a positive float'! !
 
-!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:25'!
-initializeEntry
-	entry := SimpleNumberEntryMorph integerDefault: 0 maxNumChars: 8.
-	entry acceptCancelReceiver: self! !
+!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:19:00'!
+initialize
+	super initialize.
+	entry _ SimpleNumberEntryMorph integerDefault: 0 maxNumChars: 8 ::
+		acceptCancelReceiver: self;
+		setValue: model propertyValue;
+		yourself! !
 
 !PositiveIntegerEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:53:21'!
 checkValidity: aNumber
@@ -1174,11 +1178,13 @@ min: aMinFloat max: aMaxFloat
 	min _ aMinFloat.
 	max _ aMaxFloat ! !
 
-!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'KenD 3/20/2022 16:02:44'!
-initializeEntry
-
-	entry _ SimpleNumberEntryMorph floatRangeFrom: min to: max maxNumChars: 10.
-	entry acceptCancelReceiver: self! !
+!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:19:31'!
+initialize
+	super initialize .
+	entry _ SimpleNumberEntryMorph floatRangeFrom: min to: max maxNumChars: 10 ::
+		acceptCancelReceiver: self;
+		setValue: model propertyValue;
+		yourself! !
 
 !RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:41:15'!
 checkValidity: aNumber between: min and: max
@@ -1187,14 +1193,14 @@ checkValidity: aNumber between: min and: max
 		self error: aNumber printString, ' is not in [ ', min printString, ' ; ', max printString, ' ]']
 		! !
 
-!RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:38:55'!
+!RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 4/9/2022 10:22:03'!
 open: aModel between: aMin and: aMax label: stringName
 | panel |
 	self checkValidity: aModel propertyValue between: aMin and: aMax.
 	panel _ self basicNew :: 
+		model: aModel;
 		min: aMin max: aMax;
 		initialize ;
-		model: aModel;
 		buildMorphicWindow.
 	stringName ifNotNil: [panel setLabel: stringName].
 	panel openInWorld.
@@ -1233,18 +1239,19 @@ example3
 	model action: [ panel openInWorld]. "Panel is usually closed when property edited in the model, open it again"
 	^ panel! !
 
-!StringEntryPanel methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:27:41'!
-initializeEntry
+!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:23:39'!
+initialize
+	super initialize.
+	entry _ TextEntryMorph contents: model propertyValue ::
+		acceptCancelReceiver: self;
+		yourself.
+	entry 	layoutSpec: 
+		(LayoutSpec 
+			proportionalWidth: 1 
+			fixedHeight: Preferences windowTitleFont lineSpacing )
+		! !
 
-	entry := TextEntryMorph contents: '' .
-	entry 
-		layoutSpec: 
-			(LayoutSpec 
-				proportionalWidth: 1 
-				fixedHeight: Preferences windowTitleFont lineSpacing );
-		acceptCancelReceiver: self! !
-
-!StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 3/19/2022 10:19:10'!
+!StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 4/9/2022 10:21:28'!
 newPane
 
 	| entryLayout |
@@ -1252,7 +1259,7 @@ newPane
 	entryLayout 
 		separation: self defaultSeparation;
 		axisEdgeWeight: #rowLeft;
-		addMorph: self entry ; "set in #initialize"
+		addMorph: entry ; "set in #initialize"
 		color: Color transparent;
 		borderColor: Color black.
 	
@@ -1269,7 +1276,7 @@ example1
 	"I use a SqueezeLabelMorph in my title"
 	^ self open: model  label: 'The Smalltalk I use'! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/26/2022 11:24:25'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:32:32'!
 example2
 "
 	StringEntryPanel example2
@@ -1277,9 +1284,9 @@ example2
 	| model |
 	model := SignMorph forObject: 'Cuis Smalltalk'.
 	model openInWorld.
-	self openWide: model  label: 'The Smalltalk I use is...' .! !
+	^ self openWide: model  label: 'The Smalltalk I use is...' .! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/26/2022 11:24:43'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:32:37'!
 example3
 "
 	StringEntryPanel example3
@@ -1287,43 +1294,50 @@ example3
 	| model |
 	model := ValueHolder with: 'a file name'.
 	model action: [:value | Transcript show: value].
-	self openWide: model  label: 'Name the sktech to keep, thiis is a long title'! !
+	^ self openWide: model  label: 'Name the sktech to keep, this is a long title'! !
 
 !StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:55:39'!
 checkValidity: aString
 	(aString isKindOf: String) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
 
-!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/25/2022 10:28:31'!
-initializeEntry
+!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:30:31'!
+initialize
+	super initialize.
+	entry _ TextModelMorph withText: model propertyValue.
+	entry 	layoutSpec: (LayoutSpec 
+		proportionalWidth: 1 
+		fixedHeight: Preferences windowTitleFont lineSpacing * 4 )! !
 
-	entry := TextModelMorph withText: '' .
-	entry 
-		layoutSpec: 
-			(LayoutSpec 
-				proportionalWidth: 1 
-				fixedHeight: Preferences windowTitleFont lineSpacing * 4 )! !
-
-!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/25/2022 10:46:01'!
-model: aModel
-	"Set my model and make me me a dependent of the given object."
-
-	model ifNotNil: [model removeActionsWithReceiver: self].
-	aModel ifNotNil: [aModel addDependent: self].
-	model _ aModel	.
-	entry ifNotNil: [:anEntry | anEntry scroller contents: aModel propertyValue]! !
-
-!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 3/25/2022 11:16:17'!
+!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:27:37'!
 accept
 	self delete.
-	self model 		ifNotNil: [ :myModel | 			
+	model 	ifNotNil: [ :myModel | 			
 		myModel propertyValue: entry scroller contents asString		].! !
 
-!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 3/25/2022 11:16:53'!
+!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:27:42'!
 valueWhenDropped
 	
-	^ self model  
+	^ model  
 		ifNotNil: [ :m | 	m propertyValue: entry scroller contents asString ] 
 		ifNil: [ entry scroller contents asString]! !
+
+!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:29:43'!
+example1
+"
+	super example1 openInWorld
+"! !
+
+!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:31:30'!
+example2
+"
+	super example2 openInWorld
+"! !
+
+!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:31:24'!
+example3
+"
+	super example3 openInWorld
+"! !
 
 !WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 12/27/2021 10:25:18'!
 newButtonArea
