@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 2 April 2022 at 2:43:05 pm'!
+'From Cuis 6.0 [latest update: #5105] on 14 April 2022 at 3:31:56 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 17!
+!provides: 'UI-Base-Morphs' 1 18!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -86,7 +86,7 @@ ValueHolder class
 	instanceVariableNames: ''!
 
 
-!WindowTitleMorph commentStamp: '<historical>' prior: 0!
+!WindowTitleMorph commentStamp: 'hlsf 4/14/2022 15:15:50' prior: 0!
 I hold and layout the title section of windows/panels.
 
 My owner gets messages for standard buttons.
@@ -95,7 +95,9 @@ As my instances are created before my owner is set, I delegate events to my owne
 
 To simplify management, all buttons are present but hidden unless requested.
 
-See Panel, LayoutMorphEditPanel and LayoutSpecEditPanel as usage examples!
+See Panel, LayoutMorphEditPanel and LayoutSpecEditPanel as usage examples
+
+My buttons can be  #(close collapse expand windowMenu pin showHalo )!
 
 !SqueezeLabelMorph commentStamp: '<historical>' prior: 0!
 A LabelMorph displays a fixed size string (with font an emphasis).
