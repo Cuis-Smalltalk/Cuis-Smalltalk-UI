@@ -1,6 +1,7 @@
-'From Cuis 6.0 [latest update: #5113] on 26 April 2022 at 12:50:15 am'!
+'From Cuis 6.0 [latest update: #5113] on 26 April 2022 at 12:53:27 am'!
 'Description '!
-!provides: 'UI-Preference' 1 4!
+!provides: 'UI-Preference' 1 5!
+!requires: 'UI-Click-Select' 1 32 nil!
 SystemOrganization addCategory: 'UI-Preference'!
 
 
