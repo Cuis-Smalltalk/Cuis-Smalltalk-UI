@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5105] on 14 April 2022 at 3:31:56 pm'!
+'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 10:43:15 am'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 18!
+!provides: 'UI-Base-Morphs' 1 19!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -124,30 +124,6 @@ I am a LineMorph which has a "pointer" morph which I maintain in position at my 
 !ListModel commentStamp: '<historical>' prior: 0!
 I am a model presenting a list of color!
 
-!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 12/13/2021 13:28:42'!
-initializedInstance
-
-	| newInstance |
-	newInstance := super new :: minCharsToShow: 7.
-	^newInstance 
-		morphExtent: newInstance minimumExtent;
-		yourself! !
-
-!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 16:21'!
-initializedInstance
-	"Hand out a sample line"
-
-	^ self new startPoint: 20@30 endPoint: 120@160 width: 6 color: Color cyan
-! !
-
-!PointerLineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/15/2016 17:37:25'!
-initializedInstance
-
-	| newInst |
-	newInst  := super initializedInstance.
-	newInst updateEndPoint.
-	^newInst! !
-
 !WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 4/24/2015 08:01'!
 buttonNamesShown
 
@@ -255,11 +231,11 @@ buttonSeparation
 
 	^  (self buttonExtent x) * 4 // 10! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 10/25/2021 14:27:13'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'hlsf 5/14/2022 10:27:58'!
 labelHeight
 	"Answer the height for the window label."
 
-	^  Preferences windowTitleFont lineSpacing+1! !
+	^  (PreferenceNG at: #windowTitleFont) lineSpacing+1! !
 
 !WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 10/25/2021 15:17:28'!
 minimumButtonsExtent
@@ -334,10 +310,10 @@ rescaleButtons
 	].
 ! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 10/26/2021 16:07:19'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'hlsf 5/14/2022 10:28:09'!
 resetTitleFont
 	"Reset my title font"
-	titleMorph font: Preferences windowTitleFont! !
+	titleMorph font: (PreferenceNG at: #windowTitleFont)! !
 
 !WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 7/4/2015 15:22'!
 showHaloButtonClicked
@@ -353,7 +329,7 @@ windowMenuButtonClicked
 	self owner windowMenuButtonClicked
 ! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 10/26/2021 16:12:16'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:27:32'!
 addAllButtonsAndTitle
 	"Buttons first"
    #( ( close  closeButtonClicked 'close this window' closeIcon drawCloseIcon )
@@ -371,7 +347,7 @@ addAllButtonsAndTitle
 	"Title next"
 	titleMorph := SqueezeLabelMorph 
 					contents: 'Untitled' 
-					font: Preferences windowTitleFont
+					font: (PreferenceNG at: #windowTitleFont)
 					minCharsToShow: 8
 					:: 
 					color: Color black.
@@ -406,11 +382,11 @@ drawAction: drawSelector
 	self addMorph: button
 	! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 1/17/2022 08:19:28'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:27:46'!
 dontShrinkTitle: aString buttonsNamed: aSymbolColleciton
 	"Set me up"
 	
-	titleMorph := LabelMorph contents: aString font: Preferences windowTitleFont.
+	titleMorph := LabelMorph contents: aString font: (PreferenceNG at: #windowTitleFont).
 	self hideAllButtons.
 	aSymbolColleciton  do: [ :aName |
 		(self buttonNamed: aName)
@@ -602,6 +578,15 @@ contents: aString font: aFont minCharsToShow: numChars
 contents: aString minCharsToShow: numChars
 
 	^ super contents: aString :: minCharsToShow: numChars! !
+
+!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 12/13/2021 13:28:42'!
+initializedInstance
+
+	| newInstance |
+	newInstance := super new :: minCharsToShow: 7.
+	^newInstance 
+		morphExtent: newInstance minimumExtent;
+		yourself! !
 
 !SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 05:53:29'!
 minCharsToShow: numChars
@@ -1024,6 +1009,13 @@ startPoint: startPoint endPoint: endPoint width: numPixels color: aColor
 	self setPointSelectorsFromStartPoint: startPoint endPoint: endPoint.
 	! !
 
+!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 16:21'!
+initializedInstance
+	"Hand out a sample line"
+
+	^ self new startPoint: 20@30 endPoint: 120@160 width: 6 color: Color cyan
+! !
+
 !LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 18:51'!
 startPoint: start endPoint: end
 
@@ -1098,6 +1090,14 @@ updateEndPoint
 	pointMorphCenter := (self endPointMorph morphExtentInOwner) / 2.
 	endPointOffset := (self rect perform: endPointSelector) + (self lineWidth / 2).
 	self endPointMorph morphPosition: endPointOffset - pointMorphCenter.! !
+
+!PointerLineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/15/2016 17:37:25'!
+initializedInstance
+
+	| newInst |
+	newInst  := super initializedInstance.
+	newInst updateEndPoint.
+	^newInst! !
 
 !PointerLineMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 11:40:31'!
 example1

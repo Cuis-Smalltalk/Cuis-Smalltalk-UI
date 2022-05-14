@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5096] on 9 April 2022 at 10:40:17 am'!
+'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 10:43:28 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 50!
+!provides: 'UI-Panel' 1 51!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -222,26 +222,6 @@ It emits event when
  - the user press apply and cancel
 !
 
-!Panel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 07:30:33'!
-initializedInstance
-"
-	self initializedInstance openInHand.
-"
-	| panel |
-	panel _ Panel new.
-	panel 	titleMorph showButtonsNamed: #(#close).
-	^ panel
-		! !
-
-!Panel methodsFor: 'printing' stamp: 'KenD 4/24/2015 16:04'!
-printOn: aStream 
-
-	super printOn: aStream.
-	aStream nextPutAll: '('.
-	aStream
-		print: self label;
-		nextPutAll: ')'! !
-
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
 fontPreferenceChanged
 
@@ -286,6 +266,15 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
+
+!Panel methodsFor: 'printing' stamp: 'KenD 4/24/2015 16:04'!
+printOn: aStream 
+
+	super printOn: aStream.
+	aStream nextPutAll: '('.
+	aStream
+		print: self label;
+		nextPutAll: ')'! !
 
 !Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 12/9/2013 16:44'!
 addMorph: aMorph 
@@ -426,13 +415,13 @@ layoutSubmorphs
 	
 	self layoutNeeded: false! !
 
-!Panel methodsFor: 'geometry' stamp: 'jmv 4/25/2019 10:07:34'!
+!Panel methodsFor: 'geometry' stamp: 'hlsf 5/14/2022 10:29:19'!
 boxExtent
 	"answer the extent to use in all the buttons. 
 	 
 	the label height is used to be proportional to the fonts preferences"
 	| e |
-	e _ Preferences windowTitleFont lineSpacing.
+	e _ (PreferenceNG at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
 !Panel methodsFor: 'geometry' stamp: 'KenD 10/3/2019 12:52:58'!
@@ -526,11 +515,11 @@ buttonColor
 
 	^ Theme current buttonColorFrom: self widgetsColor! !
 
-!Panel methodsFor: 'GUI building' stamp: 'jmv 4/25/2019 10:07:38'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 5/14/2022 10:30:00'!
 defaultButtonPaneHeight
 	"Answer the user's preferred default height for new button panes."
 
-	^ Preferences standardButtonFont lineSpacing * 14 // 8! !
+	^ (PreferenceNG at: #standardButtonFont) lineSpacing * 14 // 8! !
 
 !Panel methodsFor: 'GUI building' stamp: 'KenD 4/25/2015 08:51'!
 hideButtons
@@ -558,11 +547,11 @@ valueWhenDropped
 
 	^nil! !
 
-!Panel methodsFor: 'events' stamp: 'KenD 4/24/2015 16:45'!
+!Panel methodsFor: 'events' stamp: 'hlsf 5/14/2022 10:29:45'!
 closeButtonClicked
 	"The user clicked on the close-box control in the window title.  For Mac users only, the Mac convention of option-click-on-close-box is obeyed if the mac option key is down."
 
-	Preferences dismissAllOnOptionClose ifTrue:
+	(PreferenceNG at: #dismissAllOnOptionClose) ifTrue:
 		[Sensor rawMacOptionKeyPressed ifTrue:
 			[^ self world closeUnchangedWindows]].
 	self delete  "closeBox overrides stayUp"
@@ -673,11 +662,11 @@ label
 
 	^ self titleMorph titleString ! !
 
-!Panel methodsFor: 'label' stamp: 'KenD 10/25/2021 14:26:02'!
+!Panel methodsFor: 'label' stamp: 'hlsf 5/14/2022 10:30:19'!
 labelHeight
 	"Answer the height for the window label."
 
-	^  Preferences windowTitleFont lineSpacing+1! !
+	^  (PreferenceNG at: #windowTitleFont) lineSpacing+1! !
 
 !Panel methodsFor: 'label' stamp: 'KenD 4/25/2015 12:54'!
 relabel
@@ -761,6 +750,17 @@ example1
 	Panel example1 openInWorld
 "
 | panel |
+	panel _ Panel new.
+	panel 	titleMorph showButtonsNamed: #(#close).
+	^ panel
+		! !
+
+!Panel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 07:30:33'!
+initializedInstance
+"
+	self initializedInstance openInHand.
+"
+	| panel |
 	panel _ Panel new.
 	panel 	titleMorph showButtonsNamed: #(#close).
 	^ panel
@@ -874,7 +874,7 @@ editModel: anObject
 
 	editModel := anObject! !
 
-!EditPanel methodsFor: 'GUI building' stamp: 'hlsf 12/30/2021 10:37:31'!
+!EditPanel methodsFor: 'GUI building' stamp: 'hlsf 5/14/2022 10:30:29'!
 newButtonArea
 	"Answer a LayoutMorph with Update and Cancel buttons"
 	
@@ -906,7 +906,7 @@ newButtonArea
 							offAxisEdgeWeight: #center);
 		layoutSpec: (LayoutSpec 
 							proportionalWidth: 1 
-							fixedHeight: (2 * Preferences windowTitleFont lineSpacing)
+							fixedHeight: (2 * (PreferenceNG at: #windowTitleFont) lineSpacing)
 							offAxisEdgeWeight: #center);
 		axisEdgeWeight: #center;
 		color: self widgetsColor.
@@ -1239,7 +1239,7 @@ example3
 	model action: [ panel openInWorld]. "Panel is usually closed when property edited in the model, open it again"
 	^ panel! !
 
-!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:23:39'!
+!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:30:39'!
 initialize
 	super initialize.
 	entry _ TextEntryMorph contents: model propertyValue ::
@@ -1248,7 +1248,7 @@ initialize
 	entry 	layoutSpec: 
 		(LayoutSpec 
 			proportionalWidth: 1 
-			fixedHeight: Preferences windowTitleFont lineSpacing )
+			fixedHeight: (PreferenceNG at: #windowTitleFont) lineSpacing )
 		! !
 
 !StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 4/9/2022 10:21:28'!
@@ -1300,13 +1300,13 @@ example3
 checkValidity: aString
 	(aString isKindOf: String) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
 
-!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:30:31'!
+!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:30:50'!
 initialize
 	super initialize.
 	entry _ TextModelMorph withText: model propertyValue.
 	entry 	layoutSpec: (LayoutSpec 
 		proportionalWidth: 1 
-		fixedHeight: Preferences windowTitleFont lineSpacing * 4 )! !
+		fixedHeight: (PreferenceNG at: #windowTitleFont) lineSpacing * 4 )! !
 
 !TextEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:27:37'!
 accept
