@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 7 April 2022 at 11:58:01 am'!
+'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 11:18:11 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 31!
+!provides: 'UI-Click-Select' 1 33!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -189,21 +189,6 @@ I am simple check button!
 !RadioButtonMorph commentStamp: '<historical>' prior: 0!
 I am a very simple radio button.!
 
-!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:41:13'!
-initializedInstance
-
-	^self example1! !
-
-!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:40:33'!
-initializedInstance
-
-	^self example1! !
-
-!DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:41:58'!
-initializedInstance
-
-	^self example1! !
-
 !CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:54'!
 buttonClass
 " What kind of button am I, check or radio? "
@@ -316,13 +301,13 @@ fromMorphDict: morphDict
 	self registerEvents.
 	list _ morphList asArray! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/12/2022 09:51:42'!
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:28:49'!
 initialize
 	"Initialize self to harmless values"
 	
 	super initialize.
 	list _ #().
-	self    setFont: Preferences standardButtonFont;
+	self    setFont: (PreferenceNG at: #standardButtonFont);
 		 buttonOnLeft: true;
 		 separation: 2@2;
 		 color: Color transparent! !
@@ -362,12 +347,12 @@ naturalHeight
 	^ 4  + ((self list size) 
 		* (2 + ((self font lineSpacing) max: (self buttonClass defaultDiameter))))! !
 
-!CheckGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 12:37:19'!
+!CheckGroup methodsFor: 'events' stamp: 'hlsf 5/14/2022 10:28:40'!
 fontPreferenceChanged
 
 	| labelStrings maxStringWidth labelLayoutSpec |
 	super fontPreferenceChanged.
-	self setFont: Preferences standardButtonFont.
+	self setFont: (PreferenceNG at: #standardButtonFont).
 	maxStringWidth := 3. "minimum"
 	labelStrings := self labelStrings.
 	labelStrings do: [ :str |
@@ -381,9 +366,9 @@ fontPreferenceChanged
 	self submorphsDo: [ :selectLine |
 		selectLine submorphsDo: [ :aMorph |
 			(aMorph respondsTo: #setFont:)
-				ifTrue: [ aMorph setFont: Preferences standardButtonFont ].
+				ifTrue: [ aMorph setFont: (PreferenceNG at: #standardButtonFont) ].
 			(aMorph respondsTo: #font:)
-				ifTrue: [ aMorph font: Preferences standardButtonFont ].
+				ifTrue: [ aMorph font: (PreferenceNG at: #standardButtonFont) ].
 			(aMorph respondsTo: #ofSize:)
 				ifTrue: [aMorph ofSize: self buttonClass defaultDiameter].
 			((aMorph isKindOf: LabelMorph)
@@ -559,6 +544,11 @@ includeInNewMorphMenu
 	
 	^ true! !
 
+!PluggableCheckboxMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:41:13'!
+initializedInstance
+
+	^self example1! !
+
 !PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:37:47'!
 example1
 "
@@ -639,6 +629,11 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
+
+!RadioGroup class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:40:33'!
+initializedInstance
+
+	^self example1! !
 
 !RadioGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 20:50:25'!
 example1
@@ -790,6 +785,11 @@ categoryInNewMorphMenu
 includeInNewMorphMenu
 	
 	^ true! !
+
+!DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:41:58'!
+initializedInstance
+
+	^self example1! !
 
 !DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:23:52'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
@@ -1258,11 +1258,11 @@ initialize
 	self borderColor: self defaultColor.
 	self ofSize: self defaultDiameter! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/25/2022 20:48:45'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:31:06'!
 ofSize: numPixels
 
 	| size scale |
-	scale _  Preferences standardButtonFont pointSize / 14.0.
+	scale _  (PreferenceNG at: #standardButtonFont) pointSize / 14.0.
 	size _ numPixels "* scale".
 	self borderWidth: ((self defaultBorderWidth * scale) max: 1).
 	self morphExtent: size @ size.
@@ -1342,10 +1342,10 @@ update: aParameter
 
 	self redrawNeeded! !
 
-!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 21:16:22'!
+!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:30:58'!
 defaultDiameter
 
-	^ Preferences standardButtonFont lineSpacing! !
+	^ (PreferenceNG at: #standardButtonFont) lineSpacing! !
 
 !CheckButtonMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/25/2022 20:47:33'!
 includeInNewMorphMenu
@@ -1353,12 +1353,15 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!CheckButtonMorph class methodsFor: 'examples' stamp: 'hlsf 1/25/2022 21:09:22'!
+!CheckButtonMorph class methodsFor: 'examples' stamp: 'hlsf 5/14/2022 11:17:55'!
 example1
 "
 	self example1 openInWorld
 "
-	^ CheckButtonMorph new! !
+	| checkButton |
+	 checkButton _ CheckButtonMorph new.
+	checkButton when: #checkSelection send: #show: to: Transcript.
+	^ checkButton ! !
 
 !CheckButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/25/2022 20:48:51'!
 ofSize: numPixels

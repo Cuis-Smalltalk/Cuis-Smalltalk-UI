@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5113] on 14 May 2022 at 9:42:34 am'!
+'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 11:18:14 am'!
 'Description '!
-!provides: 'UI-Preference' 1 6!
+!provides: 'UI-Preference' 1 8!
 !requires: 'UI-Click-Select' 1 31 nil!
 SystemOrganization addCategory: 'UI-Preference'!
 
@@ -15,6 +15,31 @@ DialogPanel subclass: #PreferenceBrowser
 PreferenceBrowser class
 	instanceVariableNames: ''!
 
+!classDefinition: #PreferenceVisitor category: 'UI-Preference'!
+Object subclass: #PreferenceVisitor
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Preference'!
+!classDefinition: 'PreferenceVisitor class' category: 'UI-Preference'!
+PreferenceVisitor class
+	instanceVariableNames: ''!
+
+!classDefinition: #PreferenceBrowserVisitor category: 'UI-Preference'!
+PreferenceVisitor subclass: #PreferenceBrowserVisitor
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Preference'!
+!classDefinition: 'PreferenceBrowserVisitor class' category: 'UI-Preference'!
+PreferenceBrowserVisitor class
+	instanceVariableNames: ''!
+
+
+!PreferenceBrowser commentStamp: 'hlsf 5/14/2022 10:24:23' prior: 0!
+I browse a selected set of preference categories. The user can edit the preferences
+	- model : an array of preference categories (symbols) to browse. 
+	If nil, I browse all the preferences in the system!
 
 !PreferenceBrowser methodsFor: 'GUI building' stamp: 'hlsf 4/26/2022 00:17:32'!
 buildMorphicWindow
@@ -33,30 +58,31 @@ newPane
 		addMorph: preferencesGroup ;
 		yourself! !
 
-!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 5/4/2022 23:31:18'!
+!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:25:12'!
 initialize
 	super initialize.
-	categories _ PreferenceNG categories asOrderedCollection.
 	categoriesListMorph _ PluggableListMorph 
-		model: self listGetter: #categories indexGetter: #categoryIndex indexSetter: #categoryIndex: ::
+		model: self listGetter: #categoryNames indexGetter: #categoryIndex indexSetter: #categoryIndex: ::
 		autoDeselect: false ;
 		yourself.
 	preferencesGroup _  PluggableScrollPane new ::
 		color: self color;
 		layoutSpec: LayoutSpec useAll! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 4/25/2022 23:29:42'!
-categories
-	^ categories collect: [:aSymbol | aSymbol asString capitalized ]! !
+!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:21:47'!
+model: selectedCategories
+	selectedCategories 
+		ifNil:  [model _ PreferenceNG categories sorted]
+		ifNotNil: [	model _ selectedCategories sorted]! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 4/25/2022 23:22:31'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:20:09'!
 categoryIndex
-	^ categories indexOf: category! !
+	^ model indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/4/2022 23:33:59'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:20:17'!
 categoryIndex: anIndex
 	| preferences preferenceButtons |
-	category _ categories at: anIndex.
+	category _ model at: anIndex.
 	preferences _ PreferenceNG select: category.
 	preferenceButtons _ CheckGroup fromList: (preferences collect: [:each | each name capitalized]).
 	preferenceButtons buttons withIndexDo: [:button :index | | preference |
@@ -68,6 +94,10 @@ categoryIndex: anIndex
 	self redrawNeeded 
 	 ! !
 
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:19:17'!
+categoryNames
+	^ model collect: [:aSymbol | aSymbol asString capitalized ]! !
+
 !PreferenceBrowser methodsFor: 'menus' stamp: 'hlsf 4/26/2022 00:34:44'!
 expand
 	super expand.
@@ -76,3 +106,10 @@ expand
 !PreferenceBrowser methodsFor: 'geometry' stamp: 'hlsf 4/26/2022 00:20:17'!
 minimumExtent
 	^ 800@600! !
+
+!PreferenceVisitor methodsFor: 'as yet unclassified' stamp: 'hlsf 5/14/2022 10:52:37'!
+visitBoolean: aPref
+	self subclassResponsibility ! !
+
+!PreferenceBrowserVisitor methodsFor: 'as yet unclassified' stamp: 'hlsf 5/14/2022 11:00:00'!
+visitBoolean: aPref! !
