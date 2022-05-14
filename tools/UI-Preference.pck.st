@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5113] on 26 April 2022 at 12:53:27 am'!
+'From Cuis 6.0 [latest update: #5113] on 14 May 2022 at 9:42:34 am'!
 'Description '!
-!provides: 'UI-Preference' 1 5!
+!provides: 'UI-Preference' 1 6!
 !requires: 'UI-Click-Select' 1 32 nil!
 SystemOrganization addCategory: 'UI-Preference'!
 
@@ -33,10 +33,10 @@ newPane
 		addMorph: preferencesGroup ;
 		yourself! !
 
-!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 4/26/2022 00:32:23'!
+!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 5/4/2022 23:31:18'!
 initialize
 	super initialize.
-	categories _ Preferences categories asOrderedCollection.
+	categories _ PreferenceNG categories asOrderedCollection.
 	categoriesListMorph _ PluggableListMorph 
 		model: self listGetter: #categories indexGetter: #categoryIndex indexSetter: #categoryIndex: ::
 		autoDeselect: false ;
@@ -53,16 +53,16 @@ categories
 categoryIndex
 	^ categories indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 4/26/2022 00:41:07'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/4/2022 23:33:59'!
 categoryIndex: anIndex
 	| preferences preferenceButtons |
 	category _ categories at: anIndex.
-	preferences _ Preferences select: category.
+	preferences _ PreferenceNG select: category.
 	preferenceButtons _ CheckGroup fromList: (preferences collect: [:each | each name capitalized]).
 	preferenceButtons buttons withIndexDo: [:button :index | | preference |
 		preference _ preferences at: index.
-		button setBalloonText: preference help.
-		button isSelected: ((preference preferenceValue is: #Boolean) ifTrue: [preference preferenceValue] ifFalse: [false]).
+		button setBalloonText: preference description .
+		button isSelected: ((preference type == Boolean) ifTrue: [preference value] ifFalse: [false]).
 		button when: #checkSelection send: #togglePreferenceValue to: preference 	].
 	preferencesGroup 	scroller: preferenceButtons.
 	self redrawNeeded 
@@ -76,23 +76,3 @@ expand
 !PreferenceBrowser methodsFor: 'geometry' stamp: 'hlsf 4/26/2022 00:20:17'!
 minimumExtent
 	^ 800@600! !
-
-!Preference methodsFor: '*UI-Preference' stamp: 'hlsf 4/25/2022 22:55:59'!
-categories
-	^ categoryList ! !
-
-!Preference methodsFor: '*UI-Preference' stamp: 'hlsf 4/25/2022 23:49:56'!
-help
-	^ helpString ! !
-
-!Preferences class methodsFor: '*UI-Preference' stamp: 'hlsf 4/25/2022 22:59:00'!
-categories
-	| categories |
-	categories _ Set new.
-	self preferencesDictionary values do: [:aPreference | categories addAll: aPreference categories].
-	^ categories sorted! !
-
-!Preferences class methodsFor: '*UI-Preference' stamp: 'hlsf 4/25/2022 23:40:32'!
-select: aCategory
-" I select each preference in the given category "
-	^ self preferencesDictionary values select: [:aPreference | aPreference categories includes: aCategory ]! !
