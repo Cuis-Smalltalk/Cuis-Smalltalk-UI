@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 11:18:14 am'!
+'From Cuis 6.0 [latest update: #5163] on 15 May 2022 at 1:05:00 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 8!
+!provides: 'UI-Preference' 1 10!
 !requires: 'UI-Click-Select' 1 31 nil!
 SystemOrganization addCategory: 'UI-Preference'!
 
@@ -15,6 +15,26 @@ DialogPanel subclass: #PreferenceBrowser
 PreferenceBrowser class
 	instanceVariableNames: ''!
 
+!classDefinition: #PreferenceType category: 'UI-Preference'!
+Object subclass: #PreferenceType
+	instanceVariableNames: 'preference'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Preference'!
+!classDefinition: 'PreferenceType class' category: 'UI-Preference'!
+PreferenceType class
+	instanceVariableNames: ''!
+
+!classDefinition: #PreferenceTypeClosure category: 'UI-Preference'!
+PreferenceType subclass: #PreferenceTypeClosure
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Preference'!
+!classDefinition: 'PreferenceTypeClosure class' category: 'UI-Preference'!
+PreferenceTypeClosure class
+	instanceVariableNames: ''!
+
 !classDefinition: #PreferenceVisitor category: 'UI-Preference'!
 Object subclass: #PreferenceVisitor
 	instanceVariableNames: ''
@@ -27,7 +47,7 @@ PreferenceVisitor class
 
 !classDefinition: #PreferenceBrowserVisitor category: 'UI-Preference'!
 PreferenceVisitor subclass: #PreferenceBrowserVisitor
-	instanceVariableNames: ''
+	instanceVariableNames: 'views'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
@@ -40,6 +60,13 @@ PreferenceBrowserVisitor class
 I browse a selected set of preference categories. The user can edit the preferences
 	- model : an array of preference categories (symbols) to browse. 
 	If nil, I browse all the preferences in the system!
+
+!PreferenceType commentStamp: '<historical>' prior: 0!
+An abstract class to manipulate the type of a given preference.!
+
+!PreferenceBrowserVisitor commentStamp: '<historical>' prior: 0!
+I visit a preference to provide its morphic view
+- views: dictionary of labels and activable morph to edit the preference!
 
 !PreferenceBrowser methodsFor: 'GUI building' stamp: 'hlsf 4/26/2022 00:17:32'!
 buildMorphicWindow
@@ -79,18 +106,14 @@ model: selectedCategories
 categoryIndex
 	^ model indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:20:17'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 13:00:09'!
 categoryIndex: anIndex
-	| preferences preferenceButtons |
+	| group visitor |
 	category _ model at: anIndex.
-	preferences _ PreferenceNG select: category.
-	preferenceButtons _ CheckGroup fromList: (preferences collect: [:each | each name capitalized]).
-	preferenceButtons buttons withIndexDo: [:button :index | | preference |
-		preference _ preferences at: index.
-		button setBalloonText: preference description .
-		button isSelected: ((preference type == Boolean) ifTrue: [preference value] ifFalse: [false]).
-		button when: #checkSelection send: #togglePreferenceValue to: preference 	].
-	preferencesGroup 	scroller: preferenceButtons.
+	visitor _ PreferenceBrowserVisitor new.
+	(PreferenceNG select: category) do: [:preference | preference accept: visitor].	
+	group _ LabelGroup with: visitor views associations.
+	preferencesGroup 	scroller: group.
 	self redrawNeeded 
 	 ! !
 
@@ -107,9 +130,103 @@ expand
 minimumExtent
 	^ 800@600! !
 
-!PreferenceVisitor methodsFor: 'as yet unclassified' stamp: 'hlsf 5/14/2022 10:52:37'!
-visitBoolean: aPref
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:51:34'!
+preference: aPref
+	preference _ aPref ! !
+
+!PreferenceType class methodsFor: 'instance creation' stamp: 'hlsf 5/15/2022 10:51:41'!
+with: aPref
+	^ self new ::
+		preference: aPref;
+		yourself! !
+
+!PreferenceTypeClosure methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:58:17'!
+sourceCode
+" decompile the closure and answer it as string "
+	^ (preference instVarNamed: #value) decompile decompileString! !
+
+!PreferenceTypeClosure methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:59:58'!
+sourceCode: aString
+	"Compile and adjust the value of the preference"! !
+
+!PreferenceVisitor methodsFor: 'as yet unclassified' stamp: 'hlsf 5/14/2022 23:53:39'!
+visitBooleanPreference: aPref
 	self subclassResponsibility ! !
 
-!PreferenceBrowserVisitor methodsFor: 'as yet unclassified' stamp: 'hlsf 5/14/2022 11:00:00'!
-visitBoolean: aPref! !
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:04:08'!
+visitAbstractFontPreference: aPref
+	
+	views at: aPref name capitalized put: (LabelMorph contents: aPref value asString)! !
+
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:03:02'!
+visitArrayClassPreference: aPref
+"My type is an Array Class, I have no selection"
+	
+	views at: aPref name capitalized put: (LabelMorph contents: aPref value asString)! !
+
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:26:36'!
+visitArrayPreference: aPref
+	| list listMorph |
+	aPref isTypeAClass ifTrue: [^ self visitArrayClassPreference: aPref].
+	listMorph  _ DropDownListMorph 
+		model: (list _ ListModel with: aPref type) 
+		listGetter: #list 
+		indexGetter: #listIndex 
+		indexSetter: #listIndex: ::
+		setBalloonText: aPref description.
+	list when: #listSelectionChanged send: #changedList:for: to: self withArguments: {list. aPref}.
+	views at: aPref name capitalized put: listMorph! !
+
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:03:47'!
+visitBlockClosurePreference: aPref
+	| codeView typeModel |
+	typeModel _ PreferenceTypeClosure with: aPref.
+	codeView _ TextModelMorph textProvider: typeModel textGetter: #sourceCode textSetter: #sourceCode:.
+	codeView setBalloonText: aPref description.
+	views at: aPref name capitalized put: codeView
+	! !
+
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:26:29'!
+visitBooleanPreference: aPref
+	| check |
+	check _ CheckButtonMorph new ::
+		selected: aPref value;
+		setBalloonText: aPref description;
+		yourself.
+	check when: #checkSelection send: #changedCheck:for:  to: self withArguments: {check. aPref} .
+	views at: aPref name capitalized put: check! !
+
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 11:58:44'!
+visitSmallIntegerPreference: aPref
+	| entry |
+	entry _ SimpleNumberEntryMorph 
+		integerDefault: aPref value maxNumChars: SmallInteger maxVal asString size ::
+		valueUpdator: [:newValue | aPref value: newValue];
+		setBalloonText: aPref description;
+		yourself.
+	views at: aPref name capitalized put: entry.
+! !
+
+!PreferenceBrowserVisitor methodsFor: 'events-handling' stamp: 'hlsf 5/15/2022 12:24:13'!
+changedCheck: checkButton for: aPref
+	aPref value: checkButton isSelected! !
+
+!PreferenceBrowserVisitor methodsFor: 'events-handling' stamp: 'hlsf 5/15/2022 12:24:37'!
+changedList: listModel for: aPref
+	aPref value: listModel selectedItem ! !
+
+!PreferenceBrowserVisitor methodsFor: 'morphic' stamp: 'hlsf 5/15/2022 11:20:53'!
+rowWithLabel: aPref
+	^ LayoutMorph newRow ::
+		color: Color transparent ;
+		addMorph: (LabelMorph contents: aPref name capitalized);
+		yourself! !
+
+!PreferenceBrowserVisitor methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 12:04:54'!
+views
+	^ views! !
+
+!PreferenceBrowserVisitor methodsFor: 'initialization' stamp: 'hlsf 5/15/2022 12:08:03'!
+initialize
+	super initialize.
+	views _ Dictionary new.! !
