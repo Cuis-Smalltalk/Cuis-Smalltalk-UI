@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 10:43:22 am'!
+'From Cuis 6.0 [latest update: #5163] on 15 May 2022 at 1:04:57 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 28!
+!provides: 'UI-Entry' 1 29!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -379,7 +379,7 @@ initialize
 	super initialize.
 	self separation: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:32:31'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 5/15/2022 12:52:19'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
@@ -391,8 +391,10 @@ with: labelsAndControls
 		row _ LayoutMorph newRow separation: 4.
 		row 
 			color: self defaultColor;
-			addMorph: label fixedWidth: labelWidth;
-			addMorphUseAll: control.
+			addMorph: label fixedWidth: labelWidth.
+		control hasVariableExtent 
+			ifTrue: [row addMorphUseAll: control] 
+			ifFalse: [row addMorph: control	 layoutSpec: LayoutSpec keepMorphExtent]		.
 		self addMorph: row fixedHeight: height]! !
 
 !LabelGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/7/2022 11:53:10'!

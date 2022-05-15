@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 10:43:15 am'!
+'From Cuis 6.0 [latest update: #5163] on 15 May 2022 at 11:24:15 am'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 19!
+!provides: 'UI-Base-Morphs' 1 20!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -67,7 +67,7 @@ PointerLineMorph class
 
 !classDefinition: #ListModel category: 'UI-Base-Morphs'!
 Object subclass: #ListModel
-	instanceVariableNames: 'collection selectedIndex paletteNames'
+	instanceVariableNames: 'collection selectedIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Base-Morphs'!
@@ -122,7 +122,8 @@ I am a line from my start point to my end point.!
 I am a LineMorph which has a "pointer" morph which I maintain in position at my endpoint.!
 
 !ListModel commentStamp: '<historical>' prior: 0!
-I am a model presenting a list of color!
+I am a model presenting a list of objects. 
+I am used with PluggableListMorph or any other pluggable widget handling list.!
 
 !WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 4/24/2015 08:01'!
 buttonNamesShown
@@ -1118,11 +1119,15 @@ list: aCollection
 listIndex
 	^ selectedIndex! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:28:03'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:19:11'!
 listIndex: index
 	selectedIndex _ index.
 	"Inform any interested view we changed the selected item"
-	self changed: #listIndex:! !
+	self triggerEvent: #listSelectionChanged with: self! !
+
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:12:32'!
+selectedItem
+	^ collection at: selectedIndex ! !
 
 !ListModel methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 14:42:09'!
 initialize

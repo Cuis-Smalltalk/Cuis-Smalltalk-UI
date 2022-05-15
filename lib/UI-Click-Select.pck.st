@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 11:18:11 am'!
+'From Cuis 6.0 [latest update: #5163] on 15 May 2022 at 1:04:53 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 33!
+!provides: 'UI-Click-Select' 1 34!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -776,6 +776,10 @@ delete
 	super delete.
 	dropDownList delete! !
 
+!DropDownButtonMorph methodsFor: 'geometry testing' stamp: 'hlsf 5/15/2022 12:47:57'!
+hasVariableExtent
+	^ false! !
+
 !DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:35'!
 categoryInNewMorphMenu
 
@@ -1258,7 +1262,7 @@ initialize
 	self borderColor: self defaultColor.
 	self ofSize: self defaultDiameter! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:31:06'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 5/15/2022 12:46:58'!
 ofSize: numPixels
 
 	| size scale |
@@ -1341,6 +1345,11 @@ mouseLeave: event
 update: aParameter
 
 	self redrawNeeded! !
+
+!CheckButtonMorph methodsFor: 'geometry testing' stamp: 'hlsf 5/15/2022 12:44:16'!
+hasVariableExtent
+"Does not make sense to be fitted in owner morph"
+	^ false! !
 
 !CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:30:58'!
 defaultDiameter
