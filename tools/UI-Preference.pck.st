@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5163] on 15 May 2022 at 1:05:00 pm'!
+'From Cuis 6.0 [latest update: #5173] on 25 May 2022 at 11:17:40 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 10!
+!provides: 'UI-Preference' 1 13!
 !requires: 'UI-Click-Select' 1 31 nil!
 SystemOrganization addCategory: 'UI-Preference'!
 
@@ -106,12 +106,13 @@ model: selectedCategories
 categoryIndex
 	^ model indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 13:00:09'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/18/2022 16:35:28'!
 categoryIndex: anIndex
 	| group visitor |
 	category _ model at: anIndex.
 	visitor _ PreferenceBrowserVisitor new.
-	(PreferenceNG select: category) do: [:preference | preference accept: visitor].	
+	(PreferenceNG selectCategory: category) do: [:preference | preference accept: visitor].	
+	visitor views do: [:view | view adoptWidgetsColor: widgetsColor ].
 	group _ LabelGroup with: visitor views associations.
 	preferencesGroup 	scroller: group.
 	self redrawNeeded 
@@ -126,9 +127,9 @@ expand
 	super expand.
 	self fullScreen ! !
 
-!PreferenceBrowser methodsFor: 'geometry' stamp: 'hlsf 4/26/2022 00:20:17'!
+!PreferenceBrowser methodsFor: 'geometry' stamp: 'hlsf 5/18/2022 16:36:34'!
 minimumExtent
-	^ 800@600! !
+	^ 900@600! !
 
 !PreferenceType methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:51:34'!
 preference: aPref
@@ -164,7 +165,7 @@ visitArrayClassPreference: aPref
 	
 	views at: aPref name capitalized put: (LabelMorph contents: aPref value asString)! !
 
-!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:26:36'!
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/25/2022 23:01:42'!
 visitArrayPreference: aPref
 	| list listMorph |
 	aPref isTypeAClass ifTrue: [^ self visitArrayClassPreference: aPref].
@@ -173,8 +174,11 @@ visitArrayPreference: aPref
 		listGetter: #list 
 		indexGetter: #listIndex 
 		indexSetter: #listIndex: ::
+		autoDeselect: false;
 		setBalloonText: aPref description.
+	list listIndex: (aPref type indexOf: aPref value).
 	list when: #listSelectionChanged send: #changedList:for: to: self withArguments: {list. aPref}.
+	list actionMap inspect.
 	views at: aPref name capitalized put: listMorph! !
 
 !PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:03:47'!
@@ -196,14 +200,23 @@ visitBooleanPreference: aPref
 	check when: #checkSelection send: #changedCheck:for:  to: self withArguments: {check. aPref} .
 	views at: aPref name capitalized put: check! !
 
-!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 11:58:44'!
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/18/2022 15:46:56'!
 visitSmallIntegerPreference: aPref
 	| entry |
 	entry _ SimpleNumberEntryMorph 
 		integerDefault: aPref value maxNumChars: SmallInteger maxVal asString size ::
 		valueUpdator: [:newValue | aPref value: newValue];
+		setBalloonText: aPref description.
+	views at: aPref name capitalized put: entry.
+! !
+
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/18/2022 15:47:59'!
+visitStringPreference: aPref
+	| entry |
+	entry _ TextEntryMorph contents: aPref value ::
 		setBalloonText: aPref description;
 		yourself.
+	entry crAction: [aPref value: entry value].
 	views at: aPref name capitalized put: entry.
 ! !
 
