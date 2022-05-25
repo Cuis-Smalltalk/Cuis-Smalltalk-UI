@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5163] on 15 May 2022 at 11:24:15 am'!
+'From Cuis 6.0 [latest update: #5171] on 18 May 2022 at 4:31:01 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 20!
+!provides: 'UI-Base-Morphs' 1 21!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -1119,9 +1119,11 @@ list: aCollection
 listIndex
 	^ selectedIndex! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:19:11'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/18/2022 16:22:58'!
 listIndex: index
 	selectedIndex _ index.
+	"Inform the model we changed"
+	self changed: #listIndex:.
 	"Inform any interested view we changed the selected item"
 	self triggerEvent: #listSelectionChanged with: self! !
 
