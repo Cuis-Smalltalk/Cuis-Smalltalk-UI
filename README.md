@@ -7,7 +7,7 @@ with a more useful set of
 widgets and widget components 
 for Morphic authoring.
 
-Depricated/superceded packages also include
+Deprecated/superceded packages also include
 Morphic-ColorEditor and Morph-MetaProperties.
 
 
@@ -123,9 +123,9 @@ UI-Edit-Lens
 
 ## Morph Visual Properties
 
-Visual Proprtties of a Morph are in most cases simple values.
+Visual Properties of a Morph are in most cases simple values.
 
-This allows to create a simple way to more fluidly view and gain access.
+As a result, flexible viewing and accessing approaches for these values can be created easily.
 
 Visual Properties can be annotated with MetaProperties so that
 their construction menu allows easy access.
@@ -135,7 +135,7 @@ The MetaProperties package is loaded with other 'UI-Tools'.
 ```smalltalk
 Feature require: 'UI-Tools'.
 ```
-Once you have done this, you cag open the World Menu and get a New Morph.
+Once you have done this, you can open the World Menu and get a New Morph.
 
 If you then command-click on this Morph, you see the construction handles.
 
@@ -155,20 +155,20 @@ either an editor or a choice of selection palettes.
 You can also _drag_ values to or from a VisualPropertyMenuItem
 to transfer values.
 
-You can drag a Color to or from from the Color Editor or from a Color Palette
+You can drag a Color to or from the Color Editor or from a Color Palette
 and drop onto any area which takes a Color.
 
-The basic mechanics of this are descrobed in files
+The basic mechanics of this are described in files
 'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI/blob/main/VisualMetaPropGist.md'
 and
 'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/DragAndDrop.md' 
 
 Also included is the package 'Morphic-Packager'.
 Note the "save me as a Package" menu item.
-This lets you save a composit Morph (one with submorphs) as a Package
-which in turn requires the packages which contain the code implementing
-the composit Morph.
+This lets you save a composite Morph (one with submorphs) as a Package
+which in turn requires the packages containing the code implementing
+the composite Morph.
 
 One can then go to a base image and "Feature require:" the created Package
-whose initializer restores the saved composit Morph.
+whose initializer restores the saved composite Morph.
 
