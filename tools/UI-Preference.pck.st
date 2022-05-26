@@ -1,13 +1,13 @@
-'From Cuis 6.0 [latest update: #5173] on 25 May 2022 at 11:17:40 pm'!
+'From Cuis 6.0 [latest update: #5173] on 26 May 2022 at 3:55:24 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 13!
+!provides: 'UI-Preference' 1 14!
 !requires: 'UI-Click-Select' 1 31 nil!
 SystemOrganization addCategory: 'UI-Preference'!
 
 
 !classDefinition: #PreferenceBrowser category: 'UI-Preference'!
 DialogPanel subclass: #PreferenceBrowser
-	instanceVariableNames: 'categoriesListMorph preferencesGroup categories category pane'
+	instanceVariableNames: 'categoriesListMorph preferencesGroup visitor categories category pane'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
@@ -77,12 +77,12 @@ buildMorphicWindow
 newButtonArea
 	^ nil! !
 
-!PreferenceBrowser methodsFor: 'GUI building' stamp: 'hlsf 4/26/2022 00:23:53'!
+!PreferenceBrowser methodsFor: 'GUI building' stamp: 'hlsf 5/26/2022 15:11:41'!
 newPane
 	^ pane  _ LayoutMorph newRow ::
 		addMorph: categoriesListMorph proportionalWidth: 0.3;
 		addAdjusterMorph;
-		addMorph: preferencesGroup ;
+		addMorphUseAll: preferencesGroup ;
 		yourself! !
 
 !PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:25:12'!
@@ -106,16 +106,17 @@ model: selectedCategories
 categoryIndex
 	^ model indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/18/2022 16:35:28'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/26/2022 15:51:47'!
 categoryIndex: anIndex
-	| group visitor |
+	| group |
 	category _ model at: anIndex.
 	visitor _ PreferenceBrowserVisitor new.
 	(PreferenceNG selectCategory: category) do: [:preference | preference accept: visitor].	
 	visitor views do: [:view | view adoptWidgetsColor: widgetsColor ].
 	group _ LabelGroup with: visitor views associations.
 	preferencesGroup 	scroller: group.
-	self redrawNeeded 
+	self redrawNeeded.
+	group morphWidth: preferencesGroup viewableWidth - 20. "No reliable :-("
 	 ! !
 
 !PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:19:17'!
@@ -159,13 +160,16 @@ visitAbstractFontPreference: aPref
 	
 	views at: aPref name capitalized put: (LabelMorph contents: aPref value asString)! !
 
-!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:03:02'!
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/26/2022 15:46:00'!
 visitArrayClassPreference: aPref
 "My type is an Array Class, I have no selection"
 	
-	views at: aPref name capitalized put: (LabelMorph contents: aPref value asString)! !
+	views at: aPref name capitalized put: (
+		TextParagraphMorph contents: aPref value asString, Character cr asString ::
+			borderWidth: 0;
+			color: Color transparent)! !
 
-!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/25/2022 23:01:42'!
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/26/2022 12:29:35'!
 visitArrayPreference: aPref
 	| list listMorph |
 	aPref isTypeAClass ifTrue: [^ self visitArrayClassPreference: aPref].
@@ -178,7 +182,6 @@ visitArrayPreference: aPref
 		setBalloonText: aPref description.
 	list listIndex: (aPref type indexOf: aPref value).
 	list when: #listSelectionChanged send: #changedList:for: to: self withArguments: {list. aPref}.
-	list actionMap inspect.
 	views at: aPref name capitalized put: listMorph! !
 
 !PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:03:47'!
