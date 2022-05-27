@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:21:57 pm'!
+'From Cuis 6.0 [latest update: #5202] on 27 May 2022 at 3:03:38 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 16!
+!provides: 'Color-Edit-Panel' 1 17!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -110,24 +110,6 @@ I am just a way to get a Color palette.  See my class side.!
 
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorEditor.!
-
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 12:45:22'!
-initializedInstance
-"
-	self initializedInstance openInWorld.
-"
- 	| panel |
-	panel _ self new
-		model: self defaultColor ;
-		buildMorphicWindow.
-	^ panel 	
-		widgetsColor: panel windowColor ;
-		yourself! !
-
-!ColorPalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 14:15:59'!
-initializedInstance
-
-	^ ImagePickerPanel namedColors! !
 
 !ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 11/30/2013 19:33'!
 aboutToGrab: aMorph
@@ -1231,9 +1213,10 @@ initialize
 
 	! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'hlsf 12/29/2021 10:42:37'!
-model: aColor
-	self setColor: aColor! !
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 5/27/2022 15:00:21'!
+model: aColorModel
+	
+	model := aColorModel ! !
 
 !ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 10/29/2015 13:33'!
 setColor: aColor
@@ -1330,6 +1313,19 @@ refreshColorSwatch
 	colorSwatch image: (model baseColor iconOrThumbnailOfSize: self colorSwatchExtent).
 	colorSwatch color: self model baseColor! !
 
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 12:45:22'!
+initializedInstance
+"
+	self initializedInstance openInWorld.
+"
+ 	| panel |
+	panel _ self new
+		model: self defaultColor ;
+		buildMorphicWindow.
+	^ panel 	
+		widgetsColor: panel windowColor ;
+		yourself! !
+
 !ColorEditorPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/29/2021 10:52:14'!
 open
 "
@@ -1342,10 +1338,10 @@ open: model
 
 	^ self open: model label: 'Color Editor'! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 1/10/2022 13:22:18'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 5/27/2022 14:58:16'!
 openWithColor: aColor
 
-	^ self open: aColor label: 'Color Editor'! !
+	^ self open: (ColorEditorModel color: aColor) label: 'Color Editor'! !
 
 !ColorEditorPanel class methodsFor: 'initialization' stamp: 'KenD 12/24/2013 09:26'!
 defaultColor
@@ -1362,6 +1358,11 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
+
+!ColorPalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 14:15:59'!
+initializedInstance
+
+	^ ImagePickerPanel namedColors! !
 
 !ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:08'!
 categoryInNewMorphMenu
