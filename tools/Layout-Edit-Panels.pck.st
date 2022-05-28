@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5095] on 26 March 2022 at 9:29:33 am'!
+'From Cuis 6.0 [latest update: #5202] on 28 May 2022 at 11:00:51 am'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'Layout-Edit-Panels' 1 9!
+!provides: 'Layout-Edit-Panels' 1 10!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
@@ -1064,12 +1064,6 @@ containingLayout
 				ifFalse: [ ^ owner containingLayout ]
 		]! !
 
-!Morph methodsFor: '*layout-edit-panels' stamp: 'KenD 12/24/2013 15:09'!
-editMyLayoutSpec
-
-	self layoutSpec ifNil: [ self layoutSpec: LayoutSpec keepMorphExtent ].
-	LayoutSpecEditPanel open: self layoutSpec! !
-
 !Morph methodsFor: '*layout-edit-panels' stamp: 'KenD 11/7/2021 14:13:03'!
 frameLayouts: colors depth: depth
 	"Display frames around LayoutMorphs, then erase"
@@ -1150,6 +1144,21 @@ unShadowNonLayouts
 	"Remove submorph dropShadows"
 	(self isKindOf: LayoutMorph) ifFalse: [ self hideDropShadow ].
 	self submorphsDo: [ :s | s unShadowNonLayouts ].! !
+
+!PlacedMorph methodsFor: '*layout-edit-panels' stamp: 'KenD 5/28/2022 10:57:11'!
+addCustomMenuItems: aCustomMenu hand: aHandMorph
+	"Add morph-specific items to the given menu which was invoked by the given hand.  This method provides is invoked both from the halo-menu and from the control-menu regimes."
+
+	super addCustomMenuItems: aCustomMenu hand: aHandMorph.
+	aCustomMenu 
+		"addLine;"
+		add: 'edit my LayoutSpec' action: #editMyLayoutSpec! !
+
+!PlacedMorph methodsFor: '*layout-edit-panels' stamp: 'KenD 5/28/2022 10:55:31'!
+editMyLayoutSpec
+
+	self layoutSpec ifNil: [ self layoutSpec: LayoutSpec keepMorphExtent ].
+	LayoutSpecEditPanel open: self layoutSpec! !
 
 !LayoutMorph methodsFor: '*layout-edit-panels' stamp: 'KenD 12/24/2013 15:22'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
