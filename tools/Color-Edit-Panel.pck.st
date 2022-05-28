@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5202] on 27 May 2022 at 3:03:38 pm'!
+'From Cuis 6.0 [latest update: #5202] on 28 May 2022 at 12:08:48 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 17!
+!provides: 'Color-Edit-Panel' 1 18!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -956,7 +956,7 @@ buildColorPaneColumn
 	
 	^ column! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 3/4/2022 13:29:22'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 5/28/2022 11:37:50'!
 buildMorphicWindow
 " Our layout is a bit different to a traditional dialog, so we override as 
 we don't need button area at the bottom and main panel is a row of morphs." 
@@ -973,7 +973,7 @@ we don't need button area at the bottom and main panel is a row of morphs."
 		to: self.
 	^self
 		colorSwatchesBeDroppable;
-		refreshCloseColor;
+		refreshColor;
 		yourself
 ! !
 
@@ -1195,14 +1195,14 @@ defaultRadioSelector
 
 	^ #Green! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 12/30/2021 13:03:46'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 5/28/2022 12:02:46'!
 initialize
 
 	super initialize.
 	self beRow.
 	self color: Color veryVeryLightGray.
 	self titleMorph showButtonsNamed: #( close collapse ).
-	model          := ColorEditorModel new.
+	model ifNil: [ model := ColorEditorModel new ].
 	colorSwatch := DropColorMorph fromColor: model color.
 	rgbString     := SimpleNumberEntryMorph hexRGBEntry.
 	closestRGB  := LabelMorph new contents: ''.
@@ -1218,11 +1218,11 @@ model: aColorModel
 	
 	model := aColorModel ! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 10/29/2015 13:33'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 5/28/2022 11:51:03'!
 setColor: aColor
 
 	self model setColor: aColor.
-	self refreshColorSwatch.
+	self refreshColor.
 ! !
 
 !ColorEditorPanel methodsFor: 'events-processing' stamp: 'KenD 10/29/2015 09:02'!
@@ -1313,25 +1313,25 @@ refreshColorSwatch
 	colorSwatch image: (model baseColor iconOrThumbnailOfSize: self colorSwatchExtent).
 	colorSwatch color: self model baseColor! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 12:45:22'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 5/28/2022 11:21:35'!
 initializedInstance
 "
 	self initializedInstance openInWorld.
 "
  	| panel |
 	panel _ self new
-		model: self defaultColor ;
+		model: (ColorEditorModel color: self defaultColor) ;
 		buildMorphicWindow.
 	^ panel 	
 		widgetsColor: panel windowColor ;
 		yourself! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/29/2021 10:52:14'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 5/28/2022 11:40:41'!
 open
 "
 	self open 
 "	
-	^ self open: self defaultColor! !
+	^ self open: (ColorEditorModel color: self defaultColor)! !
 
 !ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 2/7/2022 12:25:02'!
 open: model
