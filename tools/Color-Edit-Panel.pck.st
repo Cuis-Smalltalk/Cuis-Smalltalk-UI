@@ -1,12 +1,12 @@
-'From Cuis 6.0 [latest update: #5202] on 28 May 2022 at 12:08:48 pm'!
+'From Cuis 6.0 [latest update: #5202] on 30 May 2022 at 12:41:20 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 18!
+!provides: 'Color-Edit-Panel' 1 19!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'Color-Extras' 1 9 nil!
-!requires: 'UI-Panel' 1 5 nil!
-!requires: 'UI-Palette' 1 8 nil!
+!requires: 'UI-Panel' 1 51 nil!
+!requires: 'UI-Palette' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'Color-Edit-Panel'!
 
@@ -1313,7 +1313,7 @@ refreshColorSwatch
 	colorSwatch image: (model baseColor iconOrThumbnailOfSize: self colorSwatchExtent).
 	colorSwatch color: self model baseColor! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 5/28/2022 11:21:35'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 5/30/2022 12:40:22'!
 initializedInstance
 "
 	self initializedInstance openInWorld.
@@ -1321,7 +1321,8 @@ initializedInstance
  	| panel |
 	panel _ self new
 		model: (ColorEditorModel color: self defaultColor) ;
-		buildMorphicWindow.
+		buildMorphicWindow;
+		setLabel: 'Color Editor'.
 	^ panel 	
 		widgetsColor: panel windowColor ;
 		yourself! !
