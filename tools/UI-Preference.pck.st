@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5173] on 26 May 2022 at 3:55:24 pm'!
+'From Cuis 6.0 [latest update: #5213] on 3 June 2022 at 10:29:49 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 14!
+!provides: 'UI-Preference' 1 16!
 !requires: 'UI-Click-Select' 1 31 nil!
 SystemOrganization addCategory: 'UI-Preference'!
 
@@ -15,24 +15,34 @@ DialogPanel subclass: #PreferenceBrowser
 PreferenceBrowser class
 	instanceVariableNames: ''!
 
+!classDefinition: #PreferenceModel category: 'UI-Preference'!
+Object subclass: #PreferenceModel
+	instanceVariableNames: 'preference'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Preference'!
+!classDefinition: 'PreferenceModel class' category: 'UI-Preference'!
+PreferenceModel class
+	instanceVariableNames: ''!
+
+!classDefinition: #PreferenceModelClosure category: 'UI-Preference'!
+PreferenceModel subclass: #PreferenceModelClosure
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Preference'!
+!classDefinition: 'PreferenceModelClosure class' category: 'UI-Preference'!
+PreferenceModelClosure class
+	instanceVariableNames: ''!
+
 !classDefinition: #PreferenceType category: 'UI-Preference'!
 Object subclass: #PreferenceType
-	instanceVariableNames: 'preference'
+	instanceVariableNames: 'preferenceName'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
 !classDefinition: 'PreferenceType class' category: 'UI-Preference'!
 PreferenceType class
-	instanceVariableNames: ''!
-
-!classDefinition: #PreferenceTypeClosure category: 'UI-Preference'!
-PreferenceType subclass: #PreferenceTypeClosure
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Preference'!
-!classDefinition: 'PreferenceTypeClosure class' category: 'UI-Preference'!
-PreferenceTypeClosure class
 	instanceVariableNames: ''!
 
 !classDefinition: #PreferenceVisitor category: 'UI-Preference'!
@@ -61,8 +71,8 @@ I browse a selected set of preference categories. The user can edit the preferen
 	- model : an array of preference categories (symbols) to browse. 
 	If nil, I browse all the preferences in the system!
 
-!PreferenceType commentStamp: '<historical>' prior: 0!
-An abstract class to manipulate the type of a given preference.!
+!PreferenceModel commentStamp: '<historical>' prior: 0!
+An abstract PreferenceType. My sublcass are used to describe the type of a preference.!
 
 !PreferenceBrowserVisitor commentStamp: '<historical>' prior: 0!
 I visit a preference to provide its morphic view
@@ -132,24 +142,42 @@ expand
 minimumExtent
 	^ 900@600! !
 
-!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:51:34'!
+!PreferenceModel methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:51:34'!
 preference: aPref
 	preference _ aPref ! !
 
-!PreferenceType class methodsFor: 'instance creation' stamp: 'hlsf 5/15/2022 10:51:41'!
+!PreferenceModel class methodsFor: 'instance creation' stamp: 'hlsf 5/15/2022 10:51:41'!
 with: aPref
 	^ self new ::
 		preference: aPref;
 		yourself! !
 
-!PreferenceTypeClosure methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:58:17'!
+!PreferenceModelClosure methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:58:17'!
 sourceCode
 " decompile the closure and answer it as string "
 	^ (preference instVarNamed: #value) decompile decompileString! !
 
-!PreferenceTypeClosure methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:59:58'!
+!PreferenceModelClosure methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:59:58'!
 sourceCode: aString
 	"Compile and adjust the value of the preference"! !
+
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 6/3/2022 22:00:55'!
+preference: aSymbol
+	preferenceName _ aSymbol ! !
+
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 6/3/2022 22:03:14'!
+value
+	^ PreferenceNG at: preferenceName ! !
+
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 6/3/2022 22:06:13'!
+value: newValue
+	PreferenceNG at: preferenceName put: newValue ! !
+
+!PreferenceType class methodsFor: 'instance creation' stamp: 'hlsf 6/3/2022 22:00:30'!
+with: aPreferenceName
+	^ self new ::
+	preference: aPreferenceName ;
+	yourself! !
 
 !PreferenceVisitor methodsFor: 'as yet unclassified' stamp: 'hlsf 5/14/2022 23:53:39'!
 visitBooleanPreference: aPref
@@ -184,10 +212,10 @@ visitArrayPreference: aPref
 	list when: #listSelectionChanged send: #changedList:for: to: self withArguments: {list. aPref}.
 	views at: aPref name capitalized put: listMorph! !
 
-!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 5/15/2022 12:03:47'!
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 6/3/2022 09:41:48'!
 visitBlockClosurePreference: aPref
 	| codeView typeModel |
-	typeModel _ PreferenceTypeClosure with: aPref.
+	typeModel _ PreferenceModelClosure with: aPref.
 	codeView _ TextModelMorph textProvider: typeModel textGetter: #sourceCode textSetter: #sourceCode:.
 	codeView setBalloonText: aPref description.
 	views at: aPref name capitalized put: codeView
