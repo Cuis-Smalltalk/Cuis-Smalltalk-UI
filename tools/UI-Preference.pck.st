@@ -1,7 +1,8 @@
-'From Cuis 6.0 [latest update: #5213] on 3 June 2022 at 10:29:49 pm'!
+'From Cuis 6.0 [latest update: #5214] on 4 June 2022 at 11:01:17 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 16!
+!provides: 'UI-Preference' 1 18!
 !requires: 'UI-Click-Select' 1 31 nil!
+!requires: 'UI-Panel' 1 51 nil!
 SystemOrganization addCategory: 'UI-Preference'!
 
 
@@ -116,7 +117,7 @@ model: selectedCategories
 categoryIndex
 	^ model indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/26/2022 15:51:47'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 6/4/2022 23:00:02'!
 categoryIndex: anIndex
 	| group |
 	category _ model at: anIndex.
