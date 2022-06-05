@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5163] on 15 May 2022 at 1:04:53 pm'!
+'From Cuis 6.0 [latest update: #5213] on 5 June 2022 at 12:30:28 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 34!
+!provides: 'UI-Click-Select' 1 35!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -1041,6 +1041,10 @@ scrollDeltaHeight
 suitedExtent
 	self morphHeight: (extent y min: scroller totalHeight max: 100).
 	self morphWidth: self minimumExtent x + scroller minimumWidth! !
+
+!PluggableListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 6/5/2022 11:18:17'!
+defaultBorderWidth
+	^ 1! !
 
 !PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:35:12'!
 example1

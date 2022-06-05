@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5214] on 4 June 2022 at 11:01:17 pm'!
+'From Cuis 6.0 [latest update: #5213] on 5 June 2022 at 1:11:06 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 18!
+!provides: 'UI-Preference' 1 20!
 !requires: 'UI-Click-Select' 1 31 nil!
 !requires: 'UI-Panel' 1 51 nil!
 SystemOrganization addCategory: 'UI-Preference'!
@@ -75,6 +75,11 @@ I browse a selected set of preference categories. The user can edit the preferen
 !PreferenceModel commentStamp: '<historical>' prior: 0!
 An abstract PreferenceType. My sublcass are used to describe the type of a preference.!
 
+!PreferenceType commentStamp: '<historical>' prior: 0!
+I am an abstract preference type. My subclasses describe the behavior of a preference using me as a type. 
+I am used with the PreferenceBrowser and visitors to present a preference in a meaningfull way the user can manipulate.
+See uses in DrGeo preferences browser.!
+
 !PreferenceBrowserVisitor commentStamp: '<historical>' prior: 0!
 I visit a preference to provide its morphic view
 - views: dictionary of labels and activable morph to edit the preference!
@@ -117,14 +122,14 @@ model: selectedCategories
 categoryIndex
 	^ model indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 6/4/2022 23:00:02'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 6/5/2022 13:10:18'!
 categoryIndex: anIndex
 	| group |
 	category _ model at: anIndex.
 	visitor _ PreferenceBrowserVisitor new.
 	(PreferenceNG selectCategory: category) do: [:preference | preference accept: visitor].	
 	visitor views do: [:view | view adoptWidgetsColor: widgetsColor ].
-	group _ LabelGroup with: visitor views associations.
+	group _ LabelGroup with: visitor sortedViews.
 	preferencesGroup 	scroller: group.
 	self redrawNeeded.
 	group morphWidth: preferencesGroup viewableWidth - 20. "No reliable :-("
@@ -266,6 +271,13 @@ rowWithLabel: aPref
 		color: Color transparent ;
 		addMorph: (LabelMorph contents: aPref name capitalized);
 		yourself! !
+
+!PreferenceBrowserVisitor methodsFor: 'accessing' stamp: 'hlsf 6/5/2022 13:09:59'!
+sortedViews
+"Sorted view according to their label"
+	^ views associations sort: [:a :b | a key contents < b key contents]
+		
+		! !
 
 !PreferenceBrowserVisitor methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 12:04:54'!
 views
