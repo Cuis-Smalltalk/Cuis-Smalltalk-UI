@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5163] on 14 May 2022 at 10:43:28 am'!
+'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:48 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 51!
+!provides: 'UI-Panel' 1 52!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -415,13 +415,13 @@ layoutSubmorphs
 	
 	self layoutNeeded: false! !
 
-!Panel methodsFor: 'geometry' stamp: 'hlsf 5/14/2022 10:29:19'!
+!Panel methodsFor: 'geometry' stamp: 'hlsf 7/3/2022 13:07:02'!
 boxExtent
 	"answer the extent to use in all the buttons. 
 	 
 	the label height is used to be proportional to the fonts preferences"
 	| e |
-	e _ (PreferenceNG at: #windowTitleFont) lineSpacing.
+	e _ (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
 !Panel methodsFor: 'geometry' stamp: 'KenD 10/3/2019 12:52:58'!
@@ -515,11 +515,11 @@ buttonColor
 
 	^ Theme current buttonColorFrom: self widgetsColor! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 5/14/2022 10:30:00'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 7/3/2022 13:07:12'!
 defaultButtonPaneHeight
 	"Answer the user's preferred default height for new button panes."
 
-	^ (PreferenceNG at: #standardButtonFont) lineSpacing * 14 // 8! !
+	^ (Preferences at: #standardButtonFont) lineSpacing * 14 // 8! !
 
 !Panel methodsFor: 'GUI building' stamp: 'KenD 4/25/2015 08:51'!
 hideButtons
@@ -547,11 +547,11 @@ valueWhenDropped
 
 	^nil! !
 
-!Panel methodsFor: 'events' stamp: 'hlsf 5/14/2022 10:29:45'!
+!Panel methodsFor: 'events' stamp: 'hlsf 7/3/2022 13:07:05'!
 closeButtonClicked
 	"The user clicked on the close-box control in the window title.  For Mac users only, the Mac convention of option-click-on-close-box is obeyed if the mac option key is down."
 
-	(PreferenceNG at: #dismissAllOnOptionClose) ifTrue:
+	(Preferences at: #dismissAllOnOptionClose) ifTrue:
 		[Sensor rawMacOptionKeyPressed ifTrue:
 			[^ self world closeUnchangedWindows]].
 	self delete  "closeBox overrides stayUp"
@@ -662,11 +662,11 @@ label
 
 	^ self titleMorph titleString ! !
 
-!Panel methodsFor: 'label' stamp: 'hlsf 5/14/2022 10:30:19'!
+!Panel methodsFor: 'label' stamp: 'hlsf 7/3/2022 13:07:15'!
 labelHeight
 	"Answer the height for the window label."
 
-	^  (PreferenceNG at: #windowTitleFont) lineSpacing+1! !
+	^  (Preferences at: #windowTitleFont) lineSpacing+1! !
 
 !Panel methodsFor: 'label' stamp: 'KenD 4/25/2015 12:54'!
 relabel
@@ -874,7 +874,7 @@ editModel: anObject
 
 	editModel := anObject! !
 
-!EditPanel methodsFor: 'GUI building' stamp: 'hlsf 5/14/2022 10:30:29'!
+!EditPanel methodsFor: 'GUI building' stamp: 'hlsf 7/3/2022 13:07:19'!
 newButtonArea
 	"Answer a LayoutMorph with Update and Cancel buttons"
 	
@@ -906,7 +906,7 @@ newButtonArea
 							offAxisEdgeWeight: #center);
 		layoutSpec: (LayoutSpec 
 							proportionalWidth: 1 
-							fixedHeight: (2 * (PreferenceNG at: #windowTitleFont) lineSpacing)
+							fixedHeight: (2 * (Preferences at: #windowTitleFont) lineSpacing)
 							offAxisEdgeWeight: #center);
 		axisEdgeWeight: #center;
 		color: self widgetsColor.
@@ -1239,7 +1239,7 @@ example3
 	model action: [ panel openInWorld]. "Panel is usually closed when property edited in the model, open it again"
 	^ panel! !
 
-!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:30:39'!
+!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:25'!
 initialize
 	super initialize.
 	entry _ TextEntryMorph contents: model propertyValue ::
@@ -1248,7 +1248,7 @@ initialize
 	entry 	layoutSpec: 
 		(LayoutSpec 
 			proportionalWidth: 1 
-			fixedHeight: (PreferenceNG at: #windowTitleFont) lineSpacing )
+			fixedHeight: (Preferences at: #windowTitleFont) lineSpacing )
 		! !
 
 !StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 4/9/2022 10:21:28'!
@@ -1300,13 +1300,13 @@ example3
 checkValidity: aString
 	(aString isKindOf: String) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
 
-!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:30:50'!
+!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:28'!
 initialize
 	super initialize.
 	entry _ TextModelMorph withText: model propertyValue.
 	entry 	layoutSpec: (LayoutSpec 
 		proportionalWidth: 1 
-		fixedHeight: (PreferenceNG at: #windowTitleFont) lineSpacing * 4 )! !
+		fixedHeight: (Preferences at: #windowTitleFont) lineSpacing * 4 )! !
 
 !TextEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:27:37'!
 accept

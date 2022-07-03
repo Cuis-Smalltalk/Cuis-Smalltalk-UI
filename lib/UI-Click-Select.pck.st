@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5213] on 5 June 2022 at 12:30:28 pm'!
+'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:44 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 35!
+!provides: 'UI-Click-Select' 1 36!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -301,13 +301,13 @@ fromMorphDict: morphDict
 	self registerEvents.
 	list _ morphList asArray! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:28:49'!
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:06:51'!
 initialize
 	"Initialize self to harmless values"
 	
 	super initialize.
 	list _ #().
-	self    setFont: (PreferenceNG at: #standardButtonFont);
+	self    setFont: (Preferences at: #standardButtonFont);
 		 buttonOnLeft: true;
 		 separation: 2@2;
 		 color: Color transparent! !
@@ -347,12 +347,12 @@ naturalHeight
 	^ 4  + ((self list size) 
 		* (2 + ((self font lineSpacing) max: (self buttonClass defaultDiameter))))! !
 
-!CheckGroup methodsFor: 'events' stamp: 'hlsf 5/14/2022 10:28:40'!
+!CheckGroup methodsFor: 'events' stamp: 'hlsf 7/3/2022 13:06:45'!
 fontPreferenceChanged
 
 	| labelStrings maxStringWidth labelLayoutSpec |
 	super fontPreferenceChanged.
-	self setFont: (PreferenceNG at: #standardButtonFont).
+	self setFont: (Preferences at: #standardButtonFont).
 	maxStringWidth := 3. "minimum"
 	labelStrings := self labelStrings.
 	labelStrings do: [ :str |
@@ -366,9 +366,9 @@ fontPreferenceChanged
 	self submorphsDo: [ :selectLine |
 		selectLine submorphsDo: [ :aMorph |
 			(aMorph respondsTo: #setFont:)
-				ifTrue: [ aMorph setFont: (PreferenceNG at: #standardButtonFont) ].
+				ifTrue: [ aMorph setFont: (Preferences at: #standardButtonFont) ].
 			(aMorph respondsTo: #font:)
-				ifTrue: [ aMorph font: (PreferenceNG at: #standardButtonFont) ].
+				ifTrue: [ aMorph font: (Preferences at: #standardButtonFont) ].
 			(aMorph respondsTo: #ofSize:)
 				ifTrue: [aMorph ofSize: self buttonClass defaultDiameter].
 			((aMorph isKindOf: LabelMorph)
@@ -1266,11 +1266,11 @@ initialize
 	self borderColor: self defaultColor.
 	self ofSize: self defaultDiameter! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 5/15/2022 12:46:58'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:40'!
 ofSize: numPixels
 
 	| size scale |
-	scale _  (PreferenceNG at: #standardButtonFont) pointSize / 14.0.
+	scale _  (Preferences at: #standardButtonFont) pointSize / 14.0.
 	size _ numPixels "* scale".
 	self borderWidth: ((self defaultBorderWidth * scale) max: 1).
 	self morphExtent: size @ size.
@@ -1355,10 +1355,10 @@ hasVariableExtent
 "Does not make sense to be fitted in owner morph"
 	^ false! !
 
-!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:30:58'!
+!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:07:38'!
 defaultDiameter
 
-	^ (PreferenceNG at: #standardButtonFont) lineSpacing! !
+	^ (Preferences at: #standardButtonFont) lineSpacing! !
 
 !CheckButtonMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/25/2022 20:47:33'!
 includeInNewMorphMenu

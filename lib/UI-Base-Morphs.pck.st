@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5171] on 18 May 2022 at 4:31:01 pm'!
+'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:42 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 21!
+!provides: 'UI-Base-Morphs' 1 22!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -232,11 +232,11 @@ buttonSeparation
 
 	^  (self buttonExtent x) * 4 // 10! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'hlsf 5/14/2022 10:27:58'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'hlsf 7/3/2022 13:06:22'!
 labelHeight
 	"Answer the height for the window label."
 
-	^  (PreferenceNG at: #windowTitleFont) lineSpacing+1! !
+	^  (Preferences at: #windowTitleFont) lineSpacing+1! !
 
 !WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 10/25/2021 15:17:28'!
 minimumButtonsExtent
@@ -311,10 +311,10 @@ rescaleButtons
 	].
 ! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'hlsf 5/14/2022 10:28:09'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'hlsf 7/3/2022 13:06:27'!
 resetTitleFont
 	"Reset my title font"
-	titleMorph font: (PreferenceNG at: #windowTitleFont)! !
+	titleMorph font: (Preferences at: #windowTitleFont)! !
 
 !WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 7/4/2015 15:22'!
 showHaloButtonClicked
@@ -330,7 +330,7 @@ windowMenuButtonClicked
 	self owner windowMenuButtonClicked
 ! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:27:32'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:06:12'!
 addAllButtonsAndTitle
 	"Buttons first"
    #( ( close  closeButtonClicked 'close this window' closeIcon drawCloseIcon )
@@ -348,7 +348,7 @@ addAllButtonsAndTitle
 	"Title next"
 	titleMorph := SqueezeLabelMorph 
 					contents: 'Untitled' 
-					font: (PreferenceNG at: #windowTitleFont)
+					font: (Preferences at: #windowTitleFont)
 					minCharsToShow: 8
 					:: 
 					color: Color black.
@@ -383,11 +383,11 @@ drawAction: drawSelector
 	self addMorph: button
 	! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:27:46'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:06:18'!
 dontShrinkTitle: aString buttonsNamed: aSymbolColleciton
 	"Set me up"
 	
-	titleMorph := LabelMorph contents: aString font: (PreferenceNG at: #windowTitleFont).
+	titleMorph := LabelMorph contents: aString font: (Preferences at: #windowTitleFont).
 	self hideAllButtons.
 	aSymbolColleciton  do: [ :aName |
 		(self buttonNamed: aName)

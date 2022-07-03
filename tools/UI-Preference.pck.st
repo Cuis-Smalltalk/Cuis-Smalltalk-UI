@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5213] on 5 June 2022 at 1:11:06 pm'!
+'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:50 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 20!
+!provides: 'UI-Preference' 1 21!
 !requires: 'UI-Click-Select' 1 31 nil!
 !requires: 'UI-Panel' 1 51 nil!
 SystemOrganization addCategory: 'UI-Preference'!
@@ -112,22 +112,22 @@ initialize
 		color: self color;
 		layoutSpec: LayoutSpec useAll! !
 
-!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:21:47'!
+!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:35'!
 model: selectedCategories
 	selectedCategories 
-		ifNil:  [model _ PreferenceNG categories sorted]
+		ifNil:  [model _ Preferences categories sorted]
 		ifNotNil: [	model _ selectedCategories sorted]! !
 
 !PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:20:09'!
 categoryIndex
 	^ model indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 6/5/2022 13:10:18'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:07:32'!
 categoryIndex: anIndex
 	| group |
 	category _ model at: anIndex.
 	visitor _ PreferenceBrowserVisitor new.
-	(PreferenceNG selectCategory: category) do: [:preference | preference accept: visitor].	
+	(Preferences selectCategory: category) do: [:preference | preference accept: visitor].	
 	visitor views do: [:view | view adoptWidgetsColor: widgetsColor ].
 	group _ LabelGroup with: visitor sortedViews.
 	preferencesGroup 	scroller: group.
@@ -171,13 +171,13 @@ sourceCode: aString
 preference: aSymbol
 	preferenceName _ aSymbol ! !
 
-!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 6/3/2022 22:03:14'!
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:05:02'!
 value
-	^ PreferenceNG at: preferenceName ! !
+	^ DrGeoSystem preferences at: preferenceName ! !
 
-!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 6/3/2022 22:06:13'!
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:05:12'!
 value: newValue
-	PreferenceNG at: preferenceName put: newValue ! !
+	DrGeoSystem preferences at: preferenceName put: newValue ! !
 
 !PreferenceType class methodsFor: 'instance creation' stamp: 'hlsf 6/3/2022 22:00:30'!
 with: aPreferenceName

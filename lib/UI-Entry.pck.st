@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5214] on 4 June 2022 at 11:01:14 pm'!
+'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:46 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 31!
+!provides: 'UI-Entry' 1 32!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -692,10 +692,10 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	self pauseBlinking
 ! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'hlsf 5/14/2022 10:31:15'!
+!TextEntryMorph methodsFor: 'events' stamp: 'hlsf 7/3/2022 13:07:48'!
 mouseEnter: event
 	super mouseEnter: event.
-	(PreferenceNG at: #focusFollowsMouse)
+	(Preferences at: #focusFollowsMouse)
 		ifTrue: [ event hand newKeyboardFocus: self ]! !
 
 !TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 13:20'!
@@ -950,10 +950,10 @@ entryChars
 
 	^ entryChars! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:31:27'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:07:53'!
 fontToUse
 
-	^ PreferenceNG at: #standardListFont ! !
+	^ Preferences at: #standardListFont ! !
 
 !SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/25/2019 10:08:07'!
 measureContents
