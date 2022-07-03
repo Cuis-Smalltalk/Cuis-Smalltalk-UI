@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:50 pm'!
+'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 10:57:53 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 21!
+!provides: 'UI-Preference' 1 22!
 !requires: 'UI-Click-Select' 1 31 nil!
 !requires: 'UI-Panel' 1 51 nil!
 SystemOrganization addCategory: 'UI-Preference'!
@@ -38,7 +38,7 @@ PreferenceModelClosure class
 
 !classDefinition: #PreferenceType category: 'UI-Preference'!
 Object subclass: #PreferenceType
-	instanceVariableNames: 'preferenceName'
+	instanceVariableNames: 'preferenceName preferenceSet'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
@@ -67,9 +67,9 @@ PreferenceBrowserVisitor class
 	instanceVariableNames: ''!
 
 
-!PreferenceBrowser commentStamp: 'hlsf 5/14/2022 10:24:23' prior: 0!
-I browse a selected set of preference categories. The user can edit the preferences
-	- model : an array of preference categories (symbols) to browse. 
+!PreferenceBrowser commentStamp: 'hlsf 7/3/2022 22:24:23' prior: 0!
+I browse a PreferenceSet instance. The user can edit the preferences
+	- model : an instance of a PreferenceSet  to browse. 
 	If nil, I browse all the preferences in the system!
 
 !PreferenceModel commentStamp: '<historical>' prior: 0!
@@ -112,22 +112,21 @@ initialize
 		color: self color;
 		layoutSpec: LayoutSpec useAll! !
 
-!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:35'!
-model: selectedCategories
-	selectedCategories 
-		ifNil:  [model _ Preferences categories sorted]
-		ifNotNil: [	model _ selectedCategories sorted]! !
+!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 22:27:16'!
+model: aPreferenceSet
+	model _ aPreferenceSet ifNil: [Preferences] ifNotNil: [aPreferenceSet].
+	categories _ model categories sorted! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:20:09'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 22:27:43'!
 categoryIndex
-	^ model indexOf: category! !
+	^ categories indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:07:32'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 22:28:00'!
 categoryIndex: anIndex
 	| group |
-	category _ model at: anIndex.
+	category _ categories at: anIndex.
 	visitor _ PreferenceBrowserVisitor new.
-	(Preferences selectCategory: category) do: [:preference | preference accept: visitor].	
+	(model selectCategory: category) do: [:preference | preference accept: visitor].	
 	visitor views do: [:view | view adoptWidgetsColor: widgetsColor ].
 	group _ LabelGroup with: visitor sortedViews.
 	preferencesGroup 	scroller: group.
@@ -135,9 +134,9 @@ categoryIndex: anIndex
 	group morphWidth: preferencesGroup viewableWidth - 20. "No reliable :-("
 	 ! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 5/14/2022 10:19:17'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 22:28:07'!
 categoryNames
-	^ model collect: [:aSymbol | aSymbol asString capitalized ]! !
+	^ categories collect: [:aSymbol | aSymbol asString capitalized ]! !
 
 !PreferenceBrowser methodsFor: 'menus' stamp: 'hlsf 4/26/2022 00:34:44'!
 expand
@@ -171,18 +170,23 @@ sourceCode: aString
 preference: aSymbol
 	preferenceName _ aSymbol ! !
 
-!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:05:02'!
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 22:37:16'!
+preferenceSet: aPreferenceSet
+	preferenceSet _ aPreferenceSet ! !
+
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 22:37:28'!
 value
-	^ DrGeoSystem preferences at: preferenceName ! !
+	^ preferenceSet at: preferenceName ! !
 
-!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:05:12'!
+!PreferenceType methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 22:37:35'!
 value: newValue
-	DrGeoSystem preferences at: preferenceName put: newValue ! !
+	preferenceSet at: preferenceName put: newValue ! !
 
-!PreferenceType class methodsFor: 'instance creation' stamp: 'hlsf 6/3/2022 22:00:30'!
-with: aPreferenceName
+!PreferenceType class methodsFor: 'instance creation' stamp: 'hlsf 7/3/2022 22:40:20'!
+with: aPreferenceName in: aPreferenceSet
 	^ self new ::
 	preference: aPreferenceName ;
+	preferenceSet: aPreferenceSet ;
 	yourself! !
 
 !PreferenceVisitor methodsFor: 'as yet unclassified' stamp: 'hlsf 5/14/2022 23:53:39'!
