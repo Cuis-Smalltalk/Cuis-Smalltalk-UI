@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5096] on 1 April 2022 at 12:56:26 pm'!
+'From Cuis 6.0 [latest update: #5443] on 14 August 2022 at 1:33:52 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 116!
+!provides: 'Morphic-MetaProperties' 1 117!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -231,16 +231,6 @@ I test via  (aClosure value: newValue).
 
 aClosure should take one argument and return a boolean.!
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:29:37'!
-name
-
-	^ name! !
-
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/2/2016 16:07:12'!
-name
-
-	^ name! !
-
 !VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 9/18/2019 16:05:31'!
 displayString
 
@@ -258,6 +248,11 @@ displayString
 metaProperty
 
 	^ metaProperty! !
+
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:29:37'!
+name
+
+	^ name! !
 
 !VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 11/28/2016 16:29:58'!
 prevValue
@@ -665,6 +660,11 @@ icon
 icon: anIcon
 
 	self setIcon: anIcon! !
+
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/2/2016 16:07:12'!
+name
+
+	^ name! !
 
 !OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/2/2016 16:15:02'!
 targetMorph
@@ -1352,10 +1352,10 @@ testPredefinedMProps
 	self deny: ((MetaProperty metaPropNamed: #acceptsPositivePoint) accepts: -2@3).
 	self deny: ((MetaProperty metaPropNamed: #acceptsPositiveNumber) accepts: -1).! !
 
-!MetaProperty methodsFor: 'testing' stamp: 'KenD 12/4/2016 14:21:39'!
+!MetaProperty methodsFor: 'testing' stamp: 'KenD 8/14/2022 13:29:35'!
 accepts: newValue
 
-	^ newValue isKindOf: kind! !
+	^ (MetaProperty classTestFor: kind) value: newValue ! !
 
 !MetaProperty methodsFor: 'editing' stamp: 'KenD 12/22/2016 14:38:58'!
 edit: myMorph menuItem: item
@@ -1582,6 +1582,17 @@ MetaProperties are considered immutable and may be shared.  They are associated 
 See the #examples class category.
 '! !
 
+!MetaProperty class methodsFor: 'testing' stamp: 'KenD 8/14/2022 13:33:26'!
+classTestFor: aClass
+	"Answer a predicate test for class, 
+	 where Symbol and Utf8Symbol use #isSymbol
+	 so that either kind of Symbol is OK."
+	(`{Symbol. Utf8Symbol.}` includes: aClass) 
+		ifTrue:  [ ^[ :elt | elt isSymbol ] ]
+		ifFalse: [ ^[ :elt | elt isKindOf: aClass ] ]
+	
+	! !
+
 !MetaPropertyFrom methodsFor: 'testing' stamp: 'KenD 12/4/2016 14:57:36'!
 accepts: newValue
 
@@ -1690,15 +1701,16 @@ edit: myMorph menuItem: item
 	item propertyValue: ( self choices at: selectIndex ). 
 	myMorph redrawNeeded.! !
 
-!MetaPropertyOneOf methodsFor: 'initialization' stamp: 'KenD 2/12/2018 16:22:20'!
+!MetaPropertyOneOf methodsFor: 'initialization' stamp: 'Install-Morphic-MetaProperties 8/14/2022 13:17:47'!
 kind: aClass choices: aCollection
-
+	| classTest |
 	super kind: aClass.
+	classTest := MetaProperty classTestFor: aClass.
 	(aCollection isCollection)
 		ifFalse: [ self error: 'Expected a collection of value choices: ', aCollection printString ].
-	(aCollection allSatisfy: [ :elt | elt isKindOf: aClass])
-		ifFalse: [ self error: 'Expected collection elements of kind: ', aClass printString,
-					 ' got: ', aCollection printString ].
+		
+	(aCollection allSatisfy: classTest)
+		ifFalse: [ self error: 'Expected collection of ', aClass printString,' got: ', aCollection printString ].
 	
 	choiceCollection := aCollection.
 ! !
