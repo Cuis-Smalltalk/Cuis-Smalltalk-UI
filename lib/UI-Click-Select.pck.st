@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:44 pm'!
+'From Cuis 6.0 [latest update: #5452] on 11 September 2022 at 11:22:56 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 36!
+!provides: 'UI-Click-Select' 1 38!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -575,15 +575,12 @@ example2
 		setBalloonText: 'I am a check box illustrated with a morph.';
 		yourself! !
 
-!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:44:58'!
+!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'drgeo 9/11/2022 23:22:53'!
 model: aModel getSelected: getter setSelected: setter label: aMorphOrString
-	| checkbox |
-	(aMorphOrString is: #String) ifTrue: [		
-		checkbox _ self fromList: (Array with: aMorphOrString)	 buttonOnLeft: false].
-	
-	(aMorphOrString is: #Morph) ifTrue: [
-		checkbox _ self fromMorphsDict: 	
-			(Dictionary  newFromPairs: {aMorphOrString printString .  aMorphOrString})].
+	| checkbox | 
+	checkbox _ 	(aMorphOrString is: #Morph) 
+		ifTrue: [self fromMorphsDict: 	(Dictionary  newFromPairs: {aMorphOrString printString .  aMorphOrString})]
+		ifFalse: [self fromList: (Array with: aMorphOrString)	 buttonOnLeft: false].
 	aMorphOrString ifNil: [self error: 'Label must be a string or a morph'].
 	checkbox model: aModel ;
 		getSelected: getter;
