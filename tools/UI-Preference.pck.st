@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5352] on 6 July 2022 at 10:55:16 am'!
+'From Cuis 6.0 [latest update: #5492] on 25 September 2022 at 10:10:43 am'!
 'Description '!
-!provides: 'UI-Preference' 1 23!
+!provides: 'UI-Preference' 1 24!
 !requires: 'UI-Click-Select' 1 31 nil!
 !requires: 'UI-Panel' 1 51 nil!
 SystemOrganization addCategory: 'UI-Preference'!
@@ -185,6 +185,21 @@ visitBooleanPreference: aPref
 	check when: #checkSelection send: #changedCheck:for:  to: self withArguments: {check. aPref} .
 	views at: aPref nameDetailed put: check! !
 
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 9/25/2022 10:07:30'!
+visitCharacterSequencePreference: aPreference 
+	self visitStringPreference: aPreference! !
+
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 9/25/2022 09:45:43'!
+visitMetaclassPreference: aPref
+"Present a text entry to edit the class name"
+	| entry |
+	entry _ TextEntryMorph contents: aPref value asString ::
+		setBalloonText: aPref description;
+		yourself.
+	entry crAction: [aPref value: (Smalltalk at: entry value asSymbol)].
+	views at: aPref nameDetailed put: entry.
+! !
+
 !PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 7/6/2022 10:53:22'!
 visitSmallIntegerPreference: aPref
 	| entry |
@@ -212,13 +227,6 @@ changedCheck: checkButton for: aPref
 !PreferenceBrowserVisitor methodsFor: 'events-handling' stamp: 'hlsf 5/15/2022 12:24:37'!
 changedList: listModel for: aPref
 	aPref value: listModel selectedItem ! !
-
-!PreferenceBrowserVisitor methodsFor: 'morphic' stamp: 'hlsf 5/15/2022 11:20:53'!
-rowWithLabel: aPref
-	^ LayoutMorph newRow ::
-		color: Color transparent ;
-		addMorph: (LabelMorph contents: aPref name capitalized);
-		yourself! !
 
 !PreferenceBrowserVisitor methodsFor: 'accessing' stamp: 'hlsf 6/5/2022 13:09:59'!
 sortedViews

@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:46 pm'!
+'From Cuis 6.0 [latest update: #5492] on 25 September 2022 at 10:05:03 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 32!
+!provides: 'UI-Entry' 1 33!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -379,11 +379,14 @@ initialize
 	super initialize.
 	self separation: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 6/4/2022 22:59:47'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 9/25/2022 10:02:16'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
-	labelMorphs _ labelsAndControls collect: [:assoc | LabelMorph contents: assoc key].
+	labelMorphs _ labelsAndControls collect: [:assoc | | label |
+		label _ 	LabelMorph contents: (assoc key contractTo: 40).
+		assoc key size > 40 ifTrue: [label setBalloonText: assoc key].
+		label	].
 	labelWidth _ labelMorphs max: [:each | each morphWidth].
 	labelMorphs withIndexDo: [:label :i | | row height control | 
 		control _ (labelsAndControls at: i) value.
@@ -403,14 +406,14 @@ with: labelsAndControls
 	
 	^ self newColumn with: labelsAndControls! !
 
-!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 4/7/2022 12:32:54'!
+!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 9/25/2022 10:04:14'!
 example1
 "
 	LabelGroup example1 openInWorld
 "
 	^ self with: {
 		'Name' -> (TextEntryMorph contents: 'send $25 for your name here').
-		'Description' -> (TextModelMorph withText: '' ::
+		'Description which is very long is truncated but a ballon help is set to know about this lenghty label!!' -> (TextModelMorph withText: '' ::
 			emptyTextDisplayMessage: 'Why Smalltalk?')	 .
 		'Smalltalk variants' ->   (PluggableListMorph 
 			model: (ListModel with: #('Cuis-Smalltalk' 'Pharo' 'Squeak' 'Amber' 'Dolphin' 'GNU Smalltalk')) 
