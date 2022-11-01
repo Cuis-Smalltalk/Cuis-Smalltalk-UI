@@ -1,9 +1,9 @@
-'From Cuis 6.0 [latest update: #5096] on 9 April 2022 at 9:16:05 pm'!
+'From Cuis 6.0 [latest update: #5546] on 1 November 2022 at 7:12:48 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 14!
+!provides: 'UI-Widgets' 1 15!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
 
@@ -817,9 +817,9 @@ selectedColor: aColor
 isSubToolbar
 	^ false! !
 
-!CircularToolbarMorph methodsFor: 'drawing' stamp: 'hlsf 12/4/2021 21:03:53'!
+!CircularToolbarMorph methodsFor: 'drawing' stamp: 'hlsf 11/1/2022 19:12:27'!
 drawOn: aCanvas
-	aCanvas ellipseCenterX: 0 y: 0 rx: self innerRadius ry: self innerRadius 
+	aCanvas ellipseCenter: 0@0 radius: self innerRadius asPoint  
 		borderWidth: 0 borderColor: color  fillColor: (color muchLighter alpha: 0.5)! !
 
 !CircularToolbarMorph methodsFor: 'initialization' stamp: 'hlsf 12/9/2021 15:56:31'!
