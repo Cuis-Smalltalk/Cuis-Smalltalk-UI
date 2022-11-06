@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:48 pm'!
+'From Cuis 6.0 [latest update: #5546] on 3 November 2022 at 5:44:48 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 52!
+!provides: 'UI-Panel' 1 53!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1296,9 +1296,9 @@ example3
 	model action: [:value | Transcript show: value].
 	^ self openWide: model  label: 'Name the sktech to keep, this is a long title'! !
 
-!StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:55:39'!
+!StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 11/3/2022 17:44:16'!
 checkValidity: aString
-	(aString isKindOf: String) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
+	(aString isKindOf: Utf8String ) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
 
 !TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:28'!
 initialize
