@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5443] on 14 August 2022 at 1:33:52 pm'!
+'From Cuis 6.0 [latest update: #5559] on 24 November 2022 at 2:40:07 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 117!
-!requires: 'Cuis-Base' 60 5031 nil!
+!provides: 'Morphic-MetaProperties' 1 118!
 !requires: 'UI-Edit-Lens' 1 1 nil!
+!requires: 'Cuis-Base' 60 5559 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
 !requires: 'Complex' 1 0 nil!
 !requires: 'UI-Entry' 1 7 nil!
@@ -1278,12 +1278,12 @@ initialize
 
 ! !
 
-!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 12/5/2016 14:19:19'!
+!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 11/24/2022 14:34:01'!
 testAccepts
 
-	self assert: ((MetaProperty kind: String) accepts: 'aString').
-	self deny: ((MetaProperty kind: String) accepts: 2@3).
-	self assert: ((MetaProperty kind: String) accepts: #symbol).
+	self assert: ((MetaProperty kind: CharacterSequence) accepts: 'aString').
+	self deny: ((MetaProperty kind: CharacterSequence) accepts: 2@3).
+	self assert: ((MetaProperty kind: CharacterSequence) accepts: #symbol).
 
 	"OneOf choice"
 	self assert: ((MetaPropertyOneOf kind: Symbol choices: #(fee fie fo fum)) accepts: #fie).
@@ -1318,9 +1318,9 @@ testAccepts
 	self deny: ((MetaPropertyFrom kind: Point minValue: 0@0) accepts: 1@ -1).
 
 	"Pattern Match"
-	self assert: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 'mombazzi').
-	self deny: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 'bamboozle').
-	self deny: ((MetaPropertyViaTest kind: String test: [ :s | '*baz*' match: s ]) accepts: 43).
+	self assert: ((MetaPropertyViaTest kind: CharacterSequence test: [ :s | '*baz*' match: s ]) accepts: 'mombazzi').
+	self deny: ((MetaPropertyViaTest kind: CharacterSequence test: [ :s | '*baz*' match: s ]) accepts: 'bamboozle').
+	self deny: ((MetaPropertyViaTest kind: CharacterSequence test: [ :s | '*baz*' match: s ]) accepts: 43).
 ! !
 
 !MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 12/5/2016 13:55:45'!
@@ -1416,7 +1416,7 @@ initialize
 	"self initializeDictionaries." "invoked in VisualPropertyEditor class>>initialize"
 ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 1/10/2022 13:15:12'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 11/24/2022 14:32:54'!
 initializeDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1433,7 +1433,7 @@ initializeDictionaries
 	props := self preDefinedPropsDict.
 	props at: #acceptsString 
 			put: (MetaProperty 
-			kind: String
+			kind: CharacterSequence
 			editProc: [ :morph :metaProp :menuItem | 
 						StringEntryPanel 
 								open: menuItem
@@ -1444,7 +1444,7 @@ initializeDictionaries
 							 ]).
 	props at: #acceptsSymbol 
 			put: (MetaProperty 
-					kind: Symbol
+					kind: CharacterSequence
 					editProc: [ :morph :metaProp :menuItem | 
 						StringEntryPanel 
 								open: menuItem
@@ -2065,17 +2065,6 @@ icon
 
 	^ VisualPropertyMenuItem trueIcon ! !
 
-!Color methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:40:40'!
-morphForDrag
-	"Answer a morph suitable for DragNDrop"
-	
-	^ DropColorMorph fromColor: self! !
-
-!UndefinedObject methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:15:06'!
-icon
-
-	^ VisualPropertyMenuItem nilIcon ! !
-
 !Magnitude methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:06:00'!
 icon
 
@@ -2100,6 +2089,17 @@ icon
 icon
 
 	^ VisualPropertyMenuItem chronIcon ! !
+
+!Color methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:40:40'!
+morphForDrag
+	"Answer a morph suitable for DragNDrop"
+	
+	^ DropColorMorph fromColor: self! !
+
+!UndefinedObject methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:15:06'!
+icon
+
+	^ VisualPropertyMenuItem nilIcon ! !
 
 !Character methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/13/2021 16:38:55'!
 icon
