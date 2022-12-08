@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5559] on 24 November 2022 at 2:40:07 pm'!
+'From Cuis 6.0 [latest update: #5588] on 8 December 2022 at 11:39:14 am'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 118!
+!provides: 'Morphic-MetaProperties' 1 119!
 !requires: 'UI-Edit-Lens' 1 1 nil!
-!requires: 'Cuis-Base' 60 5559 nil!
+!requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
 !requires: 'Complex' 1 0 nil!
 !requires: 'UI-Entry' 1 7 nil!
@@ -1585,9 +1585,9 @@ See the #examples class category.
 !MetaProperty class methodsFor: 'testing' stamp: 'KenD 8/14/2022 13:33:26'!
 classTestFor: aClass
 	"Answer a predicate test for class, 
-	 where Symbol and Utf8Symbol use #isSymbol
+	 where Symbol and UnicodeSymbol use #isSymbol
 	 so that either kind of Symbol is OK."
-	(`{Symbol. Utf8Symbol.}` includes: aClass) 
+	(`{Symbol. UnicodeSymbol.}` includes: aClass) 
 		ifTrue:  [ ^[ :elt | elt isSymbol ] ]
 		ifFalse: [ ^[ :elt | elt isKindOf: aClass ] ]
 	

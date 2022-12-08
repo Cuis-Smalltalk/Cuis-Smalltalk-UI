@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5546] on 3 November 2022 at 5:44:48 pm'!
+'From Cuis 6.0 [latest update: #5588] on 8 December 2022 at 11:42:32 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 53!
-!requires: 'Cuis-Base' 60 5031 nil!
+!provides: 'UI-Panel' 1 54!
+!requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: 'UI-Panel'!
@@ -1298,7 +1298,7 @@ example3
 
 !StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 11/3/2022 17:44:16'!
 checkValidity: aString
-	(aString isKindOf: Utf8String ) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
+	(aString isKindOf: CharacterSequence ) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
 
 !TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:28'!
 initialize
