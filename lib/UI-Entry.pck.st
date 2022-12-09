@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5492] on 25 September 2022 at 10:05:03 am'!
+'From Cuis 6.0 [latest update: #5588] on 9 December 2022 at 1:42:37 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 33!
-!requires: 'Cuis-Base' 60 5031 nil!
+!provides: 'UI-Entry' 1 35!
 !requires: 'UI-Click-Select' 1 3 nil!
+!requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Entry'!
 
@@ -1546,10 +1546,10 @@ asUIString
 	
 	^ self class stringForCode: self emphasisCode! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:27:44'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/9/2022 11:01:53'!
 choices
 
-	^ #(normal bold italic underline struckThrough superscript subscript withST80Glyphs)! !
+	^ #(normal bold italic underline struckThrough superscript subscript) "withST80Glyphs"! !
 
 !TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:28:07'!
 codeForChoice: aStringOrSymbol
@@ -1593,21 +1593,19 @@ fromUser: defaultChoiceCode
 							title: 'Text Emphasis') invokeModal. 
 	^ self new emphasisCode: emphasisCode ! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:28:37'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/9/2022 13:35:58'!
 privateCodeForChoice: aStringOrSymbol
 	"Take emphasis choice and return a code.  E.g. 'bold' -> 1
 	Here, a multi-choice, like  'bold+italic', is an error.
 	aStringOrSymbol MUST be in self choices"
 
-	| indexLessTwo |
-	indexLessTwo
-		:= ((self choices indexOf: aStringOrSymbol
+	| index |
+	index := (self choices indexOf: aStringOrSymbol
 					 ifAbsent: [ self error: 
-						'Bad choice for TextEmphasis: ', aStringOrSymbol asString ])
-			- 2 ).
-	^ (indexLessTwo < 0)
+						'Bad choice for TextEmphasis: ', aStringOrSymbol asString ]).
+	^ (index = 1)
 		ifTrue: [ 0 ]
-		ifFalse: [ 1 bitShift: indexLessTwo ]
+		ifFalse: [ 1 bitShift: index - 2 ]
 		
 	! !
 
