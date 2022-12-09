@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:11 pm'!
+'From Cuis 6.0 [latest update: #5588] on 9 December 2022 at 1:42:14 pm'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 16!
-!requires: 'Cuis-Base' 60 5031 nil!
+!provides: 'UI-DragAndDrop' 1 17!
+!requires: 'Cuis-Base' 60 5588 nil!
 SystemOrganization addCategory: 'UI-DragAndDrop'!
 
 
@@ -87,16 +87,6 @@ I am used to display a font, e.g. in a FontPallet.
 (FontMorph font: FontFamily defaultFamilyAndPointSize) openInHand.
 
 ImagePallet systemFonts.!
-
-!SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 17:15'!
-name
-
-	^ contents ! !
-
-!FontMorph class methodsFor: 'defaults' stamp: 'jmv 6/11/2020 16:48:44'!
-initializedInstance
-
-	^ self font: FontFamily defaultFamilyAndPointSize! !
 
 !ClickColorMorph methodsFor: 'event handling testing' stamp: 'KenD 2/29/2020 09:22:26'!
 handlesMouseDown: aMouseButtonEvent
@@ -307,6 +297,11 @@ contents: aString
 
 	self contents: aString wrappedTo: nil! !
 
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 17:15'!
+name
+
+	^ contents ! !
+
 !SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 16:58'!
 object
 
@@ -429,7 +424,7 @@ wantsToBeDroppedInto: aMorph
 				
 	^ false! !
 
-!SignMorph methodsFor: 'drawing' stamp: 'KenD 3/11/2022 16:04:04'!
+!SignMorph methodsFor: 'drawing' stamp: 'KenD 12/9/2022 09:36:16'!
 drawOn: aCanvas
 	"Add border to inherited"
 	| r |
@@ -437,10 +432,12 @@ drawOn: aCanvas
 	"aCanvas roundRect: r color: self color radius: 4."
 	aCanvas frameAndFillRectangle: r fillColor: self color borderWidth: borderWidth borderColor: borderColor.
 	aCanvas
-		textComposition: textComposition
-		bounds: (r insetBy: 4)
-		color: `Color black`
-		selectionColor: (Theme current textHighlightFocused: false)! !
+		drawTextComposition: textComposition 
+		at: (r insetBy: 4) origin 
+		extent: textComposition usedExtent 
+		color: `Color black` 
+		selectionColor: (Theme current textHighlightFocused: false) avoidOverhang: true.
+! !
 
 !SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
 contents: someString
@@ -671,6 +668,11 @@ defaultString
 	"Answer a string to display in the typical case"
 
 	^  'AbBbCc $123'! !
+
+!FontMorph class methodsFor: 'defaults' stamp: 'jmv 6/11/2020 16:48:44'!
+initializedInstance
+
+	^ self font: FontFamily defaultFamilyAndPointSize! !
 
 !FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 10:08:53'!
 font: aFont
