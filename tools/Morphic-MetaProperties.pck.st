@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5588] on 8 December 2022 at 11:39:14 am'!
+'From Cuis 6.0 [latest update: #5588] on 9 December 2022 at 1:41:48 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 119!
+!provides: 'Morphic-MetaProperties' 1 122!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -1730,7 +1730,7 @@ accepts: newValue
 	
 	"test decodeProc"! !
 
-!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 3/21/2017 17:33:47'!
+!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 12/9/2022 13:11:13'!
 addToInitialDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1740,9 +1740,9 @@ addToInitialDictionaries
 	props := self preDefinedPropsDict.
 	
 	props at: #acceptsBoolean       put: (MetaPropertyOneOf kind: Boolean choices: #(true false)).
-	props at: #acceptsBorderStyle put: (MetaPropertyOneOf kind: Symbol choices: #(inset raised simple)).
+	props at: #acceptsBorderStyle put: (MetaPropertyOneOf kind: CharacterSequence choices: #(inset raised simple)).
 	props at: #acceptsAlignment 
-		  put: (MetaPropertyOneOf kind: Symbol choices: #(leftFlush rightFlush centered justified)).
+		  put: (MetaPropertyOneOf kind: CharacterSequence choices: #(leftFlush rightFlush centered justified)).
 ! !
 
 !MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 12/14/2016 14:14:53'!
@@ -1809,18 +1809,10 @@ edit: myMorph menuItem: item
 	item propertyValue: encodedResult. 
 	myMorph redrawNeeded.! !
 
-!MetaPropertyMultiSelect methodsFor: 'initialization' stamp: 'KenD 12/18/2016 09:12:42'!
+!MetaPropertyMultiSelect methodsFor: 'initialization' stamp: 'KenD 12/9/2022 13:21:16'!
 multiChoiceFrom: aCollection encodeProc: encoder decodeProc: decoder
 
-	super kind: Object choices: aCollection.
-	encodeProc := encoder.
-	decodeProc := decoder.
-	maxValue := (1 bitShift: (aCollection size)) - 1. "bitMask"
-	
-	((encoder isKindOf: BlockClosure) and: [ encoder numArgs = 1 ])
-		ifFalse: [ self error: 'Encoder should be a closure of 1 argument: ', encoder printString ].
-	((decoder isKindOf: BlockClosure) and: [ decoder numArgs = 1 ])
-		ifFalse: [ self error: 'Decoder should be a closure of 1 argument: ', decoder printString ].
+	self multiChoiceFrom: aCollection kind: Object encodeProc: encoder decodeProc: decoder
 
 ! !
 
@@ -1839,7 +1831,7 @@ multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decode
 
 ! !
 
-!MetaPropertyMultiSelect class methodsFor: 'class initialization' stamp: 'KenD 2/9/2022 07:30:47'!
+!MetaPropertyMultiSelect class methodsFor: 'class initialization' stamp: 'KenD 12/9/2022 12:42:21'!
 addToInitialDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1851,14 +1843,14 @@ addToInitialDictionaries
 	props  at: #acceptsEmphasis 
 			put: (MetaPropertyMultiSelect 
 				multiChoiceFrom: TextEmphasis choices 
-				kind: Symbol
+				kind: CharacterSequence
 				encodeProc:
 				 [ :intOrString |
 					(intOrString isKindOf: Integer) 
 						ifTrue: [ intOrString ]
-						ifFalse: [ (intOrString isKindOf: String) 
+						ifFalse: [ (intOrString isKindOf: CharacterSequence ) 
 									ifTrue:  [ TextEmphasis codeForChoice: intOrString ]
-									ifFalse: [ -1 ]
+									ifFalse: [ 0 ]
 								]
 				]
 				decodeProc: [ :encoded | 
@@ -2121,12 +2113,17 @@ icon
 
 	^ VisualPropertyMenuItem collectionIcon ! !
 
-!String methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:12:47'!
+!CharacterSequence methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/9/2022 13:06:18'!
 icon
 
 	^ VisualPropertyMenuItem stringIcon ! !
 
 !Symbol methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/14/2021 12:13:08'!
+icon
+
+	^ VisualPropertyMenuItem symbolIcon ! !
+
+!UnicodeSymbol methodsFor: '*morphic-metaproperties' stamp: 'KenD 12/9/2022 13:07:12'!
 icon
 
 	^ VisualPropertyMenuItem symbolIcon ! !
