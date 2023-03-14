@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5452] on 11 September 2022 at 11:22:56 pm'!
+'From Cuis 6.0 [latest update: #5667] on 14 March 2023 at 9:13:44 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 38!
+!provides: 'UI-Click-Select' 1 39!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -1263,13 +1263,13 @@ initialize
 	self borderColor: self defaultColor.
 	self ofSize: self defaultDiameter! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:40'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 3/14/2023 21:12:14'!
 ofSize: numPixels
 
 	| size scale |
 	scale _  (Preferences at: #standardButtonFont) pointSize / 14.0.
-	size _ numPixels "* scale".
-	self borderWidth: ((self defaultBorderWidth * scale) max: 1).
+	size _ numPixels * scale.
+	self borderWidth: ((self defaultBorderWidth * scale) truncated max: 1).
 	self morphExtent: size @ size.
 	self layoutSpec: (LayoutSpec 
 							fixedWidth: size 
