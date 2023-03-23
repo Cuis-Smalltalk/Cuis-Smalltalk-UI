@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5588] on 8 December 2022 at 11:42:32 am'!
+'From Cuis 6.0 [latest update: #5716] on 23 March 2023 at 10:41:02 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 54!
+!provides: 'UI-Panel' 1 55!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -353,13 +353,14 @@ drawOn: aCanvas
 
 	self titleMorph ifNotNil: [ :titleM | titleM drawOn: aCanvas ].! !
 
-!Panel methodsFor: 'drawing' stamp: 'KenD 9/25/2021 13:54:42'!
+!Panel methodsFor: 'drawing' stamp: 'hlsf 3/23/2023 10:40:08'!
 drawRoundedFrameOn: aCanvas color: theUIsColor
 	"Title area is not inside window borders"
 	aCanvas
 		drawRoundedFrame: (0@0 extent: extent) 
 		border: borderWidth 
 		color: borderColor 
+		topColor: theUIsColor 
 		insideColor: color 
 		labelHeight: self labelHeight + borderWidth! !
 
