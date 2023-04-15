@@ -1,49 +1,49 @@
-'From Cuis 6.0 [latest update: #5588] on 9 December 2022 at 1:42:37 pm'!
+'From Cuis 6.0 [latest update: #5733] on 15 April 2023 at 12:58:41 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 35!
+!provides: 'UI-Entry' 1 36!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
-SystemOrganization addCategory: 'UI-Entry'!
+SystemOrganization addCategory: #'UI-Entry'!
 
 
-!classDefinition: #SimpleEditor category: 'UI-Entry'!
+!classDefinition: #SimpleEditor category: #'UI-Entry'!
 Editor subclass: #SimpleEditor
 	instanceVariableNames: 'string pointIndex markIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'SimpleEditor class' category: 'UI-Entry'!
+!classDefinition: 'SimpleEditor class' category: #'UI-Entry'!
 SimpleEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #LabelGroup category: 'UI-Entry'!
+!classDefinition: #LabelGroup category: #'UI-Entry'!
 LayoutMorph subclass: #LabelGroup
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'LabelGroup class' category: 'UI-Entry'!
+!classDefinition: 'LabelGroup class' category: #'UI-Entry'!
 LabelGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextEntryMorph category: 'UI-Entry'!
+!classDefinition: #TextEntryMorph category: #'UI-Entry'!
 BoxedMorph subclass: #TextEntryMorph
 	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction acceptCancelReceiver backgroundColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'TextEntryMorph class' category: 'UI-Entry'!
+!classDefinition: 'TextEntryMorph class' category: #'UI-Entry'!
 TextEntryMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #SimpleNumberEntryMorph category: 'UI-Entry'!
+!classDefinition: #SimpleNumberEntryMorph category: #'UI-Entry'!
 TextEntryMorph subclass: #SimpleNumberEntryMorph
 	instanceVariableNames: 'entryChars numCharsToHold theValue validator toString valueAccessor valueUpdator'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'SimpleNumberEntryMorph class' category: 'UI-Entry'!
+!classDefinition: 'SimpleNumberEntryMorph class' category: #'UI-Entry'!
 SimpleNumberEntryMorph class
 	instanceVariableNames: ''!
 
@@ -434,6 +434,12 @@ acceptCancelReceiver: whoToNotify
 	"Answer set to nil or object implementing #accept and #cancel"
 	
 	acceptCancelReceiver := whoToNotify! !
+
+!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 11:50:50'!
+backgroundColor: aColor
+	backgroundColor = aColor ifFalse: [
+		backgroundColor := aColor.
+		self redrawNeeded]! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 6/11/2020 16:50:03'!
 baseFont
