@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5733] on 15 April 2023 at 12:58:41 pm'!
+'From Cuis 6.0 [latest update: #5733] on 15 April 2023 at 10:22:16 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 36!
+!provides: 'UI-Entry' 1 37!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -379,22 +379,22 @@ initialize
 	super initialize.
 	self separation: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 9/25/2022 10:02:16'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/15/2023 22:17:55'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
-	labelMorphs _ labelsAndControls collect: [:assoc | | label |
-		label _ 	LabelMorph contents: (assoc key contractTo: 40).
+	labelMorphs := labelsAndControls collect: [:assoc | | label |
+		label := 	LabelMorph contents: (assoc key contractTo: 40).
 		assoc key size > 40 ifTrue: [label setBalloonText: assoc key].
 		label	].
-	labelWidth _ labelMorphs max: [:each | each morphWidth].
+	labelWidth := labelMorphs max: [:each | each morphWidth].
 	labelMorphs withIndexDo: [:label :i | | row height control | 
-		control _ (labelsAndControls at: i) value.
-		height _ label morphHeight max: control morphHeight.
-		row _ LayoutMorph newRow separation: 4.
+		control := (labelsAndControls at: i) value.
+		height := label morphHeight max: control morphHeight.
+		row := LayoutMorph newRow separation: 4.
 		row 
 			color: self defaultColor;
-			addMorph: label layoutSpec: ( LayoutSpec fixedWidth: labelWidth proportionalHeight: 0.5 offAxisEdgeWeight: #center).
+			addMorph: label layoutSpec: ( LayoutSpec fixedWidth: labelWidth proportionalHeight: 0.5 offAxisEdgeWeight: #rowTop).
 		control hasVariableExtent 
 			ifTrue: [row addMorphUseAll: control]  
 			ifFalse: [row addMorph: control	 layoutSpec: LayoutSpec keepMorphExtent]		.
