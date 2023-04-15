@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5733] on 15 April 2023 at 1:22:50 pm'!
+'From Cuis 6.0 [latest update: #5733] on 15 April 2023 at 10:22:09 pm'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 0!
+!provides: 'UI-Morphic-Mold' 1 3!
 SystemOrganization addCategory: #'UI-Morphic-Mold'!
 
 
@@ -166,7 +166,7 @@ TimeField class
 
 !classDefinition: #Mold category: #'UI-Morphic-Mold'!
 Object subclass: #Mold
-	instanceVariableNames: 'fields html'
+	instanceVariableNames: 'fields'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
@@ -205,24 +205,19 @@ Widget is packed as follow:
 |                                     |   +--------+          |
 +-------------+--------------+!
 
-!Mold commentStamp: 'kdt 8/26/2008 22:16' prior: 0!
+!Mold commentStamp: 'hlsf 4/15/2023 14:42:28' prior: 0!
 This class is little more than a composite of Fields, where Fields do most of the work. It provides a canvas-like API for creating fields and a convenience API for rendering fields on an HTML canvas.
 
 To use a Mold, you typically create and store it in an instance variable of your component. This is part of the object's initialization
 
-buildMold
+ | mold |
 	mold := Mold new.
 	(mold stringField)
-		on: #name of: self;
+		label: 'My label';
+		on: #propertyValue of: ValueHolder new;
 		beRequired.
+	mold inspect
 		 
-When rendering the form, you hand it the canvas it will render itself on, and then tell it to render its fields:
-
-renderContentOn: html
-	html form:
-		[ mold canvas: html.
-		html table:
-			[ mold renderTableRows. ] ]
 
 !
 
@@ -424,24 +419,26 @@ testInput
 setUp
 	field := PercentageField new! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 12:02:51'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:24:09'!
 errorsColumn
 " Return a column layout morph where to plug the error messages "
-	^ widget lastSubmorph ! !
+	^ widget firstSubmorph ! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 12:03:33'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:22:13'!
 exampleMorph
 " A label morph, it may not exist if no example was provided "
-	^ self inputColumn submorphs at: 2 ifAbsent: [nil]! !
+	^ self inputColumn submorphCount = 1 
+		ifTrue: [nil] 
+		ifFalse: [self inputColumn firstSubmorph ]! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 12:03:13'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:24:16'!
 inputColumn
-	^ widget firstSubmorph! !
+	^ widget lastSubmorph! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 12:03:23'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:19:45'!
 inputMorph
 "The widget morph the represent the model "
-	^ self inputColumn firstSubmorph ! !
+	^ self inputColumn lastSubmorph ! !
 
 !Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 12:56:07'!
 inputMorphContents
@@ -451,8 +448,8 @@ inputMorphContents
 inputMorphContents: anInput
 	self inputMorph contents: anInput! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 13:05:25'!
-labelAndwidget
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 14:37:48'!
+labelAndWidget
 	^ label  -> widget! !
 
 !Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:04'!
@@ -488,11 +485,13 @@ customize: aBlock
 errors
 	^ errors! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 12:09:08'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 21:54:10'!
 example: aString
 	self exampleMorph 
 		ifNil: [ "Instantiate a new label and add it below the input morph "
-			self inputColumn addLast: (LabelMorph contents: aString asText italic)]
+			self inputColumn 
+				addMorph: (LabelMorph contents: aString asText italic)
+				layoutSpec: (LayoutSpec useAll offAxisEdgeWeight: 0)]
 		ifNotNil: [	:labelMorph |
 			labelMorph contents: aString asText italic]! !
 
@@ -527,7 +526,7 @@ label
 label: aString
 	label := aString ! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 13:19:03'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 14:51:38'!
 on: accessor of: model
 	key ifNil: [key := accessor ].
 	self value: (model perform: accessor ).
@@ -547,11 +546,11 @@ save
 value
 	^ value! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 13:18:58'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 14:48:23'!
 value: anObject
 "The model I will present an object "
 	value := anObject .
-	input := anObject ifNotNil: [self infect: anObject ].
+	input := self infect: anObject .
 	self valueChanged! !
 
 !Field methodsFor: 'private' stamp: 'kdt 4/4/2008 13:51'!
@@ -559,11 +558,11 @@ addRequirementCondition
 	self addCondition: [:object | isRequired not or: [object notNil]]
 		labeled: 'This field is required.'! !
 
-!Field methodsFor: 'private' stamp: 'kdt 1/28/2008 22:03'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 14:46:16'!
 disinfect: aString
 	"Convert aString into the type of object that this field ultimately represents"
 	
-	^aString! !
+	^aString ifEmpty: [nil]! !
 
 !Field methodsFor: 'private' stamp: 'KenTreis 9/7/2010 15:09'!
 evaluate: aBlockOrString withPossibleArguments: anArray
@@ -580,11 +579,11 @@ evaluate: aBlockOrString withPossibleArguments: anArray
 		startingAt: 1.
 	^ aBlockOrString valueWithArguments: args! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 10:28:02'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 14:45:59'!
 infect: model
 	"Convert the model into the type of object that this field's widget expects for a value"
 	
-	^model ! !
+	^model ifNil: ['']! !
 
 !Field methodsFor: 'private' stamp: 'kdt 4/4/2008 13:50'!
 requirementCondition
@@ -603,7 +602,7 @@ validateConditions
 					each = self requirementCondition
 						ifTrue: [ ^ self ] ] ]! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 12:57:14'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 22:07:48'!
 validateInput
 	errors := OrderedCollection new.
 	self input: self inputMorphContents. "retrieve the input from the input Morph"
@@ -611,7 +610,9 @@ validateInput
 	self isValid ifTrue: [ self value: (input ifNotNil: [ self disinfect: input ]) ].
 	self errorsColumn removeAllMorphs.
 	errors do: [:errorMsg | 
-		self errorsColumn addMorphBack: (LabelMorph contents: ('• ', errorMsg) asText red)		].
+		self errorsColumn 
+			addMorph: (LabelMorph contents: '• ', errorMsg :: color: Color red)		
+			layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0)			].
 	self inputMorph backgroundColor: (self isValid 
 		ifTrue: [self inputMorph defaultBackgroundColor]
 		ifFalse: [Color red muchLighter])! !
@@ -619,24 +620,29 @@ validateInput
 !Field methodsFor: 'private'!
 valueChanged! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/15/2023 11:59:48'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/15/2023 22:21:26'!
 initialize
 	conditions := OrderedCollection new.
 	errors := OrderedCollection new.
 	widget := LayoutMorph newRow ::
-		addMorph: LayoutMorph newColumn;  " error morphs "
-		addMorph: LayoutMorph newColumn.  " Input & example morph "
+		color: Color transparent;
+		separation: 4@2;
+		addMorph: (LayoutMorph newColumn name: 'input' :: color: Color transparent; separation: 0@2);  
+		addMorph: (LayoutMorph newColumn name: 'error' :: color: Color transparent) 
+			layoutSpec: LayoutSpec keepMorphExtent . 
 	isRequired := false.
+	label := 'unammed label'.
 	self setInputWidget.
 	self addRequirementCondition! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/15/2023 12:39:40'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/15/2023 14:51:18'!
 setInputWidget
 "
 	Subclass according to the nature of the input 
 	For most input we need a text entry morph, so make it the default one 
 "
-	self inputColumn addMorph: TextEntryMorph new! !
+	self inputColumn 
+		addMorph: TextEntryMorph new layoutSpec: LayoutSpec useAll! !
 
 !Field methodsFor: 'testing' stamp: 'kdt 4/4/2008 13:45'!
 isRequired
@@ -1045,9 +1051,9 @@ zipCodeField
 				addCondition: [:val | val isNil or: [val matchesRegex: '(\d\d\d\d\d)(-\d\d\d\d)?']]
 				labeled: 'Invalid zip code')! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 4/15/2023 13:06:47'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 4/15/2023 14:36:58'!
 renderForms
-	^ LabelGroup with: (fields collect: #labelAndMorph)! !
+	^ LabelGroup with: (fields collect: #labelAndWidget)! !
 
 !Mold methodsFor: 'testing' stamp: 'KenTreis 7/27/2011 13:49'!
 isValid
