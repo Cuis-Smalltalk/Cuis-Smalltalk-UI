@@ -1,160 +1,170 @@
-'From Cuis 6.0 [latest update: #5716] on 23 March 2023 at 10:41:02 am'!
+'From Cuis 6.0 [latest update: #5733] on 16 April 2023 at 5:41:01 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 55!
+!provides: 'UI-Panel' 1 56!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
-SystemOrganization addCategory: 'UI-Panel'!
+SystemOrganization addCategory: #'UI-Panel'!
 
 
-!classDefinition: #PluggableScrollBar category: 'UI-Panel'!
+!classDefinition: #PluggableScrollBar category: #'UI-Panel'!
 ScrollBar subclass: #PluggableScrollBar
 	instanceVariableNames: 'refreshValueSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableScrollBar class' category: 'UI-Panel'!
+!classDefinition: 'PluggableScrollBar class' category: #'UI-Panel'!
 PluggableScrollBar class
 	instanceVariableNames: ''!
 
-!classDefinition: #Panel category: 'UI-Panel'!
+!classDefinition: #Panel category: #'UI-Panel'!
 PluggableMorph subclass: #Panel
 	instanceVariableNames: 'widgetsColor titleMorph layoutMorph stayUp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'Panel class' category: 'UI-Panel'!
+!classDefinition: 'Panel class' category: #'UI-Panel'!
 Panel class
 	instanceVariableNames: ''!
 
-!classDefinition: #DialogPanel category: 'UI-Panel'!
+!classDefinition: #DialogPanel category: #'UI-Panel'!
 Panel subclass: #DialogPanel
 	instanceVariableNames: 'buttonArea'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'DialogPanel class' category: 'UI-Panel'!
+!classDefinition: 'DialogPanel class' category: #'UI-Panel'!
 DialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #EditPanel category: 'UI-Panel'!
+!classDefinition: #EditPanel category: #'UI-Panel'!
 DialogPanel subclass: #EditPanel
 	instanceVariableNames: 'editModel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'EditPanel class' category: 'UI-Panel'!
+!classDefinition: 'EditPanel class' category: #'UI-Panel'!
 EditPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueEntryPanel category: 'UI-Panel'!
+!classDefinition: #PluggableDialogPanel category: #'UI-Panel'!
+DialogPanel subclass: #PluggableDialogPanel
+	instanceVariableNames: 'viewSelector actionOnAccept'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'PluggableDialogPanel class' category: #'UI-Panel'!
+PluggableDialogPanel class
+	instanceVariableNames: ''!
+
+!classDefinition: #ValueEntryPanel category: #'UI-Panel'!
 DialogPanel subclass: #ValueEntryPanel
 	instanceVariableNames: 'entry'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'ValueEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'ValueEntryPanel class' category: #'UI-Panel'!
 ValueEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #CharacterEntryPanel category: 'UI-Panel'!
+!classDefinition: #CharacterEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #CharacterEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'CharacterEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'CharacterEntryPanel class' category: #'UI-Panel'!
 CharacterEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatEntryPanel category: 'UI-Panel'!
+!classDefinition: #FloatEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #FloatEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'FloatEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'FloatEntryPanel class' category: #'UI-Panel'!
 FloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PointEntryPanel category: 'UI-Panel'!
+!classDefinition: #PointEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #PointEntryPanel
 	instanceVariableNames: 'xEntryMorph yEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PointEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'PointEntryPanel class' category: #'UI-Panel'!
 PointEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveFloatEntryPanel category: 'UI-Panel'!
+!classDefinition: #PositiveFloatEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #PositiveFloatEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveFloatEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'PositiveFloatEntryPanel class' category: #'UI-Panel'!
 PositiveFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveIntegerEntryPanel category: 'UI-Panel'!
+!classDefinition: #PositiveIntegerEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #PositiveIntegerEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveIntegerEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'PositiveIntegerEntryPanel class' category: #'UI-Panel'!
 PositiveIntegerEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #RangeFloatEntryPanel category: 'UI-Panel'!
+!classDefinition: #RangeFloatEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #RangeFloatEntryPanel
 	instanceVariableNames: 'min max'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'RangeFloatEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'RangeFloatEntryPanel class' category: #'UI-Panel'!
 RangeFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringEntryPanel category: 'UI-Panel'!
+!classDefinition: #StringEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #StringEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'StringEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'StringEntryPanel class' category: #'UI-Panel'!
 StringEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextEntryPanel category: 'UI-Panel'!
+!classDefinition: #TextEntryPanel category: #'UI-Panel'!
 StringEntryPanel subclass: #TextEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'TextEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'TextEntryPanel class' category: #'UI-Panel'!
 TextEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPanel category: 'UI-Panel'!
+!classDefinition: #WizardPanel category: #'UI-Panel'!
 DialogPanel subclass: #WizardPanel
-	instanceVariableNames: 'pages currentPageIndex'
+	instanceVariableNames: 'pages currentPageIndex acceptSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPanel class' category: 'UI-Panel'!
+!classDefinition: 'WizardPanel class' category: #'UI-Panel'!
 WizardPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPage category: 'UI-Panel'!
+!classDefinition: #WizardPage category: #'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPage class' category: 'UI-Panel'!
+!classDefinition: 'WizardPage class' category: #'UI-Panel'!
 WizardPage class
 	instanceVariableNames: ''!
 
@@ -170,7 +180,9 @@ I am a ScrollBar which can get new values from my model.!
 !DialogPanel commentStamp: '<historical>' prior: 0!
 I am a dialog panel with a button area at my bottom.!
 
-!EditPanel commentStamp: '<historical>' prior: 0!
+!EditPanel commentStamp: 'hlsf 4/16/2023 12:50:22' prior: 0!
+DO WE NEED IT? I don't read use case. Hilaire
+
 I abstract common edit methods for my concrete subclasses.
 
 The gist is that my model is a reference to the original object.
@@ -180,6 +192,15 @@ If the user Update's then the changes are propagated from the editModel to the m
 Examples:
   LayoutMorphEditPanel open:  (LayoutMorph newRow).
   LayoutSpecEditPanel open: (LayoutSpec useAll).!
+
+!PluggableDialogPanel commentStamp: '<historical>' prior: 0!
+A pluggable Dialog panel with 'Accept' and 'Cancel' buttons. 
+The model answers to:
+- viewSelector (yeah...) to plug in the panel.
+- actionOnAccept (block) when the 'Accept' button is pressed.
+
+It is best used with the Morphic-Mold package for assisted field descriptions and validations. 
+The model is then a Mold instance or a composite of Mold instances.!
 
 !ValueEntryPanel commentStamp: '<historical>' prior: 0!
 I am an abstract class for editing simple values.
@@ -813,11 +834,6 @@ newPane
 "Return the morph containing the controls of the dialog"
 	self subclassResponsibility ! !
 
-!DialogPanel methodsFor: 'event handling' stamp: 'hlsf 12/25/2021 10:15:49'!
-refreshView
-
-	self subclassResponsibility ! !
-
 !DialogPanel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:31:41'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
@@ -839,6 +855,11 @@ cancelAndForgetEverything
 	self stayUp 
 		ifFalse: [ self delete ]
 		ifTrue: [ self refreshView ]! !
+
+!EditPanel methodsFor: 'event handling' stamp: 'hlsf 4/16/2023 12:48:33'!
+refreshView
+
+	self subclassResponsibility ! !
 
 !EditPanel methodsFor: 'event handling' stamp: 'KenD 12/18/2013 19:38'!
 replaceArea: oldArea with: newArea
@@ -913,6 +934,48 @@ newButtonArea
 		color: self widgetsColor.
 	^ buttonArea! !
 
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/16/2023 14:10:03'!
+newButtonArea
+"Return the morph where the buttons are layed out"
+	^ buttonArea := LayoutMorph newRow ::
+		separation: 8@0;
+		axisEdgeWeight: #rowRight;
+		addMorph: (PluggableButtonMorph
+			model: actionOnAccept 
+			action: #value
+			label: 'Accept');
+		addMorph: (PluggableButtonMorph 
+			model: self
+			action: #delete
+			label: 'Cancel')! !
+
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/16/2023 16:10:44'!
+newPane
+	^ model perform: viewSelector! !
+
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:31:21'!
+actionOnAccept: selectorOrBlock
+	actionOnAccept := selectorOrBlock isSymbol 
+		ifTrue: [ [model perform: selectorOrBlock] ]
+		ifFalse: [selectorOrBlock]! !
+
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:11:53'!
+viewGetter: selector
+	viewSelector := selector ! !
+
+!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 4/16/2023 14:12:33'!
+open: model label: aString view: viewSelector accept: acceptSelectorOrAction
+	|  window |
+	window := self basicNew ::
+		model: model;
+		viewGetter: viewSelector ;
+		actionOnAccept: acceptSelectorOrAction;
+		initialize;
+		buildMorphicWindow.
+	aString ifNotNil: [ window setLabel: aString ].
+	window openInWorld.
+	^ window! !
+
 !ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:20:51'!
 accept
 	self delete.
@@ -971,6 +1034,11 @@ newPane
 model: aModel
 	super model: aModel.
 	entry ifNotNil: [:anEntry | anEntry setValue: aModel propertyValue]! !
+
+!ValueEntryPanel methodsFor: 'event handling' stamp: 'hlsf 4/16/2023 12:48:33'!
+refreshView
+
+	self subclassResponsibility ! !
 
 !ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:25'!
 checkValidity: aModel
@@ -1413,6 +1481,11 @@ minimumExtent
 !WizardPanel methodsFor: 'testing' stamp: 'hlsf 12/25/2021 16:53:33'!
 isReadyToApply
 	^ false! !
+
+!WizardPanel methodsFor: 'event handling' stamp: 'hlsf 4/16/2023 12:48:33'!
+refreshView
+
+	self subclassResponsibility ! !
 
 !WizardPanel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:32:09'!
 includeInNewMorphMenu
