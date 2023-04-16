@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5733] on 15 April 2023 at 10:22:16 pm'!
+'From Cuis 6.0 [latest update: #5733] on 16 April 2023 at 5:39:16 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 37!
+!provides: 'UI-Entry' 1 39!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -379,7 +379,7 @@ initialize
 	super initialize.
 	self separation: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/15/2023 22:17:55'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/16/2023 14:39:52'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
@@ -394,7 +394,7 @@ with: labelsAndControls
 		row := LayoutMorph newRow separation: 4.
 		row 
 			color: self defaultColor;
-			addMorph: label layoutSpec: ( LayoutSpec fixedWidth: labelWidth proportionalHeight: 0.5 offAxisEdgeWeight: #rowTop).
+			addMorph: label layoutSpec: ( LayoutSpec fixedWidth: labelWidth proportionalHeight: 0.5 offAxisEdgeWeight: #center).
 		control hasVariableExtent 
 			ifTrue: [row addMorphUseAll: control]  
 			ifFalse: [row addMorph: control	 layoutSpec: LayoutSpec keepMorphExtent]		.
@@ -849,10 +849,10 @@ updateFromContents
 	contents _ self editor string.
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 10/26/2020 12:18:58'!
+!TextEntryMorph methodsFor: 'geometry' stamp: 'hlsf 4/16/2023 16:04:30'!
 minimumExtent
 
-	^ self measureContents + self extentBorder ! !
+	^ self measureContents + self extentBorder! !
 
 !TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
 onBlinkCursor
