@@ -1,49 +1,49 @@
-'From Cuis 6.0 [latest update: #5733] on 16 April 2023 at 5:39:16 pm'!
+'From Cuis 6.0 [latest update: #5768] on 16 April 2023 at 5:42:45 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 39!
+!provides: 'UI-Entry' 1 40!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
-SystemOrganization addCategory: #'UI-Entry'!
+SystemOrganization addCategory: 'UI-Entry'!
 
 
-!classDefinition: #SimpleEditor category: #'UI-Entry'!
+!classDefinition: #SimpleEditor category: 'UI-Entry'!
 Editor subclass: #SimpleEditor
 	instanceVariableNames: 'string pointIndex markIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'SimpleEditor class' category: #'UI-Entry'!
+!classDefinition: 'SimpleEditor class' category: 'UI-Entry'!
 SimpleEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #LabelGroup category: #'UI-Entry'!
+!classDefinition: #LabelGroup category: 'UI-Entry'!
 LayoutMorph subclass: #LabelGroup
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'LabelGroup class' category: #'UI-Entry'!
+!classDefinition: 'LabelGroup class' category: 'UI-Entry'!
 LabelGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextEntryMorph category: #'UI-Entry'!
+!classDefinition: #TextEntryMorph category: 'UI-Entry'!
 BoxedMorph subclass: #TextEntryMorph
 	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction acceptCancelReceiver backgroundColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'TextEntryMorph class' category: #'UI-Entry'!
+!classDefinition: 'TextEntryMorph class' category: 'UI-Entry'!
 TextEntryMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #SimpleNumberEntryMorph category: #'UI-Entry'!
+!classDefinition: #SimpleNumberEntryMorph category: 'UI-Entry'!
 TextEntryMorph subclass: #SimpleNumberEntryMorph
 	instanceVariableNames: 'entryChars numCharsToHold theValue validator toString valueAccessor valueUpdator'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'SimpleNumberEntryMorph class' category: #'UI-Entry'!
+!classDefinition: 'SimpleNumberEntryMorph class' category: 'UI-Entry'!
 SimpleNumberEntryMorph class
 	instanceVariableNames: ''!
 
@@ -126,13 +126,13 @@ changeString: aString
 	string _ aString.
 	self resetState! !
 
-!SimpleEditor methodsFor: 'initialization' stamp: 'jmv 11/4/2008 13:42'!
+!SimpleEditor methodsFor: 'initialization' stamp: 'jmv 4/16/2023 17:10:41'!
 initialize
 	"Initialize the state of the receiver. Subclasses should include 'super 
 	initialize' when redefining this message to insure proper initialization."
 
 	super initialize.
-	self changeString: ''! !
+	self changeString: UnicodeString new! !
 
 !SimpleEditor methodsFor: 'initialization' stamp: 'jmv 10/16/2013 22:37'!
 resetState 
@@ -451,16 +451,16 @@ baseFont
 contents
 	^contents! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 3/16/2011 10:41'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/16/2023 17:14:28'!
 contents: newContents 
-	contents _ (newContents is: #Text)
+	(newContents is: #Text)
 		ifTrue: [
 			emphasis := newContents emphasisAt: 1.
-			 newContents string]
+			 contents := newContents string asUnicodeString]
 		ifFalse: [
 			contents = newContents ifTrue: [^self].	"no substantive change"
-			newContents].
-	editor _ nil.
+			contents := newContents asUnicodeString ].
+	editor := nil.
 	self fitContents.
 	self redrawNeeded! !
 
@@ -736,13 +736,13 @@ initWithContents: aString font: aFont emphasis: emphasisCode
 	emphasis _ emphasisCode.
 	self contents: aString! !
 
-!TextEntryMorph methodsFor: 'initialization' stamp: 'KenD 4/2/2022 08:42:39'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 4/16/2023 17:06:38'!
 initialize
 	super initialize.
-	contents _ ''.
-	font _ nil.
-	emphasis _ 0.
-	showTextCursor _ false. "Should never be nil"
+	contents := UnicodeString new.
+	font := nil.
+	emphasis := 0.
+	showTextCursor := false. "Should never be nil"
 	backgroundColor := self defaultBackgroundColor.! !
 
 !TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 9/6/2017 10:02:10'!
@@ -842,11 +842,10 @@ installEditor
 	self redrawNeeded.
 	^editor! !
 
-!TextEntryMorph methodsFor: 'private' stamp: 'jmv 12/29/2011 15:05'!
+!TextEntryMorph methodsFor: 'private' stamp: 'jmv 4/16/2023 17:08:03'!
 updateFromContents
 
-	"O contents deberia ser un StringHolder????"
-	contents _ self editor string.
+	contents := self editor string.
 	self redrawNeeded! !
 
 !TextEntryMorph methodsFor: 'geometry' stamp: 'hlsf 4/16/2023 16:04:30'!
