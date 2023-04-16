@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5733] on 16 April 2023 at 5:41:18 pm'!
+'From Cuis 6.0 [latest update: #5733] on 16 April 2023 at 5:54:27 pm'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 6!
+!provides: 'UI-Morphic-Mold' 1 8!
 !requires: 'UI-Entry' 1 37 nil!
 SystemOrganization addCategory: #'UI-Morphic-Mold'!
 
@@ -1099,7 +1099,7 @@ initialize
 	super initialize.
 	self buildMold! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 17:37:25'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 17:53:27'!
 one
 "
 	MoldExample one
@@ -1113,6 +1113,8 @@ one
 	(mold stringField)
 		label: 'Lastname:';
 		on: #propertyValue of: ValueHolder new;
+		addCondition: [:input| input size >= 2] 
+		labeled: [:input | 'There is no such short name.'];
 		beRequired: 'Lastname required.'.
 	(mold dateField )
 		label: 'Birth date:';
@@ -1125,13 +1127,14 @@ one
 		label: 'Example One' 
 		view: #renderForms 
 		accept: [mold validate.
+			panel morphExtent: panel minimumExtent. "I don't like to do it manually"
 			mold isValid 	ifTrue: [
 				mold save.
 				panel delete] ]
 			
 	! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 15:09:16'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 17:47:33'!
 two
 "
 	MoldExample two
@@ -1155,6 +1158,7 @@ two
 		label: 'Example Two' 
 		view: #renderForms 
 		accept: [mold validate.
+			panel morphExtent: panel minimumExtent. "I don't like to do it manually"
 			mold isValid 	ifTrue: [
 				mold save.
 				panel delete] ]! !
