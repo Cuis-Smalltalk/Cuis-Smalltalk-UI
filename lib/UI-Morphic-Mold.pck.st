@@ -1,6 +1,7 @@
-'From Cuis 6.0 [latest update: #5733] on 15 April 2023 at 10:22:09 pm'!
+'From Cuis 6.0 [latest update: #5733] on 16 April 2023 at 5:41:18 pm'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 3!
+!provides: 'UI-Morphic-Mold' 1 6!
+!requires: 'UI-Entry' 1 37 nil!
 SystemOrganization addCategory: #'UI-Morphic-Mold'!
 
 
@@ -174,21 +175,21 @@ Object subclass: #Mold
 Mold class
 	instanceVariableNames: ''!
 
-!classDefinition: #ExampleForm category: #'UI-Morphic-Mold'!
-ProtoObject subclass: #ExampleForm
+!classDefinition: #MoldExample category: #'UI-Morphic-Mold'!
+ProtoObject subclass: #MoldExample
 	instanceVariableNames: 'mold format'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'ExampleForm class' category: #'UI-Morphic-Mold'!
-ExampleForm class
+!classDefinition: 'MoldExample class' category: #'UI-Morphic-Mold'!
+MoldExample class
 	instanceVariableNames: ''!
 
 
-!Field commentStamp: 'hlsf 4/15/2023 11:22:34' prior: 0!
-A field is a basic unit of Form I/O. It can render an input widget on an HTML canvas, validates input from the user, and generates a bona-fide object of the appropriate type.
+!Field commentStamp: 'hlsf 4/16/2023 11:54:38' prior: 0!
+A field is a basic unit of Form I/O. It render a composite widget with the input morph, the example morph, and the errors morphs. It validates input from the user, and generates a bona-fide object of the appropriate type.
 
-A default requirement condition always exist.
+A default requirement condition always exist. Set to false by default, it can be toggled at run time.
 
 Widget is packed as follow:
 
@@ -205,19 +206,25 @@ Widget is packed as follow:
 |                                     |   +--------+          |
 +-------------+--------------+!
 
-!Mold commentStamp: 'hlsf 4/15/2023 14:42:28' prior: 0!
-This class is little more than a composite of Fields, where Fields do most of the work. It provides a canvas-like API for creating fields and a convenience API for rendering fields on an HTML canvas.
-
-To use a Mold, you typically create and store it in an instance variable of your component. This is part of the object's initialization
+!Mold commentStamp: '<historical>' prior: 0!
+This class is little more than a composite of Fields, where Fields do most of the work. 
+To use a Mold, you typically create and store it in an instance variable of your Morph component. 
 
  | mold |
 	mold := Mold new.
 	(mold stringField)
 		label: 'My label';
 		on: #propertyValue of: ValueHolder new;
+		example: 'This is an example';
+		customize: [:widget :input :example | 
+			widget color: Color black.
+			input color: Color blue; backgroundColor: Color cyan.
+			example color: Color white];
+		addCondition: [:input| input size >= 4] 
+		labeled: [:input | 'You  only key in ', input size asString, ' character(s), a minimum of 4 is required.'];
 		beRequired.
-	mold inspect
-		 
+	mold renderForms openInWorld.
+	mold fields first inspect
 
 !
 
@@ -307,7 +314,7 @@ testRequired
 	self assert: field isValid.
 	self assert: field value = 'text'! !
 
-!FieldTest methodsFor: 'running'!
+!FieldTest methodsFor: 'running' stamp: 'hlsf 4/16/2023 16:50:46'!
 testValidateInput
 	| field |
 	field := Field new.
@@ -316,10 +323,9 @@ testValidateInput
 	self assert: field input = 'Foo Bar'.
 	field input: ''.
 	field validateInput.
-	self assert: field input = nil.
-	field input: true.
-	field validateInput.
-	self assert: field input = true! !
+	self assert: field input = ''.
+	self should: [field input: true] raise: Error "Not a CheckboxField"
+! !
 
 !FloatFieldTest methodsFor: 'running' stamp: 'KenTreis 8/5/2010 17:10'!
 assertValueEquals: aFloat within: aTolerance
@@ -444,12 +450,15 @@ inputMorph
 inputMorphContents
 	^ self inputMorph contents! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 12:56:32'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/16/2023 16:48:38'!
 inputMorphContents: anInput
 	self inputMorph contents: anInput! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 14:37:48'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/16/2023 11:32:01'!
 labelAndWidget
+	modifyBlock ifNotNil: [ " Last minute user customization "
+		modifyBlock valueWithPossibleArgs: 
+			(Array with: widget with: self inputMorph with: self exampleMorph with: self errorsColumn)].
 	^ label  -> widget! !
 
 !Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:04'!
@@ -485,21 +494,23 @@ customize: aBlock
 errors
 	^ errors! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 21:54:10'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 17:37:16'!
 example: aString
+| exampleString |
+	exampleString := (String streamContents: [:s | s nextPut: $( ; nextPutAll: aString ; nextPut: $)]) asText italic.
 	self exampleMorph 
 		ifNil: [ "Instantiate a new label and add it below the input morph "
 			self inputColumn 
-				addMorph: (LabelMorph contents: aString asText italic)
-				layoutSpec: (LayoutSpec useAll offAxisEdgeWeight: 0)]
+				addMorph: (LabelMorph contents: exampleString )
+				layoutSpec: LayoutSpec keepMorphExtent]
 		ifNotNil: [	:labelMorph |
-			labelMorph contents: aString asText italic]! !
+			labelMorph contents: exampleString ]! !
 
 !Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:03'!
 input
 	^ input! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 10:24:32'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 17:00:35'!
 input: val 
 "The input value as keyin by the user. A string most of the time "
 	| trimmed |
@@ -564,20 +575,12 @@ disinfect: aString
 	
 	^aString ifEmpty: [nil]! !
 
-!Field methodsFor: 'private' stamp: 'KenTreis 9/7/2010 15:09'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/16/2023 11:39:47'!
 evaluate: aBlockOrString withPossibleArguments: anArray
-	| args |
-	aBlockOrString isBlock
-		ifFalse: [ ^ aBlockOrString asString ].
-	anArray size == aBlockOrString numArgs
-		ifTrue: [ ^ aBlockOrString valueWithArguments: anArray ].
-	args := Array new: aBlockOrString numArgs.
-	args
-		replaceFrom: 1
-		to: (anArray size min: args size)
-		with: anArray
-		startingAt: 1.
-	^ aBlockOrString valueWithArguments: args! !
+	^ aBlockOrString isBlock
+		ifFalse: [aBlockOrString asString ]
+		ifTrue: [aBlockOrString valueWithPossibleArgs: anArray]
+! !
 
 !Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 14:45:59'!
 infect: model
@@ -589,18 +592,9 @@ infect: model
 requirementCondition
 	^ conditions first! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 12:56:57'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:12:54'!
 validateConditions
-	| disinfected arguments |
-	disinfected := [ self disinfect: input ] on: Error do: [ :ex | nil ].
-	arguments := Array with: input with: disinfected.
-	conditions
-		do: [ :each | 
-			(self evaluate: each value withPossibleArguments: arguments)
-				ifFalse: [ 
-					errors add: (self evaluate: each key withPossibleArguments: arguments).
-					each = self requirementCondition
-						ifTrue: [ ^ self ] ] ]! !
+	^ self validateUserConditions ! !
 
 !Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 22:07:48'!
 validateInput
@@ -617,32 +611,48 @@ validateInput
 		ifTrue: [self inputMorph defaultBackgroundColor]
 		ifFalse: [Color red muchLighter])! !
 
+!Field methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:12:36'!
+validateUserConditions
+	| disinfected arguments |
+	disinfected := [ self disinfect: input ] on: Error do: [ :ex | nil ].
+	arguments := Array with: input with: disinfected.
+	conditions
+		do: [ :each | 
+			(self evaluate: each value withPossibleArguments: arguments)
+				ifFalse: [ 
+					errors add: (self evaluate: each key withPossibleArguments: arguments).
+					each = self requirementCondition
+						ifTrue: [ ^ self ] ] ]! !
+
 !Field methodsFor: 'private'!
 valueChanged! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/15/2023 22:21:26'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/16/2023 17:38:26'!
 initialize
 	conditions := OrderedCollection new.
 	errors := OrderedCollection new.
-	widget := LayoutMorph newRow ::
+	widget := LayoutMorph newColumn ::
 		color: Color transparent;
 		separation: 4@2;
-		addMorph: (LayoutMorph newColumn name: 'input' :: color: Color transparent; separation: 0@2);  
-		addMorph: (LayoutMorph newColumn name: 'error' :: color: Color transparent) 
-			layoutSpec: LayoutSpec keepMorphExtent . 
+		addMorph: (LayoutMorph newRow name: 'input' :: 
+				color: Color transparent; 
+				separation: 4@2);  
+		addMorph: (LayoutMorph newRow name: 'error' :: 
+				color: Color transparent;
+				axisEdgeWeight: #rowLeft) . 
 	isRequired := false.
 	label := 'unammed label'.
 	self setInputWidget.
 	self addRequirementCondition! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/15/2023 14:51:18'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/16/2023 16:05:06'!
 setInputWidget
 "
 	Subclass according to the nature of the input 
 	For most input we need a text entry morph, so make it the default one 
 "
-	self inputColumn 
-		addMorph: TextEntryMorph new layoutSpec: LayoutSpec useAll! !
+	self inputColumn
+		addMorph: TextEntryMorph new layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1)! !
 
 !Field methodsFor: 'testing' stamp: 'kdt 4/4/2008 13:45'!
 isRequired
@@ -651,35 +661,6 @@ isRequired
 !Field methodsFor: 'testing' stamp: 'kdt 1/28/2008 22:02'!
 isValid
 	^ errors isEmpty! !
-
-!Field methodsFor: 'rendering' stamp: 'AnthonyKaufman 7/6/2010 09:57'!
-renderWidgetId: id on: html
-	| tag |
-	tag := self widgetOn: html.
-	tag
-		id: id;
-		title: title;
-		callback: [ :val | self input: val ].
-	dynamicLabel
-		ifNotNil: [ 
-			| labelId |
-			labelId := self dynamicLabelIdFor: id.
-			tag
-				onFocus: 'if(this.value=="") $("' , labelId , '").className="active"';
-				onKeyPress: '$("' , labelId , '").className="hidden"';
-				onKeyUp: 'if(this.value=="") $("' , labelId , '").className="active"';
-				onBlur: 'if(this.value=="") $("' , labelId , '").className="inactive"' ].
-	self isValid
-		ifFalse: [ tag class: 'error' ].
-	modifyBlock
-		ifNotNil: [ 
-			modifyBlock numArgs = 2
-				ifTrue: [ modifyBlock value: tag value: html ]
-				ifFalse: [ 
-					modifyBlock numArgs = 1
-						ifTrue: [ modifyBlock value: tag ]
-						ifFalse: [ modifyBlock value ] ] ].
-	^ tag! !
 
 !CheckboxField methodsFor: 'rendering'!
 renderParagraphOn: html
@@ -704,7 +685,7 @@ renderTableRowOn: html
 					self renderLabelFor: id on: html].
 			self isValid ifFalse: [html tableData: [self renderErrorsOn: html]]]! !
 
-!DateField methodsFor: 'private' stamp: 'KenTreis 8/25/2010 10:04'!
+!DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:19:33'!
 disinfect: aString
 	| year month day rs |
 	rs := aString readStream.
@@ -751,17 +732,24 @@ format: aDate token: aToken on: ws
 format: aDate yearOn: ws
 	ws nextPutAll: (aDate yearNumber  printStringBase: 10 length: 4 padded: true)! !
 
-!DateField methodsFor: 'private' stamp: 'KenTreis 8/9/2010 19:09'!
+!DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 16:23:04'!
 infect: aDate
 	| ws |
+	aDate ifNil: [^''].
 	ws := String new writeStream.
 	format do: [ :token | self format: aDate token: token on: ws ].
 	^ ws contents! !
 
-!DateField methodsFor: 'private' stamp: 'KenTreis 8/9/2010 22:36'!
+!DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 16:54:15'!
 initialize
 	super initialize.
-	self formatString: 'MM/DD/YYYY'! !
+	self formatString: 'DD/MM/YYYY'! !
+
+!DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:24:09'!
+validateConditions
+	(input notNil and: [(self disinfect: input) isNil])
+		ifTrue: [ errors add: 'Date not in format ', (String streamContents: [:s | format asStringOn: s delimiter: '' last: '']) ].
+	self validateUserConditions! !
 
 !DateField methodsFor: 'accessing' stamp: 'KenTreis 8/9/2010 22:37'!
 formatString
@@ -770,7 +758,7 @@ formatString
 	format do: [ :token | ws nextPutAll: token ].
 	^ ws contents! !
 
-!DateField methodsFor: 'accessing' stamp: 'hlsf 4/14/2023 16:38:41'!
+!DateField methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 16:29:58'!
 formatString: aString
 	"aString should be some combination of MM, DD, and YYYY (use whatever separator you want).
 	Note that the input parser doesn't require leading zeros like 'MM' or 'DD' implies, but it prints them in its output.
@@ -783,6 +771,7 @@ formatString: aString
 	"
 
 	| chunks |
+	self example: aString.
 	chunks := OrderedCollection with: aString.
 	#('MM' 'DD' 'YYYY')
 		do: [ :placeholder | 
@@ -805,13 +794,6 @@ formatString: aString
 								ifFalse: [ tokens add: post ] ] ].
 			chunks := tokens ].
 	format := chunks asArray! !
-
-!DateField methodsFor: 'rendering' stamp: 'KenTreis 8/9/2010 23:04'!
-widgetOn: html
-	^(html textInput)
-		value: input;
-		size: 15;
-		yourself! !
 
 !FloatField methodsFor: 'private' stamp: 'KenTreis 8/5/2010 17:07'!
 disinfect: aString
@@ -1072,15 +1054,7 @@ remove: aKey ifAbsent: exceptionBlock
 	field := self at: aKey.
 	fields remove: field ifAbsent: exceptionBlock! !
 
-!Mold class methodsFor: 'instance creation'!
-canvas: aRenderer
-	^self new canvas: aRenderer! !
-
-!Mold class methodsFor: 'instance creation'!
-new
-	^super new initialize! !
-
-!ExampleForm methodsFor: 'initialization' stamp: 'kdt 8/26/2008 21:58'!
+!MoldExample methodsFor: 'initialization' stamp: 'hlsf 4/16/2023 14:17:34'!
 buildMold
 	| name email confirmEmail |
 	mold := Mold new.
@@ -1088,10 +1062,10 @@ buildMold
 		key: #name;
 		label: 'Your Name:';
 		beRequired;
-		addCondition: [ :val | val matchesRegex: '\w+ \w+' ]
+		addCondition: [ :val | val includesSubString: ' ']
 			labeled: 
 				[ :wrong | 
-				'Please enter your first and last name. I couldn''t find a space in <1s>' expandMacrosWith: wrong ].
+				'Please enter your first and last name. I couldn''t find a space in {1}' format:  wrong ].
 	email := mold emailField
 		key: #email;
 		label: 'Email Address:'.
@@ -1120,62 +1094,67 @@ buildMold
 			labeled: 'Sorry, you may not opt out of our spam unless your first name starts with K.';
 		value: true! !
 
-!ExampleForm methodsFor: 'initialization'!
+!MoldExample methodsFor: 'initialization' stamp: 'hlsf 4/16/2023 14:17:59'!
 initialize
 	super initialize.
-	format := #table.
 	self buildMold! !
 
-!ExampleForm methodsFor: 'rendering' stamp: 'kdt 8/26/2008 21:13'!
-renderContentOn: html 
-	self renderFormatChoicesOn: html.
-	html paragraph: 'Mold is a tool for building forms. It can render the forms for you, or you can render them yourself.'.
-	html form: 
-		[ mold canvas: html.
-		format = #table 
-			ifTrue: [ html table: [ mold tableRows ] ]
-			ifFalse: 
-				[ format = #paragraphs 
-					ifTrue: [ mold paragraphs ]
-					ifFalse: [ self renderCustomOn: html ] ].
-		html submitButton
-			value: 'Submit Form';
-			callback: [ mold isValid ifTrue: [ mold inspect ] ] ]! !
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 17:37:25'!
+one
+"
+	MoldExample one
+"
+	| mold panel |
+	mold := Mold new.
+	(mold stringField)
+		label: 'Firstname:';
+		on: #propertyValue of: ValueHolder new;
+		beRequired.
+	(mold stringField)
+		label: 'Lastname:';
+		on: #propertyValue of: ValueHolder new;
+		beRequired: 'Lastname required.'.
+	(mold dateField )
+		label: 'Birth date:';
+		on: #propertyValue of: ValueHolder new;
+		beRequired.
 
-!ExampleForm methodsFor: 'rendering' stamp: 'kdt 8/27/2008 08:35'!
-renderCustomOn: html 
-	html table: 
-		[ mold tableRow: #name.
-		html tableRow: 
-			[ html
-				tableData: [ mold label: #email ];
-				tableData: [ mold widget: #email ];
-				tableData: [ mold label: #confirmEmail ];
-				tableData: [ mold widget: #confirmEmail ];
-				tableData: [ mold errors: #email ] ] ].
-	mold paragraph: #about.
-	mold paragraph: #spamMe! !
+	panel := nil.
+	panel := PluggableDialogPanel 
+		open: mold 
+		label: 'Example One' 
+		view: #renderForms 
+		accept: [mold validate.
+			mold isValid 	ifTrue: [
+				mold save.
+				panel delete] ]
+			
+	! !
 
-!ExampleForm methodsFor: 'rendering'!
-renderFormatChoicesOn: html
-	html
-		paragraph:
-			[(html anchor)
-				callback: [format := #table];
-				with: 'Table'.
-			html space.
-			(html anchor)
-				callback: [format := #paragraphs];
-				with: 'Paragraphs'.
-			html space.
-			(html anchor)
-				callback: [format := #custom];
-				with: 'Custom']! !
-
-!ExampleForm methodsFor: 'rendering' stamp: 'kdt 8/27/2008 08:37'!
-style
-	^'
-label.required { font-weight: bold; }
-.errors { color: red; margin: 0; vertical-align: top }
-.error { background-color: #fcc; }
-'! !
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 15:09:16'!
+two
+"
+	MoldExample two
+"
+ | mold panel |
+	mold := Mold new.
+	(mold stringField)
+		label: 'My label';
+		on: #propertyValue of: ValueHolder new;
+		example: 'This is an example';
+		customize: [:widget :input :example | 
+			widget color: Color black.
+			input color: Color blue; backgroundColor: Color cyan.
+			example color: Color orange];
+		addCondition: [:input| input size >= 4] 
+		labeled: [:input | 'You  only key in ', input size asString, ' character(s), a minimum of 4 is required.'];
+		beRequired.
+	panel := nil.
+	panel := PluggableDialogPanel 
+		open: mold 
+		label: 'Example Two' 
+		view: #renderForms 
+		accept: [mold validate.
+			mold isValid 	ifTrue: [
+				mold save.
+				panel delete] ]! !
