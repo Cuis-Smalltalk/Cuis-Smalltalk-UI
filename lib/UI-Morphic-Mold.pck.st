@@ -1,210 +1,211 @@
-'From Cuis 6.0 [latest update: #5733] on 16 April 2023 at 5:54:27 pm'!
+'From Cuis 6.0 [latest update: #5768] on 18 April 2023 at 5:31:57 pm'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 8!
+!provides: 'UI-Morphic-Mold' 1 12!
 !requires: 'UI-Entry' 1 37 nil!
-SystemOrganization addCategory: #'UI-Morphic-Mold'!
+SystemOrganization addCategory: 'UI-Morphic-Mold'!
 
 
-!classDefinition: #DateFieldTest category: #'UI-Morphic-Mold'!
+!classDefinition: #DateFieldTest category: 'UI-Morphic-Mold'!
 TestCase subclass: #DateFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'DateFieldTest class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'DateFieldTest class' category: 'UI-Morphic-Mold'!
 DateFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #FieldTest category: #'UI-Morphic-Mold'!
+!classDefinition: #FieldTest category: 'UI-Morphic-Mold'!
 TestCase subclass: #FieldTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'FieldTest class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'FieldTest class' category: 'UI-Morphic-Mold'!
 FieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatFieldTest category: #'UI-Morphic-Mold'!
+!classDefinition: #FloatFieldTest category: 'UI-Morphic-Mold'!
 TestCase subclass: #FloatFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'FloatFieldTest class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'FloatFieldTest class' category: 'UI-Morphic-Mold'!
 FloatFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #IntegerFieldTest category: #'UI-Morphic-Mold'!
+!classDefinition: #IntegerFieldTest category: 'UI-Morphic-Mold'!
 TestCase subclass: #IntegerFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'IntegerFieldTest class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'IntegerFieldTest class' category: 'UI-Morphic-Mold'!
 IntegerFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #PercentageFieldTest category: #'UI-Morphic-Mold'!
+!classDefinition: #PercentageFieldTest category: 'UI-Morphic-Mold'!
 TestCase subclass: #PercentageFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'PercentageFieldTest class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'PercentageFieldTest class' category: 'UI-Morphic-Mold'!
 PercentageFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #Field category: #'UI-Morphic-Mold'!
+!classDefinition: #Field category: 'UI-Morphic-Mold'!
 Object subclass: #Field
 	instanceVariableNames: 'key isRequired conditions errors label value callback modifyBlock input widget'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'Field class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'Field class' category: 'UI-Morphic-Mold'!
 Field class
 	instanceVariableNames: ''!
 
-!classDefinition: #CheckboxField category: #'UI-Morphic-Mold'!
+!classDefinition: #CheckboxField category: 'UI-Morphic-Mold'!
 Field subclass: #CheckboxField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'CheckboxField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'CheckboxField class' category: 'UI-Morphic-Mold'!
 CheckboxField class
 	instanceVariableNames: ''!
 
-!classDefinition: #DateField category: #'UI-Morphic-Mold'!
+!classDefinition: #DateField category: 'UI-Morphic-Mold'!
 Field subclass: #DateField
 	instanceVariableNames: 'format'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'DateField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'DateField class' category: 'UI-Morphic-Mold'!
 DateField class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatField category: #'UI-Morphic-Mold'!
+!classDefinition: #FloatField category: 'UI-Morphic-Mold'!
 Field subclass: #FloatField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'FloatField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'FloatField class' category: 'UI-Morphic-Mold'!
 FloatField class
 	instanceVariableNames: ''!
 
-!classDefinition: #PercentageField category: #'UI-Morphic-Mold'!
+!classDefinition: #PercentageField category: 'UI-Morphic-Mold'!
 FloatField subclass: #PercentageField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'PercentageField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'PercentageField class' category: 'UI-Morphic-Mold'!
 PercentageField class
 	instanceVariableNames: ''!
 
-!classDefinition: #IntegerField category: #'UI-Morphic-Mold'!
+!classDefinition: #IntegerField category: 'UI-Morphic-Mold'!
 Field subclass: #IntegerField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'IntegerField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'IntegerField class' category: 'UI-Morphic-Mold'!
 IntegerField class
 	instanceVariableNames: ''!
 
-!classDefinition: #SelectField category: #'UI-Morphic-Mold'!
+!classDefinition: #SelectField category: 'UI-Morphic-Mold'!
 Field subclass: #SelectField
 	instanceVariableNames: 'list labels onChange optionalLabel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'SelectField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'SelectField class' category: 'UI-Morphic-Mold'!
 SelectField class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringField category: #'UI-Morphic-Mold'!
+!classDefinition: #StringField category: 'UI-Morphic-Mold'!
 Field subclass: #StringField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'StringField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'StringField class' category: 'UI-Morphic-Mold'!
 StringField class
 	instanceVariableNames: ''!
 
-!classDefinition: #PasswordField category: #'UI-Morphic-Mold'!
+!classDefinition: #PasswordField category: 'UI-Morphic-Mold'!
 StringField subclass: #PasswordField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'PasswordField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'PasswordField class' category: 'UI-Morphic-Mold'!
 PasswordField class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextField category: #'UI-Morphic-Mold'!
+!classDefinition: #TextField category: 'UI-Morphic-Mold'!
 StringField subclass: #TextField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'TextField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'TextField class' category: 'UI-Morphic-Mold'!
 TextField class
 	instanceVariableNames: ''!
 
-!classDefinition: #TimeField category: #'UI-Morphic-Mold'!
+!classDefinition: #TimeField category: 'UI-Morphic-Mold'!
 Field subclass: #TimeField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'TimeField class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'TimeField class' category: 'UI-Morphic-Mold'!
 TimeField class
 	instanceVariableNames: ''!
 
-!classDefinition: #Mold category: #'UI-Morphic-Mold'!
+!classDefinition: #Mold category: 'UI-Morphic-Mold'!
 Object subclass: #Mold
 	instanceVariableNames: 'fields'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'Mold class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'Mold class' category: 'UI-Morphic-Mold'!
 Mold class
 	instanceVariableNames: ''!
 
-!classDefinition: #MoldExample category: #'UI-Morphic-Mold'!
+!classDefinition: #MoldExample category: 'UI-Morphic-Mold'!
 ProtoObject subclass: #MoldExample
 	instanceVariableNames: 'mold format'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
-!classDefinition: 'MoldExample class' category: #'UI-Morphic-Mold'!
+!classDefinition: 'MoldExample class' category: 'UI-Morphic-Mold'!
 MoldExample class
 	instanceVariableNames: ''!
 
 
-!Field commentStamp: 'hlsf 4/16/2023 11:54:38' prior: 0!
+!Field commentStamp: '<historical>' prior: 0!
 A field is a basic unit of Form I/O. It render a composite widget with the input morph, the example morph, and the errors morphs. It validates input from the user, and generates a bona-fide object of the appropriate type.
 
 A default requirement condition always exist. Set to false by default, it can be toggled at run time.
 
 Widget is packed as follow:
 
-+----------------------------+
-| LayoutMorph Row                                                |
-|+-------------+--------------+
-| LayoutMorph column   |   LayoutMorph column   |
-| +---------+       |   +--------+          |
-| | Input Morph      |        |   | Error 1 Morph |          |
-| +---------+       |   +--------+          |
-|  | ExampleMorph |       |    | Error 2 Morph |          |
-| +---------+       |   +--------+          |
-|                                     |   |          ../..         |          |
-|                                     |   +--------+          |
-+-------------+--------------+!
++------------------------+
+| LayoutMorph Column                                |
+|+------------------------+
+| LayoutMorph row                                      |  
+| +---------+     +---------+  |
+| | Input Morph      |      | ExampleMorph |   |
+| +---------+     +---------+  |
++------------------------+
+| Error1 Morph                                            |
+| Error2 Morph                                            |
+| ../..                                                            |
++------------------------+
+!
 
 !Mold commentStamp: '<historical>' prior: 0!
 This class is little more than a composite of Fields, where Fields do most of the work. 
@@ -232,9 +233,9 @@ To use a Mold, you typically create and store it in an instance variable of your
 setUp
 	field := DateField new! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 8/9/2010 22:37'!
+!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 4/18/2023 17:25:41'!
 testDefaultFormat
-	self assert: field formatString = 'MM/DD/YYYY'! !
+	self assert: field formatString = 'DD/MM/YYYY'! !
 
 !DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 8/25/2010 10:05'!
 testDisinfectISO
@@ -274,9 +275,9 @@ testInfectUS
 	self assert: (field infect: (Date year: 1999 month: 12 day: 31)) = '12/31/1999'.
 	self assert: (field infect: (Date year: 2009 month: 7 day: 8)) = '07/08/2009'! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'AnthonyKaufman 8/10/2010 15:25'!
+!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 4/18/2023 17:28:55'!
 testValidateInput
-	field input: String new.
+	field inputMorphContents: String new.
 	field validateInput.
 	self assert: field isValid.
 	field beRequired.
@@ -295,36 +296,36 @@ testValidationOnDate
 	field validateInput.
 	self assert: field isValid! !
 
-!FieldTest methodsFor: 'running' stamp: 'kdt 8/26/2008 21:59'!
+!FieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 17:29:58'!
 testRequired
 	| field |
 	field := StringField new.
 	field beRequired.
-	field input: ''.
+	field inputMorphContents: ''.
 	field validateInput.
 	self deny: field isValid.
 	field beOptional.
-	field input: ''.
+	field inputMorphContents: ''.
 	field validateInput.
 	self assert: field isValid.
 	self assert: field value isNil.
 	field beRequired.
-	field input: 'text'.
+	field inputMorphContents: 'text'.
 	field validateInput.
 	self assert: field isValid.
 	self assert: field value = 'text'! !
 
-!FieldTest methodsFor: 'running' stamp: 'hlsf 4/16/2023 16:50:46'!
+!FieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 17:30:59'!
 testValidateInput
 	| field |
 	field := Field new.
-	field input: 'Foo Bar'.
+	field inputMorphContents: 'Foo Bar'.
 	field validateInput.
 	self assert: field input = 'Foo Bar'.
-	field input: ''.
+	field inputMorphContents: ''.
 	field validateInput.
 	self assert: field input = ''.
-	self should: [field input: true] raise: Error "Not a CheckboxField"
+	self shouldnt: [field input: true] raise: Error "Not a CheckboxField"
 ! !
 
 !FloatFieldTest methodsFor: 'running' stamp: 'KenTreis 8/5/2010 17:10'!
@@ -564,10 +565,10 @@ value: anObject
 	input := self infect: anObject .
 	self valueChanged! !
 
-!Field methodsFor: 'private' stamp: 'kdt 4/4/2008 13:51'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:46:59'!
 addRequirementCondition
-	self addCondition: [:object | isRequired not or: [object notNil]]
-		labeled: 'This field is required.'! !
+	self addCondition: [:userInput :theValue| isRequired not or: [	theValue notNil]]
+		labeled: 'Field required or unvalid.'! !
 
 !Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 14:46:16'!
 disinfect: aString
@@ -611,13 +612,13 @@ validateInput
 		ifTrue: [self inputMorph defaultBackgroundColor]
 		ifFalse: [Color red muchLighter])! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:12:36'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:35:27'!
 validateUserConditions
 	| disinfected arguments |
 	disinfected := [ self disinfect: input ] on: Error do: [ :ex | nil ].
 	arguments := Array with: input with: disinfected.
 	conditions
-		do: [ :each | 
+		do: [ :each |
 			(self evaluate: each value withPossibleArguments: arguments)
 				ifFalse: [ 
 					errors add: (self evaluate: each key withPossibleArguments: arguments).
@@ -627,7 +628,7 @@ validateUserConditions
 !Field methodsFor: 'private'!
 valueChanged! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/16/2023 17:38:26'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/18/2023 12:05:15'!
 initialize
 	conditions := OrderedCollection new.
 	errors := OrderedCollection new.
@@ -637,9 +638,8 @@ initialize
 		addMorph: (LayoutMorph newRow name: 'input' :: 
 				color: Color transparent; 
 				separation: 4@2);  
-		addMorph: (LayoutMorph newRow name: 'error' :: 
-				color: Color transparent;
-				axisEdgeWeight: #rowLeft) . 
+		addMorph: (LayoutMorph newColumn name: 'error' :: 
+				color: Color transparent) . 
 	isRequired := false.
 	label := 'unammed label'.
 	self setInputWidget.
@@ -831,14 +831,14 @@ disinfect: aString
 infect: aNumber 
 	^ super infect: aNumber * 100! !
 
-!IntegerField methodsFor: 'private' stamp: 'AlanWostenberg 5/17/2010 16:38'!
+!IntegerField methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:46:11'!
 disinfect: aString 
-	(aString reject: [:each | each isDigit]) notEmpty ifTrue: [^nil].
+	('+-1234567890' includesAllOf: aString) ifFalse: [^nil].
 	^ [aString asNumber] on: Error do: [:ex | nil ]! !
 
-!IntegerField methodsFor: 'private' stamp: 'kdt 8/28/2008 09:55'!
+!IntegerField methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:03:05'!
 infect: anInteger 
-	^ anInteger printString! !
+	^ anInteger ifNil: [''] ifNotNil: [anInteger printString]! !
 
 !IntegerField methodsFor: 'private' stamp: 'kdt 7/15/2009 18:07'!
 validateConditions
@@ -1094,11 +1094,6 @@ buildMold
 			labeled: 'Sorry, you may not opt out of our spam unless your first name starts with K.';
 		value: true! !
 
-!MoldExample methodsFor: 'initialization' stamp: 'hlsf 4/16/2023 14:17:59'!
-initialize
-	super initialize.
-	self buildMold! !
-
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 17:53:27'!
 one
 "
@@ -1133,6 +1128,31 @@ one
 				panel delete] ]
 			
 	! !
+
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 12:40:06'!
+three
+"
+	MoldExample three
+"
+ | mold panel |
+	mold := Mold new.
+	(mold integerField)
+		label: 'Slot value';
+		on: #propertyValue of: ValueHolder new;
+		example: 'an integer value';
+		addCondition: [:input :value| value >= 4] 		labeled: 'Value must be greater or equal to 4.';
+		addCondition: [:input :value| value <= -10] 		labeled: 'Value must be lower or equal to -10.';
+		beRequired.
+	panel := nil.
+	panel := PluggableDialogPanel 
+		open: mold 
+		label: 'Example Three' 
+		view: #renderForms 
+		accept: [mold validate.
+			panel morphExtent: panel minimumExtent. "I don't like to do it manually"
+			mold isValid 	ifTrue: [
+				mold save.
+				panel delete] ]! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 17:47:33'!
 two
