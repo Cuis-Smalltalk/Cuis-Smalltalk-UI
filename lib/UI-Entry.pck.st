@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5768] on 16 April 2023 at 5:42:45 pm'!
+'From Cuis 6.0 [latest update: #5769] on 18 April 2023 at 11:07:44 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 40!
+!provides: 'UI-Entry' 1 41!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -92,11 +92,16 @@ backTo: startIndex
 	self replaceSelectionWith: ''.
 	self markIndex: self pointIndex! !
 
-!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 6/10/2012 11:14'!
+!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 4/18/2023 11:01:41'!
 dispatchOn: aKeyboardEvent
 	"Carry out the action associated with this character, if any."
-	| asciiValue |
-	asciiValue _ aKeyboardEvent keyValue.
+	| codePoint asciiValue |
+	codePoint := aKeyboardEvent keyValue.
+	
+	codePoint > 255 ifTrue: [
+		^self normalCharacter: aKeyboardEvent ].
+
+	asciiValue := codePoint.
 	"Control keys are handled by #shortcuts even if they have any modifiers"
 	(asciiValue >= 32 and: [
 		aKeyboardEvent commandAltKeyPressed ]) ifTrue: [
@@ -207,6 +212,10 @@ cursorHome: aKeyboardEvent
 		forward: false
 		event: aKeyboardEvent.
 	^true! !
+
+!SimpleEditor methodsFor: 'typing/selecting keys' stamp: 'jmv 4/18/2023 11:05:18'!
+backWord: aKeyboardEvent
+	^false! !
 
 !SimpleEditor methodsFor: 'typing/selecting keys' stamp: 'jmv 12/19/2011 12:24'!
 forwardDelete: aKeyboardEvent
