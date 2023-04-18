@@ -1,170 +1,170 @@
-'From Cuis 6.0 [latest update: #5733] on 16 April 2023 at 5:41:01 pm'!
+'From Cuis 6.0 [latest update: #5768] on 18 April 2023 at 12:12:46 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 56!
+!provides: 'UI-Panel' 1 57!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
-SystemOrganization addCategory: #'UI-Panel'!
+SystemOrganization addCategory: 'UI-Panel'!
 
 
-!classDefinition: #PluggableScrollBar category: #'UI-Panel'!
+!classDefinition: #PluggableScrollBar category: 'UI-Panel'!
 ScrollBar subclass: #PluggableScrollBar
 	instanceVariableNames: 'refreshValueSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableScrollBar class' category: #'UI-Panel'!
+!classDefinition: 'PluggableScrollBar class' category: 'UI-Panel'!
 PluggableScrollBar class
 	instanceVariableNames: ''!
 
-!classDefinition: #Panel category: #'UI-Panel'!
+!classDefinition: #Panel category: 'UI-Panel'!
 PluggableMorph subclass: #Panel
 	instanceVariableNames: 'widgetsColor titleMorph layoutMorph stayUp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'Panel class' category: #'UI-Panel'!
+!classDefinition: 'Panel class' category: 'UI-Panel'!
 Panel class
 	instanceVariableNames: ''!
 
-!classDefinition: #DialogPanel category: #'UI-Panel'!
+!classDefinition: #DialogPanel category: 'UI-Panel'!
 Panel subclass: #DialogPanel
 	instanceVariableNames: 'buttonArea'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'DialogPanel class' category: #'UI-Panel'!
+!classDefinition: 'DialogPanel class' category: 'UI-Panel'!
 DialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #EditPanel category: #'UI-Panel'!
+!classDefinition: #EditPanel category: 'UI-Panel'!
 DialogPanel subclass: #EditPanel
 	instanceVariableNames: 'editModel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'EditPanel class' category: #'UI-Panel'!
+!classDefinition: 'EditPanel class' category: 'UI-Panel'!
 EditPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableDialogPanel category: #'UI-Panel'!
+!classDefinition: #PluggableDialogPanel category: 'UI-Panel'!
 DialogPanel subclass: #PluggableDialogPanel
 	instanceVariableNames: 'viewSelector actionOnAccept'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableDialogPanel class' category: #'UI-Panel'!
+!classDefinition: 'PluggableDialogPanel class' category: 'UI-Panel'!
 PluggableDialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueEntryPanel category: #'UI-Panel'!
+!classDefinition: #ValueEntryPanel category: 'UI-Panel'!
 DialogPanel subclass: #ValueEntryPanel
 	instanceVariableNames: 'entry'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'ValueEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'ValueEntryPanel class' category: 'UI-Panel'!
 ValueEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #CharacterEntryPanel category: #'UI-Panel'!
+!classDefinition: #CharacterEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #CharacterEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'CharacterEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'CharacterEntryPanel class' category: 'UI-Panel'!
 CharacterEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatEntryPanel category: #'UI-Panel'!
+!classDefinition: #FloatEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #FloatEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'FloatEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'FloatEntryPanel class' category: 'UI-Panel'!
 FloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PointEntryPanel category: #'UI-Panel'!
+!classDefinition: #PointEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PointEntryPanel
 	instanceVariableNames: 'xEntryMorph yEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PointEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PointEntryPanel class' category: 'UI-Panel'!
 PointEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveFloatEntryPanel category: #'UI-Panel'!
+!classDefinition: #PositiveFloatEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PositiveFloatEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveFloatEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PositiveFloatEntryPanel class' category: 'UI-Panel'!
 PositiveFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveIntegerEntryPanel category: #'UI-Panel'!
+!classDefinition: #PositiveIntegerEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PositiveIntegerEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveIntegerEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PositiveIntegerEntryPanel class' category: 'UI-Panel'!
 PositiveIntegerEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #RangeFloatEntryPanel category: #'UI-Panel'!
+!classDefinition: #RangeFloatEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #RangeFloatEntryPanel
 	instanceVariableNames: 'min max'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'RangeFloatEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'RangeFloatEntryPanel class' category: 'UI-Panel'!
 RangeFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringEntryPanel category: #'UI-Panel'!
+!classDefinition: #StringEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #StringEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'StringEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'StringEntryPanel class' category: 'UI-Panel'!
 StringEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextEntryPanel category: #'UI-Panel'!
+!classDefinition: #TextEntryPanel category: 'UI-Panel'!
 StringEntryPanel subclass: #TextEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'TextEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'TextEntryPanel class' category: 'UI-Panel'!
 TextEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPanel category: #'UI-Panel'!
+!classDefinition: #WizardPanel category: 'UI-Panel'!
 DialogPanel subclass: #WizardPanel
 	instanceVariableNames: 'pages currentPageIndex acceptSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPanel class' category: #'UI-Panel'!
+!classDefinition: 'WizardPanel class' category: 'UI-Panel'!
 WizardPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPage category: #'UI-Panel'!
+!classDefinition: #WizardPage category: 'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPage class' category: #'UI-Panel'!
+!classDefinition: 'WizardPage class' category: 'UI-Panel'!
 WizardPage class
 	instanceVariableNames: ''!
 
@@ -962,6 +962,12 @@ actionOnAccept: selectorOrBlock
 !PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:11:53'!
 viewGetter: selector
 	viewSelector := selector ! !
+
+!PluggableDialogPanel methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 12:07:20'!
+minimumExtent
+	| mini |
+	mini := super minimumExtent.
+	^ (mini x max: 350) @ mini y! !
 
 !PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 4/16/2023 14:12:33'!
 open: model label: aString view: viewSelector accept: acceptSelectorOrAction
