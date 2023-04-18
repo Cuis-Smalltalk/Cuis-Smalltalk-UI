@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5768] on 18 April 2023 at 5:31:57 pm'!
+'From Cuis 6.0 [latest update: #5769] on 19 April 2023 at 12:12:19 am'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 12!
+!provides: 'UI-Morphic-Mold' 1 16!
 !requires: 'UI-Entry' 1 37 nil!
 SystemOrganization addCategory: 'UI-Morphic-Mold'!
 
@@ -285,14 +285,14 @@ testValidateInput
 	self deny: field isValid.
 	field input: ''! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 4/14/2023 16:53:30'!
+!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 4/18/2023 20:20:29'!
 testValidationOnDate
 	field beRequired.
 	field addCondition: [ :input :disinfected | disinfected > (Date year: 2010 month: 1 day: 1) or: [disinfected = (Date year: 2010 month: 1 day: 1)] ].
-	field input: '12/31/2009'.
+	field inputMorphContents: '12/31/2009'.
 	field validateInput.
 	self deny: field isValid.
-	field input: '01/01/2010'.
+	field inputMorphContents: '01/01/2010'.
 	field validateInput.
 	self assert: field isValid! !
 
@@ -315,7 +315,7 @@ testRequired
 	self assert: field isValid.
 	self assert: field value = 'text'! !
 
-!FieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 17:30:59'!
+!FieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:47:04'!
 testValidateInput
 	| field |
 	field := Field new.
@@ -324,7 +324,7 @@ testValidateInput
 	self assert: field input = 'Foo Bar'.
 	field inputMorphContents: ''.
 	field validateInput.
-	self assert: field input = ''.
+	self assert: field input isEmpty.
 	self shouldnt: [field input: true] raise: Error "Not a CheckboxField"
 ! !
 
@@ -336,30 +336,30 @@ assertValueEquals: aFloat within: aTolerance
 setUp
 	field := FloatField new! !
 
-!FloatFieldTest methodsFor: 'running' stamp: 'kdt 7/15/2009 18:02'!
+!FloatFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:20:41'!
 testBlankInput
-	field input: ''.
+	field inputMorphContents: ''.
 	field validateInput.
 	self assert: field isValid.
 	field beRequired.
-	field input: ''.
+	field inputMorphContents: ''.
 	field validateInput.
 	self deny: field isValid! !
 
-!FloatFieldTest methodsFor: 'running' stamp: 'KenTreis 8/5/2010 17:11'!
+!FloatFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:57'!
 testInput
-	field input: '5'.
+	field inputMorphContents: '5'.
 	field validateInput.
 	self assert: field isValid.
 	self assert: field value = 5.
-	field input: '0.2'.
+	field inputMorphContents: '0.2'.
 	field validateInput.
 	self assert: field isValid.
 	self assertValueEquals: 0.2 within: 0.01.
-	field input: 'asdf'.
+	field inputMorphContents: 'asdf'.
 	field validateInput.
 	self deny: field isValid.
-	field input: '.87'.
+	field inputMorphContents: '.87'.
 	field validateInput.
 	self assert: field isValid.
 	self assertValueEquals: 0.87 within: 0.001! !
@@ -368,26 +368,26 @@ testInput
 setUp
 	field := IntegerField new! !
 
-!IntegerFieldTest methodsFor: 'running' stamp: 'kdt 8/26/2008 21:59'!
+!IntegerFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:09'!
 testBlankInput
-	field input: ''.
+	field inputMorphContents: ''.
 	field validateInput.
 	self assert: field isValid.
 	field beRequired.
-	field input: ''.
+	field inputMorphContents: ''.
 	field validateInput.
 	self deny: field isValid! !
 
-!IntegerFieldTest methodsFor: 'running' stamp: 'kdt 8/26/2008 21:59'!
+!IntegerFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:21'!
 testInput
-	field input: '5'.
+	field inputMorphContents: '5'.
 	field validateInput.
 	self assert: field isValid.
 	self assert: field value = 5.
-	field input: '0.2'.
+	field inputMorphContents: '0.2'.
 	field validateInput.
 	self deny: field isValid.
-	field input: '.9'.
+	field inputMorphContents: '.9'.
 	field validateInput.
 	self deny: field isValid! !
 
@@ -395,29 +395,29 @@ testInput
 assertValueEquals: aFloat within: aTolerance
 	self assert: (field value - aFloat) abs < aTolerance! !
 
-!PercentageFieldTest methodsFor: 'running' stamp: 'AlanWostenberg 5/17/2010 16:49'!
+!PercentageFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:43'!
 testBlankInput
 	field
-		input: '';
+		inputMorphContents: '';
 		validateInput.
 	self assert: field isValid.
 	field
 		beRequired;
-		input: '';
+		inputMorphContents: '';
 		validateInput.
 	self deny: field isValid! !
 
-!PercentageFieldTest methodsFor: 'running' stamp: 'KenTreis 8/5/2010 17:10'!
+!PercentageFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:35'!
 testInput
-	field input: '5'.
+	field inputMorphContents: '5'.
 	field validateInput.
 	self assert: field isValid.
 	self assertValueEquals: 0.05 within: 0.001.
-	field input: '0.2'.
+	field inputMorphContents: '0.2'.
 	field validateInput.
 	self assert: field isValid.
 	self assertValueEquals: 0.002 within: 0.0001.
-	field input: '.9'.
+	field inputMorphContents: '.9'.
 	field validateInput.
 	self assert: field isValid.
 	self assertValueEquals: 0.009 within: 0.0001! !
@@ -558,7 +558,7 @@ save
 value
 	^ value! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 14:48:23'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 4/18/2023 20:45:39'!
 value: anObject
 "The model I will present an object "
 	value := anObject .
@@ -570,11 +570,10 @@ addRequirementCondition
 	self addCondition: [:userInput :theValue| isRequired not or: [	theValue notNil]]
 		labeled: 'Field required or unvalid.'! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 14:46:16'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:41:26'!
 disinfect: aString
 	"Convert aString into the type of object that this field ultimately represents"
-	
-	^aString ifEmpty: [nil]! !
+	^aString! !
 
 !Field methodsFor: 'private' stamp: 'hlsf 4/16/2023 11:39:47'!
 evaluate: aBlockOrString withPossibleArguments: anArray
@@ -795,20 +794,20 @@ formatString: aString
 			chunks := tokens ].
 	format := chunks asArray! !
 
-!FloatField methodsFor: 'private' stamp: 'KenTreis 8/5/2010 17:07'!
+!FloatField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:30:11'!
 disinfect: aString
-	| trimmed rs |
-	trimmed := aString withBlanksTrimmed select: [ :char | '1234567890.' includes: char ].
-	trimmed isEmpty
-		ifTrue: [ ^ nil ].
-	(trimmed first = $. and: [ (trimmed occurrencesOf: $.) = 1 ])
-		ifTrue: [ trimmed := '0' , trimmed ].
-	rs := trimmed readStream.
-	^ [ Number readFrom: rs ] on: Error do: [ :ex | nil ]! !
+	| disinfected  |
+	disinfected := aString select: [ :char | '+-1234567890.' includes: char ].
+	disinfected ifEmpty: [ ^ nil ].
+	(disinfected first = $. and: [ (disinfected occurrencesOf: $.) = 1 ])
+		ifTrue: [ disinfected := '0' , disinfected ].
+	^ [ Number readFrom: disinfected readStream ] on: Error do: [ :ex | nil ]! !
 
-!FloatField methodsFor: 'private' stamp: 'kdt 8/28/2008 09:57'!
+!FloatField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:45:29'!
 infect: aNumber 
-	^ aNumber asFloat printString! !
+	^ aNumber 
+		ifNotNil: [aNumber asFloat printString]
+		ifNil: ['']! !
 
 !FloatField methodsFor: 'private' stamp: 'kdt 7/15/2009 18:02'!
 validateConditions
@@ -827,9 +826,9 @@ widgetOn: html
 disinfect: aString 
 	^ (super disinfect: aString) ifNotNilDo: [ :number | (number / 100) asFloat ]! !
 
-!PercentageField methodsFor: 'private' stamp: 'kdt 8/28/2008 10:00'!
+!PercentageField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:47:37'!
 infect: aNumber 
-	^ super infect: aNumber * 100! !
+	^aNumber ifNil: [''] ifNotNil: [super infect: aNumber * 100]! !
 
 !IntegerField methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:46:11'!
 disinfect: aString 
@@ -927,9 +926,9 @@ widgetOn: html
 disinfect: aString
 	^Time readFrom: aString withBlanksTrimmed readStream! !
 
-!TimeField methodsFor: 'private' stamp: 'kdt 8/28/2008 09:56'!
+!TimeField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:46:28'!
 infect: aTime
-	^aTime asString! !
+	^aTime ifNil: [''] ifNotNil: [aTime asString]! !
 
 !TimeField methodsFor: 'rendering'!
 widgetOn: html
@@ -989,6 +988,10 @@ emailField
 			labeled: 'Invalid email address';
 		yourself! !
 
+!Mold methodsFor: 'fields' stamp: 'hlsf 4/18/2023 20:57:55'!
+floatField
+	^fields add: FloatField new! !
+
 !Mold methodsFor: 'fields'!
 integerField
 	^fields add: IntegerField new! !
@@ -1032,6 +1035,20 @@ zipCodeField
 	^fields add: (StringField new 
 				addCondition: [:val | val isNil or: [val matchesRegex: '(\d\d\d\d\d)(-\d\d\d\d)?']]
 				labeled: 'Invalid zip code')! !
+
+!Mold methodsFor: 'rendering' stamp: 'hlsf 4/18/2023 21:12:21'!
+openDialog: title
+	| panel |
+	panel := nil.
+	panel := PluggableDialogPanel 
+		open: self
+		label: title 
+		view: #renderForms 
+		accept: [self validate.
+			panel morphExtent: panel minimumExtent. "I don't like to do it manually"
+			self isValid 	ifTrue: [
+				self save.
+				panel delete] ]! !
 
 !Mold methodsFor: 'rendering' stamp: 'hlsf 4/15/2023 14:36:58'!
 renderForms
@@ -1094,12 +1111,28 @@ buildMold
 			labeled: 'Sorry, you may not opt out of our spam unless your first name starts with K.';
 		value: true! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 17:53:27'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/19/2023 00:12:12'!
+four
+"
+	MoldExample four
+"
+ | mold  |
+	mold := Mold new.
+	(mold floatField )
+		label: 'α';
+		on: #propertyValue of: ValueHolder new;
+		example: ' -1 ≤ α ≤ 1 ';
+		addCondition: [:input :value| value >= -1] 		labeled: 'α < -1!!';
+		addCondition: [:input :value| value <= 1] 		labeled: 'α >  1!!';
+		beRequired.
+	mold openDialog: 'Example Four'! !
+
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 21:13:34'!
 one
 "
 	MoldExample one
 "
-	| mold panel |
+	| mold |
 	mold := Mold new.
 	(mold stringField)
 		label: 'Firstname:';
@@ -1115,26 +1148,14 @@ one
 		label: 'Birth date:';
 		on: #propertyValue of: ValueHolder new;
 		beRequired.
+	mold openDialog: 'Example One' ! !
 
-	panel := nil.
-	panel := PluggableDialogPanel 
-		open: mold 
-		label: 'Example One' 
-		view: #renderForms 
-		accept: [mold validate.
-			panel morphExtent: panel minimumExtent. "I don't like to do it manually"
-			mold isValid 	ifTrue: [
-				mold save.
-				panel delete] ]
-			
-	! !
-
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 12:40:06'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 21:13:52'!
 three
 "
 	MoldExample three
 "
- | mold panel |
+ | mold |
 	mold := Mold new.
 	(mold integerField)
 		label: 'Slot value';
@@ -1143,23 +1164,14 @@ three
 		addCondition: [:input :value| value >= 4] 		labeled: 'Value must be greater or equal to 4.';
 		addCondition: [:input :value| value <= -10] 		labeled: 'Value must be lower or equal to -10.';
 		beRequired.
-	panel := nil.
-	panel := PluggableDialogPanel 
-		open: mold 
-		label: 'Example Three' 
-		view: #renderForms 
-		accept: [mold validate.
-			panel morphExtent: panel minimumExtent. "I don't like to do it manually"
-			mold isValid 	ifTrue: [
-				mold save.
-				panel delete] ]! !
+	mold openDialog: 'Example Three' ! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/16/2023 17:47:33'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 21:14:06'!
 two
 "
 	MoldExample two
 "
- | mold panel |
+ | mold |
 	mold := Mold new.
 	(mold stringField)
 		label: 'My label';
@@ -1172,13 +1184,4 @@ two
 		addCondition: [:input| input size >= 4] 
 		labeled: [:input | 'You  only key in ', input size asString, ' character(s), a minimum of 4 is required.'];
 		beRequired.
-	panel := nil.
-	panel := PluggableDialogPanel 
-		open: mold 
-		label: 'Example Two' 
-		view: #renderForms 
-		accept: [mold validate.
-			panel morphExtent: panel minimumExtent. "I don't like to do it manually"
-			mold isValid 	ifTrue: [
-				mold save.
-				panel delete] ]! !
+	mold openDialog: 'Example Two'! !
