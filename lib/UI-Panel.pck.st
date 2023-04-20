@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5768] on 18 April 2023 at 12:12:46 pm'!
+'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 12:12:57 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 57!
+!provides: 'UI-Panel' 1 58!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -949,9 +949,11 @@ newButtonArea
 			action: #delete
 			label: 'Cancel')! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/16/2023 16:10:44'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/20/2023 11:45:44'!
 newPane
-	^ model perform: viewSelector! !
+	^ (model perform: viewSelector)
+		adoptWidgetsColor: widgetsColor;
+		yourself! !
 
 !PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:31:21'!
 actionOnAccept: selectorOrBlock
