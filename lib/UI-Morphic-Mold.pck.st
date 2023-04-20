@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 12:13:24 pm'!
+'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 4:08:32 pm'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 18!
+!provides: 'UI-Morphic-Mold' 1 19!
 !requires: 'UI-Entry' 1 37 nil!
 SystemOrganization addCategory: 'UI-Morphic-Mold'!
 
@@ -57,7 +57,7 @@ PercentageFieldTest class
 
 !classDefinition: #Field category: 'UI-Morphic-Mold'!
 Object subclass: #Field
-	instanceVariableNames: 'key isRequired conditions errors label value callback modifyBlock input widget'
+	instanceVariableNames: 'isRequired conditions errors label value callback modifyBlock input widget'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
@@ -127,7 +127,7 @@ PasswordField class
 
 !classDefinition: #SelectField category: 'UI-Morphic-Mold'!
 Field subclass: #SelectField
-	instanceVariableNames: 'list labels onChange optionalLabel'
+	instanceVariableNames: 'listModel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Morphic-Mold'!
@@ -196,6 +196,10 @@ Widget is packed as follow:
 | ../..                                                            |
 +------------------------+
 !
+
+!SelectField commentStamp: 'hlsf 4/20/2023 15:32:44' prior: 0!
+With selection from a list, there is no risk of misformed input. 
+input and value attributes both represent the index of the selected item in the list, there are redundant.!
 
 !Mold commentStamp: '<historical>' prior: 0!
 This class is little more than a composite of Fields, where Fields do most of the work. 
@@ -487,10 +491,6 @@ callback: aBlock
 customize: aBlock 
 	modifyBlock := aBlock! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:03'!
-errors
-	^ errors! !
-
 !Field methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 17:37:16'!
 example: aString
 | exampleString |
@@ -518,25 +518,12 @@ input: val
 		ifTrue: [ nil ]
 		ifFalse: [ trimmed ]! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:02'!
-key
-	^ key! !
-
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 21:53'!
-key: anObject 
-	key := anObject! !
-
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:02'!
-label
-	^ label! !
-
 !Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 09:59:33'!
 label: aString
 	label := aString ! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 14:51:38'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 14:59:41'!
 on: accessor of: model
-	key ifNil: [key := accessor ].
 	self value: (model perform: accessor ).
 	self inputMorphContents: input.
 	self 
@@ -621,14 +608,6 @@ validateUserConditions
 !Field methodsFor: 'private'!
 valueChanged! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 11:29:24'!
-initInputMorph
-"
-	Subclass according to the nature of the input 
-	For most input we need a text entry morph, so make it the default one 
-"
-	^ TextEntryMorph new! !
-
 !Field methodsFor: 'initialize-release' stamp: 'hlsf 4/18/2023 12:05:15'!
 initialize
 	conditions := OrderedCollection new.
@@ -646,10 +625,18 @@ initialize
 	self setInputWidget.
 	self addRequirementCondition! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 11:29:24'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 14:23:42'!
+inputMorphInstance
+"
+	Subclass according to the nature of the input 
+	For most input we need a text entry morph, so make it the default one 
+"
+	^ TextEntryMorph new! !
+
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 14:23:43'!
 setInputWidget
 	self inputColumn
-		addMorph: self initInputMorph layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1)! !
+		addMorph: self inputMorphInstance layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1)! !
 
 !Field methodsFor: 'testing' stamp: 'kdt 4/4/2008 13:45'!
 isRequired
@@ -838,61 +825,53 @@ validateConditions
 	input ifNil: [ ^ self ].
 	(self disinfect: input) isInteger ifFalse: [ errors add: 'Fractions and decimals are not allowed here.' ]! !
 
-!SelectField methodsFor: 'initialization' stamp: 'kdt 8/28/2008 10:03'!
-initialize
-	super initialize.
-	optionalLabel := 'Please Select'! !
+!SelectField methodsFor: 'initialization' stamp: 'hlsf 4/20/2023 15:48:17'!
+inputMorphInstance
+	^ PluggableListMorph new! !
 
-!SelectField methodsFor: 'private'!
-labelFor: anObject
-	^labels ifNil: [anObject] ifNotNil: [labels value: anObject]! !
+!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 15:29:38'!
+input: anIndex
+	input := anIndex ! !
 
-!SelectField methodsFor: 'accessing'!
-labels
-	^labels! !
+!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 15:55:00'!
+on: accessor of: model
+	"̈Copy the model, so it is only saved at validation time, not at operating time"
+	listModel := model copy.
+	"Update the inputMoprh accordingly "
+	self inputMorph model: listModel listGetter: #list indexGetter: #listIndex indexSetter: #listIndex: mainView: nil menuGetter: nil keystrokeAction: nil.
+	value := input := listModel listIndex.
+	self inputMorphContents: input.
+	" Save operation done on the original model "
+	self callback: [:val | model perform: (accessor, ':') asSymbol with: val]! !
 
-!SelectField methodsFor: 'accessing'!
-labels: anObject
-	labels := anObject! !
+!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 15:58:32'!
+highlightInputMorph
+	self inputMorph color: (self isValid 
+		ifTrue: [self inputMorph defaultColor]
+		ifFalse: [Color red muchLighter])! !
 
-!SelectField methodsFor: 'accessing'!
-list
-	^list! !
+!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 15:21:18'!
+inputMorphContents
+" The inputMorph had already changed the listModel, ask its listIndex "
+	^ listModel listIndex ! !
 
-!SelectField methodsFor: 'accessing'!
-list: anObject
-	list := anObject! !
+!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 15:55:24'!
+inputMorphContents: index
+" Inform the index of the select item in the list model just changed "
+	listModel changed: #listIndex! !
 
-!SelectField methodsFor: 'accessing' stamp: 'kdt 4/4/2008 11:19'!
-onChange
-	^ onChange! !
+!SelectField methodsFor: 'private' stamp: 'hlsf 4/20/2023 16:01:09'!
+addRequirementCondition
+	self addCondition: [:userInput :theValue| isRequired not or: [	theValue isZero not]]
+		labeled: 'Field required.'! !
 
-!SelectField methodsFor: 'accessing' stamp: 'kdt 4/4/2008 11:19'!
-onChange: anObject
-	onChange := anObject! !
+!SelectField methodsFor: 'private' stamp: 'hlsf 4/20/2023 15:28:37'!
+infect: object
+" When index is zero, no item selected "	
+	^object ifNil: [0]! !
 
-!SelectField methodsFor: 'accessing' stamp: 'kdt 8/28/2008 10:03'!
-optionalLabel: aString 
-	optionalLabel := aString! !
-
-!SelectField methodsFor: 'rendering' stamp: 'kdt 8/28/2008 10:03'!
-widgetOn: html 
-	| tag |
-	tag := html select.
-	tag selected: input.
-	onChange ifNotNil: [tag onChange: (onChange value: html)].
-	self isRequired 
-		ifTrue: 
-			[tag list: list.
-			tag labels: [:item | self labelFor: item]]
-		ifFalse: 
-			[tag list: #(nil ) , list.
-			tag 
-				labels: [:item | item ifNil: [optionalLabel] ifNotNil: [self labelFor: item]]].
-	^ tag! !
-
-!TextField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 12:11:20'!
-initInputMorph
+!TextField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 14:23:43'!
+inputMorphInstance
 	^ TextModelMorph textProvider: self textGetter: #contents ! !
 
 !TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 10:46:52'!
@@ -926,16 +905,6 @@ infect: aTime
 !Mold methodsFor: 'accessing' stamp: 'kdt 4/4/2008 11:20'!
 at: aKey 
 	^ fields detect: [:each | each key = aKey] ifNone: [nil]! !
-
-!Mold methodsFor: 'accessing'!
-combinedErrorsFrom: aCollectionOfKeys 
-	^(fields select: [:field | aCollectionOfKeys includes: field key]) 
-		inject: Array new
-		into: [:errors :each | errors , each errors]! !
-
-!Mold methodsFor: 'accessing'!
-errors
-	^fields inject: Array new into: [:errors :each | errors , each errors]! !
 
 !Mold methodsFor: 'accessing'!
 fields
@@ -1132,7 +1101,7 @@ four
 		beRequired.
 	mold openDialog: 'Example Four'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 21:13:34'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:04:02'!
 one
 "
 	MoldExample one
@@ -1147,7 +1116,7 @@ one
 		label: 'Lastname:';
 		on: #propertyValue of: ValueHolder new;
 		addCondition: [:input| input size >= 2] 
-		labeled: [:input | 'There is no such short name.'];
+		labeled: 'There is no such short name.';
 		beRequired: 'Lastname required.'.
 	(mold dateField )
 		label: 'Birth date:';
@@ -1155,7 +1124,28 @@ one
 		beRequired.
 	mold openDialog: 'Example One' ! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 12:11:40'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:06:53'!
+seven
+"
+	MoldExample seven
+"
+ | mold  |
+	mold := Mold new.
+	(mold selectField)
+		label: 'Période 1';
+		on: #listIndex of: (ListModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`);
+		beRequired.
+	(mold selectField)
+		label: 'Période 2';
+		on: #listIndex of: (ListModel with: `{'H1' . 'H2' . 'H3' . 'H4' . 'H5'}`);
+		beRequired;
+		addCondition: [:value | value = 4] labeled: 'Select H4 to validate.'.
+	(mold selectField)
+		label: 'Période 3';
+		on: #listIndex of: (ListModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`) inspect.
+	mold openDialog: 'Example Seven'! !
+
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:03:32'!
 six
 "
 	MoldExample six
@@ -1169,7 +1159,7 @@ six
 	(mold textField)
 		label: 'Description 2';
 		on: #propertyValue of: ValueHolder new;
-		addCondition: [:input | input size >= 20] labeled: [:input | 'Text too short. Minimum 20 characters.'];
+		addCondition: [:input | input size >= 20] labeled: 'Text too short. Minimum 20 characters.';
 		beRequired.
 	mold openDialog: 'Example Six'! !
 
