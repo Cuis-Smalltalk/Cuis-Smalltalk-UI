@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5769] on 18 April 2023 at 11:07:44 am'!
+'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 12:12:01 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 41!
+!provides: 'UI-Entry' 1 42!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -408,6 +408,16 @@ with: labelsAndControls
 			ifTrue: [row addMorphUseAll: control]  
 			ifFalse: [row addMorph: control	 layoutSpec: LayoutSpec keepMorphExtent]		.
 		self addMorph: row fixedHeight: height]! !
+
+!LabelGroup methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 12:07:52'!
+controls
+	" search for the controls, those all widget not label or layoutmorph"
+	^ self submorphs collect: [:layout | 		layout submorphs second] ! !
+
+!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 12:09:35'!
+adoptWidgetsColor: paneColor
+	doAdoptWidgetsColor
+		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
 
 !LabelGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/7/2022 11:53:10'!
 with: labelsAndControls

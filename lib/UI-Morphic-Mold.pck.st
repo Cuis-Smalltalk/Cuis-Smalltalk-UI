@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5769] on 19 April 2023 at 12:12:19 am'!
+'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 9:58:24 am'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 16!
+!provides: 'UI-Morphic-Mold' 1 17!
 !requires: 'UI-Entry' 1 37 nil!
 SystemOrganization addCategory: 'UI-Morphic-Mold'!
 
@@ -115,6 +115,16 @@ Field subclass: #IntegerField
 IntegerField class
 	instanceVariableNames: ''!
 
+!classDefinition: #PasswordField category: 'UI-Morphic-Mold'!
+Field subclass: #PasswordField
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Morphic-Mold'!
+!classDefinition: 'PasswordField class' category: 'UI-Morphic-Mold'!
+PasswordField class
+	instanceVariableNames: ''!
+
 !classDefinition: #SelectField category: 'UI-Morphic-Mold'!
 Field subclass: #SelectField
 	instanceVariableNames: 'list labels onChange optionalLabel'
@@ -125,28 +135,8 @@ Field subclass: #SelectField
 SelectField class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringField category: 'UI-Morphic-Mold'!
-Field subclass: #StringField
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Morphic-Mold'!
-!classDefinition: 'StringField class' category: 'UI-Morphic-Mold'!
-StringField class
-	instanceVariableNames: ''!
-
-!classDefinition: #PasswordField category: 'UI-Morphic-Mold'!
-StringField subclass: #PasswordField
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Morphic-Mold'!
-!classDefinition: 'PasswordField class' category: 'UI-Morphic-Mold'!
-PasswordField class
-	instanceVariableNames: ''!
-
 !classDefinition: #TextField category: 'UI-Morphic-Mold'!
-StringField subclass: #TextField
+Field subclass: #TextField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -296,10 +286,10 @@ testValidationOnDate
 	field validateInput.
 	self assert: field isValid! !
 
-!FieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 17:29:58'!
+!FieldTest methodsFor: 'running' stamp: 'hlsf 4/20/2023 09:26:14'!
 testRequired
 	| field |
-	field := StringField new.
+	field := Field new.
 	field beRequired.
 	field inputMorphContents: ''.
 	field validateInput.
@@ -644,14 +634,18 @@ initialize
 	self setInputWidget.
 	self addRequirementCondition! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/16/2023 16:05:06'!
-setInputWidget
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 09:23:01'!
+inputWidget
 "
 	Subclass according to the nature of the input 
 	For most input we need a text entry morph, so make it the default one 
 "
+	^ TextEntryMorph new layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1)! !
+
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 09:23:19'!
+setInputWidget
 	self inputColumn
-		addMorph: TextEntryMorph new layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1)! !
+		addMorph: self inputWidget! !
 
 !Field methodsFor: 'testing' stamp: 'kdt 4/4/2008 13:45'!
 isRequired
@@ -816,12 +810,6 @@ validateConditions
 	input ifNil: [ ^ self ].
 	(self disinfect: input) ifNil: [ errors add: 'Invalid number.' ]! !
 
-!FloatField methodsFor: 'rendering' stamp: 'kdt 8/28/2008 09:58'!
-widgetOn: html 
-	^(html textInput)
-		value: input;
-		yourself! !
-
 !PercentageField methodsFor: 'private' stamp: 'AlanWostenberg 5/17/2010 16:25'!
 disinfect: aString 
 	^ (super disinfect: aString) ifNotNilDo: [ :number | (number / 100) asFloat ]! !
@@ -845,13 +833,6 @@ validateConditions
 	self isValid ifFalse: [ ^ self ].
 	input ifNil: [ ^ self ].
 	(self disinfect: input) isInteger ifFalse: [ errors add: 'Fractions and decimals are not allowed here.' ]! !
-
-!IntegerField methodsFor: 'rendering'!
-widgetOn: html 
-	^(html textInput)
-		value: input;
-		size: 6;
-		yourself! !
 
 !SelectField methodsFor: 'initialization' stamp: 'kdt 8/28/2008 10:03'!
 initialize
@@ -906,36 +887,19 @@ widgetOn: html
 				labels: [:item | item ifNil: [optionalLabel] ifNotNil: [self labelFor: item]]].
 	^ tag! !
 
-!StringField methodsFor: 'rendering' stamp: 'kdt 1/28/2008 22:22'!
-widgetOn: html 
-	^ (html textInput)
-		value: input;
-		yourself! !
-
-!PasswordField methodsFor: 'rendering'!
-widgetOn: html
-	^html passwordInput! !
-
 !TextField methodsFor: 'rendering'!
 widgetOn: html
 	^(html textArea)
 		value: input;
 		yourself! !
 
-!TimeField methodsFor: 'private' stamp: 'KenTreis 8/3/2010 22:19'!
+!TimeField methodsFor: 'private' stamp: 'hlsf 4/20/2023 09:34:22'!
 disinfect: aString
-	^Time readFrom: aString withBlanksTrimmed readStream! !
+	^Time fromString: aString withBlanksTrimmed! !
 
 !TimeField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:46:28'!
 infect: aTime
 	^aTime ifNil: [''] ifNotNil: [aTime asString]! !
-
-!TimeField methodsFor: 'rendering'!
-widgetOn: html
-	^(html textInput)
-		value: input;
-		size: 6;
-		yourself! !
 
 !Mold methodsFor: 'accessing' stamp: 'kdt 4/4/2008 11:20'!
 at: aKey 
@@ -1018,9 +982,9 @@ percentageField: anErrorMessage
 selectField
 	^fields add: SelectField new! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: 'hlsf 4/20/2023 09:25:05'!
 stringField
-	^fields add: StringField new! !
+	^fields add: Field new! !
 
 !Mold methodsFor: 'fields'!
 textField
@@ -1030,9 +994,9 @@ textField
 timeField
 	^fields add: TimeField new! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: 'hlsf 4/20/2023 09:26:07'!
 zipCodeField
-	^fields add: (StringField new 
+	^fields add: (Field new 
 				addCondition: [:val | val isNil or: [val matchesRegex: '(\d\d\d\d\d)(-\d\d\d\d)?']]
 				labeled: 'Invalid zip code')! !
 
@@ -1110,6 +1074,22 @@ buildMold
 		addCondition: [ :val | name isValid not or: [ val or: [ name value first = $K ] ] ]
 			labeled: 'Sorry, you may not opt out of our spam unless your first name starts with K.';
 		value: true! !
+
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 09:57:45'!
+five
+"
+	MoldExample five
+"
+ | mold  |
+	mold := Mold new.
+	(mold timeField)
+		label: 'Dawn time (Taipei)';
+		on: #propertyValue of: ValueHolder new;
+		example: 'hh:mm';
+		addCondition: [:input :value| value < `Time fromString: '9:00am'`] 		
+		labeled: [:input :value| 'Sunrise is never {1} at Taipei.' format: {value}];
+		beRequired.
+	mold openDialog: 'Example Five'! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/19/2023 00:12:12'!
 four
