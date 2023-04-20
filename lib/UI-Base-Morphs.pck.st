@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5347] on 3 July 2022 at 1:31:42 pm'!
+'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 4:08:07 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 22!
+!provides: 'UI-Base-Morphs' 1 23!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -121,9 +121,9 @@ I am a line from my start point to my end point.!
 !PointerLineMorph commentStamp: '<historical>' prior: 0!
 I am a LineMorph which has a "pointer" morph which I maintain in position at my endpoint.!
 
-!ListModel commentStamp: '<historical>' prior: 0!
+!ListModel commentStamp: 'hlsf 4/20/2023 14:30:41' prior: 0!
 I am a model presenting a list of objects. 
-I am used with PluggableListMorph or any other pluggable widget handling list.!
+I am used with PluggableListOfMorph or any other pluggable widget handling list.!
 
 !WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 4/24/2015 08:01'!
 buttonNamesShown
