@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 9:58:24 am'!
+'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 12:13:24 pm'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 17!
+!provides: 'UI-Morphic-Mold' 1 18!
 !requires: 'UI-Entry' 1 37 nil!
 SystemOrganization addCategory: 'UI-Morphic-Mold'!
 
@@ -428,6 +428,12 @@ exampleMorph
 		ifTrue: [nil] 
 		ifFalse: [self inputColumn firstSubmorph ]! !
 
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 10:58:07'!
+highlightInputMorph
+	self inputMorph backgroundColor: (self isValid 
+		ifTrue: [self inputMorph defaultBackgroundColor]
+		ifFalse: [Color red muchLighter])! !
+
 !Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:24:16'!
 inputColumn
 	^ widget lastSubmorph! !
@@ -586,7 +592,7 @@ requirementCondition
 validateConditions
 	^ self validateUserConditions ! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 22:07:48'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/20/2023 10:58:20'!
 validateInput
 	errors := OrderedCollection new.
 	self input: self inputMorphContents. "retrieve the input from the input Morph"
@@ -597,9 +603,7 @@ validateInput
 		self errorsColumn 
 			addMorph: (LabelMorph contents: '• ', errorMsg :: color: Color red)		
 			layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0)			].
-	self inputMorph backgroundColor: (self isValid 
-		ifTrue: [self inputMorph defaultBackgroundColor]
-		ifFalse: [Color red muchLighter])! !
+	self  highlightInputMorph ! !
 
 !Field methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:35:27'!
 validateUserConditions
@@ -616,6 +620,14 @@ validateUserConditions
 
 !Field methodsFor: 'private'!
 valueChanged! !
+
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 11:29:24'!
+initInputMorph
+"
+	Subclass according to the nature of the input 
+	For most input we need a text entry morph, so make it the default one 
+"
+	^ TextEntryMorph new! !
 
 !Field methodsFor: 'initialize-release' stamp: 'hlsf 4/18/2023 12:05:15'!
 initialize
@@ -634,18 +646,10 @@ initialize
 	self setInputWidget.
 	self addRequirementCondition! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 09:23:01'!
-inputWidget
-"
-	Subclass according to the nature of the input 
-	For most input we need a text entry morph, so make it the default one 
-"
-	^ TextEntryMorph new layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1)! !
-
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 09:23:19'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 11:29:24'!
 setInputWidget
 	self inputColumn
-		addMorph: self inputWidget! !
+		addMorph: self initInputMorph layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1)! !
 
 !Field methodsFor: 'testing' stamp: 'kdt 4/4/2008 13:45'!
 isRequired
@@ -887,11 +891,29 @@ widgetOn: html
 				labels: [:item | item ifNil: [optionalLabel] ifNotNil: [self labelFor: item]]].
 	^ tag! !
 
-!TextField methodsFor: 'rendering'!
-widgetOn: html
-	^(html textArea)
-		value: input;
-		yourself! !
+!TextField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 12:11:20'!
+initInputMorph
+	^ TextModelMorph textProvider: self textGetter: #contents ! !
+
+!TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 10:46:52'!
+contents
+" Getter for the TextModelMorph. I return the contents to provide to the inputWidget "
+	^ input ifNil: ['']! !
+
+!TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 11:07:16'!
+highlightInputMorph
+	self inputMorph color: (self isValid 
+		ifTrue: [self inputMorph defaultColor]
+		ifFalse: [Color red muchLighter])! !
+
+!TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 11:28:32'!
+inputMorphContents
+	^ self inputMorph model actualContents asString! !
+
+!TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 10:35:29'!
+inputMorphContents: anInput
+" Inform the inputWidget its input field must be updated "
+	self changed: #contents! !
 
 !TimeField methodsFor: 'private' stamp: 'hlsf 4/20/2023 09:34:22'!
 disinfect: aString
@@ -1014,9 +1036,12 @@ openDialog: title
 				self save.
 				panel delete] ]! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 4/15/2023 14:36:58'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 4/20/2023 11:43:40'!
 renderForms
-	^ LabelGroup with: (fields collect: #labelAndWidget)! !
+	^ LabelGroup with: (fields collect: #labelAndWidget) ::
+		doAdoptWidgetsColor;
+		yourself
+	! !
 
 !Mold methodsFor: 'testing' stamp: 'KenTreis 7/27/2011 13:49'!
 isValid
@@ -1075,7 +1100,7 @@ buildMold
 			labeled: 'Sorry, you may not opt out of our spam unless your first name starts with K.';
 		value: true! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 09:57:45'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 10:43:12'!
 five
 "
 	MoldExample five
@@ -1084,9 +1109,9 @@ five
 	mold := Mold new.
 	(mold timeField)
 		label: 'Dawn time (Taipei)';
-		on: #propertyValue of: ValueHolder new;
+		on: #propertyValue of: (ValueHolder with: Time now);
 		example: 'hh:mm';
-		addCondition: [:input :value| value < `Time fromString: '9:00am'`] 		
+		addCondition: [:input :value| value < `Time fromString: '8:00am'`] 		
 		labeled: [:input :value| 'Sunrise is never {1} at Taipei.' format: {value}];
 		beRequired.
 	mold openDialog: 'Example Five'! !
@@ -1129,6 +1154,24 @@ one
 		on: #propertyValue of: ValueHolder new;
 		beRequired.
 	mold openDialog: 'Example One' ! !
+
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 12:11:40'!
+six
+"
+	MoldExample six
+"
+ | mold  |
+	mold := Mold new.
+	(mold textField)
+		label: 'Description 1';
+		on: #propertyValue of: (ValueHolder with: 'Some text...');
+		beRequired.
+	(mold textField)
+		label: 'Description 2';
+		on: #propertyValue of: ValueHolder new;
+		addCondition: [:input | input size >= 20] labeled: [:input | 'Text too short. Minimum 20 characters.'];
+		beRequired.
+	mold openDialog: 'Example Six'! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 21:13:52'!
 three
