@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 4:08:32 pm'!
+'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 8:53:35 pm'!
 'Description '!
-!provides: 'UI-Morphic-Mold' 1 19!
+!provides: 'UI-Morphic-Mold' 1 21!
 !requires: 'UI-Entry' 1 37 nil!
 SystemOrganization addCategory: 'UI-Morphic-Mold'!
 
@@ -646,28 +646,32 @@ isRequired
 isValid
 	^ errors isEmpty! !
 
-!CheckboxField methodsFor: 'rendering'!
-renderParagraphOn: html
-	html
-		paragraph:
-			[| id |
-			id := html nextId.
-			self renderWidgetId: id on: html.
-			self renderLabelFor: id on: html].
-	self isValid ifFalse: [self renderErrorsOn: html]! !
+!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 20:51:30'!
+highlightInputMorph
+	self inputMorph borderColor: (self isValid 
+		ifTrue: [self inputMorph defaultColor]
+		ifFalse: [Color red muchLighter])! !
 
-!CheckboxField methodsFor: 'rendering'!
-renderTableRowOn: html
-	html
-		tableRow:
-			[html tableData.
-			html
-				tableData:
-					[| id |
-					id := html nextId.
-					self renderWidgetId: id on: html.
-					self renderLabelFor: id on: html].
-			self isValid ifFalse: [html tableData: [self renderErrorsOn: html]]]! !
+!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 19:52:51'!
+inputMorphContents
+	^ self inputMorph isSelected! !
+
+!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 19:53:01'!
+inputMorphContents: anInput
+	self inputMorph isSelected: anInput ! !
+
+!CheckboxField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 19:49:36'!
+inputMorphInstance
+	^ CheckButtonMorph new! !
+
+!CheckboxField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 19:56:51'!
+setInputWidget
+	self inputColumn
+		addMorph: self inputMorphInstance layoutSpec: LayoutSpec keepMorphExtent! !
+
+!CheckboxField methodsFor: 'private' stamp: 'hlsf 4/20/2023 20:46:16'!
+infect: model
+	^ model ifNil: [false]! !
 
 !DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:19:33'!
 disinfect: aString
@@ -934,12 +938,14 @@ checkboxField
 dateField
 	^ fields add: DateField new! !
 
-!Mold methodsFor: 'fields' stamp: 'alk 12/14/2010 10:57'!
+!Mold methodsFor: 'fields' stamp: 'hlsf 4/20/2023 20:22:57'!
 emailField
 	^ self stringField
 		addCondition: 
 				[ :val | 
-				val isNil or: [ val matchesRegex: '([-_\w]\.?)+@[-\w]+\.[-\w]+(\.\w+)*' ] ]
+				val isNil or: [ val includesAllOf: '@.'.
+					"val matchesRegex: '([-_\w]\.?)+@[-\w]+\.[-\w]+(\.\w+)*'"
+					 ] ]
 			labeled: 'Invalid email address';
 		yourself! !
 
@@ -1029,23 +1035,26 @@ remove: aKey ifAbsent: exceptionBlock
 	field := self at: aKey.
 	fields remove: field ifAbsent: exceptionBlock! !
 
-!MoldExample methodsFor: 'initialization' stamp: 'hlsf 4/16/2023 14:17:34'!
-buildMold
-	| name email confirmEmail |
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 20:40:37'!
+eight
+"
+	MoldExample eight
+"
+ | mold fullname email confirmEmail |
 	mold := Mold new.
-	name := mold stringField
-		key: #name;
-		label: 'Your Name:';
+	fullname := mold stringField
+		on: #propertyValue of: ValueHolder new;
+		label: 'Your Name';
 		beRequired;
 		addCondition: [ :val | val includesSubString: ' ']
 			labeled: 
 				[ :wrong | 
-				'Please enter your first and last name. I couldn''t find a space in {1}' format:  wrong ].
+				'Please enter your first and last name. I couldn''t find a space in {1}' format:  {wrong} ].
 	email := mold emailField
-		key: #email;
+		on: #propertyValue of: ValueHolder new;
 		label: 'Email Address:'.
 	confirmEmail := mold emailField
-		key: #confirmEmail;
+		on: #propertyValue of: ValueHolder new;
 		label: 'Confirm Email:'.
 	email 
 		addCondition: [ :input | input = confirmEmail input ]
@@ -1054,20 +1063,15 @@ buildMold
 		addCondition: [ :input | input = email input ]
 		labeled: 'Email addresses did not match.'.
 	mold textField
-		key: #about;
-		label: 'Please tell us more about yourself.';
-		beRequired;
-		customize: 
-			[ :textarea | 
-			textarea
-				rows: 5;
-				columns: 60 ].
+		on: #propertyValue of: ValueHolder new;
+		label: 'About yourself.';
+		beRequired.
 	mold checkboxField
-		key: #spamMe;
-		label: 'Yes, please sign me up for the email newsletter!!';
-		addCondition: [ :val | name isValid not or: [ val or: [ name value first = $K ] ] ]
-			labeled: 'Sorry, you may not opt out of our spam unless your first name starts with K.';
-		value: true! !
+		on: #propertyValue of: (ValueHolder with: true);
+		label: 'Sign for the newsletter';
+		addCondition: [ :val | fullname isValid not or: [ val not or: [ fullname value first = $K ] ] ]
+			labeled: 'Sorry, you may not opt out of our spam unless your first name starts with K.'.
+	mold openDialog: 'Example Eight'! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 10:43:12'!
 five
@@ -1124,7 +1128,7 @@ one
 		beRequired.
 	mold openDialog: 'Example One' ! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:06:53'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:24:16'!
 seven
 "
 	MoldExample seven
@@ -1142,7 +1146,7 @@ seven
 		addCondition: [:value | value = 4] labeled: 'Select H4 to validate.'.
 	(mold selectField)
 		label: 'Période 3';
-		on: #listIndex of: (ListModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`) inspect.
+		on: #listIndex of: (ListModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
 	mold openDialog: 'Example Seven'! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:03:32'!
