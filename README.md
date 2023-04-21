@@ -104,7 +104,7 @@ Feature require: 'UI-Tools'.
 - ColorEditorModel
 - ColorSliderMorph
 
-### Layout-Edit-Panels
+### UI-Panel-Layout
 - LayoutMorphEditPanel
 - LayoutSpecEditPanel
 
