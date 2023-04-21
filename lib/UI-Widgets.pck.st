@@ -1,9 +1,9 @@
-'From Cuis 6.0 [latest update: #5546] on 1 November 2022 at 7:12:48 pm'!
+'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 9:25:52 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 15!
+!provides: 'UI-Widgets' 1 16!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'Collections-CompactArrays' 1 13 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
 
@@ -79,10 +79,8 @@ WaitSpinner class
 
 
 !ButtonMorph commentStamp: '<historical>' prior: 0!
-An iconic button
-
-- stateArgument: an optional argument for the state selector
-- actionSelector: an optional argument for the action selector!
+An iconic button with a selection color.
+- selectedColor : my color when I am selected (state)!
 
 !WheelMorph commentStamp: 'hlsf 1/5/2022 12:29:58' prior: 0!
 A wheel widget control. I can be used in two different ways:
@@ -158,6 +156,24 @@ drawOn: canvas
 		ifTrue:  [self drawMyShapeOn: canvas with: self selectedColor]
 		ifFalse: [self drawMyShapeOn: canvas with: self color].
 	icon ifNotNil: [canvas image: icon at: (extent - icon extent // 2)]! !
+
+!ButtonMorph class methodsFor: 'example' stamp: 'hlsf 4/21/2023 09:25:00'!
+example
+"
+	 ButtonMorph example 
+"
+	 ButtonMorph 
+		model: Switch newOff
+		stateGetter: #isOn
+		action: #switch ::
+		icon: Theme current switchIcon ;
+		setBalloonText: 'I am a button whose state is represented with a different color.';
+		color: (Color fromHexString: '#0057b7');
+		selectedColor: (Color fromHexString: '#ffd700');
+		borderColor: (Color fromHexString: '#0057b7') muchDarker;
+		borderWidth: 2;
+		morphExtent: Theme current switchIcon extent * 2;
+		openInWorld! !
 
 !WheelMorph methodsFor: 'accessing'!
 actionSelector
