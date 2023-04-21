@@ -97,7 +97,7 @@ Feature require: 'UI-Tools'.
 
 ## UI-Tools Packages
 
-### Color-Edit-Panel
+### UI-Panel-Color
 - ColorEditorPanel
 - ColorPalette
 - ColorPaneMorph

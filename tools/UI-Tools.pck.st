@@ -5,7 +5,7 @@
 !requires: 'UI-Shapes' 1 12 nil!
 !requires: 'UI-Panel-Color' 1 3 nil!
 !requires: 'UI-MetaProperties' 1 102 nil!
-!requires: 'Layout-Edit-Panels' 1 8 nil!
+!requires: 'UI-Panel-Layout' 1 8 nil!
 !requires: 'UI-Palette' 1 10 nil!
 SystemOrganization addCategory: 'UI-Tools'!
 
