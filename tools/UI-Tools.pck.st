@@ -3,7 +3,7 @@
 !provides: 'UI-Tools' 1 13!
 !requires: 'UI-Components' 1 4 nil!
 !requires: 'UI-Shapes' 1 12 nil!
-!requires: 'Color-Edit-Panel' 1 3 nil!
+!requires: 'UI-Panel-Color' 1 3 nil!
 !requires: 'UI-MetaProperties' 1 102 nil!
 !requires: 'Layout-Edit-Panels' 1 8 nil!
 !requires: 'UI-Palette' 1 10 nil!

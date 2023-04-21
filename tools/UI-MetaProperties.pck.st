@@ -3,7 +3,7 @@
 !provides: 'UI-MetaProperties' 1 122!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
-!requires: 'Color-Edit-Panel' 1 3 nil!
+!requires: 'UI-Panel-Color' 1 3 nil!
 !requires: 'Complex' 1 0 nil!
 !requires: 'UI-Entry' 1 7 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
