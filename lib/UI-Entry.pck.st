@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 12:12:01 pm'!
+'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 10:08:48 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 42!
+!provides: 'UI-Entry' 1 43!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Base-Morphs' 1 11 nil!
@@ -15,16 +15,6 @@ Editor subclass: #SimpleEditor
 	category: 'UI-Entry'!
 !classDefinition: 'SimpleEditor class' category: 'UI-Entry'!
 SimpleEditor class
-	instanceVariableNames: ''!
-
-!classDefinition: #LabelGroup category: 'UI-Entry'!
-LayoutMorph subclass: #LabelGroup
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Entry'!
-!classDefinition: 'LabelGroup class' category: 'UI-Entry'!
-LabelGroup class
 	instanceVariableNames: ''!
 
 !classDefinition: #TextEntryMorph category: 'UI-Entry'!
@@ -50,9 +40,6 @@ SimpleNumberEntryMorph class
 
 !SimpleEditor commentStamp: '<historical>' prior: 0!
 See comment in Editor!
-
-!LabelGroup commentStamp: '<historical>' prior: 0!
-A morph laid out with a column of labels and a column of associated controls.!
 
 !TextEntryMorph commentStamp: '<historical>' prior: 0!
 A plain text editor for Morphic. Handles only one line. Does not handle fonts/styles, alignment, Smalltalk utilities and any other advanced stuff in TextModelMorph. Just a simple text editor.
@@ -376,71 +363,6 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
-
-!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:18'!
-defaultColor
-
-	^ Color transparent ! !
-
-!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:24'!
-initialize
-
-	super initialize.
-	self separation: 2! !
-
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/16/2023 14:39:52'!
-with: labelsAndControls
-
-	| labelMorphs labelWidth |
-	labelMorphs := labelsAndControls collect: [:assoc | | label |
-		label := 	LabelMorph contents: (assoc key contractTo: 40).
-		assoc key size > 40 ifTrue: [label setBalloonText: assoc key].
-		label	].
-	labelWidth := labelMorphs max: [:each | each morphWidth].
-	labelMorphs withIndexDo: [:label :i | | row height control | 
-		control := (labelsAndControls at: i) value.
-		height := label morphHeight max: control morphHeight.
-		row := LayoutMorph newRow separation: 4.
-		row 
-			color: self defaultColor;
-			addMorph: label layoutSpec: ( LayoutSpec fixedWidth: labelWidth proportionalHeight: 0.5 offAxisEdgeWeight: #center).
-		control hasVariableExtent 
-			ifTrue: [row addMorphUseAll: control]  
-			ifFalse: [row addMorph: control	 layoutSpec: LayoutSpec keepMorphExtent]		.
-		self addMorph: row fixedHeight: height]! !
-
-!LabelGroup methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 12:07:52'!
-controls
-	" search for the controls, those all widget not label or layoutmorph"
-	^ self submorphs collect: [:layout | 		layout submorphs second] ! !
-
-!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 12:09:35'!
-adoptWidgetsColor: paneColor
-	doAdoptWidgetsColor
-		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
-
-!LabelGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/7/2022 11:53:10'!
-with: labelsAndControls
-	"key: label, value: control morph"
-	
-	^ self newColumn with: labelsAndControls! !
-
-!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 9/25/2022 10:04:14'!
-example1
-"
-	LabelGroup example1 openInWorld
-"
-	^ self with: {
-		'Name' -> (TextEntryMorph contents: 'send $25 for your name here').
-		'Description which is very long is truncated but a ballon help is set to know about this lenghty label!!' -> (TextModelMorph withText: '' ::
-			emptyTextDisplayMessage: 'Why Smalltalk?')	 .
-		'Smalltalk variants' ->   (PluggableListMorph 
-			model: (ListModel with: #('Cuis-Smalltalk' 'Pharo' 'Squeak' 'Amber' 'Dolphin' 'GNU Smalltalk')) 
-			listGetter: #list 
-			indexGetter: #listIndex 
-			indexSetter: #listIndex: ) }::
-		color: Color lightYellow ;
-		yourself! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:52'!
 acceptCancelReceiver

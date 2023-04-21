@@ -1,11 +1,21 @@
-'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 9:25:52 am'!
+'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 10:08:52 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 16!
+!provides: 'UI-Widgets' 1 17!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
+
+!classDefinition: #LabelGroup category: 'UI-Widgets'!
+LayoutMorph subclass: #LabelGroup
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Widgets'!
+!classDefinition: 'LabelGroup class' category: 'UI-Widgets'!
+LabelGroup class
+	instanceVariableNames: ''!
 
 !classDefinition: #ButtonMorph category: 'UI-Widgets'!
 PluggableButtonMorph subclass: #ButtonMorph
@@ -78,6 +88,9 @@ WaitSpinner class
 	instanceVariableNames: 'spinners isSpinnerRunning process'!
 
 
+!LabelGroup commentStamp: '<historical>' prior: 0!
+A morph laid out with a column of labels and a column of associated controls.!
+
 !ButtonMorph commentStamp: '<historical>' prior: 0!
 An iconic button with a selection color.
 - selectedColor : my color when I am selected (state)!
@@ -126,6 +139,71 @@ See my Class side:
 	WaitSpinner start.  "Show animated WaitSpinner"
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:18'!
+defaultColor
+
+	^ Color transparent ! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:24'!
+initialize
+
+	super initialize.
+	self separation: 2! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/16/2023 14:39:52'!
+with: labelsAndControls
+
+	| labelMorphs labelWidth |
+	labelMorphs := labelsAndControls collect: [:assoc | | label |
+		label := 	LabelMorph contents: (assoc key contractTo: 40).
+		assoc key size > 40 ifTrue: [label setBalloonText: assoc key].
+		label	].
+	labelWidth := labelMorphs max: [:each | each morphWidth].
+	labelMorphs withIndexDo: [:label :i | | row height control | 
+		control := (labelsAndControls at: i) value.
+		height := label morphHeight max: control morphHeight.
+		row := LayoutMorph newRow separation: 4.
+		row 
+			color: self defaultColor;
+			addMorph: label layoutSpec: ( LayoutSpec fixedWidth: labelWidth proportionalHeight: 0.5 offAxisEdgeWeight: #center).
+		control hasVariableExtent 
+			ifTrue: [row addMorphUseAll: control]  
+			ifFalse: [row addMorph: control	 layoutSpec: LayoutSpec keepMorphExtent]		.
+		self addMorph: row fixedHeight: height]! !
+
+!LabelGroup methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 12:07:52'!
+controls
+	" search for the controls, those all widget not label or layoutmorph"
+	^ self submorphs collect: [:layout | 		layout submorphs second] ! !
+
+!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 12:09:35'!
+adoptWidgetsColor: paneColor
+	doAdoptWidgetsColor
+		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
+
+!LabelGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/7/2022 11:53:10'!
+with: labelsAndControls
+	"key: label, value: control morph"
+	
+	^ self newColumn with: labelsAndControls! !
+
+!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 9/25/2022 10:04:14'!
+example1
+"
+	LabelGroup example1 openInWorld
+"
+	^ self with: {
+		'Name' -> (TextEntryMorph contents: 'send $25 for your name here').
+		'Description which is very long is truncated but a ballon help is set to know about this lenghty label!!' -> (TextModelMorph withText: '' ::
+			emptyTextDisplayMessage: 'Why Smalltalk?')	 .
+		'Smalltalk variants' ->   (PluggableListMorph 
+			model: (ListModel with: #('Cuis-Smalltalk' 'Pharo' 'Squeak' 'Amber' 'Dolphin' 'GNU Smalltalk')) 
+			listGetter: #list 
+			indexGetter: #listIndex 
+			indexSetter: #listIndex: ) }::
+		color: Color lightYellow ;
+		yourself! !
 
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/9/2022 21:15:36'!
 adoptWidgetsColor: paneColor

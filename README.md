@@ -27,7 +27,7 @@ Feature require: 'UI-Tools'.
 
 ## UI-Components Packages
 
-UI-Base-Morphs
+### UI-Base-Morphs
 - WindowTitleMorph
 - SqueezeLabelMorph
 - EllipseMorph
@@ -35,7 +35,7 @@ UI-Base-Morphs
 - LineMorph
 - PointerLineMorph
 
-UI-Click-Select
+### UI-Click-Select
 - MultiMenuSelectMenu
 - PluggableCheckboxMorph
 - CheckGroup
@@ -45,21 +45,22 @@ UI-Click-Select
 - PluggableListOfMorph
 - DropDownButtonMorph
 
-UI-DragAndDrop
+### UI-DragAndDrop
 - SignMorph
 - DropColorMorph
 - ClickColorMorph
 - FontMorph
 
-UI-Entry
+### UI-Entry
 - OneLineEditorMorph
 - SimpleEditor
 - SimpleNumberEntryMorph
 
-UI-Panel
+### UI-Panel
 - Panel
 - DialogPanel
 - EditPanel
+- PluggablePanel
 - ValueEntryPanel
 - FloatEntryPanel
 - RangeFloatEntryPanel
@@ -70,17 +71,18 @@ UI-Panel
 - StringEntryPanel
 - PluggableScrollBar
 - ValueHolder
+- WizardPanel
 
-UI-Widgets
-- WheelMorph
+### UI-Widgets
 - ChevronMorph
 - DropDownChevronMorph
 - CircularToolbarMorph
 - CircularSubToolbarMorph
+- LabelGroup
 - WaitSpinner
-- WizardPanel
+- WheelMorph
 
-UI-Palette
+### UI-Palette
 - ImagePickerPanel
 - PickAColorPalette
 - PickAnIconPalette
@@ -89,24 +91,24 @@ UI-Palette
 - InnerPluggableImagePalette
 - PluggableImagePalette
 
-UI-Shapes
+### UI-Shapes
 - BezierQuadraticMorph
 - BezierCubicMorph
 
 ## UI-Tools Packages
 
-Color-Edit-Panel
+### Color-Edit-Panel
 - ColorEditorPanel
 - ColorPalette
 - ColorPaneMorph
 - ColorEditorModel
 - ColorSliderMorph
 
-Layout-Edit-Panels
+### Layout-Edit-Panels
 - LayoutMorphEditPanel
 - LayoutSpecEditPanel
 
-Morphic-MetaProperties
+### Morphic-MetaProperties
 - VisualPropertyEditor
 - VisualPropertyMenuItem
 - OrdinaryPropertyMenuItem
@@ -118,7 +120,11 @@ Morphic-MetaProperties
 - MetaPropertyTransducer
 - MetaPropertyViaTest
 
-UI-Edit-Lens
+### Morphic-Packager
+Description: Save combined Morph into a package which requires its
+dependent code.
+
+### UI-Edit-Lens
 - MorphEditLens
 
 ## Morph Visual Properties
