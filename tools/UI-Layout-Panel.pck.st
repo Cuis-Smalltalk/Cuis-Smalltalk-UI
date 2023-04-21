@@ -1,29 +1,29 @@
 'From Cuis 6.0 [latest update: #5202] on 28 May 2022 at 11:00:51 am'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Panel-Layout' 1 10!
+!provides: 'UI-Layout-Panel' 1 10!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
-SystemOrganization addCategory: 'UI-Panel-Layout'!
+SystemOrganization addCategory: 'UI-Layout-Panel'!
 
 
-!classDefinition: #LayoutMorphEditPanel category: 'UI-Panel-Layout'!
+!classDefinition: #LayoutMorphEditPanel category: 'UI-Layout-Panel'!
 EditPanel subclass: #LayoutMorphEditPanel
 	instanceVariableNames: 'directionArea paddingArea separationArea colorArea padRadio padEntry'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Panel-Layout'!
-!classDefinition: 'LayoutMorphEditPanel class' category: 'UI-Panel-Layout'!
+	category: 'UI-Layout-Panel'!
+!classDefinition: 'LayoutMorphEditPanel class' category: 'UI-Layout-Panel'!
 LayoutMorphEditPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #LayoutSpecEditPanel category: 'UI-Panel-Layout'!
+!classDefinition: #LayoutSpecEditPanel category: 'UI-Layout-Panel'!
 EditPanel subclass: #LayoutSpecEditPanel
 	instanceVariableNames: 'widthArea heightArea paddingArea padRadio padEntry'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Panel-Layout'!
-!classDefinition: 'LayoutSpecEditPanel class' category: 'UI-Panel-Layout'!
+	category: 'UI-Layout-Panel'!
+!classDefinition: 'LayoutSpecEditPanel class' category: 'UI-Layout-Panel'!
 LayoutSpecEditPanel class
 	instanceVariableNames: ''!
 
@@ -1038,7 +1038,7 @@ updateMasterFromCopy
 		ifFalse: [ self delete ] 
 		ifTrue: [ self refreshView ]! !
 
-!Morph methodsFor: '*ui-panel-layout' stamp: 'KenD 9/17/2016 10:08:23'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/17/2016 10:08:23'!
 colorizeLayouts
 	"debug"
 	"Tinge rows red, columns blue"
@@ -1050,7 +1050,7 @@ colorizeLayouts
 		ifFalse: [self color: (Color skyBlue  alpha: 0.5)] "Column"
 	]! !
 
-!Morph methodsFor: '*ui-panel-layout' stamp: 'KenD 9/18/2016 08:59:03'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/18/2016 08:59:03'!
 containingLayout
 	"Answer the LayoutMorph containing me or nil"
 	
@@ -1064,7 +1064,7 @@ containingLayout
 				ifFalse: [ ^ owner containingLayout ]
 		]! !
 
-!Morph methodsFor: '*ui-panel-layout' stamp: 'KenD 11/7/2021 14:13:03'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 11/7/2021 14:13:03'!
 frameLayouts: colors depth: depth
 	"Display frames around LayoutMorphs, then erase"
 	
@@ -1084,7 +1084,7 @@ frameLayouts: colors depth: depth
 		self submorphsDo: [ :m | m frameLayouts: colors depth: depth + 1 ].
 	].! !
 
-!Morph methodsFor: '*ui-panel-layout' stamp: 'KenD 11/7/2021 14:13:12'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 11/7/2021 14:13:12'!
 frameNonLayouts: colors depth: depth
 	"Display frames around LayoutMorphs, then erase"
 	
@@ -1104,7 +1104,7 @@ frameNonLayouts: colors depth: depth
 		self submorphsDo: [ :m | m frameNonLayouts: colors depth: depth + 1 ].
 	].! !
 
-!Morph methodsFor: '*ui-panel-layout' stamp: 'KenD 9/16/2016 15:16:18'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/16/2016 15:16:18'!
 shadowNonLayouts
 	"debug"
 	"Turn on dropShadows for submorphs' graphic elements"
@@ -1114,7 +1114,7 @@ shadowNonLayouts
 	self submorphsDo: [ :s | s shadowNonLayouts ].
 	(self isKindOf: LayoutMorph) ifFalse: [ self showDropShadow ]! !
 
-!Morph methodsFor: '*ui-panel-layout' stamp: 'KenD 9/16/2016 15:12:54'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/16/2016 15:12:54'!
 showLayouts
 	"debug"
 	"Display frames around LayoutMorphs; then delete"
@@ -1126,7 +1126,7 @@ showLayouts
 	"Assume only my frames were added to World"
 	self world submorphsDo: [ :s | (s isKindOf: FrameMorph) ifTrue: [ s delete ]].! !
 
-!Morph methodsFor: '*ui-panel-layout' stamp: 'KenD 9/16/2016 15:13:33'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/16/2016 15:13:33'!
 showNonLayouts
 	"debug"
 	"Display frames around LayoutMorphs; then delete"
@@ -1138,14 +1138,14 @@ showNonLayouts
 	"Assume only my frames were added to World"
 	self world submorphsDo: [ :s | (s isKindOf: FrameMorph) ifTrue: [ s delete ]].! !
 
-!Morph methodsFor: '*ui-panel-layout' stamp: 'KenD 9/16/2016 15:14:17'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/16/2016 15:14:17'!
 unShadowNonLayouts
 	"debug"
 	"Remove submorph dropShadows"
 	(self isKindOf: LayoutMorph) ifFalse: [ self hideDropShadow ].
 	self submorphsDo: [ :s | s unShadowNonLayouts ].! !
 
-!PlacedMorph methodsFor: '*ui-panel-layout' stamp: 'KenD 5/28/2022 10:57:11'!
+!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 5/28/2022 10:57:11'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
 	"Add morph-specific items to the given menu which was invoked by the given hand.  This method provides is invoked both from the halo-menu and from the control-menu regimes."
 
@@ -1154,13 +1154,13 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		"addLine;"
 		add: 'edit my LayoutSpec' action: #editMyLayoutSpec! !
 
-!PlacedMorph methodsFor: '*ui-panel-layout' stamp: 'KenD 5/28/2022 10:55:31'!
+!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 5/28/2022 10:55:31'!
 editMyLayoutSpec
 
 	self layoutSpec ifNil: [ self layoutSpec: LayoutSpec keepMorphExtent ].
 	LayoutSpecEditPanel open: self layoutSpec! !
 
-!LayoutMorph methodsFor: '*ui-panel-layout' stamp: 'KenD 12/24/2013 15:22'!
+!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:22'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
 	"Add morph-specific items to the given menu which was invoked by the given hand.  This method provides is invoked both from the halo-menu and from the control-menu regimes."
 
@@ -1169,39 +1169,39 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		"addLine;"
 		add: 'edit me (a LayoutMorph)' action: #editMe! !
 
-!LayoutMorph methodsFor: '*ui-panel-layout' stamp: 'KenD 12/24/2013 15:14'!
+!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:14'!
 direction: horizOrVert
 
 	self flag: #jmvVer. "Move to category #accessing"
 
 	direction := horizOrVert! !
 
-!LayoutMorph methodsFor: '*ui-panel-layout' stamp: 'KenD 12/24/2013 15:14'!
+!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:14'!
 editMe
 
 	LayoutMorphEditPanel open: self! !
 
-!LayoutSpec methodsFor: '*ui-panel-layout' stamp: 'KenD 4/18/2015 20:18'!
+!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 4/18/2015 20:18'!
 morph
 	"For #showHalo"
 	^ morph! !
 
-!LayoutSpec methodsFor: '*ui-panel-layout' stamp: 'KenD 12/24/2013 15:14'!
+!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:14'!
 privateFixedHeight
 
 	^ fixedHeight! !
 
-!LayoutSpec methodsFor: '*ui-panel-layout' stamp: 'KenD 12/24/2013 15:15'!
+!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:15'!
 privateFixedWidth
 
 	^ fixedWidth! !
 
-!LayoutSpec methodsFor: '*ui-panel-layout' stamp: 'KenD 12/24/2013 15:15'!
+!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:15'!
 privateProportionalHeight
 
 	^ proportionalHeight! !
 
-!LayoutSpec methodsFor: '*ui-panel-layout' stamp: 'KenD 12/24/2013 15:15'!
+!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:15'!
 privateProportionalWidth
 
 	^ proportionalWidth ! !

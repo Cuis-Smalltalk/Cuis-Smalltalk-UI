@@ -3,12 +3,12 @@
 !provides: 'UI-MetaProperties' 1 122!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
-!requires: 'UI-Panel-Color' 1 3 nil!
+!requires: 'UI-Color-Panel' 1 3 nil!
 !requires: 'Complex' 1 0 nil!
 !requires: 'UI-Entry' 1 7 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
-!requires: 'UI-Packager' 1 11 nil!
+!requires: 'UI-Packager' 1 0 nil!
 !requires: 'Graphics-Files-Additional' 1 18 nil!
 SystemOrganization addCategory: 'UI-MetaProperties'!
 

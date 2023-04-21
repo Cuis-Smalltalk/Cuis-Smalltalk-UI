@@ -97,14 +97,14 @@ Feature require: 'UI-Tools'.
 
 ## UI-Tools Packages
 
-### UI-Panel-Color
+### UI-Color-Panel
 - ColorEditorPanel
 - ColorPalette
 - ColorPaneMorph
 - ColorEditorModel
 - ColorSliderMorph
 
-### UI-Panel-Layout
+### UI-Layout-Panel
 - LayoutMorphEditPanel
 - LayoutSpecEditPanel
 

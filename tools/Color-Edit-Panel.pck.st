@@ -1672,7 +1672,7 @@ color: aColor
 
 	^ self new setColor: aColor! !
 
-!Color class methodsFor: '*color-edit-panel' stamp: 'hlsf 12/29/2021 11:10:21'!
+!Color class methodsFor: '*ui-panel-color' stamp: 'hlsf 12/29/2021 11:10:21'!
 colorSelectionMenu
 	"Open a popUp menu and let user select color selection option"
 "
@@ -1710,7 +1710,7 @@ colorSelectionMenu
 
 	! !
 
-!Color class methodsFor: '*color-edit-panel' stamp: 'KenD 1/10/2022 13:21:32'!
+!Color class methodsFor: '*ui-panel-color' stamp: 'KenD 1/10/2022 13:21:32'!
 colorSelectionMenu: originalColor
 	"Open a popUp menu and let user select color selection option.
 	 If the user selects ColorMix Editor, set the color from originalColor"
