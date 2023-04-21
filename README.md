@@ -108,7 +108,7 @@ Feature require: 'UI-Tools'.
 - LayoutMorphEditPanel
 - LayoutSpecEditPanel
 
-### Morphic-MetaProperties
+### UI-MetaProperties
 - VisualPropertyEditor
 - VisualPropertyMenuItem
 - OrdinaryPropertyMenuItem
@@ -120,9 +120,11 @@ Feature require: 'UI-Tools'.
 - MetaPropertyTransducer
 - MetaPropertyViaTest
 
-### Morphic-Packager
-Description: Save combined Morph into a package which requires its
-dependent code.
+### UI-Mold
+An helper tool to describe  dialog panel for user input and validation.
+
+### UI-Packager
+Save combined Morph into a package which requires its dependent code.
 
 ### UI-Edit-Lens
 - MorphEditLens
