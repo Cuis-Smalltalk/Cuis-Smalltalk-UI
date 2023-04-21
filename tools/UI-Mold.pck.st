@@ -1,6 +1,8 @@
-'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 10:38:21 am'!
+'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 11:15:12 am'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 0!
+!provides: 'UI-Mold' 1 1!
+!requires: 'UI-Widgets' 1 17 nil!
+!requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
 
 
