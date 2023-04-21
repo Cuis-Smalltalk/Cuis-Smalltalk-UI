@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 4:08:07 pm'!
+'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 3:32:02 pm'!
 'Description Various Morphs required to construct widgets and other UI affordances.'!
-!provides: 'UI-Base-Morphs' 1 23!
+!provides: 'UI-Base-Morphs' 1 27!
 !requires: 'Cuis-Base' 60 5031 nil!
 SystemOrganization addCategory: 'UI-Base-Morphs'!
 
@@ -75,6 +75,16 @@ Object subclass: #ListModel
 ListModel class
 	instanceVariableNames: ''!
 
+!classDefinition: #ListMultiModel category: 'UI-Base-Morphs'!
+ListModel subclass: #ListMultiModel
+	instanceVariableNames: 'listSelections'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Base-Morphs'!
+!classDefinition: 'ListMultiModel class' category: 'UI-Base-Morphs'!
+ListMultiModel class
+	instanceVariableNames: ''!
+
 !classDefinition: #ValueHolder category: 'UI-Base-Morphs'!
 Object subclass: #ValueHolder
 	instanceVariableNames: 'action property'
@@ -124,6 +134,9 @@ I am a LineMorph which has a "pointer" morph which I maintain in position at my 
 !ListModel commentStamp: 'hlsf 4/20/2023 14:30:41' prior: 0!
 I am a model presenting a list of objects. 
 I am used with PluggableListOfMorph or any other pluggable widget handling list.!
+
+!ListMultiModel commentStamp: '<historical>' prior: 0!
+Several items from my collection can be selected.!
 
 !WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 4/24/2015 08:01'!
 buttonNamesShown
@@ -1127,9 +1140,11 @@ listIndex: index
 	"Inform any interested view we changed the selected item"
 	self triggerEvent: #listSelectionChanged with: self! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/15/2022 10:12:32'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:14:52'!
 selectedItem
-	^ collection at: selectedIndex ! !
+	^ selectedIndex isZero
+		ifTrue: [nil ] 
+		ifFalse: [collection at: selectedIndex]! !
 
 !ListModel methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 14:42:09'!
 initialize
@@ -1141,6 +1156,40 @@ with: aCollection
 	^ self new ::
 		list: aCollection ;
 		yourself! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:58:57'!
+list: aCollection
+	super list: aCollection.
+	self clearSelections ! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 12:13:54'!
+listSelectionAt: index
+	^ listSelections at: index! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 12:14:04'!
+listSelectionAt: index put: value
+	^ listSelections at: index put: value! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:54:33'!
+selectedItems
+	| items |
+	items := OrderedCollection new.
+	1 to: collection size do: [:i | 
+		(listSelections at: i) ifTrue: [items add: (collection at: i)] ].
+	^ items! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:59:14'!
+selectedItems: indexes
+	self clearSelections.
+	indexes do: [:i | self listSelectionAt: i put: true].! !
+
+!ListMultiModel methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:58:34'!
+clearSelections
+	listSelections := Array new: collection size withAll: false! !
+
+!ListMultiModel methodsFor: 'copying' stamp: 'hlsf 4/21/2023 15:27:36'!
+postCopy
+	listSelections := listSelections copy! !
 
 !ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:07'!
 action: aBlock

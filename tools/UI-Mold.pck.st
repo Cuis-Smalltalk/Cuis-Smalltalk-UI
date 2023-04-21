@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 11:15:12 am'!
+'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 3:03:24 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 1!
+!provides: 'UI-Mold' 1 4!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
@@ -136,6 +136,16 @@ Field subclass: #SelectField
 SelectField class
 	instanceVariableNames: ''!
 
+!classDefinition: #SelectMultipleField category: 'UI-Mold'!
+SelectField subclass: #SelectMultipleField
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Mold'!
+!classDefinition: 'SelectMultipleField class' category: 'UI-Mold'!
+SelectMultipleField class
+	instanceVariableNames: ''!
+
 !classDefinition: #TextField category: 'UI-Mold'!
 Field subclass: #TextField
 	instanceVariableNames: ''
@@ -198,9 +208,17 @@ Widget is packed as follow:
 +------------------------+
 !
 
-!SelectField commentStamp: 'hlsf 4/20/2023 15:32:44' prior: 0!
-With selection from a list, there is no risk of misformed input. 
-input and value attributes both represent the index of the selected item in the list, there are redundant.!
+!SelectField commentStamp: 'hlsf 4/21/2023 14:11:43' prior: 0!
+Select an item from a given list. The list model is ListModel.
+With selection from a list, there is no risk of misformed input, therefore:
+- input is the index of the selected items, 0 for none
+- value is the selectedItem, nil for none!
+
+!SelectMultipleField commentStamp: '<historical>' prior: 0!
+User can select several items from the list. The list model is a ListMultiModel.
+With selection from a list, there is no risk of misformed input, therefore:
+- input represents a collection of indexes, from the selected items
+- value represents a collection of the selected items!
 
 !Mold commentStamp: '<historical>' prior: 0!
 This class is little more than a composite of Fields, where Fields do most of the work. 
@@ -593,7 +611,7 @@ validateInput
 			layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0)			].
 	self  highlightInputMorph ! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:35:27'!
+!Field methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:19:20'!
 validateUserConditions
 	| disinfected arguments |
 	disinfected := [ self disinfect: input ] on: Error do: [ :ex | nil ].
@@ -838,16 +856,26 @@ inputMorphInstance
 input: anIndex
 	input := anIndex ! !
 
-!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 15:55:00'!
+!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:32:05'!
 on: accessor of: model
 	"̈Copy the model, so it is only saved at validation time, not at operating time"
 	listModel := model copy.
 	"Update the inputMoprh accordingly "
 	self inputMorph model: listModel listGetter: #list indexGetter: #listIndex indexSetter: #listIndex: mainView: nil menuGetter: nil keystrokeAction: nil.
-	value := input := listModel listIndex.
-	self inputMorphContents: input.
+	input := listModel listIndex.
+	value := listModel selectedItem.
 	" Save operation done on the original model "
 	self callback: [:val | model perform: (accessor, ':') asSymbol with: val]! !
+
+!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:34:58'!
+save
+	callback 	ifNotNil: [callback value: input ]! !
+
+!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:40:36'!
+value: theSelectedItem
+"The model I will present an object "
+	value := theSelectedItem. 
+	self valueChanged! !
 
 !SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 15:58:32'!
 highlightInputMorph
@@ -860,20 +888,65 @@ inputMorphContents
 " The inputMorph had already changed the listModel, ask its listIndex "
 	^ listModel listIndex ! !
 
-!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 15:55:24'!
+!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/21/2023 14:36:36'!
 inputMorphContents: index
 " Inform the index of the select item in the list model just changed "
-	listModel changed: #listIndex! !
+"	listModel changed: #listIndex"
+	self shouldNotHappen ! !
 
-!SelectField methodsFor: 'private' stamp: 'hlsf 4/20/2023 16:01:09'!
+!SelectField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:15:55'!
 addRequirementCondition
-	self addCondition: [:userInput :theValue| isRequired not or: [	theValue isZero not]]
+	self addCondition: [:userInput :theValue| isRequired not or: [	userInput isZero not]]
 		labeled: 'Field required.'! !
 
-!SelectField methodsFor: 'private' stamp: 'hlsf 4/20/2023 15:28:37'!
+!SelectField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:03:00'!
+disinfect: anIndex
+"Return the selected item"
+	^ listModel selectedItem! !
+
+!SelectField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:42:39'!
 infect: object
-" When index is zero, no item selected "	
-	^object ifNil: [0]! !
+" When object is nil index is zero, otherwise return its index"	
+"	^ listModel listIndex"
+	self shouldNotHappen ! !
+
+!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:55:24'!
+addRequirementCondition
+	self addCondition: [:userInput :theValue| isRequired not or: [	userInput isEmpty]]
+		labeled: 'Field required.'! !
+
+!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:39:02'!
+disinfect: indexes
+"Return the selected item"
+	^ indexes collect: [:i | listModel list at: i]! !
+
+!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 4/21/2023 14:29:34'!
+inputMorphContents
+" Return the indexes of the selected item "
+	| indexes |
+	indexes := OrderedCollection new.
+	1 to: listModel list size do: [:i | (listModel listSelectionAt: i) ifTrue: [indexes add: i]].
+	^ indexes
+	! !
+
+!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 4/21/2023 14:36:21'!
+inputMorphContents: selectedIndexes
+	self shouldNotHappen ! !
+
+!SelectMultipleField methodsFor: 'initialization' stamp: 'hlsf 4/21/2023 12:40:19'!
+inputMorphInstance
+	^ PluggableListMorphOfMany new! !
+
+!SelectMultipleField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 13:00:29'!
+on: accessor of: model
+	"̈Copy the model, so it is only saved at validation time, not at operating time"
+	listModel := model copy.
+	"Update the inputMoprh accordingly "
+	self inputMorph model: listModel listGetter: #list primarySelectionGetter: #listSelectionAt: primarySelectionSetter: #listSelectionAt:put: listSelectionGetter: #listIndex listSelectionSetter: #listIndex: mainView: nil menuGetter: nil keystrokeAction: nil.
+	value := input := listModel list .
+	self inputMorphContents: input.
+	" Save operation done on the original model "
+	self callback: [:val | model perform: (accessor, ':') asSymbol with: val]! !
 
 !TextField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 14:23:43'!
 inputMorphInstance
@@ -979,6 +1052,10 @@ percentageField: anErrorMessage
 !Mold methodsFor: 'fields'!
 selectField
 	^fields add: SelectField new! !
+
+!Mold methodsFor: 'fields' stamp: 'hlsf 4/21/2023 15:03:17'!
+selectMultiField
+	^fields add: SelectMultipleField new! !
 
 !Mold methodsFor: 'fields' stamp: 'hlsf 4/20/2023 09:25:05'!
 stringField
@@ -1106,6 +1183,27 @@ four
 		beRequired.
 	mold openDialog: 'Example Four'! !
 
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/21/2023 15:02:49'!
+nine
+"
+	MoldExample nine
+"
+ | mold  |
+	mold := Mold new.
+	(mold selectMultiField)
+		label: 'Période 1';
+		on: #selectedItems of: (ListMultiModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`:: listIndex: 3) inspect;
+		beRequired.
+	(mold selectMultiField)
+		label: 'Période 2';
+		on: #selectedItems of: (ListMultiModel with: `{'H1' . 'H2' . 'H3' . 'H4' . 'H5'}`:: listIndex: 0);
+		beRequired;
+		addCondition: [:input :value | input size >= 3] labeled: 'Select at least 3 items'.
+	(mold selectMultiField)
+		label: 'Période 3';
+		on: #selectedItems of: (ListMultiModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
+	mold openDialog: 'Example Nine'! !
+
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:04:02'!
 one
 "
@@ -1129,7 +1227,7 @@ one
 		beRequired.
 	mold openDialog: 'Example One' ! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:24:16'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/21/2023 14:33:58'!
 seven
 "
 	MoldExample seven
@@ -1138,13 +1236,13 @@ seven
 	mold := Mold new.
 	(mold selectField)
 		label: 'Période 1';
-		on: #listIndex of: (ListModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`);
+		on: #listIndex of: (ListModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`:: listIndex: 3) inspect;
 		beRequired.
 	(mold selectField)
 		label: 'Période 2';
-		on: #listIndex of: (ListModel with: `{'H1' . 'H2' . 'H3' . 'H4' . 'H5'}`);
+		on: #listIndex of: (ListModel with: `{'H1' . 'H2' . 'H3' . 'H4' . 'H5'}`:: listIndex: 0);
 		beRequired;
-		addCondition: [:value | value = 4] labeled: 'Select H4 to validate.'.
+		addCondition: [:input :value | value = 'H4'] labeled: 'Select H4 to validate.'.
 	(mold selectField)
 		label: 'Période 3';
 		on: #listIndex of: (ListModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
