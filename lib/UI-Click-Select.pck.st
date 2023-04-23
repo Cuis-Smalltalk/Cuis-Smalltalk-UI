@@ -2,7 +2,7 @@
 'Description I supply simple click-select elements.'!
 !provides: 'UI-Click-Select' 1 39!
 !requires: 'Cuis-Base' 60 5031 nil!
-!requires: 'UI-Shapes' 1 11 nil!
+!requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
 
 
