@@ -1,59 +1,90 @@
-'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 3:03:24 pm'!
+'From Cuis 6.0 [latest update: #5772] on 23 April 2023 at 4:14:23 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 4!
+!provides: 'UI-Mold' 1 7!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
+SystemOrganization addCategory: 'UI-Mold-Test'!
 
 
-!classDefinition: #DateFieldTest category: 'UI-Mold'!
+!classDefinition: #CheckboxFieldTest category: 'UI-Mold-Test'!
+TestCase subclass: #CheckboxFieldTest
+	instanceVariableNames: 'field model'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Mold-Test'!
+!classDefinition: 'CheckboxFieldTest class' category: 'UI-Mold-Test'!
+CheckboxFieldTest class
+	instanceVariableNames: ''!
+
+!classDefinition: #DateFieldTest category: 'UI-Mold-Test'!
 TestCase subclass: #DateFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Mold'!
-!classDefinition: 'DateFieldTest class' category: 'UI-Mold'!
+	category: 'UI-Mold-Test'!
+!classDefinition: 'DateFieldTest class' category: 'UI-Mold-Test'!
 DateFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #FieldTest category: 'UI-Mold'!
+!classDefinition: #FieldTest category: 'UI-Mold-Test'!
 TestCase subclass: #FieldTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Mold'!
-!classDefinition: 'FieldTest class' category: 'UI-Mold'!
+	category: 'UI-Mold-Test'!
+!classDefinition: 'FieldTest class' category: 'UI-Mold-Test'!
 FieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatFieldTest category: 'UI-Mold'!
+!classDefinition: #FloatFieldTest category: 'UI-Mold-Test'!
 TestCase subclass: #FloatFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Mold'!
-!classDefinition: 'FloatFieldTest class' category: 'UI-Mold'!
+	category: 'UI-Mold-Test'!
+!classDefinition: 'FloatFieldTest class' category: 'UI-Mold-Test'!
 FloatFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #IntegerFieldTest category: 'UI-Mold'!
+!classDefinition: #IntegerFieldTest category: 'UI-Mold-Test'!
 TestCase subclass: #IntegerFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Mold'!
-!classDefinition: 'IntegerFieldTest class' category: 'UI-Mold'!
+	category: 'UI-Mold-Test'!
+!classDefinition: 'IntegerFieldTest class' category: 'UI-Mold-Test'!
 IntegerFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #PercentageFieldTest category: 'UI-Mold'!
+!classDefinition: #MultiselectFieldTest category: 'UI-Mold-Test'!
+TestCase subclass: #MultiselectFieldTest
+	instanceVariableNames: 'field model'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Mold-Test'!
+!classDefinition: 'MultiselectFieldTest class' category: 'UI-Mold-Test'!
+MultiselectFieldTest class
+	instanceVariableNames: ''!
+
+!classDefinition: #PercentageFieldTest category: 'UI-Mold-Test'!
 TestCase subclass: #PercentageFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'UI-Mold'!
-!classDefinition: 'PercentageFieldTest class' category: 'UI-Mold'!
+	category: 'UI-Mold-Test'!
+!classDefinition: 'PercentageFieldTest class' category: 'UI-Mold-Test'!
 PercentageFieldTest class
+	instanceVariableNames: ''!
+
+!classDefinition: #SelectFieldTest category: 'UI-Mold-Test'!
+TestCase subclass: #SelectFieldTest
+	instanceVariableNames: 'field model'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Mold-Test'!
+!classDefinition: 'SelectFieldTest class' category: 'UI-Mold-Test'!
+SelectFieldTest class
 	instanceVariableNames: ''!
 
 !classDefinition: #Field category: 'UI-Mold'!
@@ -242,6 +273,42 @@ To use a Mold, you typically create and store it in an instance variable of your
 
 !
 
+!CheckboxFieldTest methodsFor: 'setUp/tearDown' stamp: 'hlsf 4/23/2023 12:27:50'!
+setUp
+	model := ValueHolder with: true.
+	field := CheckboxField new
+		on: #propertyValue of: model.! !
+
+!CheckboxFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 12:57:50'!
+testCondition
+	"Without condition, always valid"
+	field validateInput.	
+	self assert: field isValid.
+	field inputMorphContents: false;
+		validateInput.
+	self assert: field isValid.
+	
+	field addCondition: [:input :value | input not] labeled: 'Answer must be false'.
+	field validateInput.
+	self assert: field isValid.
+	field inputMorphContents: true;
+		validateInput.
+	self deny: field isValid.
+	! !
+
+!CheckboxFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 12:54:53'!
+testState
+	self assert: field value.
+	field inputMorphContents: false;
+		validateInput.
+	"field to false, model still true"
+	self deny: field value.
+	self assert: model propertyValue.
+	"Model only updated at #save message sent."
+	field save.
+	self deny: model propertyValue.
+	! !
+
 !DateFieldTest methodsFor: 'running' stamp: 'KenTreis 8/9/2010 18:50'!
 setUp
 	field := DateField new! !
@@ -404,6 +471,86 @@ testInput
 	field validateInput.
 	self deny: field isValid! !
 
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 15:58:44'!
+setUp
+	model := ListMultiModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`:: selectedIndexes: #(1).
+	field := SelectMultipleField new
+		on: #selectedIndexes of: model;
+		beRequired ! !
+
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 16:12:12'!
+testConditon1
+	field addCondition: [:input :value | input size >= 2]
+		 labeled: 'Select at least two elements'.
+	field validateInput.
+	self deny: field isValid.
+	""
+	field inputMorphContents: #(1 3);
+		validateInput.
+	self assert: field isValid.
+	""
+	field inputMorphContents: #(2 5 3);
+		validateInput.
+	self assert: field isValid.
+	""
+	field inputMorphContents: #();
+		validateInput.
+	self deny: field isValid.
+	! !
+
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 16:14:04'!
+testConditon2
+	field addCondition: [:input :value | value includesAllOf: #('P5' 'P3' 'P1')]
+		 labeled: 'Select at least P1, P3 and P5'.
+	field validateInput.
+	self deny: field isValid.
+	""
+	field inputMorphContents: #(1 3);
+		validateInput.
+	self deny: field isValid.
+	""
+	field inputMorphContents: #(1 5 3);
+		validateInput.
+	self assert: field isValid.
+	""
+	field inputMorphContents: #(5 2 3 1);
+		validateInput.
+	self assert: field isValid.
+	""
+	field inputMorphContents: #(5 2 1);
+		validateInput.
+	self deny: field isValid.
+! !
+
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 16:02:19'!
+testState1
+	field validateInput.
+	self assert: field input equals: #(1) asOrderedCollection.
+	self assert: field value equals:  #('P1') asOrderedCollection .
+	self assert: field isValid.
+	field inputMorphContents: #();
+		validateInput.
+	self deny: field isValid.
+	"Model not changed"
+	self assert: model selectedItems equals:  #('P1') asOrderedCollection .
+	self assert: model selectedIndexes equals: #(1) asOrderedCollection.
+! !
+
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 16:07:51'!
+testState2
+	field inputMorphContents: #(3 5);
+		validateInput.
+	self assert: field isValid.
+	self assert: field input equals: #(3 5) asOrderedCollection.
+	self assert: field value equals:  #('P3' 'P5') asOrderedCollection .
+	"Model unchanged"
+	self assert: model selectedItems equals:  #('P1') asOrderedCollection .
+	self assert: model selectedIndexes equals: #(1) asOrderedCollection.
+	"Model updated"
+	field save.
+	self assert: model selectedItems equals:  #('P3' 'P5') asOrderedCollection .
+	self assert: model selectedIndexes equals: #(3 5) asOrderedCollection.! !
+
 !PercentageFieldTest methodsFor: 'running' stamp: 'KenTreis 8/5/2010 17:09'!
 assertValueEquals: aFloat within: aTolerance
 	self assert: (field value - aFloat) abs < aTolerance! !
@@ -438,6 +585,58 @@ testInput
 !PercentageFieldTest methodsFor: 'initialize-release'!
 setUp
 	field := PercentageField new! !
+
+!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 14:06:11'!
+testCondition1
+	field addCondition: [:input :value | 		input = 1 and: [value = 'P1'] ]		 labeled: 'First element'.
+	field validateInput.
+	self assert: field isValid.
+	""
+	field inputMorphContents: 3; 
+		validateInput.
+	self deny: field isValid! !
+
+!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 14:06:45'!
+testCondition2
+	field addCondition: [:input :value | 		input = 3 and: [value = 'P3'] ]		 labeled: 'Third element'.
+	field validateInput.
+	self deny: field isValid.
+	""
+	field inputMorphContents: 3; 
+		validateInput.
+	self assert: field isValid! !
+
+!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 14:02:05'!
+testState
+	field validateInput.
+	self assert: field isValid.
+	self assert: field input equals: 1.
+	self assert: field value equals: 'P1'.
+	""
+	field beRequired;
+		inputMorphContents: 0;
+		validateInput.
+	self deny: field isValid.! !
+
+!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 14:02:34'!
+testStateModel
+	field inputMorphContents: 2;
+		validateInput.
+	self assert: field isValid.
+	self assert: field input equals: 2.
+	self assert: field value equals: 'P2'.
+	self assert: model listIndex ~= 2.
+	self assert: model selectedItem ~= 'P2'.
+	field save.
+	self assert: model listIndex equals: 2.
+	self assert: model selectedItem equals: 'P2'.
+! !
+
+!SelectFieldTest methodsFor: 'setUp/tearDown' stamp: 'hlsf 4/23/2023 13:00:29'!
+setUp
+	model := ListModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`.
+	field := SelectField new
+		on: #listIndex of: model.! !
 
 !Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:24:09'!
 errorsColumn
@@ -675,9 +874,9 @@ highlightInputMorph
 inputMorphContents
 	^ self inputMorph isSelected! !
 
-!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 19:53:01'!
-inputMorphContents: anInput
-	self inputMorph isSelected: anInput ! !
+!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 4/23/2023 12:20:50'!
+inputMorphContents: anInputBoolean
+	self inputMorph isSelected: anInputBoolean! !
 
 !CheckboxField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 19:49:36'!
 inputMorphInstance
@@ -888,11 +1087,11 @@ inputMorphContents
 " The inputMorph had already changed the listModel, ask its listIndex "
 	^ listModel listIndex ! !
 
-!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/21/2023 14:36:36'!
+!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/23/2023 15:27:19'!
 inputMorphContents: index
 " Inform the index of the select item in the list model just changed "
-"	listModel changed: #listIndex"
-	self shouldNotHappen ! !
+	listModel listIndex: index
+! !
 
 !SelectField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:15:55'!
 addRequirementCondition
@@ -910,41 +1109,38 @@ infect: object
 "	^ listModel listIndex"
 	self shouldNotHappen ! !
 
-!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:55:24'!
+!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/21/2023 15:21:29'!
 addRequirementCondition
-	self addCondition: [:userInput :theValue| isRequired not or: [	userInput isEmpty]]
+	self addCondition: [:userInput :theValue| isRequired not or: [	userInput isEmpty not]]
 		labeled: 'Field required.'! !
 
-!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:39:02'!
+!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/23/2023 16:04:41'!
 disinfect: indexes
 "Return the selected item"
-	^ indexes collect: [:i | listModel list at: i]! !
+	^listModel selectedItems! !
 
-!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 4/21/2023 14:29:34'!
+!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 4/23/2023 15:47:16'!
 inputMorphContents
 " Return the indexes of the selected item "
-	| indexes |
-	indexes := OrderedCollection new.
-	1 to: listModel list size do: [:i | (listModel listSelectionAt: i) ifTrue: [indexes add: i]].
-	^ indexes
+	^ listModel selectedIndexes 
 	! !
 
-!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 4/21/2023 14:36:21'!
+!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 4/23/2023 15:43:18'!
 inputMorphContents: selectedIndexes
-	self shouldNotHappen ! !
+	listModel selectedIndexes: selectedIndexes! !
 
 !SelectMultipleField methodsFor: 'initialization' stamp: 'hlsf 4/21/2023 12:40:19'!
 inputMorphInstance
 	^ PluggableListMorphOfMany new! !
 
-!SelectMultipleField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 13:00:29'!
+!SelectMultipleField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 15:10:18'!
 on: accessor of: model
 	"̈Copy the model, so it is only saved at validation time, not at operating time"
 	listModel := model copy.
 	"Update the inputMoprh accordingly "
-	self inputMorph model: listModel listGetter: #list primarySelectionGetter: #listSelectionAt: primarySelectionSetter: #listSelectionAt:put: listSelectionGetter: #listIndex listSelectionSetter: #listIndex: mainView: nil menuGetter: nil keystrokeAction: nil.
-	value := input := listModel list .
-	self inputMorphContents: input.
+	self inputMorph model: listModel listGetter: #list primarySelectionGetter: #listIndex primarySelectionSetter: #listIndex: listSelectionGetter:  #listSelectionAt: listSelectionSetter: #listSelectionAt:put: mainView: nil menuGetter: nil keystrokeAction: nil.
+	input := self inputMorphContents.
+	value := listModel selectedItems.
 	" Save operation done on the original model "
 	self callback: [:val | model perform: (accessor, ':') asSymbol with: val]! !
 
@@ -1113,7 +1309,7 @@ remove: aKey ifAbsent: exceptionBlock
 	field := self at: aKey.
 	fields remove: field ifAbsent: exceptionBlock! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 20:40:37'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 12:47:22'!
 eight
 "
 	MoldExample eight
@@ -1124,7 +1320,7 @@ eight
 		on: #propertyValue of: ValueHolder new;
 		label: 'Your Name';
 		beRequired;
-		addCondition: [ :val | val includesSubString: ' ']
+		addCondition: [ :input | input includesSubString: ' ']
 			labeled: 
 				[ :wrong | 
 				'Please enter your first and last name. I couldn''t find a space in {1}' format:  {wrong} ].
@@ -1147,8 +1343,8 @@ eight
 	mold checkboxField
 		on: #propertyValue of: (ValueHolder with: true);
 		label: 'Sign for the newsletter';
-		addCondition: [ :val | fullname isValid not or: [ val not or: [ fullname value first = $K ] ] ]
-			labeled: 'Sorry, you may not opt out of our spam unless your first name starts with K.'.
+		addCondition: [ :input | fullname isValid not or: [ input or: [ fullname value first = $K ] ] ]
+			labeled: 'Sorry, you may not opt out of our spam unless your name starts with K.'.
 	mold openDialog: 'Example Eight'! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 10:43:12'!
@@ -1183,7 +1379,7 @@ four
 		beRequired.
 	mold openDialog: 'Example Four'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/21/2023 15:02:49'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 15:43:27'!
 nine
 "
 	MoldExample nine
@@ -1192,11 +1388,11 @@ nine
 	mold := Mold new.
 	(mold selectMultiField)
 		label: 'Période 1';
-		on: #selectedItems of: (ListMultiModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`:: listIndex: 3) inspect;
+		on: #selectedItems of: (ListMultiModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`:: selectedIndexes: #(1 3));
 		beRequired.
 	(mold selectMultiField)
 		label: 'Période 2';
-		on: #selectedItems of: (ListMultiModel with: `{'H1' . 'H2' . 'H3' . 'H4' . 'H5'}`:: listIndex: 0);
+		on: #selectedItems of: (ListMultiModel with: `{'H1' . 'H2' . 'H3' . 'H4' . 'H5'}`);
 		beRequired;
 		addCondition: [:input :value | input size >= 3] labeled: 'Select at least 3 items'.
 	(mold selectMultiField)
