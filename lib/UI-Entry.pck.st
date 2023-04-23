@@ -3,7 +3,7 @@
 !provides: 'UI-Entry' 1 43!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
-!requires: 'UI-Base-Morphs' 1 11 nil!
+!requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: 'UI-Entry'!
 
 

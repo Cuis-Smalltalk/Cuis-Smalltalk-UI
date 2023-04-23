@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5772] on 23 April 2023 at 4:21:01 pm'!
+'From Cuis 6.0 [latest update: #5772] on 23 April 2023 at 4:25:11 pm'!
 'Description '!
-!provides: 'UI-Core' 1 0!
+!provides: 'UI-Core' 1 1!
 SystemOrganization addCategory: 'UI-Core'!
 
 
@@ -32,6 +32,16 @@ Object subclass: #ListModel
 	category: 'UI-Core'!
 !classDefinition: 'ListModel class' category: 'UI-Core'!
 ListModel class
+	instanceVariableNames: ''!
+
+!classDefinition: #ListMultiModel category: 'UI-Core'!
+ListModel subclass: #ListMultiModel
+	instanceVariableNames: 'listSelections'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Core'!
+!classDefinition: 'ListMultiModel class' category: 'UI-Core'!
+ListMultiModel class
 	instanceVariableNames: ''!
 
 !classDefinition: #ValueHolder category: 'UI-Core'!
@@ -68,6 +78,9 @@ I display at least 3 characters.!
 !ListModel commentStamp: 'hlsf 4/20/2023 14:30:41' prior: 0!
 I am a model presenting a list of objects. 
 I am used with PluggableListOfMorph or any other pluggable widget handling list.!
+
+!ListMultiModel commentStamp: '<historical>' prior: 0!
+Several items from my collection can be selected.!
 
 !WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 4/24/2015 08:01'!
 buttonNamesShown
@@ -597,6 +610,52 @@ with: aCollection
 	^ self new ::
 		list: aCollection ;
 		yourself! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:58:57'!
+list: aCollection
+	super list: aCollection.
+	self clearSelections ! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 12:13:54'!
+listSelectionAt: index
+	^ listSelections at: index! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/23/2023 15:41:29'!
+listSelectionAt: index put: value
+	listSelections at: index put: value.
+	self changed: #allSelections! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/23/2023 15:51:28'!
+selectedIndexes
+	| indexes |
+	indexes := OrderedCollection new.
+	1 to: collection size do: [:i | (listSelections at: i) ifTrue: [indexes add: i]].
+	^ indexes
+	! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/23/2023 15:41:45'!
+selectedIndexes: indexes
+	self clearSelections.
+	indexes do: [:i | 		listSelections at: i put: true].
+	self changed: #allSelections! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:54:33'!
+selectedItems
+	| items |
+	items := OrderedCollection new.
+	1 to: collection size do: [:i | 
+		(listSelections at: i) ifTrue: [items add: (collection at: i)] ].
+	^ items! !
+
+!ListMultiModel methodsFor: 'private' stamp: 'hlsf 4/23/2023 15:35:24'!
+clearSelections
+	listSelections := Array new: collection size withAll: false.
+	self listIndex: 0.
+	self changed: #allSelections! !
+
+!ListMultiModel methodsFor: 'copying' stamp: 'hlsf 4/21/2023 15:27:36'!
+postCopy
+	listSelections := listSelections copy! !
 
 !ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:07'!
 action: aBlock

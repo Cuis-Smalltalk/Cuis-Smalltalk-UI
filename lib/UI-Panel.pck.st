@@ -3,7 +3,7 @@
 than SystemWindows.'!
 !provides: 'UI-Panel' 1 58!
 !requires: 'Cuis-Base' 60 5588 nil!
-!requires: 'UI-Base-Morphs' 1 11 nil!
+!requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: 'UI-Panel'!
 
