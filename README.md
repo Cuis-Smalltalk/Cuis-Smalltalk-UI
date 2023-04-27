@@ -26,15 +26,6 @@ Feature require: 'UI-Tools'.
 ```
 
 ## UI-Components Packages
-
-### UI-Base-Morphs
-- WindowTitleMorph
-- SqueezeLabelMorph
-- EllipseMorph
-- FrameMorph
-- LineMorph
-- PointerLineMorph
-
 ### UI-Click-Select
 - MultiMenuSelectMenu
 - PluggableCheckboxMorph
@@ -44,6 +35,14 @@ Feature require: 'UI-Tools'.
 - RadioButtonMorph
 - PluggableListOfMorph
 - DropDownButtonMorph
+
+### UI-Core
+Model and helper classes.
+- ListModel
+- ListMultiModel
+- ValueHolder
+- WindowTitleMorph
+- SqueezeLabelMorph
 
 ### UI-DragAndDrop
 - SignMorph
@@ -70,7 +69,6 @@ Feature require: 'UI-Tools'.
 - PositiveFloatEntryPanel
 - StringEntryPanel
 - PluggableScrollBar
-- ValueHolder
 - WizardPanel
 
 ### UI-Widgets
@@ -82,27 +80,16 @@ Feature require: 'UI-Tools'.
 - WaitSpinner
 - WheelMorph
 
-### UI-Palette
-- ImagePickerPanel
-- PickAColorPalette
-- PickAnIconPalette
-- PickALargerIconPalette
-- PaletteLayoutMorph
-- InnerPluggableImagePalette
-- PluggableImagePalette
-
-### UI-Shapes
-- BezierQuadraticMorph
-- BezierCubicMorph
-
 ## UI-Tools Packages
-
 ### UI-Color-Panel
 - ColorEditorPanel
 - ColorPalette
 - ColorPaneMorph
 - ColorEditorModel
 - ColorSliderMorph
+
+### UI-Edit-Lens
+- MorphEditLens
 
 ### UI-Layout-Panel
 - LayoutMorphEditPanel
@@ -120,14 +107,31 @@ Feature require: 'UI-Tools'.
 - MetaPropertyTransducer
 - MetaPropertyViaTest
 
-### UI-Mold
-An helper tool to describe  dialog panel for user input and validation.
+### UI-Mold, UI-Mold-Test
+A helper tool to describe dialog panel for user input and validation.
 
 ### UI-Packager
 Save combined Morph into a package which requires its dependent code.
 
-### UI-Edit-Lens
-- MorphEditLens
+### UI-Palette
+- ImagePickerPanel
+- PickAColorPalette
+- PickAnIconPalette
+- PickALargerIconPalette
+- PaletteLayoutMorph
+- InnerPluggableImagePalette
+- PluggableImagePalette
+
+### UI-Preference
+A dialog panel to edit system or application preferences
+
+### UI-Shapes
+- EllipseMorph
+- FrameMorph
+- LineMorph
+- PointerLineMorph
+- BezierQuadraticMorph
+- BezierCubicMorph
 
 ## Morph Visual Properties
 
