@@ -1,12 +1,11 @@
-'From Cuis 6.0 [latest update: #5093] on 14 March 2022 at 3:22:20 pm'!
+'From Cuis 6.0 [latest update: #5780] on 27 April 2023 at 4:24:28 pm'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 11!
+!provides: 'UI-Palette' 1 12!
 !requires: 'UI-Click-Select' 1 1 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 7 nil!
-!requires: 'Color-Extras' 1 9 nil!
-!requires: 'UI-Shapes' 1 11 nil!
+!requires: 'UI-Shapes' 1 29 nil!
 SystemOrganization addCategory: 'UI-Palette'!
 
 
@@ -106,21 +105,6 @@ See my class side.!
 I am just a way of getting an initializedInstance from the New Morph.. menu..  
 
 See my class side.!
-
-!PickAColorPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:24:49'!
-initializedInstance
-
-	^ super namedColors! !
-
-!PickALargerIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:27'!
-initializedInstance
-
-	^ super largerIcons ! !
-
-!PickAnIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:02'!
-initializedInstance
-
-	^ super namedIcons ! !
 
 !PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 5/11/2019 01:39:50'!
 aboutToGrab: aMorph
@@ -596,6 +580,11 @@ transducer: imageProcessor
 		yourself
 		! !
 
+!PickAColorPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:24:49'!
+initializedInstance
+
+	^ super namedColors! !
+
 !PickAColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:17'!
 categoryInNewMorphMenu
 
@@ -607,6 +596,11 @@ includeInNewMorphMenu
 	
 	^ true! !
 
+!PickALargerIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:27'!
+initializedInstance
+
+	^ super largerIcons ! !
+
 !PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:23'!
 categoryInNewMorphMenu
 
@@ -617,6 +611,11 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
+
+!PickAnIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:02'!
+initializedInstance
+
+	^ super namedIcons ! !
 
 !PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:30'!
 categoryInNewMorphMenu
