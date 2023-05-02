@@ -1,11 +1,21 @@
-'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 10:08:52 am'!
+'From Cuis 6.0 [latest update: #5781] on 2 May 2023 at 10:05:53 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 17!
+!provides: 'UI-Widgets' 1 19!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
+
+!classDefinition: #FilePreviewMorph category: 'UI-Widgets'!
+LayoutMorph subclass: #FilePreviewMorph
+	instanceVariableNames: 'image file selected'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Widgets'!
+!classDefinition: 'FilePreviewMorph class' category: 'UI-Widgets'!
+FilePreviewMorph class
+	instanceVariableNames: ''!
 
 !classDefinition: #LabelGroup category: 'UI-Widgets'!
 LayoutMorph subclass: #LabelGroup
@@ -140,6 +150,148 @@ See my Class side:
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
 
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 10/17/2021 10:50:08'!
+defaultBorderColor
+	^ `Color gray`! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 10/20/2021 22:17:52'!
+defaultBorderWidth
+	^ 6! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/1/2023 21:48:23'!
+defaultColor
+	^ `Color gray`! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/1/2023 17:13:25'!
+fileEntry
+	^ file! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:06:59'!
+fontToUse
+	^ (Preferences at: #standardMenuFont)! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/1/2023 18:41:38'!
+image: aForm
+	image := aForm! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 10/19/2021 20:54:22'!
+imageName
+	^ file baseName capitalized ! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/2/2023 21:56:57'!
+selected: aBoolean
+	selected := aBoolean.
+	self redrawNeeded ! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/2/2023 21:57:05'!
+toggleSelection
+	self selected: selected not! !
+
+!FilePreviewMorph methodsFor: 'drawing' stamp: 'hlsf 5/1/2023 21:35:19'!
+drawOn: aCanvas
+	self isSelected 
+		ifTrue: [borderColor := Theme current focusIndicator]
+		ifFalse: [borderColor := self defaultBorderColor].
+	aCanvas
+		fillRectangle: self morphLocalBounds
+		color: self defaultColor
+		borderWidth: borderWidth
+		borderStyleSymbol: #simple
+		baseColorForBorder: borderColor! !
+
+!FilePreviewMorph methodsFor: 'event handling testing' stamp: 'hlsf 10/17/2021 11:20:59'!
+handlesMouseDown: e
+	^ true! !
+
+!FilePreviewMorph methodsFor: 'event handling testing' stamp: 'hlsf 5/1/2023 17:39:49'!
+mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
+	aMouseButtonEvent hand 
+		waitForClicksOrDragOrSimulatedMouseButton2: self 
+		event: aMouseButtonEvent 
+		clkSel: #click:localPosition:
+		clkNHalf: nil
+		dblClkSel: #doubleClick:localPosition: 
+		dblClkNHalfSel: nil
+		tripleClkSel: nil
+		dragSel: ((self valueOfProperty: #allowsItemDrag) = true ifTrue: [ #dragEvent:localPosition: ])! !
+
+!FilePreviewMorph methodsFor: 'events' stamp: 'hlsf 5/1/2023 17:37:43'!
+doubleClick: event localPosition: position
+	self triggerEvent: #doubleClick with: self! !
+
+!FilePreviewMorph methodsFor: 'events' stamp: 'hlsf 5/2/2023 21:39:19'!
+mouseButton1Up: event localPosition: position
+	self triggerEvent: #selected with: self! !
+
+!FilePreviewMorph methodsFor: 'testing' stamp: 'hlsf 10/20/2021 16:11:09'!
+isSelected
+	^ selected ifNil: [selected _ false]! !
+
+!FilePreviewMorph methodsFor: 'initialization' stamp: 'hlsf 5/2/2023 20:54:34'!
+file: aFileEntry 		image: aForm	 buttons: buttons
+	| row |
+	file := aFileEntry.
+	self addMorph: (ImageMorph new image: aForm);
+		addMorphUseAll: (BoxedMorph new 
+			borderWidth: 0;
+			color: Color transparent; 
+			yourself).
+	row := LayoutMorph newRow separation: 2@0 :: 
+		adoptWidgetsColor: self defaultColor.
+	row addMorph: (SqueezeLabelMorph contents: self imageName).		
+	buttons ifNotNil: [ 
+		buttons do: [: quickButton | row addMorph: quickButton] ].
+	self addMorphKeepMorphHeight: row.
+	! !
+
+!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2023 19:16:26'!
+file: aFileEntry image: aForm
+	^ self 	file: aFileEntry image: aForm buttons: nil! !
+
+!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2023 19:16:10'!
+file: aFileEntry image: aForm buttons: buttons
+	^ self newColumn
+		file: aFileEntry 
+		image: aForm 
+		buttons: buttons! !
+
+!FilePreviewMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 3/15/2022 21:33:41'!
+includeInNewMorphMenu
+	^ false! !
+
+!FilePreviewMorph class methodsFor: 'examples' stamp: 'hlsf 5/2/2023 22:04:42'!
+example1
+"
+	self example1 openInWorld
+"
+	| pallet forms buttons |
+	pallet := LayoutMorph newRow .
+	forms := (Theme content 	from: 'Theme' 	get: {'16x16'. 'places'}) asDictionary.
+	forms  keysAndValuesDo: [:aName :aForm | | preview |
+		buttons :=	 OrderedCollection new.
+		buttons add: (PluggableButtonMorph 
+			model: Switch newOff 			stateGetter: #isOn 		action: #switch ::
+			icon: aForm ;
+			setBalloonText: 'A switch button.';
+			yourself).
+		buttons add: (PluggableButtonMorph 
+			model: Switch newOff 			stateGetter: nil 		action: #switch ::
+			icon: Theme current deleteIcon ;
+			setBalloonText: 'Delete me.';
+			yourself).
+
+		preview := FilePreviewMorph 
+			file: '/tmp' asDirectoryEntry // aName 
+			image: (aForm magnifyTo: 150@100)
+			buttons: buttons.
+		preview when: #selected send: #toggleSelection to: preview .
+		preview when: #doubleClick send: #removeMorph: to: pallet .
+		pallet addMorph: preview].
+	^ pallet
+	
+	
+	! !
+
 !LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:18'!
 defaultColor
 
@@ -235,7 +387,7 @@ drawOn: canvas
 		ifFalse: [self drawMyShapeOn: canvas with: self color].
 	icon ifNotNil: [canvas image: icon at: (extent - icon extent // 2)]! !
 
-!ButtonMorph class methodsFor: 'example' stamp: 'hlsf 4/21/2023 09:25:00'!
+!ButtonMorph class methodsFor: 'example' stamp: 'hlsf 5/1/2023 21:05:00'!
 example
 "
 	 ButtonMorph example 
@@ -250,7 +402,7 @@ example
 		selectedColor: (Color fromHexString: '#ffd700');
 		borderColor: (Color fromHexString: '#0057b7') muchDarker;
 		borderWidth: 2;
-		morphExtent: Theme current switchIcon extent * 2;
+		morphExtent: Theme current switchIcon extent * 1.5;
 		openInWorld! !
 
 !WheelMorph methodsFor: 'accessing'!

@@ -76,6 +76,7 @@ Model and helper classes.
 - DropDownChevronMorph
 - CircularToolbarMorph
 - CircularSubToolbarMorph
+- FilePreviewMorph
 - LabelGroup
 - WaitSpinner
 - WheelMorph
