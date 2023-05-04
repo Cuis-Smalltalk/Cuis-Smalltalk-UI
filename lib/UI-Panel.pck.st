@@ -1,12 +1,22 @@
-'From Cuis 6.0 [latest update: #5781] on 3 May 2023 at 11:01:12 pm'!
+'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 9:43:41 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 59!
+!provides: 'UI-Panel' 1 60!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: 'UI-Panel'!
 
+
+!classDefinition: #DecoratedPane category: 'UI-Panel'!
+LayoutMorph subclass: #DecoratedPane
+	instanceVariableNames: 'title quickButtons'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'DecoratedPane class' category: 'UI-Panel'!
+DecoratedPane class
+	instanceVariableNames: ''!
 
 !classDefinition: #PluggableScrollBar category: 'UI-Panel'!
 ScrollBar subclass: #PluggableScrollBar
@@ -16,16 +26,6 @@ ScrollBar subclass: #PluggableScrollBar
 	category: 'UI-Panel'!
 !classDefinition: 'PluggableScrollBar class' category: 'UI-Panel'!
 PluggableScrollBar class
-	instanceVariableNames: ''!
-
-!classDefinition: #DecoratedPane category: 'UI-Panel'!
-PluggableMorph subclass: #DecoratedPane
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Panel'!
-!classDefinition: 'DecoratedPane class' category: 'UI-Panel'!
-DecoratedPane class
 	instanceVariableNames: ''!
 
 !classDefinition: #Panel category: 'UI-Panel'!
@@ -179,12 +179,12 @@ WizardPage class
 	instanceVariableNames: ''!
 
 
-!PluggableScrollBar commentStamp: '<historical>' prior: 0!
-I am a ScrollBar which can get new values from my model.!
-
 !DecoratedPane commentStamp: '<historical>' prior: 0!
 - I present morphs in a pane with optional scrollbars
 - I am decorated with a surounding thin line and quick buttons for actions in my model!
+
+!PluggableScrollBar commentStamp: '<historical>' prior: 0!
+I am a ScrollBar which can get new values from my model.!
 
 !Panel commentStamp: 'hlsf 4/8/2022 12:19:51' prior: 0!
 - I present morphs in a panel. (see buildMorphicWindow)
@@ -256,6 +256,68 @@ It emits event when
  - the user changes the page with the next and previous buttons
  - the user press apply and cancel
 !
+
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 16:02:50'!
+quickButtons: collection
+	quickButtons removeAllMorphs.
+	collection do: [:aButton | quickButtons addMorph: aButton ]! !
+
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 16:01:24'!
+title: aString
+	title contents: aString ! !
+
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 21:35:15'!
+initialize
+	| row |
+	super initialize.
+	self separation: 20@20.
+	title := LabelMorph new.
+	quickButtons := LayoutMorph newRow :: color: Color green; axisEdgeWeight: #rowRight.
+	row := LayoutMorph newRow.
+	row 
+		addMorph: title;
+		addMorphUseAll: (BoxedMorph new :: borderWidth: 0 ; color: Color red; yourself);
+		addMorph: quickButtons layoutSpec: LayoutSpec new .
+	self 	addMorphKeepMorphHeight: row;
+		addMorphUseAll: (PluggableScrollPane new :: scroller: Sample01Star new).! !
+
+!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 21:41:27'!
+drawOn: canvas
+	super drawOn: canvas.
+	canvas strokeWidth: 1 color: Color black do: [
+		canvas moveTo: (title externalize: title morphPosition) + (0@20);
+			lineToX: extent x -10
+		
+		]! !
+
+!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 21:32:35'!
+requiresVectorCanvas
+	^ true! !
+
+!DecoratedPane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 19:39:33'!
+example1
+"
+	self example1 openInWorld
+"
+	| buttons |
+	buttons :=	 OrderedCollection new.
+	buttons add: (PluggableButtonMorph 
+		model: Switch newOff 			stateGetter: #isOn 		action: #switch ::
+		icon: Theme current openIcon ;
+		setBalloonText: 'A switch button.';
+		yourself).
+	buttons add: (PluggableButtonMorph 
+		model: Switch newOff 			stateGetter: nil 		action: #switch ::
+		icon: Theme current deleteIcon ;
+		setBalloonText: 'Delete me.';
+		yourself).
+	^ DecoratedPane new :: 
+		title: 'Recent Documents';
+		quickButtons: buttons! !
+
+!DecoratedPane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 19:42:24'!
+new
+	^ self newColumn ! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
 fontPreferenceChanged
