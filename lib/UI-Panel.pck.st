@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 9:43:41 pm'!
+'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 10:24:35 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 60!
+!provides: 'UI-Panel' 1 61!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -266,14 +266,14 @@ quickButtons: collection
 title: aString
 	title contents: aString ! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 21:35:15'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 22:21:51'!
 initialize
 	| row |
 	super initialize.
 	self separation: 20@20.
 	title := LabelMorph new.
 	quickButtons := LayoutMorph newRow :: color: Color green; axisEdgeWeight: #rowRight.
-	row := LayoutMorph newRow.
+	row := LayoutMorph newRow :: separation: 2@0.
 	row 
 		addMorph: title;
 		addMorphUseAll: (BoxedMorph new :: borderWidth: 0 ; color: Color red; yourself);
@@ -281,18 +281,30 @@ initialize
 	self 	addMorphKeepMorphHeight: row;
 		addMorphUseAll: (PluggableScrollPane new :: scroller: Sample01Star new).! !
 
-!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 21:41:27'!
+!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 22:20:38'!
 drawOn: canvas
+	| topRow startPosition |
+	topRow := self topRow.
+	startPosition := topRow morphPosition + (0 @topRow morphExtent y / 2).
 	super drawOn: canvas.
 	canvas strokeWidth: 1 color: Color black do: [
-		canvas moveTo: (title externalize: title morphPosition) + (0@20);
-			lineToX: extent x -10
-		
-		]! !
+		canvas moveTo: startPosition ;
+			lineToX: extent x - separation x;
+			rel_ArcTo: separation / 2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
+			lineToY: extent y - separation y;
+			rel_ArcTo: separation * (-1@1) / 2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
+			lineToX:  separation x;
+			rel_ArcTo: separation / -2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
+			lineToY: startPosition y + (separation y / 2);
+			rel_ArcTo: separation * (-1@1) / -2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true]! !
 
 !DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 21:32:35'!
 requiresVectorCanvas
 	^ true! !
+
+!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 21:47:33'!
+topRow
+	^ submorphs last! !
 
 !DecoratedPane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 19:39:33'!
 example1
