@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5769] on 20 April 2023 at 12:12:57 pm'!
+'From Cuis 6.0 [latest update: #5781] on 3 May 2023 at 11:01:12 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 58!
+!provides: 'UI-Panel' 1 59!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -16,6 +16,16 @@ ScrollBar subclass: #PluggableScrollBar
 	category: 'UI-Panel'!
 !classDefinition: 'PluggableScrollBar class' category: 'UI-Panel'!
 PluggableScrollBar class
+	instanceVariableNames: ''!
+
+!classDefinition: #DecoratedPane category: 'UI-Panel'!
+PluggableMorph subclass: #DecoratedPane
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'DecoratedPane class' category: 'UI-Panel'!
+DecoratedPane class
 	instanceVariableNames: ''!
 
 !classDefinition: #Panel category: 'UI-Panel'!
@@ -171,6 +181,10 @@ WizardPage class
 
 !PluggableScrollBar commentStamp: '<historical>' prior: 0!
 I am a ScrollBar which can get new values from my model.!
+
+!DecoratedPane commentStamp: '<historical>' prior: 0!
+- I present morphs in a pane with optional scrollbars
+- I am decorated with a surounding thin line and quick buttons for actions in my model!
 
 !Panel commentStamp: 'hlsf 4/8/2022 12:19:51' prior: 0!
 - I present morphs in a panel. (see buildMorphicWindow)

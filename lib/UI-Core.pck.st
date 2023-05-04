@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5772] on 23 April 2023 at 4:25:11 pm'!
+'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 3:42:09 pm'!
 'Description '!
-!provides: 'UI-Core' 1 1!
+!provides: 'UI-Core' 1 2!
 SystemOrganization addCategory: 'UI-Core'!
 
 
@@ -16,7 +16,7 @@ WindowTitleMorph class
 
 !classDefinition: #SqueezeLabelMorph category: 'UI-Core'!
 LabelMorph subclass: #SqueezeLabelMorph
-	instanceVariableNames: 'minChars'
+	instanceVariableNames: 'minChars centered'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Core'!
@@ -426,6 +426,10 @@ example1
 " WindowTitleMorph example1 openInWorld "
 	^ self title: 'I am title for a window or a panel' buttonsNamed: self buttonNames! !
 
+!SqueezeLabelMorph methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 15:35:43'!
+centered: boolean
+	centered := boolean ! !
+
 !SqueezeLabelMorph methodsFor: 'accessing' stamp: 'KenD 10/26/2021 05:45:41'!
 minCharsToShow
 
@@ -437,7 +441,7 @@ minCharsToShow: numChars
 	
 	minChars := numChars max: 3! !
 
-!SqueezeLabelMorph methodsFor: 'drawing' stamp: 'KenD 12/20/2021 15:19:54'!
+!SqueezeLabelMorph methodsFor: 'drawing' stamp: 'hlsf 5/4/2023 15:36:37'!
 drawOn: aCanvas
 	"We draw a string within a border.
 	If not enough space, the string is squeezed.
@@ -465,9 +469,9 @@ drawOn: aCanvas
 "
 	].
 	excessWidth := (maxStringWidth - stringWidth) max: 0. 
-	(excessWidth > 0)
-	ifTrue: [ xOffset := borderWidth + (excessWidth / 2) ]
-	ifFalse: [ xOffset := borderWidth ].
+	(excessWidth > 0 and: [centered])
+		ifTrue: [ xOffset := borderWidth + (excessWidth / 2) ]
+		ifFalse: [ xOffset := borderWidth ].
 
 	self drawOn: aCanvas theString: fitString position: (xOffset @ borderWidth)
 ! !
@@ -515,12 +519,13 @@ minimumStringExtent
 	f _ self font.
 	^ (f widthOfString: (contents squeezedTo: minChars)) @ f lineSpacing! !
 
-!SqueezeLabelMorph methodsFor: 'initialization' stamp: 'KenD 12/20/2021 13:57:09'!
+!SqueezeLabelMorph methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 15:35:31'!
 initialize
 
 	self minCharsToShow: 3. "required for size calc by super"
 	super initialize.
-	self layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0).! !
+	self layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0).
+	centered := true! !
 
 !SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 05:52:29'!
 contents: aString font: aFont emphasis: emphasisCode minCharsToShow: numChars
