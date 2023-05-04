@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 3:43:05 pm'!
+'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 9:43:20 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 20!
+!provides: 'UI-Widgets' 1 21!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
@@ -227,11 +227,10 @@ mouseButton1Up: event localPosition: position
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!FilePreviewMorph methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 15:38:57'!
+!FilePreviewMorph methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 15:47:53'!
 file: aFileEntry 		image: aForm	 buttons: buttons
-	| row labelCentered|
+	| row |
 	file := aFileEntry.
-	labelCentered := buttons isNil.
 	self addMorph: (ImageMorph new image: aForm);
 		addMorphUseAll: (BoxedMorph new 
 			borderWidth: 0;
@@ -239,7 +238,7 @@ file: aFileEntry 		image: aForm	 buttons: buttons
 			yourself).
 	row := LayoutMorph newRow separation: 2@0 :: 
 		adoptWidgetsColor: self defaultColor.
-	row addMorph: (SqueezeLabelMorph contents: self imageName :: centered: labelCentered).		
+	row addMorph: (SqueezeLabelMorph contents: self imageName :: centered: buttons isNil).		
 	buttons ifNotNil: [ 
 		buttons do: [: quickButton | row addMorph: quickButton] ].
 	self addMorphKeepMorphHeight: row.
