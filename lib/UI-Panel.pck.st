@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 10:24:35 pm'!
+'From Cuis 6.0 [latest update: #5781] on 6 May 2023 at 2:31:40 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 61!
+!provides: 'UI-Panel' 1 63!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -257,6 +257,11 @@ It emits event when
  - the user press apply and cancel
 !
 
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/6/2023 09:58:02'!
+elasticMorph
+	"The elastic morph between the title and the quickbuttons "
+	^ self topRow submorphs second! !
+
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 16:02:50'!
 quickButtons: collection
 	quickButtons removeAllMorphs.
@@ -266,47 +271,48 @@ quickButtons: collection
 title: aString
 	title contents: aString ! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 22:21:51'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 21:47:33'!
+topRow
+	^ submorphs last! !
+
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/6/2023 14:25:40'!
 initialize
 	| row |
 	super initialize.
 	self separation: 20@20.
 	title := LabelMorph new.
-	quickButtons := LayoutMorph newRow :: color: Color green; axisEdgeWeight: #rowRight.
-	row := LayoutMorph newRow :: separation: 2@0.
+	quickButtons := LayoutMorph newRow :: axisEdgeWeight: #rowRight.
+	row := LayoutMorph newRow :: separation: 2@0; color: Color transparent.
 	row 
 		addMorph: title;
-		addMorphUseAll: (BoxedMorph new :: borderWidth: 0 ; color: Color red; yourself);
-		addMorph: quickButtons layoutSpec: LayoutSpec new .
+		addMorphUseAll: (BoxedMorph new :: borderWidth: 0 ; color: Color transparent; yourself);
+		addMorph: quickButtons layoutSpec: LayoutSpec keepMorphExtent .
 	self 	addMorphKeepMorphHeight: row;
 		addMorphUseAll: (PluggableScrollPane new :: scroller: Sample01Star new).! !
 
-!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 22:20:38'!
+!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 5/6/2023 10:14:55'!
 drawOn: canvas
-	| topRow startPosition |
-	topRow := self topRow.
-	startPosition := topRow morphPosition + (0 @topRow morphExtent y / 2).
+	|  startPosition endPosition |
+	endPosition := self topRow morphPosition + (0 @ self topRow morphExtent y / 2).
+	startPosition := self topRow externalize: self elasticMorph morphPosition  
+		+  (0 @ self elasticMorph morphExtent y / 2).
 	super drawOn: canvas.
 	canvas strokeWidth: 1 color: Color black do: [
-		canvas moveTo: startPosition ;
+		canvas moveTo: startPosition;
 			lineToX: extent x - separation x;
 			rel_ArcTo: separation / 2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
 			lineToY: extent y - separation y;
 			rel_ArcTo: separation * (-1@1) / 2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
 			lineToX:  separation x;
 			rel_ArcTo: separation / -2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
-			lineToY: startPosition y + (separation y / 2);
+			lineToY: endPosition y + (separation y / 2);
 			rel_ArcTo: separation * (-1@1) / -2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true]! !
 
-!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 21:32:35'!
+!DecoratedPane methodsFor: 'geometry testing' stamp: 'hlsf 5/4/2023 21:32:35'!
 requiresVectorCanvas
 	^ true! !
 
-!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 21:47:33'!
-topRow
-	^ submorphs last! !
-
-!DecoratedPane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 19:39:33'!
+!DecoratedPane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/6/2023 14:26:46'!
 example1
 "
 	self example1 openInWorld
@@ -324,7 +330,7 @@ example1
 		setBalloonText: 'Delete me.';
 		yourself).
 	^ DecoratedPane new :: 
-		title: 'Recent Documents';
+		title: 'A Label for the Pane';
 		quickButtons: buttons! !
 
 !DecoratedPane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 19:42:24'!
