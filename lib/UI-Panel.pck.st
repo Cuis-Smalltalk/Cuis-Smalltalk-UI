@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5781] on 6 May 2023 at 2:31:40 pm'!
+'From Cuis 6.0 [latest update: #5798] on 9 May 2023 at 9:49:08 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 63!
+!provides: 'UI-Panel' 1 64!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -10,7 +10,7 @@ SystemOrganization addCategory: 'UI-Panel'!
 
 !classDefinition: #DecoratedPane category: 'UI-Panel'!
 LayoutMorph subclass: #DecoratedPane
-	instanceVariableNames: 'title quickButtons'
+	instanceVariableNames: 'title quickButtons scrollPane'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -267,6 +267,11 @@ quickButtons: collection
 	quickButtons removeAllMorphs.
 	collection do: [:aButton | quickButtons addMorph: aButton ]! !
 
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/9/2023 21:36:23'!
+scroller: aMorph
+" the morph to insert into the scroll pane"
+	scrollPane scroller: aMorph ! !
+
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 16:01:24'!
 title: aString
 	title contents: aString ! !
@@ -275,22 +280,22 @@ title: aString
 topRow
 	^ submorphs last! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/6/2023 14:25:40'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/9/2023 21:35:47'!
 initialize
 	| row |
 	super initialize.
 	self separation: 20@20.
 	title := LabelMorph new.
-	quickButtons := LayoutMorph newRow :: axisEdgeWeight: #rowRight.
+	quickButtons := LayoutMorph newRow :: axisEdgeWeight: #rowRight; color: Color transparent.
 	row := LayoutMorph newRow :: separation: 2@0; color: Color transparent.
 	row 
 		addMorph: title;
 		addMorphUseAll: (BoxedMorph new :: borderWidth: 0 ; color: Color transparent; yourself);
-		addMorph: quickButtons layoutSpec: LayoutSpec keepMorphExtent .
-	self 	addMorphKeepMorphHeight: row;
-		addMorphUseAll: (PluggableScrollPane new :: scroller: Sample01Star new).! !
+		addMorph: quickButtons layoutSpec: (LayoutSpec proportionalWidth: 0 proportionalHeight: 0) .
+	self 	addMorph: row layoutSpec: (LayoutSpec proportionalHeight: 0);
+		addMorphUseAll: (scrollPane := PluggableScrollPane new).! !
 
-!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 5/6/2023 10:14:55'!
+!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 5/9/2023 21:31:45'!
 drawOn: canvas
 	|  startPosition endPosition |
 	endPosition := self topRow morphPosition + (0 @ self topRow morphExtent y / 2).
@@ -299,7 +304,8 @@ drawOn: canvas
 	super drawOn: canvas.
 	canvas strokeWidth: 1 color: Color black do: [
 		canvas moveTo: startPosition;
-			lineToX: extent x - separation x;
+			rel_LineTo: self elasticMorph morphWidth@0;
+			rel_MoveTo: quickButtons morphWidth @ 0;
 			rel_ArcTo: separation / 2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
 			lineToY: extent y - separation y;
 			rel_ArcTo: separation * (-1@1) / 2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
@@ -312,7 +318,7 @@ drawOn: canvas
 requiresVectorCanvas
 	^ true! !
 
-!DecoratedPane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/6/2023 14:26:46'!
+!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/9/2023 21:42:55'!
 example1
 "
 	self example1 openInWorld
@@ -321,19 +327,20 @@ example1
 	buttons :=	 OrderedCollection new.
 	buttons add: (PluggableButtonMorph 
 		model: Switch newOff 			stateGetter: #isOn 		action: #switch ::
-		icon: Theme current openIcon ;
-		setBalloonText: 'A switch button.';
+		icon: Theme current globeIcon ;
+		setBalloonText: 'Use GMT time zone';
 		yourself).
 	buttons add: (PluggableButtonMorph 
 		model: Switch newOff 			stateGetter: nil 		action: #switch ::
-		icon: Theme current deleteIcon ;
-		setBalloonText: 'Delete me.';
+		icon: Theme current clockIcon ;
+		setBalloonText: 'Set the time';
 		yourself).
 	^ DecoratedPane new :: 
 		title: 'A Label for the Pane';
-		quickButtons: buttons! !
+		quickButtons: buttons;
+		scroller: Sample09Clock new! !
 
-!DecoratedPane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/4/2023 19:42:24'!
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/4/2023 19:42:24'!
 new
 	^ self newColumn ! !
 
