@@ -57,6 +57,7 @@ Model and helper classes.
 
 ### UI-Panel
 - Panel
+- DecoratedPane
 - DialogPanel
 - EditPanel
 - PluggablePanel
