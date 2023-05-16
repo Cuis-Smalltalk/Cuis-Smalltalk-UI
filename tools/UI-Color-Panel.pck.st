@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5202] on 30 May 2022 at 12:41:20 pm'!
+'From Cuis 6.0 [latest update: #5799] on 16 May 2023 at 12:27:17 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 19!
+!provides: 'UI-Color-Panel' 1 20!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -98,12 +98,12 @@ The associated ColorPane has a Focus Color (x,y) at constant z.
 This pane shows the range of color of z at the focus point -- constant (x,y)
 !
 
-!ColorEditorPanel commentStamp: 'hlsf 12/29/2021 10:42:51' prior: 0!
+!ColorEditorPanel commentStamp: '<historical>' prior: 0!
 I present the ColorEditor UI
 
 Usage: 
 	ColorEditorPanel open.
-	ColorEditorPanel open: Color forestGreen.!
+	ColorEditorPanel openWithColor: Color forestGreen.!
 
 !ColorPalette commentStamp: '<historical>' prior: 0!
 I am just a way to get a Color palette.  See my class side.!
@@ -907,7 +907,7 @@ buildAlphaSwatch
 		morphPosition: 4@4 ;
 		setBalloonText: 
 'Drag:
-Color plus ˆ' .
+Color plus Î±' .
 	
 	^alphaFrame
 	! !
@@ -949,7 +949,7 @@ buildColorPaneColumn
 		addMorph: colorPane ;
 		addMorph: hexDisplayLayout; 
 		addMorph: alphaSlider ;
-		addMorph: (LabelMorph contents: 'transparent <-ˆ-> opaque') ;
+		addMorph: (LabelMorph contents: 'transparent <-Î±-> opaque') ;
 		axisEdgeWeight: #columnTop;
 		separation: 4;
 		color: Color transparent.
@@ -1100,7 +1100,7 @@ Closest Web Color' .
 		morphPosition: 4@4 ;
 		setBalloonText: 
 'Drag: 
-Color without ˆ' .
+Color without Î±' .
 
 	swatchLayout := LayoutMorph newRow.
 	^ swatchLayout 
@@ -1698,45 +1698,6 @@ colorSelectionMenu
 	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
 	(selectedIndex = 5)
 		ifTrue: [ ColorEditorPanel open].
-	((selectedIndex > 0) and: [selectedIndex < 5])
-		ifTrue: [ | pickerPanel savedExtent |
-			ColorPalette perform: ( choicesSetter at: selectedIndex ).
-			pickerPanel := ImagePickerPanel namedColors. 
-			savedExtent := pickerPanel morphExtentInOwner. 
-			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
-			pickerPanel morphExtent: savedExtent. 
-		].
-	"else cancel -> no action"
-
-	! !
-
-!Color class methodsFor: '*ui-color-color' stamp: 'KenD 1/10/2022 13:21:32'!
-colorSelectionMenu: originalColor
-	"Open a popUp menu and let user select color selection option.
-	 If the user selects ColorMix Editor, set the color from originalColor"
-"
-	Color colorSelectionMenu.
-"
-	| menu choices choicesSetter selectedIndex |
-	choices := #( 'CSS3 (Web) Colors'      "1"
-					'Crayon Colors'   "2"
-					'NBSISCC Colors' "3"
-					'XKCD Colors'     "4"
-					'ColorMix Editor'           "5"
-					'Cancel'                        "6"
-				   ).
-				
-	choicesSetter := #(
-				useCSS3ColorDict 
-				useCrayonColorDict
-				useNBSISCCColorDict
-				useXKCDColorDict
-				).
-	
-	menu := PopUpMenu labelArray: choices.
-	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
-	(selectedIndex = 5)
-		ifTrue: [ ColorEditorPanel openWithColor: originalColor].
 	((selectedIndex > 0) and: [selectedIndex < 5])
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
