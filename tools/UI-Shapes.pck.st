@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5780] on 27 April 2023 at 4:24:05 pm'!
+'From Cuis 6.0 [latest update: #5799] on 17 May 2023 at 11:47:40 am'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 29!
+!provides: 'UI-Shapes' 1 34!
 SystemOrganization addCategory: 'UI-Shapes'!
 
 
@@ -42,6 +42,16 @@ LineMorph subclass: #PointerLineMorph
 	category: 'UI-Shapes'!
 !classDefinition: 'PointerLineMorph class' category: 'UI-Shapes'!
 PointerLineMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #ArrowMorph category: 'UI-Shapes'!
+PlacedMorph subclass: #ArrowMorph
+	instanceVariableNames: 'tipPoint headLength tailLength tailHeight borderColor borderWidth fillColor headWingLength'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Shapes'!
+!classDefinition: 'ArrowMorph class' category: 'UI-Shapes'!
+ArrowMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #BezierQuadraticMorph category: 'UI-Shapes'!
@@ -109,6 +119,21 @@ I am a line from my start point to my end point.!
 
 !PointerLineMorph commentStamp: '<historical>' prior: 0!
 I am a LineMorph which has a "pointer" morph which I maintain in position at my endpoint.!
+
+!ArrowMorph commentStamp: '<historical>' prior: 0!
+I am a vector graphic arrow. Rotate and scale me.
+
+ArrowMorph new openInWorld.
+(ArrowMorph label: 'Me Be Arrow') openInWorld.
+ArrowMorph exampleClickMe.
+
+          Wing -->  | \
+     ---------   \
+     |                           \   Tip
+     |                           / 
+     ---------   /
+                            | /
+          Tail            Head!
 
 !BezierQuadraticMorph commentStamp: '<historical>' prior: 0!
 I present a Quadratic Bezier curve.
@@ -622,6 +647,304 @@ example1
   PointerLineMorph example1 openInWorld 
 "
 	^ super example1! !
+
+!ArrowMorph methodsFor: 'private' stamp: 'KenD 5/17/2023 10:09:43'!
+boxExtent
+	"Answer the extent to offset a label. See ArrowMorph>>labelMorph: " 
+	 
+	| e |
+	e := (Preferences at: #windowTitleFont) lineSpacing.
+	^e@e! !
+
+!ArrowMorph methodsFor: 'drawing' stamp: 'KenD 5/16/2023 16:18:14'!
+drawOn: aCanvas
+	"Draw me an Arrow"
+	| p1 p2 p3 p4 p5 p6 |
+	p1 := tipPoint - (headLength @ (headWingLength + (tailHeight / 2))).
+	p2 := p1 + (0 @ headWingLength).
+	p3 := p2 - (tailLength @ 0).
+	p4 := p3 + (0 @ tailHeight).
+	p5 := p4 + (tailLength @ 0).
+	p6 := p5 + (0 @ headWingLength).
+	
+	aCanvas strokeWidth: borderWidth color: borderColor fillColor: fillColor do: [
+		aCanvas
+			pathSequence: {
+				0. (tipPoint x). (tipPoint y).
+				1. (p1 x). (p1 y).
+				1. (p2 x). (p2 y).
+				1. (p3 x). (p3 y).
+				1. (p4 x). (p4 y).
+				1. (p5 x). (p5 y).
+				1. (p6 x). (p6 y).
+				1. (tipPoint x). (tipPoint y).
+				} asFloat32Array .
+		].! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:27:45'!
+borderColor
+
+	^ borderColor! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:33:42'!
+borderColor: newColor
+
+	borderColor := newColor.
+	self redrawNeeded! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/17/2023 07:41:56'!
+borderWidth
+
+	^ borderWidth! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/17/2023 07:41:47'!
+borderWidth: newWidth
+
+	borderWidth := newWidth.
+	self redrawNeeded! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:28:37'!
+fillColor
+
+	^ fillColor! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:33:53'!
+fillColor: newColor
+
+	fillColor := newColor.
+	self redrawNeeded! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 15:00:53'!
+headHeight
+
+	^ (2 * headWingLength) + tailHeight! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:24:41'!
+headLength
+
+	^ headLength! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:32:26'!
+headLength: newLength
+
+	headLength := newLength.
+	self redrawNeeded! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:27:12'!
+headWingLength
+	"The arrow head extends from the tail height by this amount in either direction"
+	
+	^ headWingLength! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:32:14'!
+headWingLength: newLength
+
+	"The arrow head extends from the tail height by this amount in either direction"
+	headWingLength := newLength.
+	self redrawNeeded! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 15:05:48'!
+height
+
+	^ tailHeight + (2 * headWingLength)! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 15:05:11'!
+length
+
+	^ headLength + tailLength! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/17/2023 07:42:31'!
+tailHeight
+
+	^ tailHeight! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/17/2023 07:42:54'!
+tailHeight: newHeight
+
+	tailHeight := newHeight.
+	self redrawNeeded! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:25:37'!
+tailLength
+
+	^ tailLength! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:32:01'!
+tailLength: newLength
+
+	tailLength := newLength.
+	self redrawNeeded! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 14:47:09'!
+tipPoint
+	"Answer point at the tip of me".
+	
+	^ tipPoint ! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:34:32'!
+tipPoint:  aPoint
+
+	tipPoint := aPoint.
+	self redrawNeeded ! !
+
+!ArrowMorph methodsFor: 'geometry' stamp: 'KenD 5/16/2023 15:11:07'!
+rotationCenter
+
+	^ tipPoint! !
+
+!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 5/16/2023 20:36:29'!
+yAxisPointsUp
+
+	^ true! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:03:17'!
+defaultBorderColor
+
+	^ Color yellow! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:03:37'!
+defaultBorderWidth
+
+	^ 2! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:47:39'!
+defaultColor
+
+	^ Color yellow! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 16:06:15'!
+defaultFillColor
+
+	^ Color green! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:49:03'!
+defaultHeadHeight
+
+	^ 2 + self defaultTailHeight! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:50:47'!
+defaultHeadLength
+
+	^ 3! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:57:53'!
+defaultHeadSholder
+
+	^ 2 ! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:02:20'!
+defaultHeadWingLength
+	"Answer how far the arrow head extends from the tail height"
+	^ 2 ! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:48:30'!
+defaultTailHeight
+
+	^ 2! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:48:13'!
+defaultTailLength
+
+	^ 5! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/17/2023 07:24:51'!
+defaultTipPoint
+	"Arrow points to the right, so tip is at right end"
+	
+	^ 0@0! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 16:06:15'!
+initialize
+
+	| patternScale |
+	patternScale := 6.  "scale the pattern"
+	super initialize.
+	tailLength := patternScale * self defaultTailLength.
+	tailHeight  := patternScale * self defaultTailHeight.
+	headLength  := patternScale * self defaultHeadLength.
+	headWingLength := patternScale * self defaultHeadWingLength.
+	tipPoint := self defaultTipPoint.
+	borderColor := self defaultBorderColor.
+	borderWidth := self defaultBorderWidth.
+	fillColor := self defaultFillColor.! !
+
+!ArrowMorph class methodsFor: 'instance creation' stamp: 'KenD 5/17/2023 10:34:15'!
+label: aString
+	| newSelf embeddedLabel desiredLabelExtent |
+	newSelf := self new.
+	embeddedLabel := LabelMorph contents: aString.
+	desiredLabelExtent := embeddedLabel minimumExtent.
+	"fit it"
+	newSelf tailHeight: (newSelf tailHeight max: 10 + desiredLabelExtent y).
+	newSelf tailLength: (newSelf tailLength max: desiredLabelExtent x).
+	newSelf   addMorphFront: embeddedLabel 
+			position: (newSelf headLength + desiredLabelExtent x - 6) negated 
+						@ ((desiredLabelExtent y) / 2 - 1) .
+	^ newSelf
+	
+	! !
+
+!ArrowMorph class methodsFor: 'examples' stamp: 'KenD 5/17/2023 10:31:25'!
+exampleClickMe
+"      Create and show an ArrowMorph which reacts to a mouse click.
+
+	ArrowMorph exampleClickMe.
+"
+	| newSelf |
+	newSelf := self label: 'Click Me!!'.
+	newSelf setProperty: #'handlesMouseDown:' toValue: true.
+	newSelf setProperty: #mouseButton1Up:localPosition: 
+		      toValue: [ :ignoreEvent :ignoredPosition | 
+					newSelf flash. 
+					newSelf inform: 'Thanks!!!!'.
+					newSelf flash. 
+			].
+	newSelf openInWorld.
+	^ newSelf! !
+
+!ArrowMorph class methodsFor: 'class initialization' stamp: 'KenD 5/17/2023 07:32:08'!
+initialize
+"	
+	ArrowMorph initialize
+"
+	(Smalltalk includesKey: #MetaProperty )
+		ifTrue: [ self initializeMetaProperties ].
+	! !
+
+!ArrowMorph class methodsFor: 'class initialization' stamp: 'KenD 5/17/2023 07:38:04'!
+initializeMetaProperties
+"
+	ArrowMorph initializeMetaProperties.
+"
+	| classDict propsDict |
+	"Ensure named MetaProperties exist"
+	MetaProperty initializeDictionaries.
+
+	"Seed MetaProperties for known Morphs"
+	propsDict := MetaProperty preDefinedPropsDict.
+	
+	classDict := MetaProperty 
+		metaPropsDictForClass: ArrowMorph.
+		
+	classDict at: #tipPoint 
+		put: (propsDict at: #acceptsPoint). 
+	classDict at: #headLength
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #tailLength
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #headWingLength
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #tailHeight
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #borderWidth 
+		put: (propsDict at: #acceptsPositiveNumber). 
+	classDict at: #borderColor 
+		put: (propsDict at: #acceptsColor). 
+	classDict at: #fillColor
+		put: (propsDict at: #acceptsColor). 
+
+
+	! !
 
 !BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:29:45'!
 endPoint
@@ -1711,6 +2034,7 @@ haloTargetIcon
 		at: #haloTargetIcon
 		ifAbsentPut: [ VisualPropertyMenuItem targetIcon ]! !
 FrameMorph initialize!
+ArrowMorph initialize!
 BezierQuadraticMorph initialize!
 BezierCubicMorph initialize!
 CircleShapeMorph initialize!
