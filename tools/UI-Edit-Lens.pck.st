@@ -1,11 +1,11 @@
-'From Cuis 6.0 [latest update: #5091] on 4 March 2022 at 1:45:37 pm'!
+'From Cuis 6.0 [latest update: #5799] on 17 May 2023 at 10:35:17 am'!
 'Description I am a translucent editing lens for a morph.
 
 I display SVG control points and allow change, e.g. to bezier curves.
 
 I also allow one to drop morphs which make changes to myMorph.
 Each such morph has property DropActionMorph set to true.'!
-!provides: 'UI-Edit-Lens' 1 7!
+!provides: 'UI-Edit-Lens' 1 8!
 !requires: 'UI-DragAndDrop' 1 7 nil!
 SystemOrganization addCategory: 'UI-Edit-Lens'!
 
@@ -85,13 +85,13 @@ showHaloButtonClicked
 				popUpForHand: self  world activeHand
 	]! !
 
-!MorphEditLens methodsFor: 'geometry' stamp: 'KenD 12/30/2021 11:59:10'!
+!MorphEditLens methodsFor: 'geometry' stamp: 'KenD 5/17/2023 10:06:30'!
 boxExtent
 	"answer the extent to use in all the buttons. 
 	 
 	the label height is used to be proportional to the fonts preferences"
 	| e |
-	e _ Preferences windowTitleFont lineSpacing.
+	e := (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
 !MorphEditLens methodsFor: 'initialization' stamp: 'KenD 1/6/2016 09:56'!

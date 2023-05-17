@@ -1,14 +1,15 @@
-'From Cuis 6.0 [latest update: #5588] on 9 December 2022 at 1:41:48 pm'!
+'From Cuis 6.0 [latest update: #5799] on 17 May 2023 at 12:04:47 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'UI-MetaProperties' 1 122!
-!requires: 'UI-Edit-Lens' 1 1 nil!
-!requires: 'Cuis-Base' 60 5588 nil!
-!requires: 'UI-Color-Panel' 1 3 nil!
+!provides: 'UI-MetaProperties' 1 126!
 !requires: 'Complex' 1 0 nil!
 !requires: 'UI-Entry' 1 7 nil!
-!requires: 'UI-Click-Select' 1 2 nil!
-!requires: 'UI-Panel' 1 17 nil!
+!requires: 'UI-Edit-Lens' 1 1 nil!
+!requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Packager' 1 0 nil!
+!requires: 'UI-Click-Select' 1 2 nil!
+!requires: 'UI-Color-Panel' 1 3 nil!
+!requires: 'UI-Panel' 1 17 nil!
+!requires: 'UI-Layout-Panel' 1 10 nil!
 !requires: 'Graphics-Files-Additional' 1 18 nil!
 SystemOrganization addCategory: 'UI-MetaProperties'!
 
@@ -760,13 +761,13 @@ itemForProperty: aName targetMorph: aMorph
 
 	^self new itemForProperty: aName targetMorph: aMorph! !
 
-!MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 3/6/2022 07:55:01'!
+!MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 5/17/2023 10:06:21'!
 boxExtent
 	"answer the extent to use in all the buttons. 
 	 
 	the label height is used to be proportional to the fonts preferences"
 	| e |
-	e _ Preferences windowTitleFont lineSpacing.
+	e := (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
 !MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 9/30/2016 17:06:54'!
@@ -1179,7 +1180,7 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 4/1/2022 12:54:52'!
+!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 5/17/2023 12:03:54'!
 initialize
 "
 	VisualPropertyEditor initialize.
@@ -1275,7 +1276,8 @@ initialize
 	classDict := MetaProperty metaPropsDictForClass: SystemWindow .
 	classDict at: #labelString put: (propsDict at: #acceptsString).
 
-
+	(Smalltalk allClassesImplementing: #'initializeMetaProperties') 
+		do: [ :metaClass | metaClass soleInstance initializeMetaProperties ].
 ! !
 
 !MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 11/24/2022 14:34:01'!

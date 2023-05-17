@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5799] on 16 May 2023 at 12:27:17 pm'!
+'From Cuis 6.0 [latest update: #5799] on 17 May 2023 at 11:31:49 am'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 20!
+!provides: 'UI-Color-Panel' 1 21!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -1698,6 +1698,44 @@ colorSelectionMenu
 	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
 	(selectedIndex = 5)
 		ifTrue: [ ColorEditorPanel open].
+	((selectedIndex > 0) and: [selectedIndex < 5])
+		ifTrue: [ | pickerPanel savedExtent |
+			ColorPalette perform: ( choicesSetter at: selectedIndex ).
+			pickerPanel := ImagePickerPanel namedColors. 
+			savedExtent := pickerPanel morphExtentInOwner. 
+			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
+			pickerPanel morphExtent: savedExtent. 
+		].
+	"else cancel -> no action"
+
+	! !
+
+!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 5/17/2023 10:53:03'!
+colorSelectionMenu: aColor
+	"Open a popUp menu and let user select color selection option"
+"
+	Color colorSelectionMenu.
+"
+	| menu choices choicesSetter selectedIndex |
+	choices := #( 'CSS3 (Web) Colors'      "1"
+					'Crayon Colors'   "2"
+					'NBSISCC Colors' "3"
+					'XKCD Colors'     "4"
+					'ColorMix Editor'           "5"
+					'Cancel'                        "6"
+				   ).
+				
+	choicesSetter := #(
+				useCSS3ColorDict 
+				useCrayonColorDict
+				useNBSISCCColorDict
+				useXKCDColorDict
+				).
+	
+	menu := PopUpMenu labelArray: choices.
+	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
+	(selectedIndex = 5)
+		ifTrue: [ ColorEditorPanel openWithColor: aColor].
 	((selectedIndex > 0) and: [selectedIndex < 5])
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
