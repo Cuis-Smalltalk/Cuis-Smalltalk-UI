@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5772] on 23 April 2023 at 4:14:23 pm'!
+'From Cuis 6.0 [latest update: #5799] on 22 May 2023 at 10:24:13 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 7!
+!provides: 'UI-Mold' 1 8!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
@@ -1379,7 +1379,7 @@ four
 		beRequired.
 	mold openDialog: 'Example Four'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 15:43:27'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/22/2023 22:23:20'!
 nine
 "
 	MoldExample nine
@@ -1388,16 +1388,16 @@ nine
 	mold := Mold new.
 	(mold selectMultiField)
 		label: 'Période 1';
-		on: #selectedItems of: (ListMultiModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`:: selectedIndexes: #(1 3));
+		on: #selectedIndexes of: (ListMultiModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`:: selectedIndexes: #(1 3));
 		beRequired.
 	(mold selectMultiField)
 		label: 'Période 2';
-		on: #selectedItems of: (ListMultiModel with: `{'H1' . 'H2' . 'H3' . 'H4' . 'H5'}`);
+		on: #selectedIndexes of: (ListMultiModel with: `{'H1' . 'H2' . 'H3' . 'H4' . 'H5'}`);
 		beRequired;
 		addCondition: [:input :value | input size >= 3] labeled: 'Select at least 3 items'.
 	(mold selectMultiField)
 		label: 'Période 3';
-		on: #selectedItems of: (ListMultiModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
+		on: #selectedIndexes of: (ListMultiModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
 	mold openDialog: 'Example Nine'! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:04:02'!
