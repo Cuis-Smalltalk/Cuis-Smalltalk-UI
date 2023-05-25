@@ -1,9 +1,9 @@
-'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 9:43:20 pm'!
+'From Cuis 6.0 [latest update: #5810] on 25 May 2023 at 9:12:24 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 21!
+!provides: 'UI-Widgets' 1 22!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'Collections-CompactArrays' 1 13 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
 
@@ -594,12 +594,15 @@ sendScrollEvent: cursorPoint
 
 ! !
 
-!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 2/23/2022 20:14:35'!
+!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 5/25/2023 21:10:01'!
 drawOn: aCanvas
 	| interval delta frame x0 x1 y0 y1 deltaX deltaY  |
+	delta := borderColor .
+	borderColor := borderColor muchDarker alpha: 0.5.
 	super drawOn: aCanvas.		"border & background"
+	borderColor := delta .
 	frame := self morphLocalBounds insetBy: 2.
-	aCanvas frameRectangle: frame color: color borderWidth: 1 borderStyleSymbol: #raised.
+	aCanvas frameRectangle: frame color: color borderWidth: 2 borderStyleSymbol: #raised.
 	frame := frame insetBy: 1.
 	x0 := frame origin x.
 	x1 := frame corner x.
@@ -607,16 +610,16 @@ drawOn: aCanvas
 	y1 := frame corner y.
 	deltaX := (x1 - x0) / 2.
 	deltaY := (y1 - y0) / 2.
-	interval := 7.
+	interval := 10.
 	delta := self angle \\ interval.
 	1 to: (self maxAngle / (2 * interval)) rounded do: [ :i |
 		| x y |
 		self isHorizontal ifTrue: [
 			x := x0 + deltaX - (((i * interval + delta) * (2 * Float pi / 360.0)) cos * deltaX).
-			aCanvas fillRectangle: (Rectangle origin: (x-1)@y0 corner: x@y1) color: borderColor]
+			aCanvas fillRectangle: (Rectangle origin: (x-1)@y0 corner: x@y1) color: borderColor ]
 		ifFalse: [
 			y := y0 + deltaY - (((i * interval + delta) * (2 * Float pi / 360.0)) cos * deltaY).
-			aCanvas fillRectangle: (Rectangle origin: x0@(y-1) corner: x1@y) color: borderColor]
+			aCanvas fillRectangle: (Rectangle origin: x0@(y-1) corner: x1@y) color: borderColor ].
 	]! !
 
 !WheelMorph methodsFor: 'initialization' stamp: 'KenD 4/26/2020 06:47:54'!
