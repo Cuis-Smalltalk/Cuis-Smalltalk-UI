@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5667] on 14 March 2023 at 9:13:44 pm'!
+'From Cuis 6.0 [latest update: #5816] on 27 May 2023 at 12:23:42 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 39!
+!provides: 'UI-Click-Select' 1 40!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -844,14 +844,14 @@ toggleDropDownList
 					+ self morphBottomLeft]
 		ifNotNil: [dropDownList delete]! !
 
-!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/4/2022 19:18:41'!
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 5/27/2023 12:23:39'!
 updateButton
 	| label |
-	label _ dropDownList getCurrentSelectionIndex = 0
+	label := dropDownList getCurrentSelectionIndex = 0
 		ifTrue: ['']
 		ifFalse: [dropDownList getListItem: dropDownList getCurrentSelectionIndex].
 	button label: label;
-		morphExtent: dropDownList scroller desiredWidth @ FontFamily defaultPointSize;
+		morphExtent: dropDownList scroller desiredWidth // 2 @ FontFamily defaultPointSize;
 		redrawNeeded! !
 
 !DropDownListMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:36:05'!
