@@ -1,12 +1,22 @@
-'From Cuis 6.0 [latest update: #5798] on 9 May 2023 at 9:49:08 pm'!
+'From Cuis 6.0 [latest update: #5816] on 28 May 2023 at 12:46:02 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 64!
+!provides: 'UI-Panel' 1 65!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: 'UI-Panel'!
 
+
+!classDefinition: #BreadcrumbsPanel category: 'UI-Panel'!
+LayoutMorph subclass: #BreadcrumbsPanel
+	instanceVariableNames: 'root slices'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'BreadcrumbsPanel class' category: 'UI-Panel'!
+BreadcrumbsPanel class
+	instanceVariableNames: ''!
 
 !classDefinition: #DecoratedPane category: 'UI-Panel'!
 LayoutMorph subclass: #DecoratedPane
@@ -179,6 +189,15 @@ WizardPage class
 	instanceVariableNames: ''!
 
 
+!BreadcrumbsPanel commentStamp: '<historical>' prior: 0!
+A breadcrumbs panel to navigate a tree of objects. 
+In the top of the panel: the navigation, a collection of buttons separated by '>' and ending with a label of the visited content. A button name is the associated hierarchy name (slice).
+At the bottom the panel of the visited object. 
+The user should subclass me to define in methods the appropriate action to build the panels of the visited objects.
+
+- root : the root of the tree of objects
+- slices: dictionary. Keys the names of the slices. Values the actions to build the panels associated to the slices.!
+
 !DecoratedPane commentStamp: '<historical>' prior: 0!
 - I present morphs in a pane with optional scrollbars
 - I am decorated with a surounding thin line and quick buttons for actions in my model!
@@ -256,6 +275,22 @@ It emits event when
  - the user changes the page with the next and previous buttons
  - the user press apply and cancel
 !
+
+!BreadcrumbsPanel methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 12:34:03'!
+initialize
+	super initialize.
+	slices := Dictionary new.! !
+
+!BreadcrumbsPanel methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 12:33:44'!
+root: anObject
+	root := anObject ! !
+
+!BreadcrumbsPanel class methodsFor: 'instance creation' stamp: 'hlsf 5/28/2023 12:36:17'!
+on: anObject
+	self basicNew 
+		root: anObject ;
+		initialize;
+		yourself! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/6/2023 09:58:02'!
 elasticMorph
