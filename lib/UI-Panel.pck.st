@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5816] on 28 May 2023 at 10:03:35 pm'!
+'From Cuis 6.0 [latest update: #5816] on 28 May 2023 at 10:07:09 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 67!
+!provides: 'UI-Panel' 1 68!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1176,6 +1176,13 @@ drawOn: aCanvas
 label
 	^ 'a pane'
 	! !
+
+!PluggablePane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 22:06:52'!
+layoutBounds
+	"Return the bounds for laying out children of the receiver"
+	"Exclude the label area"
+
+	^  0@0 extent: self morphExtentInOwner! !
 
 !PluggablePane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 21:21:21'!
 open: model view: aSelector accept: acceptSelectorOrAction
