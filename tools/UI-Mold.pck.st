@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5799] on 22 May 2023 at 10:24:13 pm'!
+'From Cuis 6.0 [latest update: #5816] on 28 May 2023 at 10:03:32 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 8!
+!provides: 'UI-Mold' 1 9!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
@@ -1285,6 +1285,18 @@ openDialog: title
 				self save.
 				panel delete] ]! !
 
+!Mold methodsFor: 'rendering' stamp: 'hlsf 5/28/2023 21:41:32'!
+openPane
+	| pane |
+	pane := nil.
+	pane := PluggablePane 
+		open: self
+		view: #renderForms 
+		accept: [self validate.
+			pane morphExtent: pane minimumExtent. "I don't like to do it manually"
+			self isValid 	ifTrue: [self save] ].
+	^ pane! !
+
 !Mold methodsFor: 'rendering' stamp: 'hlsf 4/20/2023 11:43:40'!
 renderForms
 	^ LabelGroup with: (fields collect: #labelAndWidget) ::
@@ -1400,7 +1412,7 @@ nine
 		on: #selectedIndexes of: (ListMultiModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
 	mold openDialog: 'Example Nine'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:04:02'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 21:38:09'!
 one
 "
 	MoldExample one
@@ -1421,7 +1433,7 @@ one
 		label: 'Birth date:';
 		on: #propertyValue of: ValueHolder new;
 		beRequired.
-	mold openDialog: 'Example One' ! !
+	mold openPane openInWorld! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/21/2023 14:33:58'!
 seven

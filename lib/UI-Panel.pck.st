@@ -1,21 +1,21 @@
-'From Cuis 6.0 [latest update: #5816] on 28 May 2023 at 12:46:02 pm'!
+'From Cuis 6.0 [latest update: #5816] on 28 May 2023 at 10:03:35 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 65!
+!provides: 'UI-Panel' 1 67!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: 'UI-Panel'!
 
 
-!classDefinition: #BreadcrumbsPanel category: 'UI-Panel'!
-LayoutMorph subclass: #BreadcrumbsPanel
+!classDefinition: #BreadcrumbsPane category: 'UI-Panel'!
+LayoutMorph subclass: #BreadcrumbsPane
 	instanceVariableNames: 'root slices'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'BreadcrumbsPanel class' category: 'UI-Panel'!
-BreadcrumbsPanel class
+!classDefinition: 'BreadcrumbsPane class' category: 'UI-Panel'!
+BreadcrumbsPane class
 	instanceVariableNames: ''!
 
 !classDefinition: #DecoratedPane category: 'UI-Panel'!
@@ -76,6 +76,16 @@ DialogPanel subclass: #PluggableDialogPanel
 	category: 'UI-Panel'!
 !classDefinition: 'PluggableDialogPanel class' category: 'UI-Panel'!
 PluggableDialogPanel class
+	instanceVariableNames: ''!
+
+!classDefinition: #PluggablePane category: 'UI-Panel'!
+PluggableDialogPanel subclass: #PluggablePane
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'PluggablePane class' category: 'UI-Panel'!
+PluggablePane class
 	instanceVariableNames: ''!
 
 !classDefinition: #ValueEntryPanel category: 'UI-Panel'!
@@ -189,11 +199,11 @@ WizardPage class
 	instanceVariableNames: ''!
 
 
-!BreadcrumbsPanel commentStamp: '<historical>' prior: 0!
+!BreadcrumbsPane commentStamp: '<historical>' prior: 0!
 A breadcrumbs panel to navigate a tree of objects. 
 In the top of the panel: the navigation, a collection of buttons separated by '>' and ending with a label of the visited content. A button name is the associated hierarchy name (slice).
 At the bottom the panel of the visited object. 
-The user should subclass me to define in methods the appropriate action to build the panels of the visited objects.
+The user subclasses me to define in methods the appropriate actions to build the panels of the visited objects.
 
 - root : the root of the tree of objects
 - slices: dictionary. Keys the names of the slices. Values the actions to build the panels associated to the slices.!
@@ -226,13 +236,22 @@ Examples:
   LayoutMorphEditPanel open:  (LayoutMorph newRow).
   LayoutSpecEditPanel open: (LayoutSpec useAll).!
 
-!PluggableDialogPanel commentStamp: '<historical>' prior: 0!
+!PluggableDialogPanel commentStamp: 'hlsf 5/28/2023 21:01:08' prior: 0!
 A pluggable Dialog panel with 'Accept' and 'Cancel' buttons. 
-The model answers to:
-- viewSelector (yeah...) to plug in the panel.
-- actionOnAccept (block) when the 'Accept' button is pressed.
+The model shoulw answer to:
+- viewSelector (yeah...) to get a view to plug in the panel.
+- actionOnAccept (block or symbol) when the 'Accept' button is pressed.
 
-It is best used with the Morphic-Mold package for assisted field descriptions and validations. 
+It is used with the Morphic-Mold package for assisted field descriptions and validations. 
+The model is then a Mold instance or a composite of Mold instances.!
+
+!PluggablePane commentStamp: '<historical>' prior: 0!
+A pluggable pane (no window, no title) with an optional 'Accept' button. 
+The model should answer to:
+- viewSelector (yeah...) to get a view to plug in the panel.
+- an optional actionOnAccept (block or symbol) for an 'Accept' button
+
+It is used with the Morphic-Mold package for assisted field descriptions and validations. 
 The model is then a Mold instance or a composite of Mold instances.!
 
 !ValueEntryPanel commentStamp: '<historical>' prior: 0!
@@ -276,18 +295,18 @@ It emits event when
  - the user press apply and cancel
 !
 
-!BreadcrumbsPanel methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 12:34:03'!
+!BreadcrumbsPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 12:34:03'!
 initialize
 	super initialize.
 	slices := Dictionary new.! !
 
-!BreadcrumbsPanel methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 12:33:44'!
+!BreadcrumbsPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 12:33:44'!
 root: anObject
 	root := anObject ! !
 
-!BreadcrumbsPanel class methodsFor: 'instance creation' stamp: 'hlsf 5/28/2023 12:36:17'!
+!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 5/28/2023 21:05:30'!
 on: anObject
-	self basicNew 
+	^ self basicNew 
 		root: anObject ;
 		initialize;
 		yourself! !
@@ -650,13 +669,13 @@ minPaneWidthForReframe
 
 	^ ScrollBar scrollbarThickness * 3! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 3/9/2020 13:29:27'!
+!Panel methodsFor: 'geometry' stamp: 'hlsf 5/28/2023 21:39:03'!
 minimumExtent
 	"Subclasses may want to override me"
 	
 	| minTitleExtent minLayoutExtent  |
 	
-	minTitleExtent    := titleMorph    minimumExtent.
+	minTitleExtent    := titleMorph ifNil: [0@0] ifNotNil:  [titleMorph minimumExtent].
 	minLayoutExtent := layoutMorph minimumExtent.
 	
 	^ ((minTitleExtent x max: minLayoutExtent x)
@@ -667,6 +686,16 @@ minimumExtent
 buildMorphicWindow
 
 	self subclassResponsibility ! !
+
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:24:05'!
+buildTitle
+	titleMorph := WindowTitleMorph title: 'Untitled'.
+	stayUp := false. "UI push pin to change"
+	titleMorph 
+		layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0);
+		morphExtent: extent x @ (self labelHeight + borderWidth);
+		layoutSubmorphs.
+	super addMorph: titleMorph.! !
 
 !Panel methodsFor: 'GUI building' stamp: 'KenD 12/9/2013 18:42'!
 buttonColor
@@ -679,10 +708,10 @@ defaultButtonPaneHeight
 
 	^ (Preferences at: #standardButtonFont) lineSpacing * 14 // 8! !
 
-!Panel methodsFor: 'GUI building' stamp: 'KenD 4/25/2015 08:51'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:17:12'!
 hideButtons
 
-	self titleMorph hideButtons ! !
+	self titleMorph hideAllButtons ! !
 
 !Panel methodsFor: 'GUI building' stamp: 'KenD 4/25/2015 08:45'!
 showButtonsNamed: aSymbolCollection
@@ -774,21 +803,13 @@ defaultSeparation
 
 	^ 10 "Pixels between controls/layouts"! !
 
-!Panel methodsFor: 'initialization' stamp: 'KenD 3/13/2022 07:27:59'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 5/28/2023 21:24:20'!
 initialize
 	"Initialize a system window. Add label, stripes, etc., if desired"
 
 	super initialize.
-	titleMorph := WindowTitleMorph title: 'Untitled'.
 	borderColor := self defaultColor.
-	stayUp := false. "UI push pin to change"
-	titleMorph 
-			layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0);
-			morphExtent: extent x @ (self labelHeight + borderWidth);
-			layoutSubmorphs.
-
-	super addMorph: titleMorph.
-
+	self buildTitle.
 	^self 
 		beColumn;  "by default"
 		widgetsColor: self windowColor;
@@ -896,11 +917,11 @@ widgetsColor: aColor
 	self color: self textBackgroundColor.
 	self adoptWidgetsColor: widgetsColor! !
 
-!Panel methodsFor: 'change reporting' stamp: 'KenD 4/24/2015 18:20'!
+!Panel methodsFor: 'change reporting' stamp: 'hlsf 5/28/2023 21:39:43'!
 morphExtent: newExtent
 
 	super morphExtent: newExtent.
-	self titleMorph morphExtent: extent x @ (self labelHeight + borderWidth)! !
+	titleMorph ifNotNil: [titleMorph morphExtent: extent x @ (self labelHeight + borderWidth)]! !
 
 !Panel class methodsFor: 'instance creation' stamp: 'hlsf 12/27/2021 11:09:02'!
 example1
@@ -950,13 +971,13 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/7/2022 15:51:37'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:27:32'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
 	self newPane ifNotNil: [:pane | layoutMorph 		addMorphUseAll: pane].
 	self newButtonArea ifNotNil: [:buttons | layoutMorph addMorphKeepMorphHeight: buttons].
 	layoutMorph 		separation: self defaultSeparation;
-		axisEdgeWeight: #center;
+		axisEdgeWeight: self defaultAlignement ;
 		adoptWidgetsColor: self widgetsColor.
 	self morphExtent: self minimumExtent! !
 
@@ -1119,6 +1140,53 @@ open: model label: aString view: viewSelector accept: acceptSelectorOrAction
 	aString ifNotNil: [ window setLabel: aString ].
 	window openInWorld.
 	^ window! !
+
+!PluggablePane methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:29:26'!
+buildTitle
+" No title, no window "! !
+
+!PluggablePane methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:09:57'!
+newButtonArea
+"Return the morph where the buttons are layed out"
+	^ actionOnAccept ifNotNil: [
+		buttonArea := LayoutMorph newRow ::
+			separation: 8@0;
+			axisEdgeWeight: #rowRight;
+			addMorph: (PluggableButtonMorph
+				model: actionOnAccept 
+				action: #value
+				label: 'Accept')]! !
+
+!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/28/2023 21:30:11'!
+defaultBorderWidth
+	^ 0! !
+
+!PluggablePane methodsFor: 'drawing' stamp: 'hlsf 5/28/2023 21:47:57'!
+drawOn: aCanvas
+	"A canvas is already set with a proper transformation from our coordinates to those of the Canvas target."
+
+	aCanvas
+		fillRectangle: self morphLocalBounds
+		color: color
+		borderWidth: borderWidth
+		borderStyleSymbol: #simple
+		baseColorForBorder: borderColor.! !
+
+!PluggablePane methodsFor: 'label' stamp: 'hlsf 5/28/2023 21:43:08'!
+label
+	^ 'a pane'
+	! !
+
+!PluggablePane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 21:21:21'!
+open: model view: aSelector accept: acceptSelectorOrAction
+	|  pane |
+	pane := self basicNew ::
+		model: model;
+		viewGetter: aSelector ;
+		actionOnAccept: acceptSelectorOrAction;
+		initialize;
+		buildMorphicWindow.
+	^ pane! !
 
 !ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:20:51'!
 accept
