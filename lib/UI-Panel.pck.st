@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5816] on 29 May 2023 at 4:12:21 pm'!
+'From Cuis 6.0 [latest update: #5816] on 29 May 2023 at 9:08:11 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 70!
+!provides: 'UI-Panel' 1 71!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -70,7 +70,7 @@ EditPanel class
 
 !classDefinition: #PluggableDialogPanel category: 'UI-Panel'!
 DialogPanel subclass: #PluggableDialogPanel
-	instanceVariableNames: 'viewSelector actionOnAccept'
+	instanceVariableNames: 'viewSelector actionOnAccept actionOnCancel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -1125,20 +1125,22 @@ newButtonArea
 		color: self widgetsColor.
 	^ buttonArea! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/16/2023 14:10:03'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 5/29/2023 20:19:24'!
 newButtonArea
 "Return the morph where the buttons are layed out"
-	^ buttonArea := LayoutMorph newRow ::
+	buttonArea := LayoutMorph newRow ::
 		separation: 8@0;
 		axisEdgeWeight: #rowRight;
 		addMorph: (PluggableButtonMorph
 			model: actionOnAccept 
 			action: #value
-			label: 'Accept');
-		addMorph: (PluggableButtonMorph 
-			model: self
-			action: #delete
-			label: 'Cancel')! !
+			label: 'Accept').
+	actionOnCancel ifNotNil: [
+		buttonArea addMorph: (PluggableButtonMorph 
+			model: actionOnCancel 
+			action: #value
+			label: 'Cancel')].
+	^ buttonArea ! !
 
 !PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/20/2023 11:45:44'!
 newPane
@@ -1152,24 +1154,47 @@ actionOnAccept: selectorOrBlock
 		ifTrue: [ [model perform: selectorOrBlock] ]
 		ifFalse: [selectorOrBlock]! !
 
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 19:59:38'!
+actionOnCancel: selectorOrBlock
+	actionOnCancel := selectorOrBlock isSymbol 
+		ifTrue: [ [model perform: selectorOrBlock] ]
+		ifFalse: [selectorOrBlock]! !
+
 !PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:11:53'!
 viewGetter: selector
 	viewSelector := selector ! !
 
-!PluggableDialogPanel methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 12:07:20'!
+!PluggableDialogPanel methodsFor: 'geometry' stamp: 'hlsf 4/18/2023 12:07:20'!
 minimumExtent
 	| mini |
 	mini := super minimumExtent.
 	^ (mini x max: 350) @ mini y! !
 
-!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 4/16/2023 14:12:33'!
+!PluggableDialogPanel methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 20:10:17'!
+initialize
+	super initialize.
+	actionOnCancel := [self delete]! !
+
+!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:22:20'!
 open: model label: aString view: viewSelector accept: acceptSelectorOrAction
 	|  window |
-	window := self basicNew ::
+	window := self new 
 		model: model;
 		viewGetter: viewSelector ;
 		actionOnAccept: acceptSelectorOrAction;
-		initialize;
+		buildMorphicWindow.
+	aString ifNotNil: [ window setLabel: aString ].
+	window openInWorld.
+	^ window! !
+
+!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:22:46'!
+open: model label: aString view: viewSelector accept: acceptSelectorOrAction cancel: cancelSelectorOrAction
+	|  window |
+	window := self new
+		model: model;
+		viewGetter: viewSelector ;
+		actionOnAccept: acceptSelectorOrAction;
+		actionOnCancel: cancelSelectorOrAction;
 		buildMorphicWindow.
 	aString ifNotNil: [ window setLabel: aString ].
 	window openInWorld.
@@ -1179,21 +1204,14 @@ open: model label: aString view: viewSelector accept: acceptSelectorOrAction
 buildTitle
 " No title, no window "! !
 
-!PluggablePane methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:09:57'!
-newButtonArea
-"Return the morph where the buttons are layed out"
-	^ actionOnAccept ifNotNil: [
-		buttonArea := LayoutMorph newRow ::
-			separation: 8@0;
-			axisEdgeWeight: #rowRight;
-			addMorph: (PluggableButtonMorph
-				model: actionOnAccept 
-				action: #value
-				label: 'Accept')]! !
-
 !PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/28/2023 21:30:11'!
 defaultBorderWidth
 	^ 0! !
+
+!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 20:18:29'!
+initialize
+	super initialize.
+	actionOnCancel := nil! !
 
 !PluggablePane methodsFor: 'drawing' stamp: 'hlsf 5/28/2023 21:47:57'!
 drawOn: aCanvas
@@ -1211,21 +1229,31 @@ label
 	^ 'a pane'
 	! !
 
-!PluggablePane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 22:06:52'!
+!PluggablePane methodsFor: 'geometry' stamp: 'hlsf 5/28/2023 22:06:52'!
 layoutBounds
 	"Return the bounds for laying out children of the receiver"
 	"Exclude the label area"
 
 	^  0@0 extent: self morphExtentInOwner! !
 
-!PluggablePane class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 21:21:21'!
+!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:22:54'!
 open: model view: aSelector accept: acceptSelectorOrAction
 	|  pane |
-	pane := self basicNew ::
+	pane := self new
 		model: model;
 		viewGetter: aSelector ;
 		actionOnAccept: acceptSelectorOrAction;
-		initialize;
+		buildMorphicWindow.
+	^ pane! !
+
+!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:23:04'!
+open: model view: aSelector accept: acceptSelectorOrAction cancel: cancelSelectorOrAction
+	|  pane |
+	pane := self new
+		model: model;
+		viewGetter: aSelector ;
+		actionOnAccept: acceptSelectorOrAction;
+		actionOnCancel: cancelSelectorOrAction;
 		buildMorphicWindow.
 	^ pane! !
 
