@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5816] on 28 May 2023 at 10:03:32 pm'!
+'From Cuis 6.0 [latest update: #5816] on 29 May 2023 at 1:01:32 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 9!
+!provides: 'UI-Mold' 1 10!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
@@ -660,9 +660,9 @@ highlightInputMorph
 inputColumn
 	^ widget lastSubmorph! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:19:45'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 5/29/2023 12:08:42'!
 inputMorph
-"The widget morph the represent the model "
+"The widget morph representing the model "
 	^ self inputColumn lastSubmorph ! !
 
 !Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 12:56:07'!
@@ -1271,6 +1271,18 @@ zipCodeField
 				addCondition: [:val | val isNil or: [val matchesRegex: '(\d\d\d\d\d)(-\d\d\d\d)?']]
 				labeled: 'Invalid zip code')! !
 
+!Mold methodsFor: 'rendering' stamp: 'hlsf 5/29/2023 11:43:33'!
+newPane
+	| pane |
+	pane := nil.
+	pane := PluggablePane 
+		open: self
+		view: #renderForms 
+		accept: [self validate.
+			pane morphExtent: pane minimumExtent. "I don't like to do it manually"
+			self isValid 	ifTrue: [self save] ].
+	^ pane! !
+
 !Mold methodsFor: 'rendering' stamp: 'hlsf 4/18/2023 21:12:21'!
 openDialog: title
 	| panel |
@@ -1284,18 +1296,6 @@ openDialog: title
 			self isValid 	ifTrue: [
 				self save.
 				panel delete] ]! !
-
-!Mold methodsFor: 'rendering' stamp: 'hlsf 5/28/2023 21:41:32'!
-openPane
-	| pane |
-	pane := nil.
-	pane := PluggablePane 
-		open: self
-		view: #renderForms 
-		accept: [self validate.
-			pane morphExtent: pane minimumExtent. "I don't like to do it manually"
-			self isValid 	ifTrue: [self save] ].
-	^ pane! !
 
 !Mold methodsFor: 'rendering' stamp: 'hlsf 4/20/2023 11:43:40'!
 renderForms
@@ -1412,7 +1412,7 @@ nine
 		on: #selectedIndexes of: (ListMultiModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
 	mold openDialog: 'Example Nine'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 21:38:09'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/29/2023 11:43:34'!
 one
 "
 	MoldExample one
@@ -1433,7 +1433,7 @@ one
 		label: 'Birth date:';
 		on: #propertyValue of: ValueHolder new;
 		beRequired.
-	mold openPane openInWorld! !
+	mold newPane openInWorld! !
 
 !MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/21/2023 14:33:58'!
 seven

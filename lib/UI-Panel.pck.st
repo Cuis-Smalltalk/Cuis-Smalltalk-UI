@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5816] on 28 May 2023 at 10:07:09 pm'!
+'From Cuis 6.0 [latest update: #5816] on 29 May 2023 at 1:01:35 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 68!
+!provides: 'UI-Panel' 1 69!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -20,7 +20,7 @@ BreadcrumbsPane class
 
 !classDefinition: #DecoratedPane category: 'UI-Panel'!
 LayoutMorph subclass: #DecoratedPane
-	instanceVariableNames: 'title quickButtons scrollPane'
+	instanceVariableNames: 'label quickButtons scrollPane'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -316,34 +316,34 @@ elasticMorph
 	"The elastic morph between the title and the quickbuttons "
 	^ self topRow submorphs second! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 16:02:50'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 11:53:49'!
+label: aString
+	label contents: aString ! !
+
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 12:34:40'!
 quickButtons: collection
 	quickButtons removeAllMorphs.
-	collection do: [:aButton | quickButtons addMorph: aButton ]! !
+	collection ifNotNil: [ collection do: [:aButton | quickButtons addMorph: aButton ] ]! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/9/2023 21:36:23'!
 scroller: aMorph
 " the morph to insert into the scroll pane"
 	scrollPane scroller: aMorph ! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 16:01:24'!
-title: aString
-	title contents: aString ! !
-
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 21:47:33'!
 topRow
 	^ submorphs last! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/9/2023 21:35:47'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 11:53:31'!
 initialize
 	| row |
 	super initialize.
 	self separation: 20@20.
-	title := LabelMorph new.
+	label := LabelMorph new.
 	quickButtons := LayoutMorph newRow :: axisEdgeWeight: #rowRight; color: Color transparent.
 	row := LayoutMorph newRow :: separation: 2@0; color: Color transparent.
 	row 
-		addMorph: title;
+		addMorph: label;
 		addMorphUseAll: (BoxedMorph new :: borderWidth: 0 ; color: Color transparent; yourself);
 		addMorph: quickButtons layoutSpec: (LayoutSpec proportionalWidth: 0 proportionalHeight: 0) .
 	self 	addMorph: row layoutSpec: (LayoutSpec proportionalHeight: 0);
@@ -372,7 +372,7 @@ drawOn: canvas
 requiresVectorCanvas
 	^ true! !
 
-!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/9/2023 21:42:55'!
+!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/29/2023 12:32:24'!
 example1
 "
 	self example1 openInWorld
@@ -385,18 +385,32 @@ example1
 		setBalloonText: 'Use GMT time zone';
 		yourself).
 	buttons add: (PluggableButtonMorph 
-		model: Switch newOff 			stateGetter: nil 		action: #switch ::
+		model: Switch newOff 				action: #switch ::
 		icon: Theme current clockIcon ;
 		setBalloonText: 'Set the time';
 		yourself).
-	^ DecoratedPane new :: 
-		title: 'A Label for the Pane';
-		quickButtons: buttons;
-		scroller: Sample09Clock new! !
+	^ DecoratedPane 
+		open: Sample09Clock new 
+		label: 'A Label for the Pane'
+		quickButtons: buttons! !
 
 !DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/4/2023 19:42:24'!
 new
 	^ self newColumn ! !
+
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 12:00:18'!
+open: aPane label: aString
+	^ self label: aString ;
+		quickButtons: nil ;
+		scroller: aPane! !
+
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 11:56:12'!
+open: aPane label: aString quickButtons: aCollection
+	^ self new
+		label: aString ;
+		quickButtons: aCollection;
+		scroller: aPane;
+		yourself! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
 fontPreferenceChanged
