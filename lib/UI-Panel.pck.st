@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5816] on 29 May 2023 at 1:01:35 pm'!
+'From Cuis 6.0 [latest update: #5816] on 29 May 2023 at 4:12:21 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 69!
+!provides: 'UI-Panel' 1 70!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -20,7 +20,7 @@ BreadcrumbsPane class
 
 !classDefinition: #DecoratedPane category: 'UI-Panel'!
 LayoutMorph subclass: #DecoratedPane
-	instanceVariableNames: 'label quickButtons scrollPane'
+	instanceVariableNames: 'label quickButtons scrollPane widgetsColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -311,6 +311,14 @@ on: anObject
 		initialize;
 		yourself! !
 
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 16:09:27'!
+contents: aPane
+	scrollPane 
+		ifNotNil: [scrollPane color: color.
+			self addMorphUseAll: scrollPane.
+			scrollPane scroller: aPane]
+		ifNil: [self addMorphUseAll: aPane]! !
+
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/6/2023 09:58:02'!
 elasticMorph
 	"The elastic morph between the title and the quickbuttons "
@@ -325,31 +333,43 @@ quickButtons: collection
 	quickButtons removeAllMorphs.
 	collection ifNotNil: [ collection do: [:aButton | quickButtons addMorph: aButton ] ]! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/9/2023 21:36:23'!
-scroller: aMorph
-" the morph to insert into the scroll pane"
-	scrollPane scroller: aMorph ! !
-
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 21:47:33'!
 topRow
 	^ submorphs last! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 11:53:31'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 15:45:05'!
+defaultBorderColor
+	^ Theme current transcript! !
+
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 15:55:26'!
+defaultColor
+	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
+
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 16:11:05'!
 initialize
 	| row |
-	super initialize.
-	self separation: 20@20.
+	super initialize.	
+	self separation: 20@20;
+		doAdoptWidgetsColor.
+		
 	label := LabelMorph new.
 	quickButtons := LayoutMorph newRow :: axisEdgeWeight: #rowRight; color: Color transparent.
-	row := LayoutMorph newRow :: separation: 2@0; color: Color transparent.
+	row := LayoutMorph newRow :: separation: 2@0; color: Color transparent .
 	row 
 		addMorph: label;
 		addMorphUseAll: (BoxedMorph new :: borderWidth: 0 ; color: Color transparent; yourself);
 		addMorph: quickButtons layoutSpec: (LayoutSpec proportionalWidth: 0 proportionalHeight: 0) .
-	self 	addMorph: row layoutSpec: (LayoutSpec proportionalHeight: 0);
-		addMorphUseAll: (scrollPane := PluggableScrollPane new).! !
+	self 	addMorph: row layoutSpec: (LayoutSpec proportionalHeight: 0)! !
 
-!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 5/9/2023 21:31:45'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 16:08:10'!
+setScroller
+	scrollPane := PluggableScrollPane new! !
+
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 15:47:27'!
+textBackgroundColor
+	^Theme current paneBackgroundFrom: borderColor ! !
+
+!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 5/29/2023 16:02:13'!
 drawOn: canvas
 	|  startPosition endPosition |
 	endPosition := self topRow morphPosition + (0 @ self topRow morphExtent y / 2).
@@ -398,19 +418,19 @@ example1
 new
 	^ self newColumn ! !
 
-!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 12:00:18'!
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 14:38:05'!
 open: aPane label: aString
-	^ self label: aString ;
-		quickButtons: nil ;
-		scroller: aPane! !
+	^ self open: aPane label: aString quickButtons: nil! !
 
-!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 11:56:12'!
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 16:09:51'!
 open: aPane label: aString quickButtons: aCollection
-	^ self new
+	| pane |
+	pane := self new
 		label: aString ;
 		quickButtons: aCollection;
-		scroller: aPane;
-		yourself! !
+		contents: aPane.
+	"pane adoptWidgetsColor: pane color."
+	^ pane! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
 fontPreferenceChanged
