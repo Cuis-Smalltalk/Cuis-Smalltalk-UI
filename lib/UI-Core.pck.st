@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5781] on 4 May 2023 at 3:42:09 pm'!
+'From Cuis 6.0 [latest update: #5816] on 30 May 2023 at 9:33:26 pm'!
 'Description '!
-!provides: 'UI-Core' 1 2!
+!provides: 'UI-Core' 1 3!
 SystemOrganization addCategory: 'UI-Core'!
 
 
@@ -583,9 +583,10 @@ categoryInNewMorphMenu
 list
 	^ collection! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:28:20'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/30/2023 18:26:48'!
 list: aCollection
-	collection _ aCollection ! !
+	collection := aCollection.
+	aCollection 		ifNotEmpty: [selectedIndex := 1]! !
 
 !ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:28:03'!
 listIndex
@@ -605,10 +606,10 @@ selectedItem
 		ifTrue: [nil ] 
 		ifFalse: [collection at: selectedIndex]! !
 
-!ListModel methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 14:42:09'!
+!ListModel methodsFor: 'initialization' stamp: 'hlsf 5/30/2023 18:23:41'!
 initialize
 	super initialize.
-	selectedIndex _ 1! !
+	selectedIndex := 0! !
 
 !ListModel class methodsFor: 'instance creation' stamp: 'hlsf 4/2/2022 14:28:53'!
 with: aCollection

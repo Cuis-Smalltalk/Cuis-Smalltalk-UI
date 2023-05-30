@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5816] on 29 May 2023 at 9:08:11 pm'!
+'From Cuis 6.0 [latest update: #5816] on 30 May 2023 at 9:33:23 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 71!
+!provides: 'UI-Panel' 1 72!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -311,7 +311,7 @@ on: anObject
 		initialize;
 		yourself! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 16:09:27'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/30/2023 18:31:46'!
 contents: aPane
 	scrollPane 
 		ifNotNil: [scrollPane color: color.
@@ -327,6 +327,10 @@ elasticMorph
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 11:53:49'!
 label: aString
 	label contents: aString ! !
+
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/30/2023 19:09:46'!
+quickButtons
+	^ quickButtons! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 12:34:40'!
 quickButtons: collection
@@ -422,7 +426,7 @@ new
 open: aPane label: aString
 	^ self open: aPane label: aString quickButtons: nil! !
 
-!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 16:09:51'!
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/30/2023 20:54:35'!
 open: aPane label: aString quickButtons: aCollection
 	| pane |
 	pane := self new
