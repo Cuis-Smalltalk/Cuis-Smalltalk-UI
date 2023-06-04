@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5816] on 30 May 2023 at 9:33:23 pm'!
+'From Cuis 6.0 [latest update: #5836] on 4 June 2023 at 5:27:19 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 72!
+!provides: 'UI-Panel' 1 73!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -70,7 +70,7 @@ EditPanel class
 
 !classDefinition: #PluggableDialogPanel category: 'UI-Panel'!
 DialogPanel subclass: #PluggableDialogPanel
-	instanceVariableNames: 'viewSelector actionOnAccept actionOnCancel'
+	instanceVariableNames: 'viewSelector actionOnAccept actionOnCancel acceptLabel cancelLabel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -246,13 +246,15 @@ It is used with the Morphic-Mold package for assisted field descriptions and val
 The model is then a Mold instance or a composite of Mold instances.!
 
 !PluggablePane commentStamp: '<historical>' prior: 0!
-A pluggable pane (no window, no title) with an optional 'Accept' button. 
+A pluggable pane (no window, no title) with an optional 'Cancel' button. 
 The model should answer to:
 - viewSelector (yeah...) to get a view to plug in the panel.
-- an optional actionOnAccept (block or symbol) for an 'Accept' button
+- actionOnAccept (block or symbol) for an 'Accept' button
+- optional actionOnCancel for a 'Cancel' button
 
 It is used with the Morphic-Mold package for assisted field descriptions and validations. 
-The model is then a Mold instance or a composite of Mold instances.!
+The model is then a Mold instance or a composite of Mold instances. 
+Other use cases are possible!
 
 !ValueEntryPanel commentStamp: '<historical>' prior: 0!
 I am an abstract class for editing simple values.
@@ -395,6 +397,11 @@ drawOn: canvas
 !DecoratedPane methodsFor: 'geometry testing' stamp: 'hlsf 5/4/2023 21:32:35'!
 requiresVectorCanvas
 	^ true! !
+
+!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 6/4/2023 17:26:41'!
+adoptWidgetsColor: aColor 
+	super adoptWidgetsColor: aColor.
+	color := Theme current paneBackgroundFrom: aColor! !
 
 !DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/29/2023 12:32:24'!
 example1
@@ -1129,7 +1136,7 @@ newButtonArea
 		color: self widgetsColor.
 	^ buttonArea! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 5/29/2023 20:19:24'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 6/4/2023 16:17:14'!
 newButtonArea
 "Return the morph where the buttons are layed out"
 	buttonArea := LayoutMorph newRow ::
@@ -1138,12 +1145,12 @@ newButtonArea
 		addMorph: (PluggableButtonMorph
 			model: actionOnAccept 
 			action: #value
-			label: 'Accept').
+			label: acceptLabel ).
 	actionOnCancel ifNotNil: [
 		buttonArea addMorph: (PluggableButtonMorph 
 			model: actionOnCancel 
 			action: #value
-			label: 'Cancel')].
+			label: cancelLabel)].
 	^ buttonArea ! !
 
 !PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/20/2023 11:45:44'!
@@ -1151,6 +1158,10 @@ newPane
 	^ (model perform: viewSelector)
 		adoptWidgetsColor: widgetsColor;
 		yourself! !
+
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 6/4/2023 16:16:42'!
+acceptLabel: aString
+	acceptLabel := aString ! !
 
 !PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:31:21'!
 actionOnAccept: selectorOrBlock
@@ -1164,6 +1175,10 @@ actionOnCancel: selectorOrBlock
 		ifTrue: [ [model perform: selectorOrBlock] ]
 		ifFalse: [selectorOrBlock]! !
 
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 6/4/2023 16:16:51'!
+cancelLabel: aString
+	cancelLabel := aString ! !
+
 !PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:11:53'!
 viewGetter: selector
 	viewSelector := selector ! !
@@ -1174,9 +1189,11 @@ minimumExtent
 	mini := super minimumExtent.
 	^ (mini x max: 350) @ mini y! !
 
-!PluggableDialogPanel methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 20:10:17'!
+!PluggableDialogPanel methodsFor: 'initialization' stamp: 'hlsf 6/4/2023 16:16:15'!
 initialize
 	super initialize.
+	acceptLabel := 'Accept'.
+	cancelLabel := 'Cancel'.
 	actionOnCancel := [self delete]! !
 
 !PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:22:20'!
@@ -1207,6 +1224,15 @@ open: model label: aString view: viewSelector accept: acceptSelectorOrAction can
 !PluggablePane methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:29:26'!
 buildTitle
 " No title, no window "! !
+
+!PluggablePane methodsFor: 'GUI building' stamp: 'hlsf 6/4/2023 17:24:43'!
+widgetsColor: aColor
+	"aColor will be used for titles, borders, etc.
+	A variation of it, #paneColorFrom:, will be used for panes background"
+
+	widgetsColor := aColor.
+	self color: (Theme current paneBackgroundFrom: aColor ).
+	self adoptWidgetsColor: widgetsColor ! !
 
 !PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/28/2023 21:30:11'!
 defaultBorderWidth
