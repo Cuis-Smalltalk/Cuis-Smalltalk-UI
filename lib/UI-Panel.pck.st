@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5836] on 4 June 2023 at 5:27:19 pm'!
+'From Cuis 6.0 [latest update: #5836] on 5 June 2023 at 11:16:42 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 73!
+!provides: 'UI-Panel' 1 74!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -10,7 +10,7 @@ SystemOrganization addCategory: 'UI-Panel'!
 
 !classDefinition: #BreadcrumbsPane category: 'UI-Panel'!
 LayoutMorph subclass: #BreadcrumbsPane
-	instanceVariableNames: 'root slices'
+	instanceVariableNames: 'root slices navBar'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -201,9 +201,9 @@ WizardPage class
 
 !BreadcrumbsPane commentStamp: '<historical>' prior: 0!
 A breadcrumbs panel to navigate a tree of objects. 
-In the top of the panel: the navigation, a collection of buttons separated by '>' and ending with a label of the visited content. A button name is the associated hierarchy name (slice).
-At the bottom the panel of the visited object. 
-The user subclasses me to define in methods the appropriate actions to build the panels of the visited objects.
+At the top, the navigation, a collection of buttons separated by '>' and ending with a label of the visited content. Each button is named with the related hierarchy name (slice).
+At the bottom, the panel of the visited object. 
+The user subclasses me to define the appropriate actions to build the panels of the visited objects.
 
 - root : the root of the tree of objects
 - slices: dictionary. Keys the names of the slices. Values the actions to build the panels associated to the slices.!
@@ -297,14 +297,32 @@ It emits event when
  - the user press apply and cancel
 !
 
-!BreadcrumbsPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 12:34:03'!
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 23:14:48'!
+browseTo: an
+	! !
+
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 23:06:55'!
+sliceButtonFor: anObject
+" A navigation button to browse anObject "
+	anObject when: #browseTo send: #browseTo: to: self.
+	^ PluggableButtonMorph 
+		model: [self browseTo: anObject] action: #value label: anObject printString! !
+
+!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/5/2023 22:31:57'!
 initialize
 	super initialize.
-	slices := Dictionary new.! !
+	self beColumn.
+	slices := Dictionary new.
+	navBar := LayoutMorph newRow.
+	self addMorphKeepMorphHeight: navBar.! !
 
-!BreadcrumbsPane methodsFor: 'as yet unclassified' stamp: 'hlsf 5/28/2023 12:33:44'!
+!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/5/2023 23:15:11'!
 root: anObject
-	root := anObject ! !
+	root := anObject.
+	navBar removeAllMorphs;
+		addMorph: (self sliceButtonFor: root).		
+	self addMorph: anObject viewer.
+	! !
 
 !BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 5/28/2023 21:05:30'!
 on: anObject
@@ -313,13 +331,13 @@ on: anObject
 		initialize;
 		yourself! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/30/2023 18:31:46'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 21:58:22'!
 contents: aPane
 	scrollPane 
-		ifNotNil: [scrollPane color: color.
-			self addMorphUseAll: scrollPane.
+		ifNotNil: [	self addMorphUseAll: scrollPane.
 			scrollPane scroller: aPane]
-		ifNil: [self addMorphUseAll: aPane]! !
+		ifNil: [self addMorphUseAll: aPane].
+	self adoptWidgetsColor: self defaultBorderColor ! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/6/2023 09:58:02'!
 elasticMorph
@@ -398,10 +416,11 @@ drawOn: canvas
 requiresVectorCanvas
 	^ true! !
 
-!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 6/4/2023 17:26:41'!
+!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 6/5/2023 21:58:14'!
 adoptWidgetsColor: aColor 
 	super adoptWidgetsColor: aColor.
-	color := Theme current paneBackgroundFrom: aColor! !
+	color := Theme current paneBackgroundFrom: aColor.
+	scrollPane ifNotNil: [scrollPane color: color]! !
 
 !DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/29/2023 12:32:24'!
 example1
