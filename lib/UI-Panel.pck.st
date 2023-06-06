@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5836] on 5 June 2023 at 11:16:42 pm'!
+'From Cuis 6.0 [latest update: #5836] on 6 June 2023 at 10:18:00 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 74!
+!provides: 'UI-Panel' 1 77!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -297,23 +297,12 @@ It emits event when
  - the user press apply and cancel
 !
 
-!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 23:14:48'!
-browseTo: an
-	! !
-
-!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 23:06:55'!
-sliceButtonFor: anObject
-" A navigation button to browse anObject "
-	anObject when: #browseTo send: #browseTo: to: self.
-	^ PluggableButtonMorph 
-		model: [self browseTo: anObject] action: #value label: anObject printString! !
-
-!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/5/2023 22:31:57'!
+!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/6/2023 22:08:33'!
 initialize
 	super initialize.
-	self beColumn.
 	slices := Dictionary new.
 	navBar := LayoutMorph newRow.
+	navBar separation: 2@0.
 	self addMorphKeepMorphHeight: navBar.! !
 
 !BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/5/2023 23:15:11'!
@@ -324,11 +313,34 @@ root: anObject
 	self addMorph: anObject viewer.
 	! !
 
-!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 5/28/2023 21:05:30'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 22:12:40'!
+browseTo: anObject
+	self replaceSubmorph: submorphs first by: anObject viewer.
+	navBar addMorph: (self sliceButtonFor: anObject)! !
+
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 21:45:26'!
+removeSliceButtonsAfter: aNavButton
+" Search for the navButtons coming after aNavButton, then remove them from the navBar "
+	| toDelete |
+	toDelete := OrderedCollection new.
+	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
+	navBar removeAllMorphsIn: toDelete! !
+
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 21:51:43'!
+sliceButtonFor: anObject
+" A navigation button to browse anObject "
+	| navButton |
+	anObject when: #browseTo send: #browseTo: to: self.
+	navButton := nil.
+	^ navButton := PluggableButtonMorph 
+		model: [self browseTo: anObject.
+			self removeSliceButtonsAfter: navButton		] 
+		action: #value label: anObject printString! !
+
+!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 6/6/2023 22:08:22'!
 on: anObject
-	^ self basicNew 
+	^ self newColumn 
 		root: anObject ;
-		initialize;
 		yourself! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 21:58:22'!
