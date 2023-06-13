@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5836] on 6 June 2023 at 10:18:00 pm'!
+'From Cuis 6.0 [latest update: #5847] on 13 June 2023 at 10:45:55 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 77!
+!provides: 'UI-Panel' 1 79!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -326,16 +326,23 @@ removeSliceButtonsAfter: aNavButton
 	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
 	navBar removeAllMorphsIn: toDelete! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 21:51:43'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/13/2023 22:36:33'!
 sliceButtonFor: anObject
 " A navigation button to browse anObject "
 	| navButton |
 	anObject when: #browseTo send: #browseTo: to: self.
 	navButton := nil.
-	^ navButton := PluggableButtonMorph 
+	navButton := PluggableButtonMorph 
 		model: [self browseTo: anObject.
 			self removeSliceButtonsAfter: navButton		] 
-		action: #value label: anObject printString! !
+		action: #value label: anObject printString.
+	anObject when: #edited send: #updateSliceButton:with: to: self withArguments: {navButton . anObject}.
+	^ navButton! !
+
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/13/2023 22:45:05'!
+updateSliceButton: button with: anObject
+	button label: anObject printString.
+	navBar layoutSubmorphs ! !
 
 !BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 6/6/2023 22:08:22'!
 on: anObject
@@ -381,7 +388,7 @@ defaultBorderColor
 defaultColor
 	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 16:11:05'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 6/13/2023 20:56:53'!
 initialize
 	| row |
 	super initialize.	
@@ -464,14 +471,13 @@ new
 open: aPane label: aString
 	^ self open: aPane label: aString quickButtons: nil! !
 
-!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/30/2023 20:54:35'!
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 6/13/2023 20:46:28'!
 open: aPane label: aString quickButtons: aCollection
 	| pane |
 	pane := self new
 		label: aString ;
 		quickButtons: aCollection;
 		contents: aPane.
-	"pane adoptWidgetsColor: pane color."
 	^ pane! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
