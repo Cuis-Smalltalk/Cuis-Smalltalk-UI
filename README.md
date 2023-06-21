@@ -56,11 +56,13 @@ Model and helper classes.
 - SimpleNumberEntryMorph
 
 ### UI-Panel
-- Panel
+- BreadcrumbsPane
 - DecoratedPane
+- PluggablePane
+- Panel
 - DialogPanel
 - EditPanel
-- PluggablePanel
+- PluggableDialogPanel
 - ValueEntryPanel
 - FloatEntryPanel
 - RangeFloatEntryPanel

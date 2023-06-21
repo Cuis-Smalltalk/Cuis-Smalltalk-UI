@@ -1,9 +1,9 @@
-'From Cuis 6.0 [latest update: #5810] on 25 May 2023 at 9:12:24 pm'!
+'From Cuis 6.0 [latest update: #5847] on 21 June 2023 at 2:16:30 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 22!
+!provides: 'UI-Widgets' 1 23!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: 'UI-Widgets'!
 
 
@@ -97,6 +97,11 @@ Object subclass: #WaitSpinner
 WaitSpinner class
 	instanceVariableNames: 'spinners isSpinnerRunning process'!
 
+
+!FilePreviewMorph commentStamp: 'hlsf 6/21/2023 14:14:31' prior: 0!
+I represent a preview (image) of a file (file). I am optionally decorated with a toolbar of buttons.
+- on click I raise a #selected event with me as argument.
+- On double-click on me I trigger a #doubleClick event with me as argument.!
 
 !LabelGroup commentStamp: '<historical>' prior: 0!
 A morph laid out with a column of labels and a column of associated controls.!
