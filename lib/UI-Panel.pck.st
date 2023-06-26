@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5847] on 13 June 2023 at 10:45:55 pm'!
+'From Cuis 6.0 [latest update: #5847] on 26 June 2023 at 10:15:46 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 79!
+!provides: 'UI-Panel' 1 82!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -10,7 +10,7 @@ SystemOrganization addCategory: 'UI-Panel'!
 
 !classDefinition: #BreadcrumbsPane category: 'UI-Panel'!
 LayoutMorph subclass: #BreadcrumbsPane
-	instanceVariableNames: 'root slices navBar'
+	instanceVariableNames: 'root navBar viewer'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -297,10 +297,9 @@ It emits event when
  - the user press apply and cancel
 !
 
-!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/6/2023 22:08:33'!
+!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/26/2023 22:02:02'!
 initialize
 	super initialize.
-	slices := Dictionary new.
 	navBar := LayoutMorph newRow.
 	navBar separation: 2@0.
 	self addMorphKeepMorphHeight: navBar.! !
@@ -313,9 +312,9 @@ root: anObject
 	self addMorph: anObject viewer.
 	! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 22:12:40'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/21/2023 20:21:47'!
 browseTo: anObject
-	self replaceSubmorph: submorphs first by: anObject viewer.
+	self replaceViewWith: anObject.
 	navBar addMorph: (self sliceButtonFor: anObject)! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 21:45:26'!
@@ -326,14 +325,19 @@ removeSliceButtonsAfter: aNavButton
 	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
 	navBar removeAllMorphsIn: toDelete! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/13/2023 22:36:33'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/26/2023 22:10:22'!
+replaceViewWith: anObject
+"Replace the main view in the pane with the viewer of the given object"
+	self replaceSubmorph: submorphs first by: (anObject accept: viewer new)! !
+
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/26/2023 22:06:51'!
 sliceButtonFor: anObject
 " A navigation button to browse anObject "
 	| navButton |
-	anObject when: #browseTo send: #browseTo: to: self.
 	navButton := nil.
+	anObject when: #browseTo send: #browseTo: to: self.
 	navButton := PluggableButtonMorph 
-		model: [self browseTo: anObject.
+		model: [self replaceViewWith: anObject.
 			self removeSliceButtonsAfter: navButton		] 
 		action: #value label: anObject printString.
 	anObject when: #edited send: #updateSliceButton:with: to: self withArguments: {navButton . anObject}.
@@ -344,10 +348,15 @@ updateSliceButton: button with: anObject
 	button label: anObject printString.
 	navBar layoutSubmorphs ! !
 
-!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 6/6/2023 22:08:22'!
-on: anObject
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 6/26/2023 22:08:13'!
+viewer: aViewerVisitorClass
+	viewer := aViewerVisitorClass! !
+
+!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 6/26/2023 22:07:54'!
+on: anObject with: viewerVisitorClass
 	^ self newColumn 
 		root: anObject ;
+		viewer: viewerVisitorClass ;
 		yourself! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 21:58:22'!
