@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5847] on 26 June 2023 at 10:15:46 pm'!
+'From Cuis 6.0 [latest update: #5847] on 30 June 2023 at 10:07:15 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 82!
+!provides: 'UI-Panel' 1 83!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -304,12 +304,12 @@ initialize
 	navBar separation: 2@0.
 	self addMorphKeepMorphHeight: navBar.! !
 
-!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/5/2023 23:15:11'!
+!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/30/2023 21:42:58'!
 root: anObject
 	root := anObject.
 	navBar removeAllMorphs;
 		addMorph: (self sliceButtonFor: root).		
-	self addMorph: anObject viewer.
+	self addMorph: (anObject accept: viewer new).
 	! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/21/2023 20:21:47'!
@@ -330,7 +330,7 @@ replaceViewWith: anObject
 "Replace the main view in the pane with the viewer of the given object"
 	self replaceSubmorph: submorphs first by: (anObject accept: viewer new)! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/26/2023 22:06:51'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/30/2023 21:49:50'!
 sliceButtonFor: anObject
 " A navigation button to browse anObject "
 	| navButton |
@@ -343,7 +343,7 @@ sliceButtonFor: anObject
 	anObject when: #edited send: #updateSliceButton:with: to: self withArguments: {navButton . anObject}.
 	^ navButton! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/13/2023 22:45:05'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/28/2023 00:10:05'!
 updateSliceButton: button with: anObject
 	button label: anObject printString.
 	navBar layoutSubmorphs ! !
@@ -352,11 +352,11 @@ updateSliceButton: button with: anObject
 viewer: aViewerVisitorClass
 	viewer := aViewerVisitorClass! !
 
-!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 6/26/2023 22:07:54'!
+!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 6/30/2023 21:43:23'!
 on: anObject with: viewerVisitorClass
 	^ self newColumn 
-		root: anObject ;
 		viewer: viewerVisitorClass ;
+		root: anObject ;		
 		yourself! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 21:58:22'!
