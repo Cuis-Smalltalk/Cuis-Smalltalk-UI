@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5847] on 30 June 2023 at 10:07:15 pm'!
+'From Cuis 6.0 [latest update: #5847] on 1 July 2023 at 9:40:34 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 83!
+!provides: 'UI-Panel' 1 84!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -20,7 +20,7 @@ BreadcrumbsPane class
 
 !classDefinition: #DecoratedPane category: 'UI-Panel'!
 LayoutMorph subclass: #DecoratedPane
-	instanceVariableNames: 'label quickButtons scrollPane widgetsColor'
+	instanceVariableNames: 'label quickButtons widgetsColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -359,12 +359,15 @@ on: anObject with: viewerVisitorClass
 		root: anObject ;		
 		yourself! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 21:58:22'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 21:58:14'!
+adoptWidgetsColor: aColor 
+	super adoptWidgetsColor: aColor.
+	color := Theme current paneBackgroundFrom: aColor.
+	scrollPane ifNotNil: [scrollPane color: color]! !
+
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 7/1/2023 21:15:19'!
 contents: aPane
-	scrollPane 
-		ifNotNil: [	self addMorphUseAll: scrollPane.
-			scrollPane scroller: aPane]
-		ifNil: [self addMorphUseAll: aPane].
+	self addMorphUseAll: aPane.
 	self adoptWidgetsColor: self defaultBorderColor ! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/6/2023 09:58:02'!
@@ -413,10 +416,6 @@ initialize
 		addMorph: quickButtons layoutSpec: (LayoutSpec proportionalWidth: 0 proportionalHeight: 0) .
 	self 	addMorph: row layoutSpec: (LayoutSpec proportionalHeight: 0)! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 16:08:10'!
-setScroller
-	scrollPane := PluggableScrollPane new! !
-
 !DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 15:47:27'!
 textBackgroundColor
 	^Theme current paneBackgroundFrom: borderColor ! !
@@ -444,11 +443,10 @@ drawOn: canvas
 requiresVectorCanvas
 	^ true! !
 
-!DecoratedPane methodsFor: 'as yet unclassified' stamp: 'hlsf 6/5/2023 21:58:14'!
-adoptWidgetsColor: aColor 
-	super adoptWidgetsColor: aColor.
-	color := Theme current paneBackgroundFrom: aColor.
-	scrollPane ifNotNil: [scrollPane color: color]! !
+!DecoratedPane methodsFor: 'geometry' stamp: 'hlsf 7/1/2023 20:41:23'!
+minimumExtent
+	^ super minimumExtent max: `100@100`
+	! !
 
 !DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/29/2023 12:32:24'!
 example1
