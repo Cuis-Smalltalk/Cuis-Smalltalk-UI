@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5847] on 1 July 2023 at 9:40:34 pm'!
+'From Cuis 6.0 [latest update: #5847] on 2 July 2023 at 1:26:06 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 84!
+!provides: 'UI-Panel' 1 85!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -312,10 +312,11 @@ root: anObject
 	self addMorph: (anObject accept: viewer new).
 	! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/21/2023 20:21:47'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/2/2023 12:36:40'!
 browseTo: anObject
 	self replaceViewWith: anObject.
-	navBar addMorph: (self sliceButtonFor: anObject)! !
+	navBar addMorph: (self sliceButtonFor: anObject).
+	self morphExtent: self minimumExtent ! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 21:45:26'!
 removeSliceButtonsAfter: aNavButton
@@ -325,10 +326,16 @@ removeSliceButtonsAfter: aNavButton
 	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
 	navBar removeAllMorphsIn: toDelete! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/26/2023 22:10:22'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/2/2023 13:02:34'!
+replaceView: aView byView: anotherView
+" Replace a view in the pane with another viewer and shrink the panel "
+	self replaceSubmorph: aView by: anotherView .
+	self morphExtent: self minimumExtent ! !
+
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/2/2023 13:03:09'!
 replaceViewWith: anObject
 "Replace the main view in the pane with the viewer of the given object"
-	self replaceSubmorph: submorphs first by: (anObject accept: viewer new)! !
+	self replaceView: submorphs first byView: (anObject accept: viewer new)! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/30/2023 21:49:50'!
 sliceButtonFor: anObject
@@ -443,9 +450,9 @@ drawOn: canvas
 requiresVectorCanvas
 	^ true! !
 
-!DecoratedPane methodsFor: 'geometry' stamp: 'hlsf 7/1/2023 20:41:23'!
+!DecoratedPane methodsFor: 'geometry' stamp: 'hlsf 7/2/2023 12:41:33'!
 minimumExtent
-	^ super minimumExtent max: `100@100`
+	^ super minimumExtent max: `100@150`
 	! !
 
 !DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/29/2023 12:32:24'!
