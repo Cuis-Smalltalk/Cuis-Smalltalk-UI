@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5847] on 2 July 2023 at 1:26:06 pm'!
+'From Cuis 6.0 [latest update: #5847] on 3 July 2023 at 12:16:42 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 85!
+!provides: 'UI-Panel' 1 86!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -366,11 +366,10 @@ on: anObject with: viewerVisitorClass
 		root: anObject ;		
 		yourself! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 6/5/2023 21:58:14'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 00:11:54'!
 adoptWidgetsColor: aColor 
 	super adoptWidgetsColor: aColor.
-	color := Theme current paneBackgroundFrom: aColor.
-	scrollPane ifNotNil: [scrollPane color: color]! !
+	color := Theme current paneBackgroundFrom: aColor.! !
 
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 7/1/2023 21:15:19'!
 contents: aPane
@@ -407,7 +406,7 @@ defaultBorderColor
 defaultColor
 	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 6/13/2023 20:56:53'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 7/2/2023 19:43:01'!
 initialize
 	| row |
 	super initialize.	

@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5847] on 30 June 2023 at 10:07:11 pm'!
+'From Cuis 6.0 [latest update: #5847] on 3 July 2023 at 12:16:56 am'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 12!
+!provides: 'UI-Mold' 1 13!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
@@ -1271,7 +1271,7 @@ zipCodeField
 				addCondition: [:val | val isNil or: [val matchesRegex: '(\d\d\d\d\d)(-\d\d\d\d)?']]
 				labeled: 'Invalid zip code')! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 6/27/2023 23:47:56'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 7/3/2023 00:15:43'!
 newPane
 	| pane |
 	pane := nil.
