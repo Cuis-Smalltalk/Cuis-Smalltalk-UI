@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5847] on 3 July 2023 at 12:31:20 pm'!
+'From Cuis 6.0 [latest update: #5847] on 3 July 2023 at 3:24:39 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 87!
+!provides: 'UI-Panel' 1 88!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -325,18 +325,19 @@ removeSliceButtonsAfter: aNavButton
 	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
 	navBar removeAllMorphsIn: toDelete! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/3/2023 12:12:50'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/3/2023 15:10:54'!
 replaceView: aView byView: anotherView
 " Replace a view in the pane with another viewer and shrink the panel "
 	self replaceSubmorph: aView by: anotherView .
-	self morphExtent: self minimumExtent ! !
+	self morphExtent: self minimumExtent.
+	self adoptWidgetsColor: self defaultBorderColor ! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/2/2023 13:03:09'!
 replaceViewWith: anObject
 "Replace the main view in the pane with the viewer of the given object"
 	self replaceView: submorphs first byView: (anObject accept: viewer new)! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/30/2023 21:49:50'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/3/2023 15:13:28'!
 sliceButtonFor: anObject
 " A navigation button to browse anObject "
 	| navButton |
@@ -347,12 +348,26 @@ sliceButtonFor: anObject
 			self removeSliceButtonsAfter: navButton		] 
 		action: #value label: anObject printString.
 	anObject when: #edited send: #updateSliceButton:with: to: self withArguments: {navButton . anObject}.
+	navButton adoptWidgetsColor: self defaultBorderColor .
 	^ navButton! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/28/2023 00:10:05'!
 updateSliceButton: button with: anObject
 	button label: anObject printString.
 	navBar layoutSubmorphs ! !
+
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 15:10:07'!
+adoptWidgetsColor: aColor 
+	super adoptWidgetsColor: aColor.
+	color := Theme current paneBackgroundFrom: aColor.! !
+
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 15:09:26'!
+defaultBorderColor
+	^ Theme current transcript! !
+
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 15:09:08'!
+defaultColor
+	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
 !BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 6/26/2023 22:08:13'!
 viewer: aViewerVisitorClass
@@ -425,13 +440,13 @@ initialize
 textBackgroundColor
 	^Theme current paneBackgroundFrom: borderColor ! !
 
-!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 5/29/2023 16:02:13'!
+!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 7/3/2023 14:51:36'!
 drawOn: canvas
 	|  startPosition endPosition |
 	endPosition := self topRow morphPosition + (0 @ self topRow morphExtent y / 2).
 	startPosition := self topRow externalize: self elasticMorph morphPosition  
 		+  (0 @ self elasticMorph morphExtent y / 2).
-	super drawOn: canvas.
+	"super drawOn: canvas."
 	canvas strokeWidth: 1 color: Color black do: [
 		canvas moveTo: startPosition;
 			rel_LineTo: self elasticMorph morphWidth@0;
