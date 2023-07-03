@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5847] on 3 July 2023 at 12:16:42 am'!
+'From Cuis 6.0 [latest update: #5847] on 3 July 2023 at 12:31:20 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 86!
+!provides: 'UI-Panel' 1 87!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -312,11 +312,10 @@ root: anObject
 	self addMorph: (anObject accept: viewer new).
 	! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/2/2023 12:36:40'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/3/2023 11:59:21'!
 browseTo: anObject
 	self replaceViewWith: anObject.
-	navBar addMorph: (self sliceButtonFor: anObject).
-	self morphExtent: self minimumExtent ! !
+	navBar addMorph: (self sliceButtonFor: anObject).! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 21:45:26'!
 removeSliceButtonsAfter: aNavButton
@@ -326,7 +325,7 @@ removeSliceButtonsAfter: aNavButton
 	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
 	navBar removeAllMorphsIn: toDelete! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/2/2023 13:02:34'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/3/2023 12:12:50'!
 replaceView: aView byView: anotherView
 " Replace a view in the pane with another viewer and shrink the panel "
 	self replaceSubmorph: aView by: anotherView .
@@ -449,7 +448,7 @@ drawOn: canvas
 requiresVectorCanvas
 	^ true! !
 
-!DecoratedPane methodsFor: 'geometry' stamp: 'hlsf 7/2/2023 12:41:33'!
+!DecoratedPane methodsFor: 'geometry' stamp: 'hlsf 7/3/2023 12:27:05'!
 minimumExtent
 	^ super minimumExtent max: `100@150`
 	! !
