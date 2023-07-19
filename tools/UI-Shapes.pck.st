@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5799] on 17 May 2023 at 11:47:40 am'!
+'From Cuis 6.0 [latest update: #5932] on 19 July 2023 at 12:39:05 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 34!
+!provides: 'UI-Shapes' 1 37!
 SystemOrganization addCategory: 'UI-Shapes'!
 
 
@@ -163,6 +163,11 @@ drawOn: aCanvas
 	| radius |
 	radius _ extent // 2.
 	aCanvas ellipseCenter: radius radius: radius borderWidth: borderWidth borderColor: borderColor fillColor: color! !
+
+!EllipseMorph methodsFor: 'drawing' stamp: 'KenD 7/19/2023 11:18:40'!
+requiresVectorCanvas
+
+	^true! !
 
 !EllipseMorph methodsFor: 'geometry testing' stamp: 'jmv 10/7/2009 23:21'!
 isOrthoRectangularMorph
@@ -1282,7 +1287,7 @@ radius: aPositiveDistance
 
 	radius := aPositiveDistance! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:45:02'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 7/19/2023 12:35:26'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -1294,7 +1299,7 @@ addOptionalHandlesTo: aHalo box: box
 		mouseMoveSelector: #doStartPoint:with: .
 
 	haloCtlPt := aHalo internalizeFromWorld: self controlPointOneInWorld.
-	(aHalo addVertLineHandle: haloCtlPt)
+	(aHalo addHorizLineHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlOne:with: .
 		
@@ -1642,7 +1647,7 @@ rightCenter
 
 	^(corner x @ (corner y - ((corner y - origin y) // 2)))! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:46:10'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 7/19/2023 12:37:29'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -1659,12 +1664,12 @@ addOptionalHandlesTo: aHalo box: box
 		mouseMoveSelector: #doEndPoint:with: .
 
 	haloCtlPt := aHalo internalizeFromWorld: self controlPointOneInWorld.
-	(aHalo addVertLineHandle: haloCtlPt)
+	(aHalo addHorizLineHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlOne:with: .
 		
 	haloCtlPt := aHalo internalizeFromWorld: self controlPointTwoInWorld.
-	(aHalo addHorizLineHandle: haloCtlPt)
+	(aHalo addVertLineHandle: haloCtlPt)
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlTwo:with: .
 		
@@ -2006,33 +2011,53 @@ startControlPoint: evt with: controlPointHandle
 
 ! !
 
-!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 2/3/2022 15:45:57'!
+!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:08:28'!
 haloGrabLineHorizIcon
 
 	^ self icons
 		at: #haloGrabLineHorizIcon
-		ifAbsentPut: [ VisualPropertyMenuItem grabLineHorizIcon ]! !
+		ifAbsentPut: [ Theme current  moveHorizIcon ]! !
 
-!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 2/3/2022 15:46:26'!
+!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:08:51'!
 haloGrabLineVertIcon
 
 	^ self icons
 		at: #haloGrabLineVertIcon
-		ifAbsentPut: [ VisualPropertyMenuItem grabLineVertIcon ]! !
+		ifAbsentPut: [ Theme current moveVertIcon ]! !
 
-!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 1/30/2022 15:28:52'!
+!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:09:15'!
 haloPointIcon
 
 	^ self icons
 		at: #haloPointIcon
-		ifAbsentPut: [ VisualPropertyMenuItem pointIcon ]! !
+		ifAbsentPut: [ Theme current endPointIcon ]! !
 
-!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 1/30/2022 15:29:09'!
+!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:09:37'!
 haloTargetIcon
 
 	^ self icons
 		at: #haloTargetIcon
-		ifAbsentPut: [ VisualPropertyMenuItem targetIcon ]! !
+		ifAbsentPut: [ Theme current targetIcon ]! !
+
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 11:57:54'!
+endPointIcon
+	"Answer a `sun`"
+	^ self fetch: #( '16x16' 'status' 'weather-clear'  )! !
+
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:05:19'!
+moveHorizIcon
+	"Answer horizontal move"
+	^ self fetch: #( '16x16' 'actions' 'go-last'  )! !
+
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:05:46'!
+moveVertIcon
+	"Answer vertical move"
+	^ self fetch: #( '16x16' 'actions' 'go-bottom'  )! !
+
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:27:26'!
+targetIcon
+	"Answer concentric circles"
+	^ self fetch: #( '16x16' 'emblems' 'emblem-important'  )! !
 FrameMorph initialize!
 ArrowMorph initialize!
 BezierQuadraticMorph initialize!
