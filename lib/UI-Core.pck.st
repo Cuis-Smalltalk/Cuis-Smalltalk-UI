@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5816] on 30 May 2023 at 9:33:26 pm'!
+'From Cuis 6.0 [latest update: #5940] on 26 July 2023 at 1:43:13 pm'!
 'Description '!
-!provides: 'UI-Core' 1 3!
+!provides: 'UI-Core' 1 4!
 SystemOrganization addCategory: 'UI-Core'!
 
 
@@ -599,6 +599,11 @@ listIndex: index
 	self changed: #listIndex:.
 	"Inform any interested view we changed the selected item"
 	self triggerEvent: #listSelectionChanged with: self! !
+
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 7/26/2023 13:24:32'!
+removeSelectedItem
+	collection remove: self selectedItem.
+	selectedIndex := 0.! !
 
 !ListModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:14:52'!
 selectedItem
