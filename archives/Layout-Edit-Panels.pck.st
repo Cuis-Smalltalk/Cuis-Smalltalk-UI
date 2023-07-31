@@ -1,9 +1,10 @@
-'From Cuis 6.0 [latest update: #5202] on 28 May 2022 at 11:00:51 am'!
+'From Cuis 6.0 [latest update: #5964] on 31 July 2023 at 7:11:03 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'Layout-Edit-Panels' 1 10!
+!provides: 'Layout-Edit-Panels' 1 11!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
+!requires: 'UI-Shapes' 1 37 nil!
 SystemOrganization addCategory: 'Layout-Edit-Panels'!
 
 
