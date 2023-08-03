@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5202] on 28 May 2022 at 11:00:51 am'!
+'From Cuis 6.0 [latest update: #5969] on 3 August 2023 at 1:41:54 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 10!
+!provides: 'UI-Layout-Panel' 1 11!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
@@ -1114,26 +1114,28 @@ shadowNonLayouts
 	self submorphsDo: [ :s | s shadowNonLayouts ].
 	(self isKindOf: LayoutMorph) ifFalse: [ self showDropShadow ]! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/16/2016 15:12:54'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 8/3/2023 13:37:11'!
 showLayouts
 	"debug"
 	"Display frames around LayoutMorphs; then delete"
 	| colors |
 	colors := Color orange mix: Color blue shades: 12.
 	self submorphsDo: [ :m | m frameLayouts: colors depth: 0 ].
-	self redrawNeeded; refreshWorld.
+	self redrawNeeded.
+	self world displayWorld.
 	(Delay forSeconds: 5) wait.
 	"Assume only my frames were added to World"
 	self world submorphsDo: [ :s | (s isKindOf: FrameMorph) ifTrue: [ s delete ]].! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/16/2016 15:13:33'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 8/3/2023 13:38:31'!
 showNonLayouts
 	"debug"
 	"Display frames around LayoutMorphs; then delete"
 	| colors |
 	colors := Color orange mix: Color blue shades: 12.
 	self submorphsDo: [ :m | m frameNonLayouts: colors depth: 0 ].
-	self redrawNeeded; refreshWorld.
+	self redrawNeeded.
+	self world displayWorld.
 	(Delay forSeconds: 5) wait.
 	"Assume only my frames were added to World"
 	self world submorphsDo: [ :s | (s isKindOf: FrameMorph) ifTrue: [ s delete ]].! !
