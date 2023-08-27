@@ -1,200 +1,200 @@
-'From Cuis 6.0 [latest update: #5958] on 29 July 2023 at 12:51:18 am'!
+'From Cuis 6.0 [latest update: #5979] on 27 August 2023 at 4:02:33 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 91!
+!provides: 'UI-Panel' 1 92!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
-SystemOrganization addCategory: #'UI-Panel'!
+SystemOrganization addCategory: 'UI-Panel'!
 
 
-!classDefinition: #BreadcrumbsPane category: #'UI-Panel'!
+!classDefinition: #BreadcrumbsPane category: 'UI-Panel'!
 LayoutMorph subclass: #BreadcrumbsPane
 	instanceVariableNames: 'root navBar viewer'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'BreadcrumbsPane class' category: #'UI-Panel'!
+!classDefinition: 'BreadcrumbsPane class' category: 'UI-Panel'!
 BreadcrumbsPane class
 	instanceVariableNames: ''!
 
-!classDefinition: #DecoratedPane category: #'UI-Panel'!
+!classDefinition: #DecoratedPane category: 'UI-Panel'!
 LayoutMorph subclass: #DecoratedPane
 	instanceVariableNames: 'label quickButtons widgetsColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'DecoratedPane class' category: #'UI-Panel'!
+!classDefinition: 'DecoratedPane class' category: 'UI-Panel'!
 DecoratedPane class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableScrollBar category: #'UI-Panel'!
+!classDefinition: #PluggableScrollBar category: 'UI-Panel'!
 ScrollBar subclass: #PluggableScrollBar
 	instanceVariableNames: 'refreshValueSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableScrollBar class' category: #'UI-Panel'!
+!classDefinition: 'PluggableScrollBar class' category: 'UI-Panel'!
 PluggableScrollBar class
 	instanceVariableNames: ''!
 
-!classDefinition: #Panel category: #'UI-Panel'!
+!classDefinition: #Panel category: 'UI-Panel'!
 PluggableMorph subclass: #Panel
 	instanceVariableNames: 'widgetsColor titleMorph layoutMorph stayUp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'Panel class' category: #'UI-Panel'!
+!classDefinition: 'Panel class' category: 'UI-Panel'!
 Panel class
 	instanceVariableNames: ''!
 
-!classDefinition: #DialogPanel category: #'UI-Panel'!
+!classDefinition: #DialogPanel category: 'UI-Panel'!
 Panel subclass: #DialogPanel
 	instanceVariableNames: 'buttonArea'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'DialogPanel class' category: #'UI-Panel'!
+!classDefinition: 'DialogPanel class' category: 'UI-Panel'!
 DialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #EditPanel category: #'UI-Panel'!
+!classDefinition: #EditPanel category: 'UI-Panel'!
 DialogPanel subclass: #EditPanel
 	instanceVariableNames: 'editModel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'EditPanel class' category: #'UI-Panel'!
+!classDefinition: 'EditPanel class' category: 'UI-Panel'!
 EditPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableDialogPanel category: #'UI-Panel'!
+!classDefinition: #PluggableDialogPanel category: 'UI-Panel'!
 DialogPanel subclass: #PluggableDialogPanel
-	instanceVariableNames: 'viewSelector actionOnAccept actionOnCancel acceptLabel cancelLabel'
+	instanceVariableNames: 'viewSelector actionOnButton actionOnAltButton buttonLabel altButtonLabel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableDialogPanel class' category: #'UI-Panel'!
+!classDefinition: 'PluggableDialogPanel class' category: 'UI-Panel'!
 PluggableDialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggablePane category: #'UI-Panel'!
+!classDefinition: #PluggablePane category: 'UI-Panel'!
 PluggableDialogPanel subclass: #PluggablePane
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggablePane class' category: #'UI-Panel'!
+!classDefinition: 'PluggablePane class' category: 'UI-Panel'!
 PluggablePane class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueEntryPanel category: #'UI-Panel'!
+!classDefinition: #ValueEntryPanel category: 'UI-Panel'!
 DialogPanel subclass: #ValueEntryPanel
 	instanceVariableNames: 'entry'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'ValueEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'ValueEntryPanel class' category: 'UI-Panel'!
 ValueEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #CharacterEntryPanel category: #'UI-Panel'!
+!classDefinition: #CharacterEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #CharacterEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'CharacterEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'CharacterEntryPanel class' category: 'UI-Panel'!
 CharacterEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatEntryPanel category: #'UI-Panel'!
+!classDefinition: #FloatEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #FloatEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'FloatEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'FloatEntryPanel class' category: 'UI-Panel'!
 FloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PointEntryPanel category: #'UI-Panel'!
+!classDefinition: #PointEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PointEntryPanel
 	instanceVariableNames: 'xEntryMorph yEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PointEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PointEntryPanel class' category: 'UI-Panel'!
 PointEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveFloatEntryPanel category: #'UI-Panel'!
+!classDefinition: #PositiveFloatEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PositiveFloatEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveFloatEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PositiveFloatEntryPanel class' category: 'UI-Panel'!
 PositiveFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveIntegerEntryPanel category: #'UI-Panel'!
+!classDefinition: #PositiveIntegerEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #PositiveIntegerEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveIntegerEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'PositiveIntegerEntryPanel class' category: 'UI-Panel'!
 PositiveIntegerEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #RangeFloatEntryPanel category: #'UI-Panel'!
+!classDefinition: #RangeFloatEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #RangeFloatEntryPanel
 	instanceVariableNames: 'min max'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'RangeFloatEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'RangeFloatEntryPanel class' category: 'UI-Panel'!
 RangeFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringEntryPanel category: #'UI-Panel'!
+!classDefinition: #StringEntryPanel category: 'UI-Panel'!
 ValueEntryPanel subclass: #StringEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'StringEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'StringEntryPanel class' category: 'UI-Panel'!
 StringEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextEntryPanel category: #'UI-Panel'!
+!classDefinition: #TextEntryPanel category: 'UI-Panel'!
 StringEntryPanel subclass: #TextEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'TextEntryPanel class' category: #'UI-Panel'!
+!classDefinition: 'TextEntryPanel class' category: 'UI-Panel'!
 TextEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPanel category: #'UI-Panel'!
+!classDefinition: #WizardPanel category: 'UI-Panel'!
 DialogPanel subclass: #WizardPanel
 	instanceVariableNames: 'pages currentPageIndex acceptSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPanel class' category: #'UI-Panel'!
+!classDefinition: 'WizardPanel class' category: 'UI-Panel'!
 WizardPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPage category: #'UI-Panel'!
+!classDefinition: #WizardPage category: 'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPage class' category: #'UI-Panel'!
+!classDefinition: 'WizardPage class' category: 'UI-Panel'!
 WizardPage class
 	instanceVariableNames: ''!
 
@@ -223,9 +223,7 @@ I am a ScrollBar which can get new values from my model.!
 !DialogPanel commentStamp: '<historical>' prior: 0!
 I am a dialog panel with a button area at my bottom.!
 
-!EditPanel commentStamp: 'hlsf 4/16/2023 12:50:22' prior: 0!
-DO WE NEED IT? I don't read use case. Hilaire
-
+!EditPanel commentStamp: '<historical>' prior: 0!
 I abstract common edit methods for my concrete subclasses.
 
 The gist is that my model is a reference to the original object.
@@ -1201,21 +1199,21 @@ newButtonArea
 		color: self widgetsColor.
 	^ buttonArea! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 6/4/2023 16:17:14'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 8/27/2023 15:32:30'!
 newButtonArea
 "Return the morph where the buttons are layed out"
 	buttonArea := LayoutMorph newRow ::
 		separation: 8@0;
 		axisEdgeWeight: #rowRight;
 		addMorph: (PluggableButtonMorph
-			model: actionOnAccept 
+			model: actionOnButton 
 			action: #value
-			label: acceptLabel ).
-	actionOnCancel ifNotNil: [
+			label: buttonLabel ).
+	actionOnAltButton ifNotNil: [
 		buttonArea addMorph: (PluggableButtonMorph 
-			model: actionOnCancel 
+			model: actionOnAltButton 
 			action: #value
-			label: cancelLabel)].
+			label: altButtonLabel)].
 	^ buttonArea ! !
 
 !PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/20/2023 11:45:44'!
@@ -1224,25 +1222,25 @@ newPane
 		adoptWidgetsColor: widgetsColor;
 		yourself! !
 
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 6/4/2023 16:16:42'!
-acceptLabel: aString
-	acceptLabel := aString ! !
-
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:31:21'!
-actionOnAccept: selectorOrBlock
-	actionOnAccept := selectorOrBlock isSymbol 
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:34:57'!
+actionOnAltButton: selectorOrBlock
+	actionOnAltButton := selectorOrBlock isSymbol 
 		ifTrue: [ [model perform: selectorOrBlock] ]
 		ifFalse: [selectorOrBlock]! !
 
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 19:59:38'!
-actionOnCancel: selectorOrBlock
-	actionOnCancel := selectorOrBlock isSymbol 
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:34:39'!
+actionOnButton: selectorOrBlock
+	actionOnButton := selectorOrBlock isSymbol 
 		ifTrue: [ [model perform: selectorOrBlock] ]
 		ifFalse: [selectorOrBlock]! !
 
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 6/4/2023 16:16:51'!
-cancelLabel: aString
-	cancelLabel := aString ! !
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:33:27'!
+altButtonLabel: aString
+	altButtonLabel := aString ! !
+
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:33:16'!
+buttonLabel: aString
+	buttonLabel := aString ! !
 
 !PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:11:53'!
 viewGetter: selector
@@ -1254,33 +1252,33 @@ minimumExtent
 	mini := super minimumExtent.
 	^ (mini x max: 350) @ mini y! !
 
-!PluggableDialogPanel methodsFor: 'initialization' stamp: 'hlsf 6/4/2023 16:16:15'!
+!PluggableDialogPanel methodsFor: 'initialization' stamp: 'hlsf 8/27/2023 15:32:30'!
 initialize
 	super initialize.
-	acceptLabel := 'Accept'.
-	cancelLabel := 'Cancel'.
-	actionOnCancel := [self delete]! !
+	buttonLabel := 'Accept'.
+	altButtonLabel := 'Cancel'.
+	actionOnAltButton := [self delete]! !
 
-!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:22:20'!
-open: model label: aString view: viewSelector accept: acceptSelectorOrAction
+!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:35:42'!
+open: model label: aString view: viewSelector action: acceptSelectorOrAction
 	|  window |
 	window := self new 
 		model: model;
 		viewGetter: viewSelector ;
-		actionOnAccept: acceptSelectorOrAction;
+		actionOnButton: acceptSelectorOrAction;
 		buildMorphicWindow.
 	aString ifNotNil: [ window setLabel: aString ].
 	window openInWorld.
 	^ window! !
 
-!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:22:46'!
-open: model label: aString view: viewSelector accept: acceptSelectorOrAction cancel: cancelSelectorOrAction
+!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:36:04'!
+open: model label: aString view: viewSelector action: acceptSelectorOrAction altAction: cancelSelectorOrAction
 	|  window |
 	window := self new
 		model: model;
 		viewGetter: viewSelector ;
-		actionOnAccept: acceptSelectorOrAction;
-		actionOnCancel: cancelSelectorOrAction;
+		actionOnButton: acceptSelectorOrAction;
+		actionOnAltButton: cancelSelectorOrAction;
 		buildMorphicWindow.
 	aString ifNotNil: [ window setLabel: aString ].
 	window openInWorld.
@@ -1303,10 +1301,10 @@ widgetsColor: aColor
 defaultBorderWidth
 	^ 0! !
 
-!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 20:18:29'!
+!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 8/27/2023 15:32:30'!
 initialize
 	super initialize.
-	actionOnCancel := nil! !
+	actionOnAltButton := nil! !
 
 !PluggablePane methodsFor: 'drawing' stamp: 'hlsf 5/28/2023 21:47:57'!
 drawOn: aCanvas
@@ -1331,24 +1329,24 @@ layoutBounds
 
 	^  0@0 extent: self morphExtentInOwner! !
 
-!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:22:54'!
-open: model view: aSelector accept: acceptSelectorOrAction
+!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:37:31'!
+open: model view: aSelector action: acceptSelectorOrAction
 	|  pane |
 	pane := self new
 		model: model;
 		viewGetter: aSelector ;
-		actionOnAccept: acceptSelectorOrAction;
+		actionOnButton: acceptSelectorOrAction;
 		buildMorphicWindow.
 	^ pane! !
 
-!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 20:23:04'!
-open: model view: aSelector accept: acceptSelectorOrAction cancel: cancelSelectorOrAction
+!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:37:50'!
+open: model view: aSelector action: acceptSelectorOrAction altAction: cancelSelectorOrAction
 	|  pane |
 	pane := self new
 		model: model;
 		viewGetter: aSelector ;
-		actionOnAccept: acceptSelectorOrAction;
-		actionOnCancel: cancelSelectorOrAction;
+		actionOnButton: acceptSelectorOrAction;
+		actionOnAltButton: cancelSelectorOrAction;
 		buildMorphicWindow.
 	^ pane! !
 

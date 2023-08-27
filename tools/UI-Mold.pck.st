@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5847] on 3 July 2023 at 12:16:56 am'!
+'From Cuis 6.0 [latest update: #5979] on 27 August 2023 at 4:02:30 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 13!
+!provides: 'UI-Mold' 1 14!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
@@ -1271,21 +1271,21 @@ zipCodeField
 				addCondition: [:val | val isNil or: [val matchesRegex: '(\d\d\d\d\d)(-\d\d\d\d)?']]
 				labeled: 'Invalid zip code')! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 7/3/2023 00:15:43'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 8/27/2023 15:37:31'!
 newPane
 	| pane |
 	pane := nil.
 	pane := PluggablePane 
 		open: self
 		view: #renderForms 
-		accept: [self validate.
+		action: [self validate.
 			pane morphExtent: pane minimumExtent. "I don't like to do it manually"
 			self isValid 	ifTrue: [
 				self save.
 				self triggerEvent: #edited] ].
 	^ pane! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 6/13/2023 22:19:42'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 8/27/2023 15:35:42'!
 openDialog: title
 	| panel |
 	panel := nil.
@@ -1293,7 +1293,7 @@ openDialog: title
 		open: self
 		label: title 
 		view: #renderForms 
-		accept: [self validate.
+		action: [self validate.
 			panel morphExtent: panel minimumExtent. "I don't like to do it manually"
 			self isValid 	ifTrue: [
 				self save.
