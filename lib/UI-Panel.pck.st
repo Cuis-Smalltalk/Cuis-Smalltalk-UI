@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5979] on 27 August 2023 at 4:02:33 pm'!
+'From Cuis 6.0 [latest update: #5979] on 31 August 2023 at 10:48:53 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 92!
+!provides: 'UI-Panel' 1 93!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -200,13 +200,16 @@ WizardPage class
 
 
 !BreadcrumbsPane commentStamp: '<historical>' prior: 0!
-A breadcrumbs panel to navigate a tree of objects. 
-At the top, the navigation, a collection of buttons separated by '>' and ending with a label of the visited content. Each button is named with the related hierarchy name (slice).
-At the bottom, the panel of the visited object. 
-The user subclasses me to define the appropriate actions to build the panels of the visited objects.
+A breadcrumbs panel to navigate a tree of objects. A visitor (viewer) is used to get the appropriate view of the browsed objects.
+At the top, the navigation, a collection of buttons to access the browsed objects. 
+At the bottom, a view of the visited object.
+When clicking a button, the bottow view is replaced by the associated buttons's object view. The navigation is adjusted accordingly.
+The browsed objects listen to events:
+- #browseTo, to instruct me to browse the given objet. See my method #browseTo:
+- #edited, to updated a button label when its associated object was edited. Its name may have changed
 
 - root : the root of the tree of objects
-- slices: dictionary. Keys the names of the slices. Values the actions to build the panels associated to the slices.!
+- viewer : a Visitor class accepted by the browsed objects to get its view!
 
 !DecoratedPane commentStamp: '<historical>' prior: 0!
 - I present morphs in a pane with optional scrollbars
@@ -461,11 +464,6 @@ drawOn: canvas
 !DecoratedPane methodsFor: 'geometry testing' stamp: 'hlsf 5/4/2023 21:32:35'!
 requiresVectorCanvas
 	^ true! !
-
-!DecoratedPane methodsFor: 'geometry' stamp: 'hlsf 7/28/2023 14:37:54'!
-minimumExtent
-	^ super minimumExtent max: `100@100`
-	! !
 
 !DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/29/2023 12:32:24'!
 example1
