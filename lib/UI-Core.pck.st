@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5940] on 26 July 2023 at 1:43:13 pm'!
+'From Cuis 6.0 [latest update: #5979] on 28 September 2023 at 5:51:45 pm'!
 'Description '!
-!provides: 'UI-Core' 1 4!
+!provides: 'UI-Core' 1 5!
 SystemOrganization addCategory: 'UI-Core'!
 
 
@@ -657,6 +657,10 @@ selectedItems
 	1 to: collection size do: [:i | 
 		(listSelections at: i) ifTrue: [items add: (collection at: i)] ].
 	^ items! !
+
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 9/28/2023 11:50:44'!
+selectedItems: items
+	self selectedIndexes: (items collect: [:anItem | collection indexOf: anItem])! !
 
 !ListMultiModel methodsFor: 'private' stamp: 'hlsf 4/23/2023 15:35:24'!
 clearSelections
