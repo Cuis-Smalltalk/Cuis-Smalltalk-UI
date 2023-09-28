@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5979] on 27 August 2023 at 4:02:30 pm'!
+'From Cuis 6.0 [latest update: #5979] on 28 September 2023 at 9:55:51 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 14!
+!provides: 'UI-Mold' 1 15!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: 'UI-Mold'!
@@ -1066,10 +1066,6 @@ on: accessor of: model
 	" Save operation done on the original model "
 	self callback: [:val | model perform: (accessor, ':') asSymbol with: val]! !
 
-!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:34:58'!
-save
-	callback 	ifNotNil: [callback value: input ]! !
-
 !SelectField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:40:36'!
 value: theSelectedItem
 "The model I will present an object "
@@ -1108,6 +1104,14 @@ infect: object
 " When object is nil index is zero, otherwise return its index"	
 "	^ listModel listIndex"
 	self shouldNotHappen ! !
+
+!SelectField methodsFor: 'as yet unclassified' stamp: 'hlsf 9/28/2023 15:16:07'!
+save
+	callback
+		ifNotNil: [ 
+			callback numArgs = 1
+				ifTrue: [ callback value: input ]
+				ifFalse: [ callback value ] ]! !
 
 !SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/21/2023 15:21:29'!
 addRequirementCondition

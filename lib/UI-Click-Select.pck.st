@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5979] on 28 September 2023 at 5:51:47 pm'!
+'From Cuis 6.0 [latest update: #5979] on 28 September 2023 at 9:55:39 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 41!
+!provides: 'UI-Click-Select' 1 42!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -835,6 +835,13 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 		keystrokeAction: nil.		
 	self installButtons! !
 
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 9/28/2023 21:27:10'!
+buttonWidth 
+	^ (dropDownList list 
+		ifEmpty: [30] 
+		ifNotEmpty: [:aList | aList max: [: aLabel |  dropDownList scroller widthToDisplayItem: aLabel] ])
+		+20! !
+
 !DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/2/2022 11:49:59'!
 toggleDropDownList
 	dropDownList owner 
@@ -844,14 +851,14 @@ toggleDropDownList
 					+ self morphBottomLeft]
 		ifNotNil: [dropDownList delete]! !
 
-!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 9/28/2023 16:41:27'!
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 9/28/2023 21:24:56'!
 updateButton
 	| label |
 	label := dropDownList getCurrentSelectionIndex = 0
 		ifTrue: ['']
 		ifFalse: [dropDownList getListItem: dropDownList getCurrentSelectionIndex].
 	button label: label;
-		morphExtent: dropDownList scroller desiredWidth @ FontFamily defaultPointSize;
+		morphExtent: self buttonWidth @ FontFamily defaultPointSize;
 		redrawNeeded! !
 
 !DropDownListMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:36:05'!
@@ -1002,10 +1009,14 @@ new
 keyboardFocusChange: aBoolean
 	aBoolean ifFalse: [		self delete ].! !
 
-!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 9/28/2023 17:49:51'!
+!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 9/28/2023 21:16:05'!
 updateList
 	super updateList.
-	self morphExtent: (scroller desiredWidth  + 30) @ extent y! !
+	self morphExtent: scroller desiredWidth + 30 @ extent y! !
+
+!PluggableDropDownListMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 9/28/2023 21:20:34'!
+list
+	^ list! !
 
 !PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
 getList
