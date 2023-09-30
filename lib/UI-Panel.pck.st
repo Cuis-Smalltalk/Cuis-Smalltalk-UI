@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5979] on 31 August 2023 at 10:48:53 pm'!
+'From Cuis 6.0 [latest update: #5979] on 30 September 2023 at 5:26:23 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 93!
+!provides: 'UI-Panel' 1 94!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -298,12 +298,14 @@ It emits event when
  - the user press apply and cancel
 !
 
-!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/26/2023 22:02:02'!
+!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 9/30/2023 17:15:02'!
 initialize
 	super initialize.
 	navBar := LayoutMorph newRow.
 	navBar separation: 2@0.
-	self addMorphKeepMorphHeight: navBar.! !
+	self addMorphKeepMorphHeight: navBar.
+	self adoptWidgetsColor: self defaultBorderColor 
+! !
 
 !BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/30/2023 21:42:58'!
 root: anObject
