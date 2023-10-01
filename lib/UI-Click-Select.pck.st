@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5979] on 30 September 2023 at 5:26:17 pm'!
+'From Cuis 6.0 [latest update: #5979] on 1 October 2023 at 10:49:42 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 44!
+!provides: 'UI-Click-Select' 1 45!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -1009,10 +1009,10 @@ new
 keyboardFocusChange: aBoolean
 	aBoolean ifFalse: [		self delete ].! !
 
-!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 9/28/2023 21:16:05'!
+!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 10/1/2023 22:45:32'!
 updateList
 	super updateList.
-	self morphExtent: scroller desiredWidth + 30 @ extent y! !
+	self morphExtent: scroller desiredWidth + 25 @ extent y! !
 
 !PluggableDropDownListMorph methodsFor: 'access' stamp: 'hlsf 9/30/2023 17:24:52'!
 adoptWidgetsColor: paneColor
