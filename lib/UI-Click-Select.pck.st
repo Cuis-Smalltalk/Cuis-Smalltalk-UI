@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5979] on 10 October 2023 at 10:42:07 pm'!
+'From Cuis 6.0 [latest update: #5979] on 10 October 2023 at 11:18:31 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 46!
+!provides: 'UI-Click-Select' 1 47!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -776,6 +776,17 @@ delete
 !DropDownButtonMorph methodsFor: 'geometry testing' stamp: 'hlsf 5/15/2022 12:47:57'!
 hasVariableExtent
 	^ false! !
+
+!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 10/10/2023 23:02:06'!
+layoutSpec
+	"Layout specific. Return the layout spec describing where the
+	receiver should appear in a proportional layout"
+
+	layoutSpec ifNotNil: [ :ls | ^ ls ].
+	layoutSpec := LayoutSpec keepMorphExtent.
+	layoutSpec morph: self.
+
+	^ layoutSpec! !
 
 !DropDownButtonMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:59:35'!
 categoryInNewMorphMenu
