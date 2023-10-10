@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5979] on 1 October 2023 at 10:49:42 pm'!
+'From Cuis 6.0 [latest update: #5979] on 10 October 2023 at 10:42:07 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 45!
+!provides: 'UI-Click-Select' 1 46!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: 'UI-Click-Select'!
@@ -835,7 +835,7 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 		keystrokeAction: nil.		
 	self installButtons! !
 
-!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 9/28/2023 21:27:10'!
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 10/10/2023 21:49:53'!
 buttonWidth 
 	^ (dropDownList list 
 		ifEmpty: [30] 
@@ -1009,10 +1009,10 @@ new
 keyboardFocusChange: aBoolean
 	aBoolean ifFalse: [		self delete ].! !
 
-!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 10/1/2023 22:45:32'!
+!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 10/10/2023 22:22:48'!
 updateList
 	super updateList.
-	self morphExtent: scroller desiredWidth + 25 @ extent y! !
+	self morphExtent: (scroller desiredWidth + ScrollBar scrollbarThickness + 10) @ extent y! !
 
 !PluggableDropDownListMorph methodsFor: 'access' stamp: 'hlsf 9/30/2023 17:24:52'!
 adoptWidgetsColor: paneColor
@@ -1028,6 +1028,11 @@ list
 !PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 9/30/2023 17:24:12'!
 defaultBorderWidth
 	^ 1! !
+
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 10/10/2023 22:05:42'!
+initialize
+	super initialize.
+	extent := 150 @100! !
 
 !PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
 getList
