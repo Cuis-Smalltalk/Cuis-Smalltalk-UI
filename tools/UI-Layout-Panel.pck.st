@@ -1,6 +1,6 @@
 'From Cuis 6.0 [latest update: #5969] on 3 August 2023 at 1:41:54 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 11!
+!provides: 'UI-Layout-Panel' 1 12!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
@@ -1122,7 +1122,7 @@ showLayouts
 	colors := Color orange mix: Color blue shades: 12.
 	self submorphsDo: [ :m | m frameLayouts: colors depth: 0 ].
 	self redrawNeeded.
-	self world displayWorld.
+	self world displayWorldOn: self world mainCanvas.
 	(Delay forSeconds: 5) wait.
 	"Assume only my frames were added to World"
 	self world submorphsDo: [ :s | (s isKindOf: FrameMorph) ifTrue: [ s delete ]].! !
@@ -1135,7 +1135,7 @@ showNonLayouts
 	colors := Color orange mix: Color blue shades: 12.
 	self submorphsDo: [ :m | m frameNonLayouts: colors depth: 0 ].
 	self redrawNeeded.
-	self world displayWorld.
+	self world displayWorldOn: self world mainCanvas.
 	(Delay forSeconds: 5) wait.
 	"Assume only my frames were added to World"
 	self world submorphsDo: [ :s | (s isKindOf: FrameMorph) ifTrue: [ s delete ]].! !
