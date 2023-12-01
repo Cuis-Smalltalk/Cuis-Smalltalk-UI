@@ -1,39 +1,39 @@
-'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 10:08:48 am'!
+'From Cuis 6.0 [latest update: #6092] on 1 December 2023 at 11:22:41 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 43!
+!provides: 'UI-Entry' 1 44!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
-SystemOrganization addCategory: 'UI-Entry'!
+SystemOrganization addCategory: #'UI-Entry'!
 
 
-!classDefinition: #SimpleEditor category: 'UI-Entry'!
+!classDefinition: #SimpleEditor category: #'UI-Entry'!
 Editor subclass: #SimpleEditor
 	instanceVariableNames: 'string pointIndex markIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'SimpleEditor class' category: 'UI-Entry'!
+!classDefinition: 'SimpleEditor class' category: #'UI-Entry'!
 SimpleEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextEntryMorph category: 'UI-Entry'!
+!classDefinition: #TextEntryMorph category: #'UI-Entry'!
 BoxedMorph subclass: #TextEntryMorph
 	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction acceptCancelReceiver backgroundColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'TextEntryMorph class' category: 'UI-Entry'!
+!classDefinition: 'TextEntryMorph class' category: #'UI-Entry'!
 TextEntryMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #SimpleNumberEntryMorph category: 'UI-Entry'!
+!classDefinition: #SimpleNumberEntryMorph category: #'UI-Entry'!
 TextEntryMorph subclass: #SimpleNumberEntryMorph
 	instanceVariableNames: 'entryChars numCharsToHold theValue validator toString valueAccessor valueUpdator'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Entry'!
-!classDefinition: 'SimpleNumberEntryMorph class' category: 'UI-Entry'!
+!classDefinition: 'SimpleNumberEntryMorph class' category: #'UI-Entry'!
 SimpleNumberEntryMorph class
 	instanceVariableNames: ''!
 
@@ -484,13 +484,13 @@ value
 "For compatibility"
 	^ self contents! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:10:12'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'hlsf 12/1/2023 11:14:17'!
 characterIndexAtPoint: aPoint
 
 	| line block f |
-	f _ self fontToUse.
+	f := self fontToUse.
 	
-	line _ TextLine 
+	line := TextLine 
 		start: 1
 		stop: contents size
 		internalSpaces: 0
@@ -499,10 +499,9 @@ characterIndexAtPoint: aPoint
 		rectangle: (0@0 extent: extent);
 		lineHeight: f lineSpacing baseline: f ascent.
 		
-	block _ (CharacterBlockScanner new text: (contents asText font: f))
+	block := (CharacterBlockScanner new text: (contents asText font: f))
 		defaultFont: f;
-		characterBlockAtPoint: aPoint index: nil
-		in: line.
+		characterBlockAtPoint: aPoint 		in: line forCursorPosition: true.
 
 	^ block stringIndex! !
 
