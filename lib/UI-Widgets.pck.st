@@ -1,99 +1,99 @@
-'From Cuis 6.0 [latest update: #5847] on 21 June 2023 at 2:16:30 pm'!
+'From Cuis6.2 [latest update: #6156] on 11 February 2024 at 3:05:23 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 23!
+!provides: 'UI-Widgets' 1 24!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
-SystemOrganization addCategory: 'UI-Widgets'!
+!requires: 'Collections-CompactArrays' 1 13 nil!
+SystemOrganization addCategory: #'UI-Widgets'!
 
 
-!classDefinition: #FilePreviewMorph category: 'UI-Widgets'!
+!classDefinition: #FilePreviewMorph category: #'UI-Widgets'!
 LayoutMorph subclass: #FilePreviewMorph
 	instanceVariableNames: 'image file selected'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
-!classDefinition: 'FilePreviewMorph class' category: 'UI-Widgets'!
+!classDefinition: 'FilePreviewMorph class' category: #'UI-Widgets'!
 FilePreviewMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #LabelGroup category: 'UI-Widgets'!
+!classDefinition: #LabelGroup category: #'UI-Widgets'!
 LayoutMorph subclass: #LabelGroup
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
-!classDefinition: 'LabelGroup class' category: 'UI-Widgets'!
+!classDefinition: 'LabelGroup class' category: #'UI-Widgets'!
 LabelGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #ButtonMorph category: 'UI-Widgets'!
+!classDefinition: #ButtonMorph category: #'UI-Widgets'!
 PluggableButtonMorph subclass: #ButtonMorph
 	instanceVariableNames: 'selectedColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
-!classDefinition: 'ButtonMorph class' category: 'UI-Widgets'!
+!classDefinition: 'ButtonMorph class' category: #'UI-Widgets'!
 ButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #WheelMorph category: 'UI-Widgets'!
+!classDefinition: #WheelMorph category: #'UI-Widgets'!
 BoxedMorph subclass: #WheelMorph
 	instanceVariableNames: 'target actionSelector factor circular old angle maxAngle lastRedraw isHorizontal'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
-!classDefinition: 'WheelMorph class' category: 'UI-Widgets'!
+!classDefinition: 'WheelMorph class' category: #'UI-Widgets'!
 WheelMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #ChevronMorph category: 'UI-Widgets'!
+!classDefinition: #ChevronMorph category: #'UI-Widgets'!
 PlacedMorph subclass: #ChevronMorph
 	instanceVariableNames: 'isPressed mouseIsOver icon model aperture innerRadius radius center vertices actionSelector stateSelector argument toolbar'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
-!classDefinition: 'ChevronMorph class' category: 'UI-Widgets'!
+!classDefinition: 'ChevronMorph class' category: #'UI-Widgets'!
 ChevronMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #DropDownChevronMorph category: 'UI-Widgets'!
+!classDefinition: #DropDownChevronMorph category: #'UI-Widgets'!
 ChevronMorph subclass: #DropDownChevronMorph
 	instanceVariableNames: 'activated chevron subtoolbar height gap'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
-!classDefinition: 'DropDownChevronMorph class' category: 'UI-Widgets'!
+!classDefinition: 'DropDownChevronMorph class' category: #'UI-Widgets'!
 DropDownChevronMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CircularToolbarMorph category: 'UI-Widgets'!
+!classDefinition: #CircularToolbarMorph category: #'UI-Widgets'!
 PlacedMorph subclass: #CircularToolbarMorph
 	instanceVariableNames: 'buttonSize aperture innerRadius dropDownHeight dropDownGap extent color selectedColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
-!classDefinition: 'CircularToolbarMorph class' category: 'UI-Widgets'!
+!classDefinition: 'CircularToolbarMorph class' category: #'UI-Widgets'!
 CircularToolbarMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CircularSubToolbarMorph category: 'UI-Widgets'!
+!classDefinition: #CircularSubToolbarMorph category: #'UI-Widgets'!
 CircularToolbarMorph subclass: #CircularSubToolbarMorph
 	instanceVariableNames: 'dropDown'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
-!classDefinition: 'CircularSubToolbarMorph class' category: 'UI-Widgets'!
+!classDefinition: 'CircularSubToolbarMorph class' category: #'UI-Widgets'!
 CircularSubToolbarMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #WaitSpinner category: 'UI-Widgets'!
+!classDefinition: #WaitSpinner category: #'UI-Widgets'!
 Object subclass: #WaitSpinner
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: 'nil'
 	category: 'UI-Widgets'!
-!classDefinition: 'WaitSpinner class' category: 'UI-Widgets'!
+!classDefinition: 'WaitSpinner class' category: #'UI-Widgets'!
 WaitSpinner class
 	instanceVariableNames: 'spinners isSpinnerRunning process'!
 
@@ -666,13 +666,13 @@ example1
 	w target: Transcript; actionSelector: #print:.
 	^ w! !
 
-!WheelMorph class methodsFor: 'examples' stamp: 'hlsf 1/5/2022 12:24:46'!
+!WheelMorph class methodsFor: 'examples' stamp: 'hlsf 2/11/2024 11:55:08'!
 example2
 "
 	self example2 openInWorld
 "
 	| ed model wheel |
-	ed := TextEditor openTextEditor.
+	ed := TextEditor open.
 	"paste a bunch of text to get scrollbar"
 	model := ed layoutMorph submorphs first. "TextModelMorph"
 	wheel := WheelMorph target: model.
