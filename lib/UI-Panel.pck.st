@@ -1,200 +1,200 @@
-'From Cuis 6.0 [latest update: #5979] on 30 September 2023 at 5:26:23 pm'!
+'From Cuis6.3 [latest update: #6279] on 24 March 2024 at 12:56:24 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 94!
+!provides: 'UI-Panel' 1 96!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
-SystemOrganization addCategory: 'UI-Panel'!
+SystemOrganization addCategory: #'UI-Panel'!
 
 
-!classDefinition: #BreadcrumbsPane category: 'UI-Panel'!
+!classDefinition: #BreadcrumbsPane category: #'UI-Panel'!
 LayoutMorph subclass: #BreadcrumbsPane
 	instanceVariableNames: 'root navBar viewer'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'BreadcrumbsPane class' category: 'UI-Panel'!
+!classDefinition: 'BreadcrumbsPane class' category: #'UI-Panel'!
 BreadcrumbsPane class
 	instanceVariableNames: ''!
 
-!classDefinition: #DecoratedPane category: 'UI-Panel'!
+!classDefinition: #DecoratedPane category: #'UI-Panel'!
 LayoutMorph subclass: #DecoratedPane
 	instanceVariableNames: 'label quickButtons widgetsColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'DecoratedPane class' category: 'UI-Panel'!
+!classDefinition: 'DecoratedPane class' category: #'UI-Panel'!
 DecoratedPane class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableScrollBar category: 'UI-Panel'!
+!classDefinition: #PluggableScrollBar category: #'UI-Panel'!
 ScrollBar subclass: #PluggableScrollBar
 	instanceVariableNames: 'refreshValueSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableScrollBar class' category: 'UI-Panel'!
+!classDefinition: 'PluggableScrollBar class' category: #'UI-Panel'!
 PluggableScrollBar class
 	instanceVariableNames: ''!
 
-!classDefinition: #Panel category: 'UI-Panel'!
+!classDefinition: #Panel category: #'UI-Panel'!
 PluggableMorph subclass: #Panel
 	instanceVariableNames: 'widgetsColor titleMorph layoutMorph stayUp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'Panel class' category: 'UI-Panel'!
+!classDefinition: 'Panel class' category: #'UI-Panel'!
 Panel class
 	instanceVariableNames: ''!
 
-!classDefinition: #DialogPanel category: 'UI-Panel'!
+!classDefinition: #DialogPanel category: #'UI-Panel'!
 Panel subclass: #DialogPanel
 	instanceVariableNames: 'buttonArea'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'DialogPanel class' category: 'UI-Panel'!
+!classDefinition: 'DialogPanel class' category: #'UI-Panel'!
 DialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #EditPanel category: 'UI-Panel'!
+!classDefinition: #EditPanel category: #'UI-Panel'!
 DialogPanel subclass: #EditPanel
 	instanceVariableNames: 'editModel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'EditPanel class' category: 'UI-Panel'!
+!classDefinition: 'EditPanel class' category: #'UI-Panel'!
 EditPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableDialogPanel category: 'UI-Panel'!
+!classDefinition: #PluggableDialogPanel category: #'UI-Panel'!
 DialogPanel subclass: #PluggableDialogPanel
 	instanceVariableNames: 'viewSelector actionOnButton actionOnAltButton buttonLabel altButtonLabel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggableDialogPanel class' category: 'UI-Panel'!
+!classDefinition: 'PluggableDialogPanel class' category: #'UI-Panel'!
 PluggableDialogPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggablePane category: 'UI-Panel'!
+!classDefinition: #PluggablePane category: #'UI-Panel'!
 PluggableDialogPanel subclass: #PluggablePane
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PluggablePane class' category: 'UI-Panel'!
+!classDefinition: 'PluggablePane class' category: #'UI-Panel'!
 PluggablePane class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueEntryPanel category: 'UI-Panel'!
+!classDefinition: #ValueEntryPanel category: #'UI-Panel'!
 DialogPanel subclass: #ValueEntryPanel
 	instanceVariableNames: 'entry'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'ValueEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'ValueEntryPanel class' category: #'UI-Panel'!
 ValueEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #CharacterEntryPanel category: 'UI-Panel'!
+!classDefinition: #CharacterEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #CharacterEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'CharacterEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'CharacterEntryPanel class' category: #'UI-Panel'!
 CharacterEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatEntryPanel category: 'UI-Panel'!
+!classDefinition: #FloatEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #FloatEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'FloatEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'FloatEntryPanel class' category: #'UI-Panel'!
 FloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PointEntryPanel category: 'UI-Panel'!
+!classDefinition: #PointEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #PointEntryPanel
 	instanceVariableNames: 'xEntryMorph yEntryMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PointEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'PointEntryPanel class' category: #'UI-Panel'!
 PointEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveFloatEntryPanel category: 'UI-Panel'!
+!classDefinition: #PositiveFloatEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #PositiveFloatEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveFloatEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'PositiveFloatEntryPanel class' category: #'UI-Panel'!
 PositiveFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PositiveIntegerEntryPanel category: 'UI-Panel'!
+!classDefinition: #PositiveIntegerEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #PositiveIntegerEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'PositiveIntegerEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'PositiveIntegerEntryPanel class' category: #'UI-Panel'!
 PositiveIntegerEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #RangeFloatEntryPanel category: 'UI-Panel'!
+!classDefinition: #RangeFloatEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #RangeFloatEntryPanel
 	instanceVariableNames: 'min max'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'RangeFloatEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'RangeFloatEntryPanel class' category: #'UI-Panel'!
 RangeFloatEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #StringEntryPanel category: 'UI-Panel'!
+!classDefinition: #StringEntryPanel category: #'UI-Panel'!
 ValueEntryPanel subclass: #StringEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'StringEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'StringEntryPanel class' category: #'UI-Panel'!
 StringEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextEntryPanel category: 'UI-Panel'!
+!classDefinition: #TextEntryPanel category: #'UI-Panel'!
 StringEntryPanel subclass: #TextEntryPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'TextEntryPanel class' category: 'UI-Panel'!
+!classDefinition: 'TextEntryPanel class' category: #'UI-Panel'!
 TextEntryPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPanel category: 'UI-Panel'!
+!classDefinition: #WizardPanel category: #'UI-Panel'!
 DialogPanel subclass: #WizardPanel
 	instanceVariableNames: 'pages currentPageIndex acceptSelector'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPanel class' category: 'UI-Panel'!
+!classDefinition: 'WizardPanel class' category: #'UI-Panel'!
 WizardPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #WizardPage category: 'UI-Panel'!
+!classDefinition: #WizardPage category: #'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'WizardPage class' category: 'UI-Panel'!
+!classDefinition: 'WizardPage class' category: #'UI-Panel'!
 WizardPage class
 	instanceVariableNames: ''!
 
@@ -831,11 +831,28 @@ textBackgroundColor
 
 	^ Theme current paneBackgroundFrom: self widgetsColor! !
 
-!Panel methodsFor: 'GUI building' stamp: 'KenD 12/22/2016 14:16:03'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/24/2024 12:38:29'!
+widgetsColor
+
+	widgetsColor ifNotNil: [ ^ widgetsColor ].
+	^Display depth > 2
+		ifTrue: [ self widgetsColor: self windowColor.
+			widgetsColor]
+		ifFalse: [ Color white ]
+! !
+
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/24/2024 12:53:59'!
+widgetsColor: aColor
+	"aColor will be used for titles, borders, etc.
+	A variation of it, #paneColorFrom:, will be used for panes background"
+
+	widgetsColor := aColor.
+	self color: self textBackgroundColor.
+	self adoptWidgetsColor: widgetsColor! !
+
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/24/2024 12:50:33'!
 windowColor
-	"Some default"
-	
-	^ Theme current transcript  "model class windowColor"! !
+	^ Theme current defaultWindowColor ! !
 
 !Panel methodsFor: 'dropping/grabbing' stamp: 'KenD 9/17/2019 13:26:55'!
 valueWhenDropped
@@ -893,30 +910,26 @@ defaultBorderColor
 
 	^self defaultColor! !
 
-!Panel methodsFor: 'initialization' stamp: 'KenD 12/9/2013 17:05'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 11:25:01'!
 defaultBorderWidth
 	"answer the default border width for the receiver"
 
-	^ Theme current roundWindowCorners
-		ifTrue: [ 3 ]
-		ifFalse: [ 2 ]! !
+	^ Theme current windowBorderWidth ! !
 
-!Panel methodsFor: 'initialization' stamp: 'KenD 10/25/2021 16:08:55'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 12:07:59'!
 defaultColor
-
-	^`(Color r: 0.8 g: 0.6 b: 0.3) lighter`! !
+	^ Theme current defaultWindowColor ! !
 
 !Panel methodsFor: 'initialization' stamp: 'hlsf 12/25/2021 16:55:34'!
 defaultSeparation
 
 	^ 10 "Pixels between controls/layouts"! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 5/28/2023 21:24:20'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 12:35:52'!
 initialize
 	"Initialize a system window. Add label, stripes, etc., if desired"
 
 	super initialize.
-	borderColor := self defaultColor.
 	self buildTitle.
 	^self 
 		beColumn;  "by default"
@@ -925,7 +938,7 @@ initialize
 	
 ! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 11:14:01'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 12:36:00'!
 openInWorld
 	self morphPosition: 
 			(RealEstateAgent 
@@ -1006,24 +1019,6 @@ stayUp: aBoolean
 titleMorph 
 
 	^ titleMorph! !
-
-!Panel methodsFor: 'accessing' stamp: 'KenD 4/18/2015 18:16'!
-widgetsColor
-
-	widgetsColor ifNotNil: [ ^ widgetsColor ].
-	^Display depth > 2
-		ifTrue: [ self windowColor ]
-		ifFalse: [ Color white ]
-! !
-
-!Panel methodsFor: 'accessing' stamp: 'KenD 12/20/2021 18:32:33'!
-widgetsColor: aColor
-	"aColor will be used for titles, borders, etc.
-	A variation of it, #paneColorFrom:, will be used for panes background"
-
-	widgetsColor _ aColor.
-	self color: self textBackgroundColor.
-	self adoptWidgetsColor: widgetsColor! !
 
 !Panel methodsFor: 'change reporting' stamp: 'hlsf 5/28/2023 21:39:43'!
 morphExtent: newExtent

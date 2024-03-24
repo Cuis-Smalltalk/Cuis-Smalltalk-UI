@@ -1,6 +1,6 @@
-'From Cuis6.2 [latest update: #6156] on 11 February 2024 at 3:05:23 pm'!
+'From Cuis6.2 [latest update: #6158] on 25 February 2024 at 12:34:08 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 24!
+!provides: 'UI-Widgets' 1 25!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
@@ -599,7 +599,7 @@ sendScrollEvent: cursorPoint
 
 ! !
 
-!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 5/25/2023 21:10:01'!
+!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 2/25/2024 00:33:08'!
 drawOn: aCanvas
 	| interval delta frame x0 x1 y0 y1 deltaX deltaY  |
 	delta := borderColor .
@@ -620,10 +620,10 @@ drawOn: aCanvas
 	1 to: (self maxAngle / (2 * interval)) rounded do: [ :i |
 		| x y |
 		self isHorizontal ifTrue: [
-			x := x0 + deltaX - (((i * interval + delta) * (2 * Float pi / 360.0)) cos * deltaX).
+			x := x0 + deltaX - (((i * interval + delta) * (Float twoPi / 360.0)) cos * deltaX).
 			aCanvas fillRectangle: (Rectangle origin: (x-1)@y0 corner: x@y1) color: borderColor ]
 		ifFalse: [
-			y := y0 + deltaY - (((i * interval + delta) * (2 * Float pi / 360.0)) cos * deltaY).
+			y := y0 + deltaY - (((i * interval + delta) * (Float twoPi / 360.0)) cos * deltaY).
 			aCanvas fillRectangle: (Rectangle origin: x0@(y-1) corner: x1@y) color: borderColor ].
 	]! !
 

@@ -1,56 +1,56 @@
-'From Cuis 6.0 [latest update: #5979] on 28 September 2023 at 5:51:45 pm'!
+'From Cuis6.3 [latest update: #6279] on 24 March 2024 at 12:08:20 pm'!
 'Description '!
-!provides: 'UI-Core' 1 5!
-SystemOrganization addCategory: 'UI-Core'!
+!provides: 'UI-Core' 1 6!
+SystemOrganization addCategory: #'UI-Core'!
 
 
-!classDefinition: #WindowTitleMorph category: 'UI-Core'!
+!classDefinition: #WindowTitleMorph category: #'UI-Core'!
 LayoutMorph subclass: #WindowTitleMorph
 	instanceVariableNames: 'titleMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Core'!
-!classDefinition: 'WindowTitleMorph class' category: 'UI-Core'!
+!classDefinition: 'WindowTitleMorph class' category: #'UI-Core'!
 WindowTitleMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #SqueezeLabelMorph category: 'UI-Core'!
+!classDefinition: #SqueezeLabelMorph category: #'UI-Core'!
 LabelMorph subclass: #SqueezeLabelMorph
 	instanceVariableNames: 'minChars centered'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Core'!
-!classDefinition: 'SqueezeLabelMorph class' category: 'UI-Core'!
+!classDefinition: 'SqueezeLabelMorph class' category: #'UI-Core'!
 SqueezeLabelMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #ListModel category: 'UI-Core'!
+!classDefinition: #ListModel category: #'UI-Core'!
 Object subclass: #ListModel
 	instanceVariableNames: 'collection selectedIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Core'!
-!classDefinition: 'ListModel class' category: 'UI-Core'!
+!classDefinition: 'ListModel class' category: #'UI-Core'!
 ListModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ListMultiModel category: 'UI-Core'!
+!classDefinition: #ListMultiModel category: #'UI-Core'!
 ListModel subclass: #ListMultiModel
 	instanceVariableNames: 'listSelections'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Core'!
-!classDefinition: 'ListMultiModel class' category: 'UI-Core'!
+!classDefinition: 'ListMultiModel class' category: #'UI-Core'!
 ListMultiModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueHolder category: 'UI-Core'!
+!classDefinition: #ValueHolder category: #'UI-Core'!
 Object subclass: #ValueHolder
 	instanceVariableNames: 'action property'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Core'!
-!classDefinition: 'ValueHolder class' category: 'UI-Core'!
+!classDefinition: 'ValueHolder class' category: #'UI-Core'!
 ValueHolder class
 	instanceVariableNames: ''!
 
@@ -287,7 +287,7 @@ windowMenuButtonClicked
 	self owner windowMenuButtonClicked
 ! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:06:12'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 11:57:35'!
 addAllButtonsAndTitle
 	"Buttons first"
    #( ( close  closeButtonClicked 'close this window' closeIcon drawCloseIcon )
@@ -308,7 +308,7 @@ addAllButtonsAndTitle
 					font: (Preferences at: #windowTitleFont)
 					minCharsToShow: 8
 					:: 
-					color: Color black.
+					color: Theme current windowLabel .
 	self addMorph: titleMorph.
 	
 	"PushPin goes after Title"
@@ -519,13 +519,13 @@ minimumStringExtent
 	f _ self font.
 	^ (f widthOfString: (contents squeezedTo: minChars)) @ f lineSpacing! !
 
-!SqueezeLabelMorph methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 15:35:31'!
+!SqueezeLabelMorph methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 12:02:05'!
 initialize
 
 	self minCharsToShow: 3. "required for size calc by super"
 	super initialize.
 	self layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0).
-	centered := true! !
+	centered := true.! !
 
 !SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 05:52:29'!
 contents: aString font: aFont emphasis: emphasisCode minCharsToShow: numChars
