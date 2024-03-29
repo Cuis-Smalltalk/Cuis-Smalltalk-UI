@@ -1,128 +1,128 @@
-'From Cuis 6.0 [latest update: #5979] on 10 October 2023 at 11:18:31 pm'!
+'From Cuis6.3 [latest update: #6279] on 29 March 2024 at 11:28:00 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 47!
+!provides: 'UI-Click-Select' 1 48!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
-SystemOrganization addCategory: 'UI-Click-Select'!
+SystemOrganization addCategory: #'UI-Click-Select'!
 
 
-!classDefinition: #CheckGroup category: 'UI-Click-Select'!
+!classDefinition: #CheckGroup category: #'UI-Click-Select'!
 LayoutMorph subclass: #CheckGroup
 	instanceVariableNames: 'list font buttonOnLeft buttons'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'CheckGroup class' category: 'UI-Click-Select'!
+!classDefinition: 'CheckGroup class' category: #'UI-Click-Select'!
 CheckGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableCheckboxMorph category: 'UI-Click-Select'!
+!classDefinition: #PluggableCheckboxMorph category: #'UI-Click-Select'!
 CheckGroup subclass: #PluggableCheckboxMorph
 	instanceVariableNames: 'model getSelected setSelected'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'PluggableCheckboxMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'PluggableCheckboxMorph class' category: #'UI-Click-Select'!
 PluggableCheckboxMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #RadioGroup category: 'UI-Click-Select'!
+!classDefinition: #RadioGroup category: #'UI-Click-Select'!
 CheckGroup subclass: #RadioGroup
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'RadioGroup class' category: 'UI-Click-Select'!
+!classDefinition: 'RadioGroup class' category: #'UI-Click-Select'!
 RadioGroup class
 	instanceVariableNames: ''!
 
-!classDefinition: #DropDownButtonMorph category: 'UI-Click-Select'!
+!classDefinition: #DropDownButtonMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #DropDownButtonMorph
 	instanceVariableNames: 'model dropDownList setMorphIndex button'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'DropDownButtonMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'DropDownButtonMorph class' category: #'UI-Click-Select'!
 DropDownButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #DropDownListMorph category: 'UI-Click-Select'!
+!classDefinition: #DropDownListMorph category: #'UI-Click-Select'!
 DropDownButtonMorph subclass: #DropDownListMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'DropDownListMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'DropDownListMorph class' category: #'UI-Click-Select'!
 DropDownListMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #InnerListOfMorph category: 'UI-Click-Select'!
+!classDefinition: #InnerListOfMorph category: #'UI-Click-Select'!
 LayoutMorph subclass: #InnerListOfMorph
 	instanceVariableNames: 'highlightedRow selectedRow'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'InnerListOfMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'InnerListOfMorph class' category: #'UI-Click-Select'!
 InnerListOfMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableDropDownListMorph category: 'UI-Click-Select'!
+!classDefinition: #PluggableDropDownListMorph category: #'UI-Click-Select'!
 PluggableListMorph subclass: #PluggableDropDownListMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'PluggableDropDownListMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'PluggableDropDownListMorph class' category: #'UI-Click-Select'!
 PluggableDropDownListMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableListOfMorph category: 'UI-Click-Select'!
+!classDefinition: #PluggableListOfMorph category: #'UI-Click-Select'!
 PluggableListMorph subclass: #PluggableListOfMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'PluggableListOfMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'PluggableListOfMorph class' category: #'UI-Click-Select'!
 PluggableListOfMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableDropDownListOfMorph category: 'UI-Click-Select'!
+!classDefinition: #PluggableDropDownListOfMorph category: #'UI-Click-Select'!
 PluggableListOfMorph subclass: #PluggableDropDownListOfMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'PluggableDropDownListOfMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'PluggableDropDownListOfMorph class' category: #'UI-Click-Select'!
 PluggableDropDownListOfMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #MultiSelectMenu category: 'UI-Click-Select'!
+!classDefinition: #MultiSelectMenu category: #'UI-Click-Select'!
 MenuMorph subclass: #MultiSelectMenu
 	instanceVariableNames: 'choices seed result'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'MultiSelectMenu class' category: 'UI-Click-Select'!
+!classDefinition: 'MultiSelectMenu class' category: #'UI-Click-Select'!
 MultiSelectMenu class
 	instanceVariableNames: ''!
 
-!classDefinition: #CheckButtonMorph category: 'UI-Click-Select'!
+!classDefinition: #CheckButtonMorph category: #'UI-Click-Select'!
 BoxedMorph subclass: #CheckButtonMorph
 	instanceVariableNames: 'isSelected'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'CheckButtonMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'CheckButtonMorph class' category: #'UI-Click-Select'!
 CheckButtonMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #RadioButtonMorph category: 'UI-Click-Select'!
+!classDefinition: #RadioButtonMorph category: #'UI-Click-Select'!
 CheckButtonMorph subclass: #RadioButtonMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'RadioButtonMorph class' category: 'UI-Click-Select'!
+!classDefinition: 'RadioButtonMorph class' category: #'UI-Click-Select'!
 RadioButtonMorph class
 	instanceVariableNames: ''!
 
@@ -1283,10 +1283,10 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:31:34'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 3/29/2024 11:24:20'!
 defaultBorderWidth
 
-	^ 4! !
+	^ 3! !
 
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/25/2022 20:44:36'!
 defaultColor
@@ -1306,13 +1306,13 @@ initialize
 	self borderColor: self defaultColor.
 	self ofSize: self defaultDiameter! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 3/14/2023 21:12:14'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 3/29/2024 11:19:29'!
 ofSize: numPixels
 
 	| size scale |
-	scale _  (Preferences at: #standardButtonFont) pointSize / 14.0.
-	size _ numPixels * scale.
-	self borderWidth: ((self defaultBorderWidth * scale) truncated max: 1).
+	scale :=  FontFamily defaultPointSize / 12.
+	size := numPixels * scale.
+	self borderWidth: ((self defaultBorderWidth * scale) rounded max: 1).
 	self morphExtent: size @ size.
 	self layoutSpec: (LayoutSpec 
 							fixedWidth: size 
@@ -1395,10 +1395,9 @@ hasVariableExtent
 "Does not make sense to be fitted in owner morph"
 	^ false! !
 
-!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:07:38'!
+!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 3/29/2024 11:26:52'!
 defaultDiameter
-
-	^ (Preferences at: #standardButtonFont) lineSpacing! !
+	^ FontFamily defaultPointSize + 3! !
 
 !CheckButtonMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/25/2022 20:47:33'!
 includeInNewMorphMenu
