@@ -1,9 +1,9 @@
-'From Cuis6.2 [latest update: #6158] on 25 February 2024 at 12:34:08 am'!
+'From Cuis6.3 [latest update: #6304] on 30 March 2024 at 5:17:49 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 25!
+!provides: 'UI-Widgets' 1 26!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'Collections-CompactArrays' 1 13 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
 
 
@@ -155,17 +155,9 @@ See my Class side:
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
 
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 10/17/2021 10:50:08'!
-defaultBorderColor
-	^ `Color gray`! !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 10/20/2021 22:17:52'!
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 3/30/2024 16:59:11'!
 defaultBorderWidth
-	^ 6! !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/1/2023 21:48:23'!
-defaultColor
-	^ `Color gray`! !
+	^ 5! !
 
 !FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/1/2023 17:13:25'!
 fileEntry
@@ -192,17 +184,18 @@ selected: aBoolean
 toggleSelection
 	self selected: selected not! !
 
-!FilePreviewMorph methodsFor: 'drawing' stamp: 'hlsf 5/1/2023 21:35:19'!
+!FilePreviewMorph methodsFor: 'drawing' stamp: 'hlsf 3/30/2024 17:16:17'!
 drawOn: aCanvas
+	| border |
 	self isSelected 
-		ifTrue: [borderColor := Theme current focusIndicator]
-		ifFalse: [borderColor := self defaultBorderColor].
+		ifTrue: [border := Theme current focusIndicator]
+		ifFalse: [border := borderColor ].
 	aCanvas
 		fillRectangle: self morphLocalBounds
-		color: self defaultColor
+		color: color
 		borderWidth: borderWidth
 		borderStyleSymbol: #simple
-		baseColorForBorder: borderColor! !
+		baseColorForBorder: border! !
 
 !FilePreviewMorph methodsFor: 'event handling testing' stamp: 'hlsf 10/17/2021 11:20:59'!
 handlesMouseDown: e
@@ -248,6 +241,12 @@ file: aFileEntry 		image: aForm	 buttons: buttons
 		buttons do: [: quickButton | row addMorph: quickButton] ].
 	self addMorphKeepMorphHeight: row.
 	! !
+
+!FilePreviewMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 3/30/2024 17:15:09'!
+adoptWidgetsColor: aColor 
+	super adoptWidgetsColor: aColor.
+	color := Theme current paneBackgroundFrom: aColor.
+	borderColor := color darker! !
 
 !FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2023 19:16:26'!
 file: aFileEntry image: aForm
