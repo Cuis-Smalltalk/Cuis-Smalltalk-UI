@@ -1,7 +1,7 @@
-'From Cuis6.3 [latest update: #6279] on 24 March 2024 at 12:56:24 pm'!
+'From Cuis6.3 [latest update: #6359] on 12 May 2024 at 3:53:19 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 96!
+!provides: 'UI-Panel' 1 97!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1294,6 +1294,10 @@ widgetsColor: aColor
 
 !PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/28/2023 21:30:11'!
 defaultBorderWidth
+	^ 0! !
+
+!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/12/2024 15:51:11'!
+defaultSeparation
 	^ 0! !
 
 !PluggablePane methodsFor: 'initialization' stamp: 'hlsf 8/27/2023 15:32:30'!
