@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5799] on 17 May 2023 at 11:31:49 am'!
+'From Cuis6.3 [latest update: #6358] on 15 May 2024 at 3:15:07 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 21!
+!provides: 'UI-Color-Panel' 1 22!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -8,56 +8,56 @@
 !requires: 'UI-Panel' 1 51 nil!
 !requires: 'UI-Palette' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
-SystemOrganization addCategory: 'UI-Color-Panel'!
+SystemOrganization addCategory: #'UI-Color-Panel'!
 
 
-!classDefinition: #ColorPaneMorph category: 'UI-Color-Panel'!
+!classDefinition: #ColorPaneMorph category: #'UI-Color-Panel'!
 ImageMorph subclass: #ColorPaneMorph
 	instanceVariableNames: 'zeroPlaneForm zIndex zValue colorPoint focusMorph'
 	classVariableNames: 'BlueIndex BrightnessForm BrightnessIndex BrightnessOverlay GBForm GreenIndex HueIndex HueOverlay RBForm RGForm RedIndex SaturationForm SaturationIndex SaturationOverlay'
 	poolDictionaries: ''
 	category: 'UI-Color-Panel'!
-!classDefinition: 'ColorPaneMorph class' category: 'UI-Color-Panel'!
+!classDefinition: 'ColorPaneMorph class' category: #'UI-Color-Panel'!
 ColorPaneMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #ColorSliderMorph category: 'UI-Color-Panel'!
+!classDefinition: #ColorSliderMorph category: #'UI-Color-Panel'!
 ImageMorph subclass: #ColorSliderMorph
 	instanceVariableNames: 'colorPane sliderMorph maxZValue'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Color-Panel'!
-!classDefinition: 'ColorSliderMorph class' category: 'UI-Color-Panel'!
+!classDefinition: 'ColorSliderMorph class' category: #'UI-Color-Panel'!
 ColorSliderMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #ColorEditorPanel category: 'UI-Color-Panel'!
+!classDefinition: #ColorEditorPanel category: #'UI-Color-Panel'!
 DialogPanel subclass: #ColorEditorPanel
 	instanceVariableNames: 'alphaFrame alphaSlider alphaSwatch colorPane colorSwatch sliderColumn closeColorSwatch closeColorLabel closestRGB radioSelection rgbRadio hsvRadio closestColordictColor rgbString'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Color-Panel'!
-!classDefinition: 'ColorEditorPanel class' category: 'UI-Color-Panel'!
+!classDefinition: 'ColorEditorPanel class' category: #'UI-Color-Panel'!
 ColorEditorPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ColorPalette category: 'UI-Color-Panel'!
+!classDefinition: #ColorPalette category: #'UI-Color-Panel'!
 ImagePickerPanel subclass: #ColorPalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Color-Panel'!
-!classDefinition: 'ColorPalette class' category: 'UI-Color-Panel'!
+!classDefinition: 'ColorPalette class' category: #'UI-Color-Panel'!
 ColorPalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #ColorEditorModel category: 'UI-Color-Panel'!
+!classDefinition: #ColorEditorModel category: #'UI-Color-Panel'!
 Object subclass: #ColorEditorModel
 	instanceVariableNames: 'color'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Color-Panel'!
-!classDefinition: 'ColorEditorModel class' category: 'UI-Color-Panel'!
+!classDefinition: 'ColorEditorModel class' category: #'UI-Color-Panel'!
 ColorEditorModel class
 	instanceVariableNames: ''!
 
@@ -734,7 +734,7 @@ colorPane: aColorPaneMorph
 		refreshColorFromModel; 
 		redrawBackground.! !
 
-!ColorSliderMorph methodsFor: 'initialization' stamp: 'KenD 10/16/2020 15:38:33'!
+!ColorSliderMorph methodsFor: 'initialization' stamp: 'KenD 5/15/2024 15:13:46'!
 initialize
 
 	super initialize.
@@ -749,7 +749,7 @@ initialize
 	maxZValue := 256. "Default"
 
 	self 
-		image: (Form extent: 20@256 depth: 32);
+		image: (Form extent: 20@256 depth: 32); flag: #Trashed; "??Where??"
 		layoutSpec: (LayoutSpec 
 							fixedWidth: 28 
 							fixedHeight: 256 
@@ -776,7 +776,7 @@ mouseMove: aMouseMoveEvent localPosition: localEventPosition
 	self colorPane zValue: (self zValueFromY: localEventPosition y).
 	self resetSliderPosition.! !
 
-!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 12/5/2013 21:11'!
+!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 5/15/2024 15:09:16'!
 redrawBackground
 	"Draw the color scale as background and set maxZValue"
 	
@@ -791,6 +791,7 @@ redrawBackground
 	colorMaker := self colorPane colorConstructors at: self colorPane zIndex.
 	pointX := self colorPane colorPoint x.
 	pointY := self colorPane colorPoint y.
+	self image: (Form extent: 20@256 depth: 32). self flag: #Trashed.
 	myForm  := self form.
 	1 to: 20 do: [ :x |
 		0 to: 255 do:  [ :y | 
