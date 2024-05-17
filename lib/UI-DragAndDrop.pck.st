@@ -1,47 +1,47 @@
-'From Cuis 6.0 [latest update: #5588] on 9 December 2022 at 1:42:14 pm'!
+'From Cuis7.0 [latest update: #6367] on 17 May 2024 at 11:48:56 am'!
 'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 17!
+!provides: 'UI-DragAndDrop' 1 18!
 !requires: 'Cuis-Base' 60 5588 nil!
-SystemOrganization addCategory: 'UI-DragAndDrop'!
+SystemOrganization addCategory: #'UI-DragAndDrop'!
 
 
-!classDefinition: #ClickColorMorph category: 'UI-DragAndDrop'!
+!classDefinition: #ClickColorMorph category: #'UI-DragAndDrop'!
 ImageMorph subclass: #ClickColorMorph
 	instanceVariableNames: 'colorTargetMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-DragAndDrop'!
-!classDefinition: 'ClickColorMorph class' category: 'UI-DragAndDrop'!
+!classDefinition: 'ClickColorMorph class' category: #'UI-DragAndDrop'!
 ClickColorMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #DropColorMorph category: 'UI-DragAndDrop'!
+!classDefinition: #DropColorMorph category: #'UI-DragAndDrop'!
 ImageMorph subclass: #DropColorMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-DragAndDrop'!
-!classDefinition: 'DropColorMorph class' category: 'UI-DragAndDrop'!
+!classDefinition: 'DropColorMorph class' category: #'UI-DragAndDrop'!
 DropColorMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #SignMorph category: 'UI-DragAndDrop'!
+!classDefinition: #SignMorph category: #'UI-DragAndDrop'!
 HoverHelpMorph subclass: #SignMorph
 	instanceVariableNames: 'object'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-DragAndDrop'!
-!classDefinition: 'SignMorph class' category: 'UI-DragAndDrop'!
+!classDefinition: 'SignMorph class' category: #'UI-DragAndDrop'!
 SignMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #FontMorph category: 'UI-DragAndDrop'!
+!classDefinition: #FontMorph category: #'UI-DragAndDrop'!
 BoxedMorph subclass: #FontMorph
 	instanceVariableNames: 'labelMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-DragAndDrop'!
-!classDefinition: 'FontMorph class' category: 'UI-DragAndDrop'!
+!classDefinition: 'FontMorph class' category: #'UI-DragAndDrop'!
 FontMorph class
 	instanceVariableNames: ''!
 
@@ -263,11 +263,13 @@ fromColor: aColor
 		image: (self color icon magnifyTo: 32@32)
 	! !
 
-!DropColorMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:29:05'!
+!DropColorMorph methodsFor: 'initialization' stamp: 'KenD 5/17/2024 11:20:08'!
 initialize
 
 	super initialize.
 	self 
+		image: (Color blue icon magnifyTo: 32@32);
+		color: Color transparent;
 		setProperty: #DropActionMorph toValue: #setColor: ;
 		borderWidth: 4;
 		borderColor: self class swatchBorderColor ! !
