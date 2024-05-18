@@ -1,219 +1,219 @@
-'From Cuis 6.0 [latest update: #5979] on 28 September 2023 at 9:55:51 pm'!
+'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:37:45 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 15!
+!provides: 'UI-Mold' 1 16!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
-SystemOrganization addCategory: 'UI-Mold'!
-SystemOrganization addCategory: 'UI-Mold-Test'!
+SystemOrganization addCategory: #'UI-Mold'!
+SystemOrganization addCategory: #'UI-Mold-Test'!
 
 
-!classDefinition: #CheckboxFieldTest category: 'UI-Mold-Test'!
+!classDefinition: #CheckboxFieldTest category: #'UI-Mold-Test'!
 TestCase subclass: #CheckboxFieldTest
 	instanceVariableNames: 'field model'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold-Test'!
-!classDefinition: 'CheckboxFieldTest class' category: 'UI-Mold-Test'!
+!classDefinition: 'CheckboxFieldTest class' category: #'UI-Mold-Test'!
 CheckboxFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #DateFieldTest category: 'UI-Mold-Test'!
+!classDefinition: #DateFieldTest category: #'UI-Mold-Test'!
 TestCase subclass: #DateFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold-Test'!
-!classDefinition: 'DateFieldTest class' category: 'UI-Mold-Test'!
+!classDefinition: 'DateFieldTest class' category: #'UI-Mold-Test'!
 DateFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #FieldTest category: 'UI-Mold-Test'!
+!classDefinition: #FieldTest category: #'UI-Mold-Test'!
 TestCase subclass: #FieldTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold-Test'!
-!classDefinition: 'FieldTest class' category: 'UI-Mold-Test'!
+!classDefinition: 'FieldTest class' category: #'UI-Mold-Test'!
 FieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatFieldTest category: 'UI-Mold-Test'!
+!classDefinition: #FloatFieldTest category: #'UI-Mold-Test'!
 TestCase subclass: #FloatFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold-Test'!
-!classDefinition: 'FloatFieldTest class' category: 'UI-Mold-Test'!
+!classDefinition: 'FloatFieldTest class' category: #'UI-Mold-Test'!
 FloatFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #IntegerFieldTest category: 'UI-Mold-Test'!
+!classDefinition: #IntegerFieldTest category: #'UI-Mold-Test'!
 TestCase subclass: #IntegerFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold-Test'!
-!classDefinition: 'IntegerFieldTest class' category: 'UI-Mold-Test'!
+!classDefinition: 'IntegerFieldTest class' category: #'UI-Mold-Test'!
 IntegerFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #MultiselectFieldTest category: 'UI-Mold-Test'!
+!classDefinition: #MultiselectFieldTest category: #'UI-Mold-Test'!
 TestCase subclass: #MultiselectFieldTest
 	instanceVariableNames: 'field model'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold-Test'!
-!classDefinition: 'MultiselectFieldTest class' category: 'UI-Mold-Test'!
+!classDefinition: 'MultiselectFieldTest class' category: #'UI-Mold-Test'!
 MultiselectFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #PercentageFieldTest category: 'UI-Mold-Test'!
+!classDefinition: #PercentageFieldTest category: #'UI-Mold-Test'!
 TestCase subclass: #PercentageFieldTest
 	instanceVariableNames: 'field'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold-Test'!
-!classDefinition: 'PercentageFieldTest class' category: 'UI-Mold-Test'!
+!classDefinition: 'PercentageFieldTest class' category: #'UI-Mold-Test'!
 PercentageFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #SelectFieldTest category: 'UI-Mold-Test'!
+!classDefinition: #SelectFieldTest category: #'UI-Mold-Test'!
 TestCase subclass: #SelectFieldTest
 	instanceVariableNames: 'field model'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold-Test'!
-!classDefinition: 'SelectFieldTest class' category: 'UI-Mold-Test'!
+!classDefinition: 'SelectFieldTest class' category: #'UI-Mold-Test'!
 SelectFieldTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #Field category: 'UI-Mold'!
+!classDefinition: #Field category: #'UI-Mold'!
 Object subclass: #Field
 	instanceVariableNames: 'isRequired conditions errors label value callback modifyBlock input widget'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'Field class' category: 'UI-Mold'!
+!classDefinition: 'Field class' category: #'UI-Mold'!
 Field class
 	instanceVariableNames: ''!
 
-!classDefinition: #CheckboxField category: 'UI-Mold'!
+!classDefinition: #CheckboxField category: #'UI-Mold'!
 Field subclass: #CheckboxField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'CheckboxField class' category: 'UI-Mold'!
+!classDefinition: 'CheckboxField class' category: #'UI-Mold'!
 CheckboxField class
 	instanceVariableNames: ''!
 
-!classDefinition: #DateField category: 'UI-Mold'!
+!classDefinition: #DateField category: #'UI-Mold'!
 Field subclass: #DateField
 	instanceVariableNames: 'format'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'DateField class' category: 'UI-Mold'!
+!classDefinition: 'DateField class' category: #'UI-Mold'!
 DateField class
 	instanceVariableNames: ''!
 
-!classDefinition: #FloatField category: 'UI-Mold'!
+!classDefinition: #FloatField category: #'UI-Mold'!
 Field subclass: #FloatField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'FloatField class' category: 'UI-Mold'!
+!classDefinition: 'FloatField class' category: #'UI-Mold'!
 FloatField class
 	instanceVariableNames: ''!
 
-!classDefinition: #PercentageField category: 'UI-Mold'!
+!classDefinition: #PercentageField category: #'UI-Mold'!
 FloatField subclass: #PercentageField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'PercentageField class' category: 'UI-Mold'!
+!classDefinition: 'PercentageField class' category: #'UI-Mold'!
 PercentageField class
 	instanceVariableNames: ''!
 
-!classDefinition: #IntegerField category: 'UI-Mold'!
+!classDefinition: #IntegerField category: #'UI-Mold'!
 Field subclass: #IntegerField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'IntegerField class' category: 'UI-Mold'!
+!classDefinition: 'IntegerField class' category: #'UI-Mold'!
 IntegerField class
 	instanceVariableNames: ''!
 
-!classDefinition: #PasswordField category: 'UI-Mold'!
+!classDefinition: #PasswordField category: #'UI-Mold'!
 Field subclass: #PasswordField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'PasswordField class' category: 'UI-Mold'!
+!classDefinition: 'PasswordField class' category: #'UI-Mold'!
 PasswordField class
 	instanceVariableNames: ''!
 
-!classDefinition: #SelectField category: 'UI-Mold'!
+!classDefinition: #SelectField category: #'UI-Mold'!
 Field subclass: #SelectField
 	instanceVariableNames: 'listModel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'SelectField class' category: 'UI-Mold'!
+!classDefinition: 'SelectField class' category: #'UI-Mold'!
 SelectField class
 	instanceVariableNames: ''!
 
-!classDefinition: #SelectMultipleField category: 'UI-Mold'!
+!classDefinition: #SelectMultipleField category: #'UI-Mold'!
 SelectField subclass: #SelectMultipleField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'SelectMultipleField class' category: 'UI-Mold'!
+!classDefinition: 'SelectMultipleField class' category: #'UI-Mold'!
 SelectMultipleField class
 	instanceVariableNames: ''!
 
-!classDefinition: #TextField category: 'UI-Mold'!
+!classDefinition: #TextField category: #'UI-Mold'!
 Field subclass: #TextField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'TextField class' category: 'UI-Mold'!
+!classDefinition: 'TextField class' category: #'UI-Mold'!
 TextField class
 	instanceVariableNames: ''!
 
-!classDefinition: #TimeField category: 'UI-Mold'!
+!classDefinition: #TimeField category: #'UI-Mold'!
 Field subclass: #TimeField
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'TimeField class' category: 'UI-Mold'!
+!classDefinition: 'TimeField class' category: #'UI-Mold'!
 TimeField class
 	instanceVariableNames: ''!
 
-!classDefinition: #Mold category: 'UI-Mold'!
+!classDefinition: #Mold category: #'UI-Mold'!
 Object subclass: #Mold
 	instanceVariableNames: 'fields'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'Mold class' category: 'UI-Mold'!
+!classDefinition: 'Mold class' category: #'UI-Mold'!
 Mold class
 	instanceVariableNames: ''!
 
-!classDefinition: #MoldExample category: 'UI-Mold'!
+!classDefinition: #MoldExample category: #'UI-Mold'!
 ProtoObject subclass: #MoldExample
 	instanceVariableNames: 'mold format'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Mold'!
-!classDefinition: 'MoldExample class' category: 'UI-Mold'!
+!classDefinition: 'MoldExample class' category: #'UI-Mold'!
 MoldExample class
 	instanceVariableNames: ''!
 
@@ -1055,12 +1055,13 @@ inputMorphInstance
 input: anIndex
 	input := anIndex ! !
 
-!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:32:05'!
+!SelectField methodsFor: 'accessing' stamp: 'jmv 5/17/2024 18:04:29'!
 on: accessor of: model
 	"̈Copy the model, so it is only saved at validation time, not at operating time"
 	listModel := model copy.
 	"Update the inputMoprh accordingly "
-	self inputMorph model: listModel listGetter: #list indexGetter: #listIndex indexSetter: #listIndex: mainView: nil menuGetter: nil keystrokeAction: nil.
+	self inputMorph
+		model: listModel listGetter: #list indexGetter: #listIndex indexSetter: #listIndex:.
 	input := listModel listIndex.
 	value := listModel selectedItem.
 	" Save operation done on the original model "
@@ -1137,12 +1138,13 @@ inputMorphContents: selectedIndexes
 inputMorphInstance
 	^ PluggableListMorphOfMany new! !
 
-!SelectMultipleField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 15:10:18'!
+!SelectMultipleField methodsFor: 'accessing' stamp: 'jmv 5/17/2024 18:04:37'!
 on: accessor of: model
 	"̈Copy the model, so it is only saved at validation time, not at operating time"
 	listModel := model copy.
 	"Update the inputMoprh accordingly "
-	self inputMorph model: listModel listGetter: #list primarySelectionGetter: #listIndex primarySelectionSetter: #listIndex: listSelectionGetter:  #listSelectionAt: listSelectionSetter: #listSelectionAt:put: mainView: nil menuGetter: nil keystrokeAction: nil.
+	self inputMorph
+		model: listModel listGetter: #list primarySelectionGetter: #listIndex primarySelectionSetter: #listIndex: listSelectionGetter:  #listSelectionAt: listSelectionSetter: #listSelectionAt:put:.
 	input := self inputMorphContents.
 	value := listModel selectedItems.
 	" Save operation done on the original model "

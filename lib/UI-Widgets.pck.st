@@ -1,9 +1,9 @@
-'From Cuis6.3 [latest update: #6304] on 30 March 2024 at 5:17:49 pm'!
+'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:36:59 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 26!
+!provides: 'UI-Widgets' 1 27!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Collections-CompactArrays' 1 13 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'Collections-CompactArrays' 1 13 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
 
 
@@ -344,7 +344,7 @@ with: labelsAndControls
 	
 	^ self newColumn with: labelsAndControls! !
 
-!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 9/25/2022 10:04:14'!
+!LabelGroup class methodsFor: 'examples' stamp: 'jmv 5/17/2024 18:06:24'!
 example1
 "
 	LabelGroup example1 openInWorld
@@ -354,7 +354,7 @@ example1
 		'Description which is very long is truncated but a ballon help is set to know about this lenghty label!!' -> (TextModelMorph withText: '' ::
 			emptyTextDisplayMessage: 'Why Smalltalk?')	 .
 		'Smalltalk variants' ->   (PluggableListMorph 
-			model: (ListModel with: #('Cuis-Smalltalk' 'Pharo' 'Squeak' 'Amber' 'Dolphin' 'GNU Smalltalk')) 
+			withModel: (ListModel with: #('Cuis-Smalltalk' 'Pharo' 'Squeak' 'Amber' 'Dolphin' 'GNU Smalltalk')) 
 			listGetter: #list 
 			indexGetter: #listIndex 
 			indexSetter: #listIndex: ) }::

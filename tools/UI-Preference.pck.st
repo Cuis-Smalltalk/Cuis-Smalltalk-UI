@@ -1,59 +1,59 @@
-'From Cuis 6.0 [latest update: #5847] on 15 June 2023 at 2:51:11 pm'!
+'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:37:15 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 25!
+!provides: 'UI-Preference' 1 26!
 !requires: 'UI-Click-Select' 1 31 nil!
 !requires: 'UI-Panel' 1 51 nil!
 !requires: 'UI-Widgets' 1 22 nil!
-SystemOrganization addCategory: 'UI-Preference'!
+SystemOrganization addCategory: #'UI-Preference'!
 
 
-!classDefinition: #PreferenceBrowser category: 'UI-Preference'!
+!classDefinition: #PreferenceBrowser category: #'UI-Preference'!
 DialogPanel subclass: #PreferenceBrowser
 	instanceVariableNames: 'categoriesListMorph preferencesGroup visitor categories category pane'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
-!classDefinition: 'PreferenceBrowser class' category: 'UI-Preference'!
+!classDefinition: 'PreferenceBrowser class' category: #'UI-Preference'!
 PreferenceBrowser class
 	instanceVariableNames: ''!
 
-!classDefinition: #PreferenceBrowserVisitor category: 'UI-Preference'!
+!classDefinition: #PreferenceBrowserVisitor category: #'UI-Preference'!
 Object subclass: #PreferenceBrowserVisitor
 	instanceVariableNames: 'views'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
-!classDefinition: 'PreferenceBrowserVisitor class' category: 'UI-Preference'!
+!classDefinition: 'PreferenceBrowserVisitor class' category: #'UI-Preference'!
 PreferenceBrowserVisitor class
 	instanceVariableNames: ''!
 
-!classDefinition: #PreferenceModel category: 'UI-Preference'!
+!classDefinition: #PreferenceModel category: #'UI-Preference'!
 Object subclass: #PreferenceModel
 	instanceVariableNames: 'preference'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
-!classDefinition: 'PreferenceModel class' category: 'UI-Preference'!
+!classDefinition: 'PreferenceModel class' category: #'UI-Preference'!
 PreferenceModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PreferenceModelClosure category: 'UI-Preference'!
+!classDefinition: #PreferenceModelClosure category: #'UI-Preference'!
 PreferenceModel subclass: #PreferenceModelClosure
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
-!classDefinition: 'PreferenceModelClosure class' category: 'UI-Preference'!
+!classDefinition: 'PreferenceModelClosure class' category: #'UI-Preference'!
 PreferenceModelClosure class
 	instanceVariableNames: ''!
 
-!classDefinition: #PreferenceType category: 'UI-Preference'!
+!classDefinition: #PreferenceType category: #'UI-Preference'!
 Object subclass: #PreferenceType
 	instanceVariableNames: 'preferenceName preferenceSet'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Preference'!
-!classDefinition: 'PreferenceType class' category: 'UI-Preference'!
+!classDefinition: 'PreferenceType class' category: #'UI-Preference'!
 PreferenceType class
 	instanceVariableNames: ''!
 
@@ -92,14 +92,14 @@ newPane
 		addMorphUseAll: preferencesGroup ;
 		yourself! !
 
-!PreferenceBrowser methodsFor: 'initialization' stamp: 'hlsf 5/14/2022 10:25:12'!
+!PreferenceBrowser methodsFor: 'initialization' stamp: 'jmv 5/17/2024 18:08:40'!
 initialize
 	super initialize.
-	categoriesListMorph _ PluggableListMorph 
-		model: self listGetter: #categoryNames indexGetter: #categoryIndex indexSetter: #categoryIndex: ::
+	categoriesListMorph := PluggableListMorph 
+		withModel: self listGetter: #categoryNames indexGetter: #categoryIndex indexSetter: #categoryIndex: ::
 		autoDeselect: false ;
 		yourself.
-	preferencesGroup _  PluggableScrollPane new ::
+	preferencesGroup :=  PluggableScrollPane new ::
 		color: self color;
 		layoutSpec: LayoutSpec useAll! !
 
@@ -152,12 +152,12 @@ visitArrayClassPreference: aPref
 			borderWidth: 0;
 			color: Color transparent)! !
 
-!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'hlsf 7/6/2022 10:52:28'!
+!PreferenceBrowserVisitor methodsFor: 'visitors type' stamp: 'jmv 5/17/2024 18:09:07'!
 visitArrayPreference: aPref
 	| list listMorph |
 	aPref isTypeAClass ifTrue: [^ self visitArrayClassPreference: aPref].
-	listMorph  _ DropDownListMorph 
-		model: (list _ ListModel with: aPref type) 
+	listMorph  := DropDownListMorph 
+		withModel: (list := ListModel with: aPref type) 
 		listGetter: #list 
 		indexGetter: #listIndex 
 		indexSetter: #listIndex: ::

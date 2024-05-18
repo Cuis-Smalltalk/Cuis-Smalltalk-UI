@@ -1,6 +1,6 @@
-'From Cuis6.3 [latest update: #6279] on 29 March 2024 at 11:28:00 am'!
+'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:38:13 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 48!
+!provides: 'UI-Click-Select' 1 49!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -757,12 +757,12 @@ installButtons
 		layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: #center).
 	self morphExtent: 0@0. "Shrink to the minimum"! !
 
-!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 2/15/2022 22:00:48'!
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'jmv 5/17/2024 18:05:56'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 	self model: anObject.
-	setMorphIndex _ setSelectionSel .
-	dropDownList _ PluggableDropDownListOfMorph 
-		model: anObject 
+	setMorphIndex := setSelectionSel .
+	dropDownList := PluggableDropDownListOfMorph 
+		withModel: anObject 
 		listGetter: getListSel 
 		indexGetter: getSelectionSel 
 		indexSetter: setSelectionSel.
@@ -803,23 +803,23 @@ initializedInstance
 
 	^self example1! !
 
-!DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:23:52'!
-model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
-	"Create a 'pluggable' list view on the given model parameterized by the given message selectors."
-	^self new
-		model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel ! !
-
 !DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/21/2022 10:27:53'!
 new
 	^ self newRow! !
 
-!DropDownButtonMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:33:06'!
+!DropDownButtonMorph class methodsFor: 'instance creation' stamp: 'jmv 5/17/2024 17:52:47'!
+withModel: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+	"Create a 'pluggable' list view on the given model parameterized by the given message selectors."
+	^self new
+		model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel ! !
+
+!DropDownButtonMorph class methodsFor: 'examples' stamp: 'jmv 5/17/2024 18:05:49'!
 example1
 "
 	self example1 openInWorld
 "
 | palette |
-	palette _ #(#blue #white #red #green #black #orange) collect: [ :aColor |
+	palette := #(#blue #white #red #green #black #orange) collect: [ :aColor |
 		BoxedMorph new ::
 			morphExtent: 80@15;
 			color: (Color perform: aColor);
@@ -827,23 +827,20 @@ example1
 			borderColor: Color black;
 			yourself].
 	^ DropDownButtonMorph 
-		model: (ListModel with: palette)
+		withModel: (ListModel with: palette)
 		listGetter: #list
 		indexGetter: #listIndex
 		indexSetter: #listIndex:! !
 
-!DropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 4/2/2022 12:09:21'!
+!DropDownListMorph methodsFor: 'initialization' stamp: 'jmv 5/17/2024 17:54:39'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 	self model: anObject.
-	setMorphIndex _ setSelectionSel .
-	dropDownList _ PluggableDropDownListMorph 
-		model: anObject 
+	setMorphIndex := setSelectionSel .
+	dropDownList := PluggableDropDownListMorph 
+		withModel: anObject 
 		listGetter: getListSel 
 		indexGetter: getSelectionSel 
-		indexSetter: setSelectionSel
-		mainView: nil
-		menuGetter: nil
-		keystrokeAction: nil.		
+		indexSetter: setSelectionSel.
 	self installButtons! !
 
 !DropDownListMorph methodsFor: 'action' stamp: 'hlsf 10/10/2023 21:49:53'!
@@ -872,13 +869,13 @@ updateButton
 		morphExtent: self buttonWidth @ FontFamily defaultPointSize;
 		redrawNeeded! !
 
-!DropDownListMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:36:05'!
+!DropDownListMorph class methodsFor: 'examples' stamp: 'jmv 5/17/2024 18:06:06'!
 example1
 "
 	self example1 openInWorld
 "
 	^ self 
-		model: (ListModel with: #(#blue #white #red #green #black #orange) )
+		withModel: (ListModel with: #(#blue #white #red #green #black #orange) )
 		listGetter: #list 
 		indexGetter: #listIndex 
 		indexSetter: #listIndex:! !
@@ -1086,13 +1083,13 @@ suitedExtent
 defaultBorderWidth
 	^ 1! !
 
-!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:35:12'!
+!PluggableListOfMorph class methodsFor: 'examples' stamp: 'jmv 5/17/2024 18:06:55'!
 example1
 "
 	self example1 openInWorld
 "
 | palette |
-	palette _ #(#blue #white #red #green #black #orange) collect: [ :aColor |
+	palette := #(#blue #white #red #green #black #orange) collect: [ :aColor |
 		BoxedMorph new ::
 			morphExtent: 80@15;
 			color: (Color perform: aColor);
@@ -1100,7 +1097,7 @@ example1
 			borderColor: Color black;
 			yourself].
 	^ PluggableListOfMorph 
-		model: (ListModel with: palette)
+		withModel: (ListModel with: palette)
 		listGetter: #list
 		indexGetter: #listIndex
 		indexSetter: #listIndex:! !

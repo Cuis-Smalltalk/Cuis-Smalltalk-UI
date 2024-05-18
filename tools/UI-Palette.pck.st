@@ -1,81 +1,81 @@
-'From Cuis 6.0 [latest update: #5780] on 27 April 2023 at 4:24:28 pm'!
+'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:37:32 pm'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 12!
+!provides: 'UI-Palette' 1 13!
 !requires: 'UI-Click-Select' 1 1 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 7 nil!
 !requires: 'UI-Shapes' 1 29 nil!
-SystemOrganization addCategory: 'UI-Palette'!
+SystemOrganization addCategory: #'UI-Palette'!
 
 
-!classDefinition: #PaletteLayoutMorph category: 'UI-Palette'!
+!classDefinition: #PaletteLayoutMorph category: #'UI-Palette'!
 LayoutMorph subclass: #PaletteLayoutMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Palette'!
-!classDefinition: 'PaletteLayoutMorph class' category: 'UI-Palette'!
+!classDefinition: 'PaletteLayoutMorph class' category: #'UI-Palette'!
 PaletteLayoutMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #InnerPluggableImagePalette category: 'UI-Palette'!
+!classDefinition: #InnerPluggableImagePalette category: #'UI-Palette'!
 InnerPluggableMorph subclass: #InnerPluggableImagePalette
 	instanceVariableNames: 'nameImageCollection imageFilter imageExtent calculatedExtent'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Palette'!
-!classDefinition: 'InnerPluggableImagePalette class' category: 'UI-Palette'!
+!classDefinition: 'InnerPluggableImagePalette class' category: #'UI-Palette'!
 InnerPluggableImagePalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableImagePalette category: 'UI-Palette'!
+!classDefinition: #PluggableImagePalette category: #'UI-Palette'!
 PluggableScrollPane subclass: #PluggableImagePalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Palette'!
-!classDefinition: 'PluggableImagePalette class' category: 'UI-Palette'!
+!classDefinition: 'PluggableImagePalette class' category: #'UI-Palette'!
 PluggableImagePalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #ImagePickerPanel category: 'UI-Palette'!
+!classDefinition: #ImagePickerPanel category: #'UI-Palette'!
 Panel subclass: #ImagePickerPanel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Palette'!
-!classDefinition: 'ImagePickerPanel class' category: 'UI-Palette'!
+!classDefinition: 'ImagePickerPanel class' category: #'UI-Palette'!
 ImagePickerPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #PickAColorPalette category: 'UI-Palette'!
+!classDefinition: #PickAColorPalette category: #'UI-Palette'!
 ImagePickerPanel subclass: #PickAColorPalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Palette'!
-!classDefinition: 'PickAColorPalette class' category: 'UI-Palette'!
+!classDefinition: 'PickAColorPalette class' category: #'UI-Palette'!
 PickAColorPalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #PickALargerIconPalette category: 'UI-Palette'!
+!classDefinition: #PickALargerIconPalette category: #'UI-Palette'!
 ImagePickerPanel subclass: #PickALargerIconPalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Palette'!
-!classDefinition: 'PickALargerIconPalette class' category: 'UI-Palette'!
+!classDefinition: 'PickALargerIconPalette class' category: #'UI-Palette'!
 PickALargerIconPalette class
 	instanceVariableNames: ''!
 
-!classDefinition: #PickAnIconPalette category: 'UI-Palette'!
+!classDefinition: #PickAnIconPalette category: #'UI-Palette'!
 ImagePickerPanel subclass: #PickAnIconPalette
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Palette'!
-!classDefinition: 'PickAnIconPalette class' category: 'UI-Palette'!
+!classDefinition: 'PickAnIconPalette class' category: #'UI-Palette'!
 PickAnIconPalette class
 	instanceVariableNames: ''!
 
@@ -175,11 +175,6 @@ includeInNewMorphMenu
 adjustExtent
 	
 	"Nothing to do here"! !
-
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:37:56'!
-getMenu
-
-	^ nil! !
 
 !InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:10'!
 imageExtent
