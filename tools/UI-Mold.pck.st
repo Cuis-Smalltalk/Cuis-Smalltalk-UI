@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:37:45 pm'!
+'From Cuis7.1 [latest update: #6451] on 5 June 2024 at 9:23:41 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 16!
+!provides: 'UI-Mold' 1 17!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: #'UI-Mold'!
@@ -1023,9 +1023,9 @@ validateConditions
 	input ifNil: [ ^ self ].
 	(self disinfect: input) ifNil: [ errors add: 'Invalid number.' ]! !
 
-!PercentageField methodsFor: 'private' stamp: 'AlanWostenberg 5/17/2010 16:25'!
+!PercentageField methodsFor: 'private' stamp: 'hlsf 6/5/2024 21:22:48'!
 disinfect: aString 
-	^ (super disinfect: aString) ifNotNilDo: [ :number | (number / 100) asFloat ]! !
+	^ (super disinfect: aString) ifNotNil: [ :number | (number / 100) asFloat ]! !
 
 !PercentageField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:47:37'!
 infect: aNumber 
