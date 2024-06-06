@@ -125,6 +125,35 @@ dependencies.
 Feature require: 'UI-MetaProperties'.
 ```
 
+Once you have done this, you can open the World Menu and get a New Morph.
+
+If you then command-click on this Morph, you see the construction handles.
+
+Clicking on the blue Menu button, you will get the Morph's menu.
+Click the push-pin on the upper right to keep this menu around.
+
+Here is a view with a LabelMorph, an EllipseMorph, their associated menus,
+as well as Color Palette and a Color Editor Panel.
+
+![Visual Morph Properties](MorphVisualProps.jpeg)
+
+The _purple_ menu items are Visual Properties.
+
+Clicking on such a VisualPropertyMenuItem gives
+either an editor or a choice of selection palettes.
+
+You can also _drag_ values to or from a VisualPropertyMenuItem
+to transfer values.
+
+You can drag a Color to or from the Color Editor or from a Color Palette
+and drop onto any area which takes a Color.
+
+The basic mechanics of this are described in files
+'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI/blob/main/VisualMetaPropGist.md'
+and
+'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/DragAndDrop.md' 
+
+
 ### UI-MetaProperties
 - MetaProperty
  - MetaPropertyFrom
@@ -185,32 +214,4 @@ Package whose initializer restores the saved composite Morph.
 LineShapeMorph
 RectangleShapeMorph
 
-
-Once you have done this, you can open the World Menu and get a New Morph.
-
-If you then command-click on this Morph, you see the construction handles.
-
-Clicking on the blue Menu button, you will get the Morph's menu.
-Click the push-pin on the upper right to keep this menu around.
-
-Here is a view with a LabelMorph, an EllipseMorph, their associated menus,
-as well as Color Palette and a Color Editor Panel.
-
-![Visual Morph Properties](MorphVisualProps.jpeg)
-
-The _purple_ menu items are Visual Properties.
-
-Clicking on such a VisualPropertyMenuItem gives
-either an editor or a choice of selection palettes.
-
-You can also _drag_ values to or from a VisualPropertyMenuItem
-to transfer values.
-
-You can drag a Color to or from the Color Editor or from a Color Palette
-and drop onto any area which takes a Color.
-
-The basic mechanics of this are described in files
-'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI/blob/main/VisualMetaPropGist.md'
-and
-'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/DragAndDrop.md' 
 
