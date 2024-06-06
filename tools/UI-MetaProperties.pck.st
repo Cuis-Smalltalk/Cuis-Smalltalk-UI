@@ -1,136 +1,138 @@
-'From Cuis 6.0 [latest update: #5799] on 17 May 2023 at 12:04:47 pm'!
+'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:12:34 am'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'UI-MetaProperties' 1 126!
+!provides: 'UI-MetaProperties' 1 128!
 !requires: 'Complex' 1 0 nil!
 !requires: 'UI-Entry' 1 7 nil!
+!requires: 'UI-Core' 1 6 nil!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
+!requires: 'UI-Shapes' 1 38 nil!
 !requires: 'UI-Packager' 1 0 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Color-Panel' 1 3 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-Layout-Panel' 1 10 nil!
 !requires: 'Graphics-Files-Additional' 1 18 nil!
-SystemOrganization addCategory: 'UI-MetaProperties'!
+SystemOrganization addCategory: #'UI-MetaProperties'!
 
 
-!classDefinition: #VisualPropertyMenuItem category: 'UI-MetaProperties'!
+!classDefinition: #VisualPropertyMenuItem category: #'UI-MetaProperties'!
 UpdatingMenuItemMorph subclass: #VisualPropertyMenuItem
 	instanceVariableNames: 'metaProperty name prevValue targetMorph accessProc updateProc'
 	classVariableNames: 'BlankIcon BoolIcon CharIcon ChronIcon ClassIcon ClosureIcon CollectIcon CpxIcon FalseIcon FileIcon FloatIcon FolderIcon FontIcon FracIcon GrabLineHorizIcon GrabLineVertIcon ImageIcon IntIcon LayoutIcon NilIcon ObjIcon OneOfIcon PtIcon RngIcon StrIcon StreamIcon SymIcon TargetIcon TrueIcon WindowIcon'
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'VisualPropertyMenuItem class' category: 'UI-MetaProperties'!
+!classDefinition: 'VisualPropertyMenuItem class' category: #'UI-MetaProperties'!
 VisualPropertyMenuItem class
 	instanceVariableNames: ''!
 
-!classDefinition: #OrdinaryPropertyMenuItem category: 'UI-MetaProperties'!
+!classDefinition: #OrdinaryPropertyMenuItem category: #'UI-MetaProperties'!
 MenuItemMorph subclass: #OrdinaryPropertyMenuItem
 	instanceVariableNames: 'accessKind name targetMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'OrdinaryPropertyMenuItem class' category: 'UI-MetaProperties'!
+!classDefinition: 'OrdinaryPropertyMenuItem class' category: #'UI-MetaProperties'!
 OrdinaryPropertyMenuItem class
 	instanceVariableNames: ''!
 
-!classDefinition: #MorphMessageBox category: 'UI-MetaProperties'!
+!classDefinition: #MorphMessageBox category: #'UI-MetaProperties'!
 WorkspaceWindow subclass: #MorphMessageBox
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MorphMessageBox class' category: 'UI-MetaProperties'!
+!classDefinition: 'MorphMessageBox class' category: #'UI-MetaProperties'!
 MorphMessageBox class
 	instanceVariableNames: ''!
 
-!classDefinition: #VisualPropertyEditor category: 'UI-MetaProperties'!
+!classDefinition: #VisualPropertyEditor category: #'UI-MetaProperties'!
 MenuMorph subclass: #VisualPropertyEditor
 	instanceVariableNames: 'targetMorph metaProps showAllIvars showAllProps'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'VisualPropertyEditor class' category: 'UI-MetaProperties'!
+!classDefinition: 'VisualPropertyEditor class' category: #'UI-MetaProperties'!
 VisualPropertyEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaPropertyTests category: 'UI-MetaProperties'!
+!classDefinition: #MetaPropertyTests category: #'UI-MetaProperties'!
 TestCase subclass: #MetaPropertyTests
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MetaPropertyTests class' category: 'UI-MetaProperties'!
+!classDefinition: 'MetaPropertyTests class' category: #'UI-MetaProperties'!
 MetaPropertyTests class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaProperty category: 'UI-MetaProperties'!
+!classDefinition: #MetaProperty category: #'UI-MetaProperties'!
 Object subclass: #MetaProperty
 	instanceVariableNames: 'kind editProc'
 	classVariableNames: 'MetaPropDict PreDefinedPropsDict'
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MetaProperty class' category: 'UI-MetaProperties'!
+!classDefinition: 'MetaProperty class' category: #'UI-MetaProperties'!
 MetaProperty class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaPropertyFrom category: 'UI-MetaProperties'!
+!classDefinition: #MetaPropertyFrom category: #'UI-MetaProperties'!
 MetaProperty subclass: #MetaPropertyFrom
 	instanceVariableNames: 'minValue'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MetaPropertyFrom class' category: 'UI-MetaProperties'!
+!classDefinition: 'MetaPropertyFrom class' category: #'UI-MetaProperties'!
 MetaPropertyFrom class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaPropertyOneOf category: 'UI-MetaProperties'!
+!classDefinition: #MetaPropertyOneOf category: #'UI-MetaProperties'!
 MetaProperty subclass: #MetaPropertyOneOf
 	instanceVariableNames: 'choiceCollection'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MetaPropertyOneOf class' category: 'UI-MetaProperties'!
+!classDefinition: 'MetaPropertyOneOf class' category: #'UI-MetaProperties'!
 MetaPropertyOneOf class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaPropertyMultiSelect category: 'UI-MetaProperties'!
+!classDefinition: #MetaPropertyMultiSelect category: #'UI-MetaProperties'!
 MetaPropertyOneOf subclass: #MetaPropertyMultiSelect
 	instanceVariableNames: 'maxValue encodeProc decodeProc'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MetaPropertyMultiSelect class' category: 'UI-MetaProperties'!
+!classDefinition: 'MetaPropertyMultiSelect class' category: #'UI-MetaProperties'!
 MetaPropertyMultiSelect class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaPropertyRange category: 'UI-MetaProperties'!
+!classDefinition: #MetaPropertyRange category: #'UI-MetaProperties'!
 MetaProperty subclass: #MetaPropertyRange
 	instanceVariableNames: 'minValue maxValue'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MetaPropertyRange class' category: 'UI-MetaProperties'!
+!classDefinition: 'MetaPropertyRange class' category: #'UI-MetaProperties'!
 MetaPropertyRange class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaPropertyTransducer category: 'UI-MetaProperties'!
+!classDefinition: #MetaPropertyTransducer category: #'UI-MetaProperties'!
 MetaProperty subclass: #MetaPropertyTransducer
 	instanceVariableNames: 'kinds transformProc'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MetaPropertyTransducer class' category: 'UI-MetaProperties'!
+!classDefinition: 'MetaPropertyTransducer class' category: #'UI-MetaProperties'!
 MetaPropertyTransducer class
 	instanceVariableNames: ''!
 
-!classDefinition: #MetaPropertyViaTest category: 'UI-MetaProperties'!
+!classDefinition: #MetaPropertyViaTest category: #'UI-MetaProperties'!
 MetaProperty subclass: #MetaPropertyViaTest
 	instanceVariableNames: 'testClosure'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
-!classDefinition: 'MetaPropertyViaTest class' category: 'UI-MetaProperties'!
+!classDefinition: 'MetaPropertyViaTest class' category: #'UI-MetaProperties'!
 MetaPropertyViaTest class
 	instanceVariableNames: ''!
 

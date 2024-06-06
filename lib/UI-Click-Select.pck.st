@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:38:13 pm'!
+'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:02:55 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 49!
+!provides: 'UI-Click-Select' 1 50!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -161,7 +161,7 @@ I am a vertical list of Morph. I have no horizontal scrollbar but I may have a v
 My width is adjusted to the larger morph of my list.!
 
 !PluggableDropDownListOfMorph commentStamp: '<historical>' prior: 0!
-I am a list of Morph with a modal behavior. When the user outisde of me, I am deleted.!
+I am a list of Morph with a modal behavior. When the user moves the mouse cursor outisde of me, I am deleted.!
 
 !MultiSelectMenu commentStamp: '<historical>' prior: 0!
 I am used to relate a set of names to an integer incoding, where each  symbolic name is realated to a bit.
@@ -1102,7 +1102,7 @@ example1
 		indexGetter: #listIndex
 		indexSetter: #listIndex:! !
 
-!PluggableDropDownListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 4/2/2022 12:08:25'!
+!PluggableDropDownListOfMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:08:25'!
 keyboardFocusChange: aBoolean
 	aBoolean ifFalse: [		self delete ].! !
 

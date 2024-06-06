@@ -1,106 +1,106 @@
-'From Cuis 6.0 [latest update: #5932] on 19 July 2023 at 12:39:05 pm'!
+'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:03:16 am'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 37!
-SystemOrganization addCategory: 'UI-Shapes'!
+!provides: 'UI-Shapes' 1 38!
+SystemOrganization addCategory: #'UI-Shapes'!
 
 
-!classDefinition: #EllipseMorph category: 'UI-Shapes'!
+!classDefinition: #EllipseMorph category: #'UI-Shapes'!
 BoxedMorph subclass: #EllipseMorph
 	instanceVariableNames: 'borderStyle'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'EllipseMorph class' category: 'UI-Shapes'!
+!classDefinition: 'EllipseMorph class' category: #'UI-Shapes'!
 EllipseMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #FrameMorph category: 'UI-Shapes'!
+!classDefinition: #FrameMorph category: #'UI-Shapes'!
 BoxedMorph subclass: #FrameMorph
 	instanceVariableNames: 'colorIndex borderStyle'
 	classVariableNames: 'Colors'
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'FrameMorph class' category: 'UI-Shapes'!
+!classDefinition: 'FrameMorph class' category: #'UI-Shapes'!
 FrameMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #LineMorph category: 'UI-Shapes'!
+!classDefinition: #LineMorph category: #'UI-Shapes'!
 BoxedMorph subclass: #LineMorph
 	instanceVariableNames: 'startPointSelector endPointSelector lineWidth'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'LineMorph class' category: 'UI-Shapes'!
+!classDefinition: 'LineMorph class' category: #'UI-Shapes'!
 LineMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PointerLineMorph category: 'UI-Shapes'!
+!classDefinition: #PointerLineMorph category: #'UI-Shapes'!
 LineMorph subclass: #PointerLineMorph
 	instanceVariableNames: 'endPointMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'PointerLineMorph class' category: 'UI-Shapes'!
+!classDefinition: 'PointerLineMorph class' category: #'UI-Shapes'!
 PointerLineMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #ArrowMorph category: 'UI-Shapes'!
+!classDefinition: #ArrowMorph category: #'UI-Shapes'!
 PlacedMorph subclass: #ArrowMorph
 	instanceVariableNames: 'tipPoint headLength tailLength tailHeight borderColor borderWidth fillColor headWingLength'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'ArrowMorph class' category: 'UI-Shapes'!
+!classDefinition: 'ArrowMorph class' category: #'UI-Shapes'!
 ArrowMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #BezierQuadraticMorph category: 'UI-Shapes'!
+!classDefinition: #BezierQuadraticMorph category: #'UI-Shapes'!
 PlacedMorph subclass: #BezierQuadraticMorph
 	instanceVariableNames: 'lineColor lineWidth startPoint endPoint oneControlPoint'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'BezierQuadraticMorph class' category: 'UI-Shapes'!
+!classDefinition: 'BezierQuadraticMorph class' category: #'UI-Shapes'!
 BezierQuadraticMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #BezierCubicMorph category: 'UI-Shapes'!
+!classDefinition: #BezierCubicMorph category: #'UI-Shapes'!
 BezierQuadraticMorph subclass: #BezierCubicMorph
 	instanceVariableNames: 'twoControlPoint'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'BezierCubicMorph class' category: 'UI-Shapes'!
+!classDefinition: 'BezierCubicMorph class' category: #'UI-Shapes'!
 BezierCubicMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CircleShapeMorph category: 'UI-Shapes'!
+!classDefinition: #CircleShapeMorph category: #'UI-Shapes'!
 PlacedMorph subclass: #CircleShapeMorph
 	instanceVariableNames: 'center radius fillColor lineColor lineWidth'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'CircleShapeMorph class' category: 'UI-Shapes'!
+!classDefinition: 'CircleShapeMorph class' category: #'UI-Shapes'!
 CircleShapeMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #LineShapeMorph category: 'UI-Shapes'!
+!classDefinition: #LineShapeMorph category: #'UI-Shapes'!
 PlacedMorph subclass: #LineShapeMorph
 	instanceVariableNames: 'startPoint endPoint lineColor lineWidth'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'LineShapeMorph class' category: 'UI-Shapes'!
+!classDefinition: 'LineShapeMorph class' category: #'UI-Shapes'!
 LineShapeMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #RectangleShapeMorph category: 'UI-Shapes'!
+!classDefinition: #RectangleShapeMorph category: #'UI-Shapes'!
 PlacedMorph subclass: #RectangleShapeMorph
 	instanceVariableNames: 'origin corner fillColor lineColor lineWidth'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Shapes'!
-!classDefinition: 'RectangleShapeMorph class' category: 'UI-Shapes'!
+!classDefinition: 'RectangleShapeMorph class' category: #'UI-Shapes'!
 RectangleShapeMorph class
 	instanceVariableNames: ''!
 
@@ -1811,7 +1811,7 @@ initializeMetaProperties
 
 	! !
 
-!RectangleShapeMorph class methodsFor: 'as yet unclassified' stamp: 'hlsf 2/6/2022 15:51:32'!
+!RectangleShapeMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:51:32'!
 example1
 "
 	self example1 openInWorld

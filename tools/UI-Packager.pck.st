@@ -1,18 +1,18 @@
-'From Cuis 6.0 [latest update: #5772] on 21 April 2023 at 10:35:13 am'!
+'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:03:11 am'!
 'Description Save combined Morph into a package which requires its dependent code.
 Restore via
   Feature require: <package>'!
-!provides: 'UI-Packager' 1 0!
-SystemOrganization addCategory: 'UI-Packager'!
+!provides: 'UI-Packager' 1 1!
+SystemOrganization addCategory: #'UI-Packager'!
 
 
-!classDefinition: #MorphicPackager category: 'UI-Packager'!
+!classDefinition: #MorphicPackager category: #'UI-Packager'!
 Object subclass: #MorphicPackager
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Packager'!
-!classDefinition: 'MorphicPackager class' category: 'UI-Packager'!
+!classDefinition: 'MorphicPackager class' category: #'UI-Packager'!
 MorphicPackager class
 	instanceVariableNames: ''!
 
@@ -21,7 +21,7 @@ MorphicPackager class
 I am a way to write a complex Morph to disk in a package
 which requires all packages which the Morph depends on.
 
-This means you can require that package and get your complex moprph back.
+This means you can require that package and get your complex morph back.
 
 !
 
