@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:02:55 am'!
+'From Cuis7.1 [latest update: #6452] on 8 June 2024 at 1:32:40 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 50!
+!provides: 'UI-Click-Select' 1 51!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -108,7 +108,7 @@ MultiSelectMenu class
 
 !classDefinition: #CheckButtonMorph category: #'UI-Click-Select'!
 BoxedMorph subclass: #CheckButtonMorph
-	instanceVariableNames: 'isSelected'
+	instanceVariableNames: 'isSelected fillColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -183,8 +183,12 @@ For example, TextEmphasis codes are a bit ORing of values:
  2r01000000	64 	with ST-80 Glyphs
  !
 
-!CheckButtonMorph commentStamp: '<historical>' prior: 0!
-I am simple check button!
+!CheckButtonMorph commentStamp: 'hlsf 6/8/2024 12:06:19' prior: 0!
+I am simple check button.
+
+Convention: 
+- defaultColor : the color when I am checked
+- defaultBorderColor: the color when I am unchecked!
 
 !RadioButtonMorph commentStamp: '<historical>' prior: 0!
 I am a very simple radio button.!
@@ -1280,28 +1284,33 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 3/29/2024 11:24:20'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 6/8/2024 12:34:01'!
+defaultBorderColor
+
+	^ `Color gray muchDarker`! !
+
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 6/8/2024 12:43:16'!
 defaultBorderWidth
 
-	^ 3! !
+	^ 4! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/25/2022 20:44:36'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 6/8/2024 11:59:02'!
 defaultColor
 
-	^ `Color gray lighter lighter`! !
+	^ `Color white`! !
 
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/25/2022 20:44:42'!
 defaultDiameter
 
 	^ self class defaultDiameter ! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 1/25/2022 20:45:10'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 6/8/2024 12:34:24'!
 initialize
 
 	super initialize.
-	isSelected := false.
-	self borderColor: self defaultColor.
-	self ofSize: self defaultDiameter! !
+	self borderColor: self defaultBorderColor.
+	self ofSize: self defaultDiameter.
+	self selected: false.! !
 
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 3/29/2024 11:19:29'!
 ofSize: numPixels
@@ -1326,10 +1335,18 @@ handlesMouseOver: evt
 	"Do I want to receive mouseEnter: and mouseLeave: when the button is up and the hand is empty?" 
 	^true! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:19'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:44:26'!
+adoptWidgetsColor: paneColor
+	self color: (Theme current buttonColorFrom: paneColor).
+	self borderColor: color muchDarker.
+	self fillColor: ( isSelected ifTrue: [color] ifFalse: [borderColor] )! !
+
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:31:09'!
 fillColor: aColor
-	"My color is my fillColor"
-	self color: aColor
+" The color I am filled "
+	fillColor = aColor ifFalse: [
+		fillColor := aColor.
+		self redrawNeeded ]
 	! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:23'!
@@ -1337,10 +1354,10 @@ isSelected
 
 	^ isSelected ! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 2/12/2022 10:38:24'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:38:01'!
 isSelected: aBoolean
 	self selected: aBoolean.
-	self triggerEvent: #checkSelection with: self
+	self triggerEvent: self eventWhenSelected with: self
 ! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:45'!
@@ -1350,12 +1367,12 @@ select
 	(self isSelected) ifFalse: [ self isSelected: true ]
 ! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 2/12/2022 10:36:41'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:17:19'!
 selected: aBoolean
 "Do not emit event. Should it not be the prerogative of the model?"
-	(isSelected _ aBoolean)
-		ifFalse: [self fillColor: self defaultColor] 
-		ifTrue: [	self fillColor: Color black]. ! !
+	(isSelected := aBoolean)
+		ifFalse: [self fillColor: borderColor ] 
+		ifTrue: [	self fillColor: color ]. ! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:49'!
 toggleSelection
@@ -1363,24 +1380,28 @@ toggleSelection
 	self isSelected: self isSelected not
 ! !
 
+!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:38:01'!
+eventWhenSelected
+" The event triggered when  I get selected "
+	^ #checkSelection! !
+
 !CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 21:07:03'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	(self coversPixel: aMouseButtonEvent eventPosition)
 		ifTrue: [ self toggleSelection ]
 ! !
 
-!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 21:07:16'!
+!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:46:35'!
 mouseEnter: event
 	"The mouse has entered the area of the receiver"
-	self isSelected ifFalse: [ | baseColor | 
-		baseColor _ self defaultColor.
-		self fillColor: ( Color h: baseColor hue s: baseColor saturation * 1.3 v: baseColor brightness * 0.6)]! !
+	self fillColor: (color + borderColor) / 2! !
 
-!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 20:47:06'!
+!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:46:57'!
 mouseLeave: event
-	"The mouse has left the area of the receiver"
-
-	self isSelected ifFalse: [ self fillColor: self defaultColor ]! !
+	"The mouse has left the area of the receiver, restore the fill color depending on my state "
+	self isSelected 
+		ifFalse: [self fillColor: borderColor]
+		ifTrue: [self fillColor: color]! !
 
 !CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 20:47:11'!
 update: aParameter
@@ -1392,9 +1413,18 @@ hasVariableExtent
 "Does not make sense to be fitted in owner morph"
 	^ false! !
 
-!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 3/29/2024 11:26:52'!
+!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 6/8/2024 12:15:57'!
+drawOn: aCanvas
+	aCanvas
+		fillRectangle: self morphLocalBounds
+		color: fillColor
+		borderWidth: borderWidth
+		borderStyleSymbol: #simple
+		baseColorForBorder: borderColor.! !
+
+!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:42:56'!
 defaultDiameter
-	^ FontFamily defaultPointSize + 3! !
+	^ FontFamily defaultPointSize + 8! !
 
 !CheckButtonMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/25/2022 20:47:33'!
 includeInNewMorphMenu
@@ -1402,39 +1432,51 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!CheckButtonMorph class methodsFor: 'examples' stamp: 'hlsf 5/14/2022 11:17:55'!
+!CheckButtonMorph class methodsFor: 'examples' stamp: 'hlsf 6/8/2024 13:13:16'!
 example1
 "
 	self example1 openInWorld
 "
-	| checkButton |
-	 checkButton _ CheckButtonMorph new.
-	checkButton when: #checkSelection send: #show: to: Transcript.
-	^ checkButton ! !
+	| button |
+	 button := self new.
+	button when: #checkSelection send: #show: to: Transcript.
+	^ button ! !
 
 !CheckButtonMorph class methodsFor: 'instance creation' stamp: 'hlsf 1/25/2022 20:48:51'!
 ofSize: numPixels
 
 	^ self new ofSize: numPixels! !
 
-!RadioButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:48:05'!
-isSelected: aBoolean
-	(isSelected := aBoolean)
-		ifFalse: [self fillColor: self defaultColor] 
-		ifTrue: [
-			self fillColor: Color black. 
-			self triggerEvent: #radioSelection with: self 		]
-! !
-
-!RadioButtonMorph methodsFor: 'drawing' stamp: 'hlsf 1/25/2022 20:36:15'!
+!RadioButtonMorph methodsFor: 'drawing' stamp: 'hlsf 6/8/2024 12:16:07'!
 drawOn: aCanvas 
 	| radius |
-	radius _ extent // 2.
-	aCanvas ellipseCenter: radius radius: radius borderWidth: borderWidth borderColor: borderColor fillColor: color! !
+	radius := extent // 2.
+	aCanvas 
+		ellipseCenter: radius 
+		radius: radius 
+		borderWidth: borderWidth 
+		borderColor: borderColor 
+		fillColor: fillColor! !
+
+!RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:38:01'!
+eventWhenSelected
+" The event triggered when  I get selected "
+	^ #radioSelection! !
 
 !RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 20:59:26'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 
 	((self coversPixel: aMouseButtonEvent eventPosition) and: [self isSelected not])
 		ifTrue: [ self isSelected: true ]
+! !
+
+!RadioButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 6/8/2024 13:15:51'!
+mouseEnter: event
+	"The mouse has entered the area of the receiver"
+	self isSelected ifFalse: [self fillColor: (color + borderColor) / 2]! !
+
+!RadioButtonMorph class methodsFor: 'examples' stamp: 'hlsf 6/8/2024 13:13:53'!
+example1
+	^ super example1 
+		when: #radioSelection send: #show: to: Transcript.
 ! !
