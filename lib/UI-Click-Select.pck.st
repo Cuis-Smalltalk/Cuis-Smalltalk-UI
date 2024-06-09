@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6452] on 9 June 2024 at 5:03:46 pm'!
+'From Cuis7.1 [latest update: #6452] on 9 June 2024 at 10:48:00 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 53!
+!provides: 'UI-Click-Select' 1 54!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1335,7 +1335,7 @@ handlesMouseOver: evt
 	"Do I want to receive mouseEnter: and mouseLeave: when the button is up and the hand is empty?" 
 	^true! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:44:26'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 22:32:24'!
 adoptWidgetsColor: paneColor
 	self color: (Theme current buttonColorFrom: paneColor).
 	self borderColor: color muchDarker.
@@ -1386,10 +1386,10 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 		ifTrue: [ self toggleSelection ]
 ! !
 
-!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:46:35'!
+!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/9/2024 22:37:57'!
 mouseEnter: event
 	"The mouse has entered the area of the receiver"
-	self fillColor: (color + borderColor) / 2! !
+	self fillColor: (color alphaMixed: 0.5 with: borderColor) ! !
 
 !CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:46:57'!
 mouseLeave: event
