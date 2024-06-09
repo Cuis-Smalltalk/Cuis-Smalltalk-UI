@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6452] on 9 June 2024 at 8:32:11 am'!
+'From Cuis7.1 [latest update: #6452] on 9 June 2024 at 5:03:46 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 52!
+!provides: 'UI-Click-Select' 1 53!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1408,18 +1408,24 @@ hasVariableExtent
 "Does not make sense to be fitted in owner morph"
 	^ false! !
 
-!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 6/8/2024 12:15:57'!
-drawOn: aCanvas
-	aCanvas
-		fillRectangle: self morphLocalBounds
-		color: fillColor
-		borderWidth: borderWidth
-		borderStyleSymbol: #simple
-		baseColorForBorder: borderColor.! !
+!CheckButtonMorph methodsFor: 'geometry testing' stamp: 'hlsf 6/9/2024 16:47:09'!
+requiresVectorCanvas
+	^ true! !
 
-!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:42:56'!
+!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 6/9/2024 16:49:36'!
+drawOn: aCanvas
+	| bounds |
+	bounds := self morphLocalBounds.
+	aCanvas strokeWidth: borderWidth color: borderColor fillColor: fillColor do: [
+		aCanvas 
+			roundRectangleMinX: bounds left maxX: bounds 
+			right minY: bounds top maxY: bounds bottom 
+			rx: bounds width * 0.4 ry: bounds height * 0.4
+		]! !
+
+!CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 16:51:06'!
 defaultDiameter
-	^ FontFamily defaultPointSize + 8! !
+	^ FontFamily defaultPointSize + 6! !
 
 !CheckButtonMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/25/2022 20:47:33'!
 includeInNewMorphMenu
