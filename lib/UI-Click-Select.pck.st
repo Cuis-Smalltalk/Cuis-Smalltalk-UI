@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6452] on 9 June 2024 at 10:48:00 pm'!
+'From Cuis7.1 [latest update: #6456] on 9 June 2024 at 3:20:17 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 54!
+!provides: 'UI-Click-Select' 1 55!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1341,6 +1341,11 @@ adoptWidgetsColor: paneColor
 	self borderColor: color muchDarker.
 	self fillColor: ( isSelected ifTrue: [color] ifFalse: [borderColor] )! !
 
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'KenD 6/9/2024 15:13:22'!
+fillColor
+
+	^fillColor! !
+
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:31:09'!
 fillColor: aColor
 " The color I am filled "
@@ -1470,6 +1475,11 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 mouseEnter: event
 	"The mouse has entered the area of the receiver"
 	self isSelected ifFalse: [self fillColor: (color + borderColor) / 2]! !
+
+!RadioButtonMorph methodsFor: 'accessing' stamp: 'KenD 6/9/2024 15:17:19'!
+adoptWidgetsColor: paneColor
+
+	"ignore"! !
 
 !RadioButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 08:29:16'!
 isSelected: aBoolean
