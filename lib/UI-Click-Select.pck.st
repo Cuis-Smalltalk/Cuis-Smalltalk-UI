@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6452] on 8 June 2024 at 1:32:40 pm'!
+'From Cuis7.1 [latest update: #6452] on 9 June 2024 at 8:32:11 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 51!
+!provides: 'UI-Click-Select' 1 52!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1354,10 +1354,10 @@ isSelected
 
 	^ isSelected ! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:38:01'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 08:29:32'!
 isSelected: aBoolean
 	self selected: aBoolean.
-	self triggerEvent: self eventWhenSelected with: self
+	self triggerEvent: #checkSelection with: self
 ! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:45'!
@@ -1379,11 +1379,6 @@ toggleSelection
 
 	self isSelected: self isSelected not
 ! !
-
-!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:38:01'!
-eventWhenSelected
-" The event triggered when  I get selected "
-	^ #checkSelection! !
 
 !CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 21:07:03'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
@@ -1458,11 +1453,6 @@ drawOn: aCanvas
 		borderColor: borderColor 
 		fillColor: fillColor! !
 
-!RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:38:01'!
-eventWhenSelected
-" The event triggered when  I get selected "
-	^ #radioSelection! !
-
 !RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 20:59:26'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 
@@ -1470,10 +1460,16 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 		ifTrue: [ self isSelected: true ]
 ! !
 
-!RadioButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 6/8/2024 13:15:51'!
+!RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 13:15:51'!
 mouseEnter: event
 	"The mouse has entered the area of the receiver"
 	self isSelected ifFalse: [self fillColor: (color + borderColor) / 2]! !
+
+!RadioButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 08:29:16'!
+isSelected: aBoolean
+	self selected: aBoolean.
+	isSelected ifTrue: [			self triggerEvent: #radioSelection with: self	]
+! !
 
 !RadioButtonMorph class methodsFor: 'examples' stamp: 'hlsf 6/8/2024 13:13:53'!
 example1
