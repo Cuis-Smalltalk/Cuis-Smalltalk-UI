@@ -1,29 +1,30 @@
-'From Cuis 6.0 [latest update: #5969] on 3 August 2023 at 1:41:54 pm'!
+'From Cuis7.0 [latest update: #6454] on 23 June 2024 at 11:29:02 am'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 12!
+!provides: 'UI-Layout-Panel' 1 13!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
-SystemOrganization addCategory: 'UI-Layout-Panel'!
+!requires: 'UI-Shapes' 1 39 nil!
+SystemOrganization addCategory: #'UI-Layout-Panel'!
 
 
-!classDefinition: #LayoutMorphEditPanel category: 'UI-Layout-Panel'!
+!classDefinition: #LayoutMorphEditPanel category: #'UI-Layout-Panel'!
 EditPanel subclass: #LayoutMorphEditPanel
 	instanceVariableNames: 'directionArea paddingArea separationArea colorArea padRadio padEntry'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Layout-Panel'!
-!classDefinition: 'LayoutMorphEditPanel class' category: 'UI-Layout-Panel'!
+!classDefinition: 'LayoutMorphEditPanel class' category: #'UI-Layout-Panel'!
 LayoutMorphEditPanel class
 	instanceVariableNames: ''!
 
-!classDefinition: #LayoutSpecEditPanel category: 'UI-Layout-Panel'!
+!classDefinition: #LayoutSpecEditPanel category: #'UI-Layout-Panel'!
 EditPanel subclass: #LayoutSpecEditPanel
 	instanceVariableNames: 'widthArea heightArea paddingArea padRadio padEntry'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Layout-Panel'!
-!classDefinition: 'LayoutSpecEditPanel class' category: 'UI-Layout-Panel'!
+!classDefinition: 'LayoutSpecEditPanel class' category: #'UI-Layout-Panel'!
 LayoutSpecEditPanel class
 	instanceVariableNames: ''!
 
