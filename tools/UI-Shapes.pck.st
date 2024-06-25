@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:03:16 am'!
+'From Cuis7.1 [latest update: #6456] on 10 June 2024 at 1:57:39 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 38!
+!provides: 'UI-Shapes' 1 39!
 SystemOrganization addCategory: #'UI-Shapes'!
 
 
@@ -797,6 +797,13 @@ rotationCenter
 
 	^ tipPoint! !
 
+!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:47:47'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `20@20`! !
+
 !ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 5/16/2023 20:36:29'!
 yAxisPointsUp
 
@@ -1368,6 +1375,13 @@ knowsOwnLocalBounds
 
 	^false! !
 
+!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:46:10'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `20@20`! !
+
 !CircleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:10:25'!
 initialize
 
@@ -1531,6 +1545,13 @@ initialize
 	startPoint := 0@0.
 	endPoint := 84@175.
 	lineWidth := 6.! !
+
+!LineShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:50:16'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `10@10`! !
 
 !LineShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 14:23:24'!
 initialize
@@ -1774,6 +1795,13 @@ initialize
 	lineColor := Color cyan.
 	lineWidth := 6.
 	fillColor := lineColor alpha: 0.4. ! !
+
+!RectangleShapeMorph methodsFor: 'as yet unclassified' stamp: 'KenD 6/10/2024 13:50:29'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `20@20`! !
 
 !RectangleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:07:11'!
 initialize

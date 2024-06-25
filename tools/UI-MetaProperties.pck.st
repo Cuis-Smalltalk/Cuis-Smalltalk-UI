@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:12:34 am'!
+'From Cuis7.1 [latest update: #6456] on 9 June 2024 at 3:20:25 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'UI-MetaProperties' 1 128!
+!provides: 'UI-MetaProperties' 1 129!
 !requires: 'Complex' 1 0 nil!
 !requires: 'UI-Entry' 1 7 nil!
 !requires: 'UI-Core' 1 6 nil!
@@ -1182,7 +1182,7 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 5/17/2023 12:03:54'!
+!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 6/9/2024 15:12:15'!
 initialize
 "
 	VisualPropertyEditor initialize.
@@ -1206,6 +1206,9 @@ initialize
 	classDict at: #borderColor put: (propsDict at: #acceptsColor). 
 	classDict at: #borderWidth put: (propsDict at: #acceptsPositiveInteger).
 "	classDict at: #borderStyle put: (propsDict at: #acceptsBorderStyle)."
+
+	classDict := MetaProperty metaPropsDictForClass: CheckButtonMorph.
+	classDict at: #fillColor put: (propsDict at: #acceptsColor). 
 	
 	classDict := MetaProperty metaPropsDictForClass: LineMorph.
 	classDict at: #startPoint put: (propsDict at: #acceptsPoint). 

@@ -1,10 +1,10 @@
-'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:03:22 am'!
+'From Cuis7.1 [latest update: #6452] on 15 June 2024 at 11:39:04 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 28!
+!provides: 'UI-Widgets' 1 29!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Collections-CompactArrays' 1 13 nil!
-!requires: 'UI-Core' 1 6 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'UI-Core' 1 6 nil!
+!requires: 'Collections-CompactArrays' 1 13 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
 
 
@@ -599,7 +599,7 @@ sendScrollEvent: cursorPoint
 
 ! !
 
-!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 2/25/2024 00:33:08'!
+!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 6/15/2024 11:02:25'!
 drawOn: aCanvas
 	| interval delta frame x0 x1 y0 y1 deltaX deltaY  |
 	delta := borderColor .
@@ -607,7 +607,7 @@ drawOn: aCanvas
 	super drawOn: aCanvas.		"border & background"
 	borderColor := delta .
 	frame := self morphLocalBounds insetBy: 2.
-	aCanvas frameRectangle: frame color: color borderWidth: 2 borderStyleSymbol: #raised.
+	aCanvas frameRectangle: frame color: color borderWidth: 4 borderStyleSymbol: #raised.
 	frame := frame insetBy: 1.
 	x0 := frame origin x.
 	x1 := frame corner x.
@@ -1101,6 +1101,12 @@ initialize
 !CircularToolbarMorph methodsFor: 'change reporting' stamp: 'hlsf 10/10/2021 12:06:25'!
 addedMorph: aMorph
 	self redrawNeeded ! !
+
+!CircularToolbarMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 6/15/2024 11:33:43'!
+aboutToBeGrabbedBy: aHand
+"I can be dragged only from my central disk "
+	^ (self internalize: aHand lastMouseEvent eventPosition) r < self innerRadius 
+		ifTrue: [self] ifFalse: [nil]! !
 
 !CircularToolbarMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 1/10/2021 09:55:33'!
 includeInNewMorphMenu
