@@ -845,7 +845,7 @@ categoryInNewMorphMenu
 !TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 3/16/2011 10:25'!
 contents: aString
 	" 'StringMorph contents: str' is faster than 'StringMorph new contents: str' 
-	(OneLineEditorMorph contents: 'Some string') openInWorld
+	(TextEntryMorph contents: 'Some string') openInWorld
 	"
 	^ self contents: aString font: nil! !
 
