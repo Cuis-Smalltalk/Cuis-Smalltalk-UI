@@ -1,10 +1,9 @@
 'From Cuis7.1 [latest update: #6452] on 15 June 2024 at 11:39:04 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 29!
+!provides: 'UI-Widgets' 1 30!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'UI-Core' 1 6 nil!
-!requires: 'Collections-CompactArrays' 1 13 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
 
 
