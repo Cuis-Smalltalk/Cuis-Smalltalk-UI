@@ -1,7 +1,7 @@
-'From Cuis6.3 [latest update: #6359] on 12 May 2024 at 3:53:19 pm'!
+'From Cuis7.1 [latest update: #6506] on 9 July 2024 at 12:49:06 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 97!
+!provides: 'UI-Panel' 1 98!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -444,13 +444,13 @@ initialize
 textBackgroundColor
 	^Theme current paneBackgroundFrom: borderColor ! !
 
-!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 7/3/2023 14:51:36'!
+!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 7/9/2024 12:47:08'!
 drawOn: canvas
 	|  startPosition endPosition |
 	endPosition := self topRow morphPosition + (0 @ self topRow morphExtent y / 2).
 	startPosition := self topRow externalize: self elasticMorph morphPosition  
 		+  (0 @ self elasticMorph morphExtent y / 2).
-	"super drawOn: canvas."
+	super drawOn: canvas.
 	canvas strokeWidth: 1 color: Color black do: [
 		canvas moveTo: startPosition;
 			rel_LineTo: self elasticMorph morphWidth@0;
