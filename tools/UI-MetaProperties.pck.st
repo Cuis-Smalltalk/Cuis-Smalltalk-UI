@@ -1,11 +1,10 @@
-'From Cuis7.1 [latest update: #6456] on 9 June 2024 at 3:20:25 pm'!
+'From Cuis6.0 [latest update: #6118] on 11 July 2024 at 11:54:05 am'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'UI-MetaProperties' 1 129!
+!provides: 'UI-MetaProperties' 1 131!
 !requires: 'Complex' 1 0 nil!
 !requires: 'UI-Entry' 1 7 nil!
 !requires: 'UI-Core' 1 6 nil!
-!requires: 'UI-Edit-Lens' 1 1 nil!
-!requires: 'Cuis-Base' 60 5588 nil!
+!requires: 'Cuis-Base' 60 6118 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'UI-Packager' 1 0 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -1182,7 +1181,7 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 6/9/2024 15:12:15'!
+!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 7/11/2024 11:49:24'!
 initialize
 "
 	VisualPropertyEditor initialize.
@@ -1204,7 +1203,7 @@ initialize
 	classDict at: #morphPosition put: (propsDict at: #acceptsPoint). 
 	classDict at: #color put: (propsDict at: #acceptsColor). 
 	classDict at: #borderColor put: (propsDict at: #acceptsColor). 
-	classDict at: #borderWidth put: (propsDict at: #acceptsPositiveInteger).
+	classDict at: #borderWidth put: (propsDict at: #acceptsPositiveNumber).
 "	classDict at: #borderStyle put: (propsDict at: #acceptsBorderStyle)."
 
 	classDict := MetaProperty metaPropsDictForClass: CheckButtonMorph.
@@ -1267,6 +1266,7 @@ initialize
 	classDict at: #contents put: (propsDict at: #acceptsString).
 	classDict at: #font put: (propsDict at: #acceptsFont).
 	classDict at: #emphasis put: (propsDict at: #acceptsEmphasis).
+	classDict at: #backgroundColor put: (propsDict at: #acceptsColor).
 
 	classDict := MetaProperty metaPropsDictForClass: VisualPropertyEditor .
 	classDict at: #showAllIvars put: (propsDict at: #acceptsBoolean).
@@ -1423,7 +1423,7 @@ initialize
 	"self initializeDictionaries." "invoked in VisualPropertyEditor class>>initialize"
 ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 11/24/2022 14:32:54'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 7/10/2024 16:56:53'!
 initializeDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1503,8 +1503,12 @@ initializeDictionaries
 		    put: (MetaProperty 
 				kind: AbstractFont
 				editProc: [ :morph :metaProp :menuItem |
-					| newFont |
-					newFont := AbstractFont fromUser. 
+					| oldFont fontFamily fontSize newFont |
+					oldFont := menuItem propertyValue.
+					fontSize := oldFont pointSize.
+					fontFamily := FontFamily promptUser. 
+					fontSize := FontFamily promptUserForSize: fontSize fontFamily: fontFamily.
+					newFont := fontFamily atPointSize: fontSize.
 					newFont ifNotNil: [ :f | menuItem propertyValue: f. morph redrawNeeded ] ]  ).
 	props at: #acceptsForm put: (MetaProperty kind: Form).
 	props at: #acceptsLocation put: (MetaProperty kind: Point).

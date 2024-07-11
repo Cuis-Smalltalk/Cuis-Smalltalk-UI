@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6456] on 10 June 2024 at 1:57:39 pm'!
+'From Cuis6.0 [latest update: #6118] on 10 July 2024 at 2:27:29 pm'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 39!
+!provides: 'UI-Shapes' 1 40!
 SystemOrganization addCategory: #'UI-Shapes'!
 
 
@@ -323,6 +323,13 @@ drawOn: aCanvas
 		borderStyleSymbol: borderStyle
 ! !
 
+!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:02:04'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `10@10`! !
+
 !FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 11/7/2021 14:16:26'!
 morphContainsPoint: aPoint
 	"Only the frame contains a point"
@@ -381,11 +388,6 @@ initialize
 basicExtent: aPoint
 
 	extent := aPoint! !
-
-!LineMorph methodsFor: 'private' stamp: 'KenD 12/17/2021 19:30:49'!
-minimumExtent
-
-	^ lineWidth @ lineWidth ! !
 
 !LineMorph methodsFor: 'private' stamp: 'KenD 9/27/2013 15:45'!
 rect
@@ -524,6 +526,13 @@ initialize
 isOrthoRectangularMorph
 
 	^ false! !
+
+!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:02:40'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `10@10`! !
 
 !LineMorph methodsFor: 'geometry' stamp: 'KenD 9/27/2013 16:29'!
 morphExtent
@@ -1060,6 +1069,13 @@ drawOn: aCanvas
 knowsOwnLocalBounds
 
 	^false! !
+
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:01:25'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `20@20`! !
 
 !BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 1/30/2022 13:01:45'!
 yAxisPointsUp

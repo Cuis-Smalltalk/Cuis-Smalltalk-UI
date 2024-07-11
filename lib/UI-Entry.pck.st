@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6092] on 1 December 2023 at 11:22:41 am'!
+'From Cuis6.0 [latest update: #6118] on 10 July 2024 at 2:26:32 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 44!
+!provides: 'UI-Entry' 1 45!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -375,6 +375,11 @@ acceptCancelReceiver: whoToNotify
 	"Answer set to nil or object implementing #accept and #cancel"
 	
 	acceptCancelReceiver := whoToNotify! !
+
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 7/10/2024 14:05:44'!
+backgroundColor
+	
+	^backgroundColor ! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 11:50:50'!
 backgroundColor: aColor
@@ -861,30 +866,30 @@ contents: aString font: aFont emphasis: emphasisCode
 new
 	^self contents: 'edit one line'! !
 
-!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 4/1/2022 12:28:17'!
+!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 7/10/2024 13:44:25'!
 example1
 "
 	TextEntryMorph example1 openInWorld 
 "
 	^ TextEntryMorph new
-		borderWidth: 0.5;
+		borderWidth: 4;
 		borderColor: Color blue;
 		yourself! !
 
-!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 4/1/2022 12:28:12'!
+!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 7/10/2024 13:47:22'!
 example2
 " 
 	TextEntryMorph example2 openInWorld 
 "
 | editor |
-	editor _ TextEntryMorph 
+	editor := TextEntryMorph 
 		contents: 'Cuis-Smalltalk rocks' 
 		font: FontFamily defaultFamilyAndPointSize 
 		emphasis: AbstractFont boldCode.
 	editor
 		morphWidth: 400;
 		color: Color blue;
-		borderWidth: 1.5;
+		borderWidth: 6;
 		borderColor: Color red.
 	^ editor! !
 
