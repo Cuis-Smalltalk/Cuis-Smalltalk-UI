@@ -1,21 +1,11 @@
-'From Cuis6.0 [latest update: #6118] on 10 July 2024 at 2:26:32 pm'!
+'From Cuis7.1 [latest update: #6513] on 13 July 2024 at 2:10:52 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 45!
+!provides: 'UI-Entry' 1 46!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Entry'!
 
-
-!classDefinition: #SimpleEditor category: #'UI-Entry'!
-Editor subclass: #SimpleEditor
-	instanceVariableNames: 'string pointIndex markIndex'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Entry'!
-!classDefinition: 'SimpleEditor class' category: #'UI-Entry'!
-SimpleEditor class
-	instanceVariableNames: ''!
 
 !classDefinition: #TextEntryMorph category: #'UI-Entry'!
 BoxedMorph subclass: #TextEntryMorph
@@ -37,9 +27,16 @@ TextEntryMorph subclass: #SimpleNumberEntryMorph
 SimpleNumberEntryMorph class
 	instanceVariableNames: ''!
 
+!classDefinition: #SimpleEditor category: #'UI-Entry'!
+Editor subclass: #SimpleEditor
+	instanceVariableNames: 'string pointIndex markIndex'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Entry'!
+!classDefinition: 'SimpleEditor class' category: #'UI-Entry'!
+SimpleEditor class
+	instanceVariableNames: ''!
 
-!SimpleEditor commentStamp: '<historical>' prior: 0!
-See comment in Editor!
 
 !TextEntryMorph commentStamp: '<historical>' prior: 0!
 A plain text editor for Morphic. Handles only one line. Does not handle fonts/styles, alignment, Smalltalk utilities and any other advanced stuff in TextModelMorph. Just a simple text editor.
@@ -65,304 +62,8 @@ iVars
 The validator is applied on return and if nil, the old value is redisplayed and the field flashed,
 else the new value is remembered and displayed.!
 
-!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 12/19/2011 12:24'!
-addString: aString
-	"Think of a better name"
-
-	self replaceSelectionWith: aString! !
-
-!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 12/19/2011 12:24'!
-backTo: startIndex
-	"During typing, backspace to startIndex."
-
-	self markIndex: startIndex.
-	self replaceSelectionWith: ''.
-	self markIndex: self pointIndex! !
-
-!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 4/18/2023 11:01:41'!
-dispatchOn: aKeyboardEvent
-	"Carry out the action associated with this character, if any."
-	| codePoint asciiValue |
-	codePoint := aKeyboardEvent keyValue.
-	
-	codePoint > 255 ifTrue: [
-		^self normalCharacter: aKeyboardEvent ].
-
-	asciiValue := codePoint.
-	"Control keys are handled by #shortcuts even if they have any modifiers"
-	(asciiValue >= 32 and: [
-		aKeyboardEvent commandAltKeyPressed ]) ifTrue: [
-		^self perform: (self cmdShortcuts at: asciiValue + 1) with: aKeyboardEvent ].
-
-	"We don't support multiple lines. Therefore, we don't process return as a #normalCharacter:"
-	aKeyboardEvent isReturnKey ifTrue: [
-		^ true].
-
-	^ self perform: (self shortcuts at: asciiValue + 1) with: aKeyboardEvent! !
-
-!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 1/5/2021 14:34:14'!
-processKeystrokeEvent: aKeyboardEvent
-
-	"Key struck on the keyboard. Find out which one and, if special, carry 
-	out the associated special action. Otherwise, add the character to the 
-	stream of characters."
-
-	(self dispatchOn: aKeyboardEvent) ifTrue: [
-		^self].
-	self markIndex: self pointIndex! !
-
-!SimpleEditor methodsFor: 'initialization' stamp: 'jmv 11/4/2008 13:08'!
-changeString: aString
-	"Install aString as the one to be edited by the receiver."
-
-	string _ aString.
-	self resetState! !
-
-!SimpleEditor methodsFor: 'initialization' stamp: 'jmv 4/16/2023 17:10:41'!
-initialize
-	"Initialize the state of the receiver. Subclasses should include 'super 
-	initialize' when redefining this message to insure proper initialization."
-
-	super initialize.
-	self changeString: UnicodeString new! !
-
-!SimpleEditor methodsFor: 'initialization' stamp: 'jmv 10/16/2013 22:37'!
-resetState 
-	"Establish the initial conditions for editing the paragraph: place text cursor 
-	before first character, set the emphasis to that of the first character,
-	and save the paragraph for purposes of canceling."
-
-	pointIndex _ 1.	"Like pointBlock in TextEditor"
-	markIndex _ 1.	"Like markBlock in TextEditor"! !
-
-!SimpleEditor methodsFor: 'events' stamp: 'jmv 8/21/2012 08:42'!
-clickAndHalf
-
-	| here |
-	here _ self pointIndex.
-	(here between: 2 and: string size)
-		ifTrue: [ self selectWord ]
-		ifFalse: [
-			"if at beginning or end, select entire string"
-			self selectAll ].! !
-
-!SimpleEditor methodsFor: 'events' stamp: 'jmv 12/29/2011 14:51'!
-mouseDown: evt index: index
-
-	evt shiftPressed
-		ifFalse: [
-			self markIndex: index pointIndex: index ]
-		ifTrue: [
-			self mouseMove: evt index: index ]! !
-
-!SimpleEditor methodsFor: 'events' stamp: 'jmv 5/27/2011 15:23'!
-mouseMove: evt index: index
-	"Change the selection in response to mouse-down drag"
-
-	self pointIndex: index! !
-
-!SimpleEditor methodsFor: 'menu messages' stamp: 'jmv 10/16/2013 22:37'!
-copySelection
-	"Copy the current selection and store it in the Clipboard, unless empty."
-
-	self lineSelectAndEmptyCheck: [^ self].
-	self clipboardTextPut: self selection! !
-
-!SimpleEditor methodsFor: 'menu messages' stamp: 'jmv 9/22/2011 17:09'!
-cut
-	"Cut out the current selection and redisplay the paragraph if necessary."
-
-	| selection |
-	self lineSelectAndEmptyCheck: [^ self].
-	selection _ self selection.
-	self replaceSelectionWith: ''. 
-	self clipboardTextPut: selection! !
-
-!SimpleEditor methodsFor: 'nonediting/nontyping keys' stamp: 'jmv 9/19/2011 09:12'!
-cursorEnd: aKeyboardEvent
-	"Private - Move cursor end of current line."
-
-	self
-		moveCursor: [ :dummy | self endOfText ]
-		forward: true
-		event: aKeyboardEvent.
-	^ true.! !
-
-!SimpleEditor methodsFor: 'nonediting/nontyping keys' stamp: 'jmv 9/17/2010 13:42'!
-cursorHome: aKeyboardEvent 
-
-	"Private - Move cursor from position in current line to beginning of
-	current line. If control key is pressed put cursor at beginning of text"
-
-	self
-		moveCursor:  [ :dummy | self beginningOfText ]
-		forward: false
-		event: aKeyboardEvent.
-	^true! !
-
-!SimpleEditor methodsFor: 'typing/selecting keys' stamp: 'jmv 4/18/2023 11:05:18'!
-backWord: aKeyboardEvent
-	^false! !
-
-!SimpleEditor methodsFor: 'typing/selecting keys' stamp: 'jmv 12/19/2011 12:24'!
-forwardDelete: aKeyboardEvent
-	"Delete forward over the next character."
-
-	| startIndex stopIndex |
-	startIndex _ self markIndex.
-	startIndex > string size ifTrue: [
-		^ false].
-	self hasSelection ifTrue: [
-		"there was a selection"
-		self replaceSelectionWith: ''.
-		^ false].
-	"Null selection - do the delete forward"
-	stopIndex := startIndex.
-	(aKeyboardEvent keyValue = 127 and: [ aKeyboardEvent shiftPressed ])
-		ifTrue: [ stopIndex := (self nextWordStart: stopIndex) - 1 ].
-	self selectFrom: startIndex to: stopIndex.
-	self replaceSelectionWith: ''.
-	self deselectAndPlaceCursorAt: startIndex.
-	^false! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 10/16/2013 22:17'!
-hasSelection
-	^markIndex ~= pointIndex! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/4/2008 13:57'!
-markIndex
-	^markIndex! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/5/2008 11:41'!
-markIndex: anIndex
-	markIndex _ anIndex min: string size + 1 max: 1! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 5/27/2011 15:25'!
-markIndex: anIndex pointIndex: anotherIndex
-	markIndex _ anIndex min: string size + 1 max: 1.
-	pointIndex _ anotherIndex min: string size + 1 max: 1! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/4/2008 13:57'!
-pointIndex
-	^ pointIndex! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/5/2008 11:41'!
-pointIndex: anIndex
-	pointIndex _ anIndex min: string size + 1 max: 1! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 1/31/2013 21:09'!
-selection
-
-	| firstIndex lastIndex |
-	firstIndex _ self startIndex.
-	lastIndex _ self stopIndex - 1.
-
-	(firstIndex = 1 and: [ lastIndex = string size ])
-		ifTrue: [ ^string ].
-
-	^string copyFrom: firstIndex to: lastIndex! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/4/2008 13:55'!
-startIndex
-	^ pointIndex min: markIndex! !
-
-!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/4/2008 13:55'!
-stopIndex
-	^ pointIndex max: markIndex! !
-
-!SimpleEditor methodsFor: 'testing' stamp: 'jmv 11/17/2008 17:01'!
-isAtEnd
-	^pointIndex = (string size + 1)! !
-
-!SimpleEditor methodsFor: 'testing' stamp: 'jmv 11/17/2008 17:01'!
-isAtStart
-	^pointIndex = 1! !
-
-!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 9/2/2009 12:40'!
-makeCapitalized: aKeyboardEvent
-	"Force the current selection to uppercase.  Triggered by Cmd-X."
-	| prev |
-	prev _ $-.  "not a letter"
-	self replaceSelectionWith:
-		(self selection collect: [:c |
-			prev _ prev isLetter ifTrue: [c asLowercase] ifFalse: [c asUppercase]]).
-	^ true! !
-
-!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 12/19/2011 12:22'!
-makeLowercase: aKeyboardEvent
-	"Force the current selection to lowercase.  Triggered by Cmd-X."
-
-	self replaceSelectionWith: self selection asLowercase.
-	^ true! !
-
-!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 12/19/2011 12:22'!
-makeUppercase: aKeyboardEvent
-	"Force the current selection to uppercase.  Triggered by Cmd-Y."
-
-	self replaceSelectionWith: self selection asUppercase.
-	^ true! !
-
-!SimpleEditor methodsFor: 'private' stamp: 'jmv 9/20/2011 08:46'!
-privateCurrentString
-	"Answer the string I'm editing. Private. Just for internal Editor use."
-
-	^string! !
-
-!SimpleEditor methodsFor: 'private' stamp: 'jmv 3/16/2011 10:44'!
-sameColumn: start newLine: lineBlock forward: isForward
-	"See comment in other implementors."
-	^start! !
-
-!SimpleEditor methodsFor: 'accessing' stamp: 'jmv 9/6/2017 10:02:17'!
-replaceSelectionWith: aString
-	"Deselect, and replace the selection text by aText."
-
-	| start stop |
-	morph disablesEditing ifTrue: [
-		^ self ].
-	start _ self startIndex.
-	stop _ self stopIndex.
-	(start = stop and: [aString size = 0]) ifFalse: [
-		string _ string copyReplaceFrom: start to: stop-1 with: aString.	
-		self deselectAndPlaceCursorAt:  start + aString size.
-		self userHasEdited  " -- note text now dirty" ]! !
-
-!SimpleEditor methodsFor: 'accessing' stamp: 'jmv 9/22/2011 16:52'!
-string
-	^string! !
-
-!SimpleEditor methodsFor: 'new selection' stamp: 'jmv 9/19/2011 09:12'!
-selectFrom: start to: stop
-
-	"Select the specified characters inclusive."
-	self selectInvisiblyFrom: start to: stop! !
-
-!SimpleEditor methodsFor: 'new selection' stamp: 'jmv 10/16/2013 22:10'!
-selectLine
-	"Make the receiver's selection, if currently empty, encompass the current line."
-	self hasSelection ifTrue:[^self].
-	self selectAll! !
-
-!SimpleEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 6/10/2012 11:07'!
-cmdShortcutsSpec
-	"
-	Editor initialize
-	"
-	"arranged in QWERTY keyboard order"
-	^#(
-		#(		$a 	#selectAll:				'Select all')
-
-		#(		$x 	#cut:						'Cut selection and store it in the Clipboard')
-		#(		$c 	#copySelection:			'Copy selection to the Clipboard')
-		#(		$v 	#paste:					'Paste Clipboard contents')
-		#(		$ 	#selectWord:			'Select the current word as with double clicking')
-	)! !
-
-!SimpleEditor class methodsFor: 'new morph participation' stamp: 'KenD 1/1/2022 08:16:31'!
-includeInNewMorphMenu
-	"Return true for all classes that can be instantiated from the menu"
-	
-	^ false! !
+!SimpleEditor commentStamp: '<historical>' prior: 0!
+See comment in Editor!
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:52'!
 acceptCancelReceiver
@@ -562,28 +263,28 @@ drawOn: aCanvas
 			borderWidth: borderWidth
 			borderStyleSymbol: #simple ]! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:07:24'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 13:11:27'!
 drawSelectionOn: aCanvas
 	| rightX leftX bottom |
 
-	bottom _ self baseFont lineSpacing.
-	leftX _ self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
-	leftX _ leftX min: extent x.
-	rightX _ self fontToUse widthOfString: contents from: 1 to: editor stopIndex-1.
-	rightX _ rightX min: extent x.
+	bottom := self baseFont lineSpacing.
+	leftX := self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
+	leftX := leftX min: extent x.
+	rightX := self fontToUse widthOfString: contents from: 1 to: editor stopIndex-1.
+	rightX := rightX min: extent x.
 
 	aCanvas
-		fillRectangle: (leftX+1 @ 1 corner: (rightX + 2) @ (bottom + 2))
+		fillRectangle: ((leftX+1 @ 1) + borderWidth corner: (rightX + 2) @ (bottom + 2))
 		color: (Theme current textHighlightFocused: self hasKeyboardFocus)! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:04:40'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 13:13:03'!
 drawTextCursorOn: aCanvas
 	|  bottom x |
 
 	showTextCursor ifTrue: [
-		bottom _ self baseFont lineSpacing.
-		x _ self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
-		self displayTextCursorAtX: x + 1 top: 0 bottom: bottom emphasis: emphasis on: aCanvas ]! !
+		bottom := self baseFont lineSpacing.
+		x := self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
+		self displayTextCursorAtX: x + 1 + borderWidth top: 0 bottom: bottom emphasis: emphasis on: aCanvas ]! !
 
 !TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 08:43'!
 clickAndHalf: aMouseButtonEvent localPosition: localEventPosition
@@ -1418,6 +1119,305 @@ singleCharSelection: aChar
 			value: aChar 
 			validator: [ :str | str  ]
 			toString: [ :c | c asString ]! !
+
+!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 12/19/2011 12:24'!
+addString: aString
+	"Think of a better name"
+
+	self replaceSelectionWith: aString! !
+
+!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 12/19/2011 12:24'!
+backTo: startIndex
+	"During typing, backspace to startIndex."
+
+	self markIndex: startIndex.
+	self replaceSelectionWith: ''.
+	self markIndex: self pointIndex! !
+
+!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 4/18/2023 11:01:41'!
+dispatchOn: aKeyboardEvent
+	"Carry out the action associated with this character, if any."
+	| codePoint asciiValue |
+	codePoint := aKeyboardEvent keyValue.
+	
+	codePoint > 255 ifTrue: [
+		^self normalCharacter: aKeyboardEvent ].
+
+	asciiValue := codePoint.
+	"Control keys are handled by #shortcuts even if they have any modifiers"
+	(asciiValue >= 32 and: [
+		aKeyboardEvent commandAltKeyPressed ]) ifTrue: [
+		^self perform: (self cmdShortcuts at: asciiValue + 1) with: aKeyboardEvent ].
+
+	"We don't support multiple lines. Therefore, we don't process return as a #normalCharacter:"
+	aKeyboardEvent isReturnKey ifTrue: [
+		^ true].
+
+	^ self perform: (self shortcuts at: asciiValue + 1) with: aKeyboardEvent! !
+
+!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 1/5/2021 14:34:14'!
+processKeystrokeEvent: aKeyboardEvent
+
+	"Key struck on the keyboard. Find out which one and, if special, carry 
+	out the associated special action. Otherwise, add the character to the 
+	stream of characters."
+
+	(self dispatchOn: aKeyboardEvent) ifTrue: [
+		^self].
+	self markIndex: self pointIndex! !
+
+!SimpleEditor methodsFor: 'initialization' stamp: 'jmv 11/4/2008 13:08'!
+changeString: aString
+	"Install aString as the one to be edited by the receiver."
+
+	string _ aString.
+	self resetState! !
+
+!SimpleEditor methodsFor: 'initialization' stamp: 'jmv 4/16/2023 17:10:41'!
+initialize
+	"Initialize the state of the receiver. Subclasses should include 'super 
+	initialize' when redefining this message to insure proper initialization."
+
+	super initialize.
+	self changeString: UnicodeString new! !
+
+!SimpleEditor methodsFor: 'initialization' stamp: 'jmv 10/16/2013 22:37'!
+resetState 
+	"Establish the initial conditions for editing the paragraph: place text cursor 
+	before first character, set the emphasis to that of the first character,
+	and save the paragraph for purposes of canceling."
+
+	pointIndex _ 1.	"Like pointBlock in TextEditor"
+	markIndex _ 1.	"Like markBlock in TextEditor"! !
+
+!SimpleEditor methodsFor: 'events' stamp: 'jmv 8/21/2012 08:42'!
+clickAndHalf
+
+	| here |
+	here _ self pointIndex.
+	(here between: 2 and: string size)
+		ifTrue: [ self selectWord ]
+		ifFalse: [
+			"if at beginning or end, select entire string"
+			self selectAll ].! !
+
+!SimpleEditor methodsFor: 'events' stamp: 'jmv 12/29/2011 14:51'!
+mouseDown: evt index: index
+
+	evt shiftPressed
+		ifFalse: [
+			self markIndex: index pointIndex: index ]
+		ifTrue: [
+			self mouseMove: evt index: index ]! !
+
+!SimpleEditor methodsFor: 'events' stamp: 'jmv 5/27/2011 15:23'!
+mouseMove: evt index: index
+	"Change the selection in response to mouse-down drag"
+
+	self pointIndex: index! !
+
+!SimpleEditor methodsFor: 'menu messages' stamp: 'jmv 10/16/2013 22:37'!
+copySelection
+	"Copy the current selection and store it in the Clipboard, unless empty."
+
+	self lineSelectAndEmptyCheck: [^ self].
+	self clipboardTextPut: self selection! !
+
+!SimpleEditor methodsFor: 'menu messages' stamp: 'jmv 9/22/2011 17:09'!
+cut
+	"Cut out the current selection and redisplay the paragraph if necessary."
+
+	| selection |
+	self lineSelectAndEmptyCheck: [^ self].
+	selection _ self selection.
+	self replaceSelectionWith: ''. 
+	self clipboardTextPut: selection! !
+
+!SimpleEditor methodsFor: 'nonediting/nontyping keys' stamp: 'jmv 9/19/2011 09:12'!
+cursorEnd: aKeyboardEvent
+	"Private - Move cursor end of current line."
+
+	self
+		moveCursor: [ :dummy | self endOfText ]
+		forward: true
+		event: aKeyboardEvent.
+	^ true.! !
+
+!SimpleEditor methodsFor: 'nonediting/nontyping keys' stamp: 'jmv 9/17/2010 13:42'!
+cursorHome: aKeyboardEvent 
+
+	"Private - Move cursor from position in current line to beginning of
+	current line. If control key is pressed put cursor at beginning of text"
+
+	self
+		moveCursor:  [ :dummy | self beginningOfText ]
+		forward: false
+		event: aKeyboardEvent.
+	^true! !
+
+!SimpleEditor methodsFor: 'typing/selecting keys' stamp: 'jmv 4/18/2023 11:05:18'!
+backWord: aKeyboardEvent
+	^false! !
+
+!SimpleEditor methodsFor: 'typing/selecting keys' stamp: 'jmv 12/19/2011 12:24'!
+forwardDelete: aKeyboardEvent
+	"Delete forward over the next character."
+
+	| startIndex stopIndex |
+	startIndex _ self markIndex.
+	startIndex > string size ifTrue: [
+		^ false].
+	self hasSelection ifTrue: [
+		"there was a selection"
+		self replaceSelectionWith: ''.
+		^ false].
+	"Null selection - do the delete forward"
+	stopIndex := startIndex.
+	(aKeyboardEvent keyValue = 127 and: [ aKeyboardEvent shiftPressed ])
+		ifTrue: [ stopIndex := (self nextWordStart: stopIndex) - 1 ].
+	self selectFrom: startIndex to: stopIndex.
+	self replaceSelectionWith: ''.
+	self deselectAndPlaceCursorAt: startIndex.
+	^false! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 10/16/2013 22:17'!
+hasSelection
+	^markIndex ~= pointIndex! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/4/2008 13:57'!
+markIndex
+	^markIndex! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/5/2008 11:41'!
+markIndex: anIndex
+	markIndex _ anIndex min: string size + 1 max: 1! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 5/27/2011 15:25'!
+markIndex: anIndex pointIndex: anotherIndex
+	markIndex _ anIndex min: string size + 1 max: 1.
+	pointIndex _ anotherIndex min: string size + 1 max: 1! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/4/2008 13:57'!
+pointIndex
+	^ pointIndex! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/5/2008 11:41'!
+pointIndex: anIndex
+	pointIndex _ anIndex min: string size + 1 max: 1! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 1/31/2013 21:09'!
+selection
+
+	| firstIndex lastIndex |
+	firstIndex _ self startIndex.
+	lastIndex _ self stopIndex - 1.
+
+	(firstIndex = 1 and: [ lastIndex = string size ])
+		ifTrue: [ ^string ].
+
+	^string copyFrom: firstIndex to: lastIndex! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/4/2008 13:55'!
+startIndex
+	^ pointIndex min: markIndex! !
+
+!SimpleEditor methodsFor: 'accessing-selection' stamp: 'jmv 11/4/2008 13:55'!
+stopIndex
+	^ pointIndex max: markIndex! !
+
+!SimpleEditor methodsFor: 'testing' stamp: 'jmv 11/17/2008 17:01'!
+isAtEnd
+	^pointIndex = (string size + 1)! !
+
+!SimpleEditor methodsFor: 'testing' stamp: 'jmv 11/17/2008 17:01'!
+isAtStart
+	^pointIndex = 1! !
+
+!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 9/2/2009 12:40'!
+makeCapitalized: aKeyboardEvent
+	"Force the current selection to uppercase.  Triggered by Cmd-X."
+	| prev |
+	prev _ $-.  "not a letter"
+	self replaceSelectionWith:
+		(self selection collect: [:c |
+			prev _ prev isLetter ifTrue: [c asLowercase] ifFalse: [c asUppercase]]).
+	^ true! !
+
+!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 12/19/2011 12:22'!
+makeLowercase: aKeyboardEvent
+	"Force the current selection to lowercase.  Triggered by Cmd-X."
+
+	self replaceSelectionWith: self selection asLowercase.
+	^ true! !
+
+!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 12/19/2011 12:22'!
+makeUppercase: aKeyboardEvent
+	"Force the current selection to uppercase.  Triggered by Cmd-Y."
+
+	self replaceSelectionWith: self selection asUppercase.
+	^ true! !
+
+!SimpleEditor methodsFor: 'private' stamp: 'jmv 9/20/2011 08:46'!
+privateCurrentString
+	"Answer the string I'm editing. Private. Just for internal Editor use."
+
+	^string! !
+
+!SimpleEditor methodsFor: 'private' stamp: 'jmv 3/16/2011 10:44'!
+sameColumn: start newLine: lineBlock forward: isForward
+	"See comment in other implementors."
+	^start! !
+
+!SimpleEditor methodsFor: 'accessing' stamp: 'jmv 9/6/2017 10:02:17'!
+replaceSelectionWith: aString
+	"Deselect, and replace the selection text by aText."
+
+	| start stop |
+	morph disablesEditing ifTrue: [
+		^ self ].
+	start _ self startIndex.
+	stop _ self stopIndex.
+	(start = stop and: [aString size = 0]) ifFalse: [
+		string _ string copyReplaceFrom: start to: stop-1 with: aString.	
+		self deselectAndPlaceCursorAt:  start + aString size.
+		self userHasEdited  " -- note text now dirty" ]! !
+
+!SimpleEditor methodsFor: 'accessing' stamp: 'jmv 9/22/2011 16:52'!
+string
+	^string! !
+
+!SimpleEditor methodsFor: 'new selection' stamp: 'jmv 9/19/2011 09:12'!
+selectFrom: start to: stop
+
+	"Select the specified characters inclusive."
+	self selectInvisiblyFrom: start to: stop! !
+
+!SimpleEditor methodsFor: 'new selection' stamp: 'jmv 10/16/2013 22:10'!
+selectLine
+	"Make the receiver's selection, if currently empty, encompass the current line."
+	self hasSelection ifTrue:[^self].
+	self selectAll! !
+
+!SimpleEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 6/10/2012 11:07'!
+cmdShortcutsSpec
+	"
+	Editor initialize
+	"
+	"arranged in QWERTY keyboard order"
+	^#(
+		#(		$a 	#selectAll:				'Select all')
+
+		#(		$x 	#cut:						'Cut selection and store it in the Clipboard')
+		#(		$c 	#copySelection:			'Copy selection to the Clipboard')
+		#(		$v 	#paste:					'Paste Clipboard contents')
+		#(		$ 	#selectWord:			'Select the current word as with double clicking')
+	)! !
+
+!SimpleEditor class methodsFor: 'new morph participation' stamp: 'KenD 1/1/2022 08:16:31'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ false! !
 
 !String methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:31:40'!
 asTextEmphasis
