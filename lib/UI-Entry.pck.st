@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6513] on 13 July 2024 at 2:10:52 pm'!
+'From Cuis7.1 [latest update: #6513] on 13 July 2024 at 2:42:23 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 46!
+!provides: 'UI-Entry' 1 47!
 !requires: 'UI-Click-Select' 1 3 nil!
-!requires: 'Cuis-Base' 60 5588 nil!
+!requires: 'Cuis-Base' 71 6513 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Entry'!
 
@@ -243,7 +243,7 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 		line: x0+halfW@bottom to: x1+halfW@(top+w)
 		width: w color: textCursorColor! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 4/3/2022 12:30:47'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 14:33:50'!
 drawOn: aCanvas
 
 	aCanvas
@@ -253,7 +253,7 @@ drawOn: aCanvas
 	self hasTextCursor ifTrue: [ self drawTextCursorOn: aCanvas ].
 	aCanvas
 		drawString: contents
-		at: 0@0 + borderWidth
+		at: borderWidth @ (borderWidth + self fontToUse descent)
 		font: self fontToUse
 		color: color.
 	(borderWidth > 0) ifTrue: [
@@ -263,7 +263,7 @@ drawOn: aCanvas
 			borderWidth: borderWidth
 			borderStyleSymbol: #simple ]! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 13:11:27'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 14:37:50'!
 drawSelectionOn: aCanvas
 	| rightX leftX bottom |
 
@@ -274,17 +274,17 @@ drawSelectionOn: aCanvas
 	rightX := rightX min: extent x.
 
 	aCanvas
-		fillRectangle: ((leftX+1 @ 1) + borderWidth corner: (rightX + 2) @ (bottom + 2))
+		fillRectangle: ((leftX+1 @ 1) + borderWidth corner: (rightX + 2) @ (bottom + 2 + self fontToUse descent))
 		color: (Theme current textHighlightFocused: self hasKeyboardFocus)! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 13:13:03'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 14:41:28'!
 drawTextCursorOn: aCanvas
 	|  bottom x |
 
 	showTextCursor ifTrue: [
-		bottom := self baseFont lineSpacing.
+		bottom := self fontToUse lineSpacing.
 		x := self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
-		self displayTextCursorAtX: x + 1 + borderWidth top: 0 bottom: bottom emphasis: emphasis on: aCanvas ]! !
+		self displayTextCursorAtX: x + 1 + borderWidth top: (self fontToUse descent) bottom: bottom emphasis: emphasis on: aCanvas ]! !
 
 !TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 08:43'!
 clickAndHalf: aMouseButtonEvent localPosition: localEventPosition
