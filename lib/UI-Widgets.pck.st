@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6452] on 15 June 2024 at 11:39:04 am'!
+'From Cuis7.1 [latest update: #6517] on 14 July 2024 at 4:06:33 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 30!
+!provides: 'UI-Widgets' 1 31!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
 !requires: 'UI-Core' 1 6 nil!
+!requires: 'Graphics-Files-Additional' 1 24 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
 
 
@@ -391,12 +391,12 @@ drawOn: canvas
 		ifFalse: [self drawMyShapeOn: canvas with: self color].
 	icon ifNotNil: [canvas image: icon at: (extent - icon extent // 2)]! !
 
-!ButtonMorph class methodsFor: 'example' stamp: 'hlsf 5/1/2023 21:05:00'!
+!ButtonMorph class methodsFor: 'example' stamp: 'KenD 7/14/2024 16:05:29'!
 example
 "
-	 ButtonMorph example 
+	 ButtonMorph example  openInWorld
 "
-	 ButtonMorph 
+	 ^ButtonMorph 
 		model: Switch newOff
 		stateGetter: #isOn
 		action: #switch ::
@@ -406,8 +406,8 @@ example
 		selectedColor: (Color fromHexString: '#ffd700');
 		borderColor: (Color fromHexString: '#0057b7') muchDarker;
 		borderWidth: 2;
-		morphExtent: Theme current switchIcon extent * 1.5;
-		openInWorld! !
+		morphExtent: Theme current switchIcon extent * 1.5
+		! !
 
 !WheelMorph methodsFor: 'accessing'!
 actionSelector
