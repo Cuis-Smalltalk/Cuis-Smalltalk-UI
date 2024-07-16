@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6506] on 14 July 2024 at 9:56:21 am'!
+'From Cuis7.1 [latest update: #6519] on 16 July 2024 at 11:27:21 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 99!
+!provides: 'UI-Panel' 1 100!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1327,6 +1327,10 @@ layoutBounds
 	"Exclude the label area"
 
 	^  0@0 extent: self morphExtentInOwner! !
+
+!PluggablePane methodsFor: 'as yet unclassified' stamp: 'hlsf 7/16/2024 10:54:35'!
+adjustExtent
+	self morphWidth: owner viewableWidth! !
 
 !PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:37:31'!
 open: model view: aSelector action: acceptSelectorOrAction
