@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6519] on 16 July 2024 at 11:27:21 pm'!
+'From Cuis7.1 [latest update: #6519] on 17 July 2024 at 2:24:56 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 100!
-!requires: 'Cuis-Base' 60 5588 nil!
+!provides: 'UI-Panel' 1 102!
+!requires: 'Cuis-Base' 71 6519 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: #'UI-Panel'!
@@ -938,14 +938,13 @@ initialize
 	
 ! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 12:36:00'!
+!Panel methodsFor: 'initialization' stamp: 'KenD 7/16/2024 13:58:43'!
 openInWorld
 	self morphPosition: 
 			(RealEstateAgent 
 					initialFrameFor: self 
 					initialExtent: self minimumExtent 
-					world: self runningWorld ) topLeft;
-		widgetsColor: self windowColor.
+					world: self runningWorld ) topLeft.
 	super 	openInWorld! !
 
 !Panel methodsFor: 'testing' stamp: 'KenD 12/9/2013 16:45'!
@@ -1074,14 +1073,13 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:27:32'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'KenD 7/16/2024 13:52:36'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
 	self newPane ifNotNil: [:pane | layoutMorph 		addMorphUseAll: pane].
 	self newButtonArea ifNotNil: [:buttons | layoutMorph addMorphKeepMorphHeight: buttons].
 	layoutMorph 		separation: self defaultSeparation;
-		axisEdgeWeight: self defaultAlignement ;
-		adoptWidgetsColor: self widgetsColor.
+		axisEdgeWeight: self defaultAlignement.
 	self morphExtent: self minimumExtent! !
 
 !DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 12/30/2021 10:38:36'!
@@ -1370,15 +1368,15 @@ valueWhenDropped
 		ifNotNil: [ :m | 	m propertyValue: entry value ] 
 		ifNil: [ entry value ]! !
 
-!ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 12/25/2021 10:30:40'!
+!ValueEntryPanel methodsFor: 'GUI building' stamp: 'KenD 7/16/2024 13:43:45'!
 newButtonArea
 	"Add ACCEPT and CANCEL buttons"
-	buttonArea _ LayoutMorph newRow
+	buttonArea := LayoutMorph newRow
 		separation: 8@0;
 		addMorph: (PluggableButtonMorph 
 				model: self 
 				action:  #accept
-				label: 'Accept')
+				label: 'Accept' :: color: Theme current acceptButton)
 			layoutSpec: (LayoutSpec new ::
 							proportionalWidth: 0.4 minimum: 100;
 							proportionalHeight:  1;
@@ -1386,7 +1384,7 @@ newButtonArea
 		addMorph: (PluggableButtonMorph 
 				model: self 
 				action:  #cancel
-				label: 'Cancel')
+				label: 'Cancel' :: color: Theme current cancelButton )
 			layoutSpec: (LayoutSpec new ::
 							proportionalWidth: 0.4 minimum: 100;
 							proportionalHeight:  1;

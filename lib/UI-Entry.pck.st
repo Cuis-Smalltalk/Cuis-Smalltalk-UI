@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6513] on 13 July 2024 at 2:42:23 pm'!
+'From Cuis7.1 [latest update: #6519] on 17 July 2024 at 2:28:10 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 47!
+!provides: 'UI-Entry' 1 49!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 71 6513 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -152,10 +152,12 @@ font
 
 	^ font! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/2/2022 08:25:56'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 7/16/2024 14:13:08'!
 font: aFont
 
-	font := aFont! !
+	font := aFont.
+	self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
+	self redrawNeeded.! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 11/5/2008 13:18'!
 fontToUse
@@ -173,13 +175,6 @@ keyboardFocusWatcher: aMorph
 		- There are too many evens already defined. It would be good to reduce that."
 	keyboardFocusWatcher _ aMorph! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/25/2019 10:10:16'!
-measureContents
-	| f |
-
-	f _ self fontToUse.
-	^((f widthOfString: contents) max: 3)  @ f lineSpacing.! !
-
 !TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:21:02'!
 setValue: newContents
 "For compatibility"
@@ -189,6 +184,45 @@ setValue: newContents
 value
 "For compatibility"
 	^ self contents! !
+
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
+onBlinkCursor
+	"Blink the cursor"
+	showTextCursor _ showTextCursor not | pauseBlinking.
+	pauseBlinking _ false.
+	textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r]! !
+
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 3/6/2015 08:59'!
+pauseBlinking
+	"Show a solid cursor (non blinking) for a short while"
+	pauseBlinking _ true.
+	self showsBlinkingCursor ifTrue: [
+		"Show cursor right now if needed"
+		showTextCursor ifFalse: [
+			showTextCursor _ true.
+			textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r ]]]! !
+
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 9/6/2017 10:02:15'!
+showsBlinkingCursor
+
+	^self handlesKeyboard and: [ self disablesEditing not ]! !
+
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 2/2/2014 22:20'!
+startBlinking
+	"And show the cursor"
+	pauseBlinking _ true.
+	"Start blinking in a short while"
+	showTextCursor _ true.
+	self startStepping: #onBlinkCursor stepTime: 500! !
+
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
+stopBlinking
+	"And do not show cursor anymore."
+	self stopStepping: #onBlinkCursor.
+	"Hide cursor right now if needed"
+	showTextCursor ifTrue: [
+		showTextCursor _ false.
+		textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r ]]! !
 
 !TextEntryMorph methodsFor: 'drawing' stamp: 'hlsf 12/1/2023 11:14:17'!
 characterIndexAtPoint: aPoint
@@ -243,54 +277,103 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 		line: x0+halfW@bottom to: x1+halfW@(top+w)
 		width: w color: textCursorColor! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 14:33:50'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/16/2024 12:53:16'!
 drawOn: aCanvas
 
 	aCanvas
-		fillRectangle: (0@0 extent: extent)
-		color: backgroundColor.
+		fillRectangle: self morphLocalBounds
+		color: backgroundColor
+		borderWidth: borderWidth
+		borderStyleSymbol: #simple
+		baseColorForBorder: borderColor.
+		
 	self hasSelection ifTrue: [ self drawSelectionOn: aCanvas ].
+	
 	self hasTextCursor ifTrue: [ self drawTextCursorOn: aCanvas ].
+	
 	aCanvas
 		drawString: contents
-		at: borderWidth @ (borderWidth + self fontToUse descent)
+		at: self textOffset
 		font: self fontToUse
 		color: color.
-	(borderWidth > 0) ifTrue: [
-		aCanvas
-			frameRectangle: ((0@0 extent: extent) expandBy: 2)
-			color: borderColor
-			borderWidth: borderWidth
-			borderStyleSymbol: #simple ]! !
+! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 14:37:50'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/16/2024 12:45:46'!
 drawSelectionOn: aCanvas
 	| rightX leftX bottom |
 
-	bottom := self baseFont lineSpacing.
+	bottom := self measureContents y + self textOffset y.
 	leftX := self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
-	leftX := leftX min: extent x.
+	leftX := (leftX + self textOffset x) min: extent x.
 	rightX := self fontToUse widthOfString: contents from: 1 to: editor stopIndex-1.
-	rightX := rightX min: extent x.
+	rightX := (rightX + self textOffset x) min: extent x.
 
 	aCanvas
-		fillRectangle: ((leftX+1 @ 1) + borderWidth corner: (rightX + 2) @ (bottom + 2 + self fontToUse descent))
+		fillRectangle: ((leftX+1 @ self textOffset y) corner: (rightX + 2) @ bottom)
 		color: (Theme current textHighlightFocused: self hasKeyboardFocus)! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/13/2024 14:41:28'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/16/2024 13:00:57'!
 drawTextCursorOn: aCanvas
 	|  bottom x |
 
 	showTextCursor ifTrue: [
-		bottom := self fontToUse lineSpacing.
+		bottom := self measureContents y + self textOffset y.
 		x := self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
-		self displayTextCursorAtX: x + 1 + borderWidth top: (self fontToUse descent) bottom: bottom emphasis: emphasis on: aCanvas ]! !
+		self displayTextCursorAtX: (x + self textOffset x)  
+			top: self borderWidth
+			bottom: bottom 
+			emphasis: emphasis 
+			on: aCanvas ]! !
+
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/16/2024 12:01:47'!
+textOffsetdrawTextCursorOn: aCanvas
+	|  bottom x |
+
+	showTextCursor ifTrue: [
+		bottom := self textBox y.
+		x := self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
+		self displayTextCursorAtX: (x + self textOffset x)  top: (self textOffset y) bottom: bottom emphasis: emphasis on: aCanvas ]! !
+
+!TextEntryMorph methodsFor: 'editing' stamp: 'jmv 10/16/2013 21:03'!
+handleInteraction: interactionBlock
+	"Perform the changes in interactionBlock, noting any change in selection
+	and possibly a change in the size of the composition"
+
+	"Also couple the editor to Morphic keyboard events"
+
+	| oldEditor oldContents |
+	oldEditor _ editor.
+	oldContents _ contents.
+	interactionBlock value.
+	oldContents == contents 
+		ifTrue: [ "this will not work if the composition changed"
+			editor _ oldEditor	"since it may have been changed while in block"].
+	self redrawNeeded! !
+
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 9/6/2017 10:02:10'!
+disablesEditing
+
+	^self hasProperty: #disablesEditing! !
+
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+handlesKeyboard
+
+	^self visible! !
+
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+handlesMouseDown: aMouseButtonEvent
+	^ true! !
+
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+handlesMouseOver: evt
+	"implements #mouseEnter: and/or #mouseLeave:"
+	^true! !
 
 !TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 08:43'!
 clickAndHalf: aMouseButtonEvent localPosition: localEventPosition
 	self handleInteraction: [ self editor clickAndHalf ]! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 11:35:24'!
+!TextEntryMorph methodsFor: 'events' stamp: 'KenD 7/16/2024 10:10:16'!
 keyStroke: aKeyboardEvent
 	"Handle a keystroke event."
 
@@ -319,7 +402,9 @@ keyStroke: aKeyboardEvent
 	self pauseBlinking.
 	self handleInteraction: [ self editor processKeystrokeEvent: aKeyboardEvent ].
 	self updateFromContents.
-	super keyStroke: aKeyboardEvent  "sends to keyStroke event handler, if any"! !
+	super keyStroke: aKeyboardEvent . "sends to keyStroke event handler, if any"
+	self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
+	self redrawNeeded.! !
 
 !TextEntryMorph methodsFor: 'events' stamp: 'jmv 1/14/2013 22:27'!
 mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
@@ -360,56 +445,6 @@ mouseMove: aMouseMoveEvent localPosition: localEventPosition
 	self handleInteraction: [
 		self editor mouseMove: aMouseMoveEvent index: (self characterIndexAtPoint: localEventPosition) ]! !
 
-!TextEntryMorph methodsFor: 'initialization' stamp: 'KenD 4/2/2022 08:24:32'!
-defaultBackgroundColor
-
-	^ Theme current textPane ! !
-
-!TextEntryMorph methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:08:33'!
-defaultBorderWidth
-	^ Theme current buttonBorderWidth! !
-
-!TextEntryMorph methodsFor: 'initialization' stamp: 'cbr 12/3/2010 23:29'!
-defaultColor
-	"answer the default color/fill style for the receiver"
-	^ Theme current text! !
-
-!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 11/5/2008 12:15'!
-initWithContents: aString font: aFont emphasis: emphasisCode 
-	self initialize.
-	
-	font _ aFont.
-	emphasis _ emphasisCode.
-	self contents: aString! !
-
-!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 4/16/2023 17:06:38'!
-initialize
-	super initialize.
-	contents := UnicodeString new.
-	font := nil.
-	emphasis := 0.
-	showTextCursor := false. "Should never be nil"
-	backgroundColor := self defaultBackgroundColor.! !
-
-!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 9/6/2017 10:02:10'!
-disablesEditing
-
-	^self hasProperty: #disablesEditing! !
-
-!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
-handlesKeyboard
-
-	^self visible! !
-
-!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
-handlesMouseDown: aMouseButtonEvent
-	^ true! !
-
-!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
-handlesMouseOver: evt
-	"implements #mouseEnter: and/or #mouseLeave:"
-	^true! !
-
 !TextEntryMorph methodsFor: 'events-processing' stamp: 'jmv 12/28/2011 22:45'!
 focusKeyboardFor: aKeyboardEvent
 	"If aKeyboardEvent tab or shift-tab use it to navigate keyboard focus.
@@ -443,21 +478,61 @@ keyboardFocusChange: aBoolean
 				keyboardFocusWatcher lostFocus: self ]].
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'editing' stamp: 'jmv 10/16/2013 21:03'!
-handleInteraction: interactionBlock
-	"Perform the changes in interactionBlock, noting any change in selection
-	and possibly a change in the size of the composition"
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 7/16/2024 12:14:34'!
+measureContents
+	"Answer text extent"
+	
+	| myFont  |
+	myFont := self fontToUse.
+	^((myFont widthOfString: contents) max: 3)  @ myFont lineSpacing.! !
 
-	"Also couple the editor to Morphic keyboard events"
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 7/16/2024 12:39:09'!
+minimumExtent
 
-	| oldEditor oldContents |
-	oldEditor _ editor.
-	oldContents _ contents.
-	interactionBlock value.
-	oldContents == contents 
-		ifTrue: [ "this will not work if the composition changed"
-			editor _ oldEditor	"since it may have been changed while in block"].
-	self redrawNeeded! !
+	^ self textBox! !
+
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 7/17/2024 14:27:59'!
+textBox
+	"Answer amount of interior space including text"
+	^ self measureContents + (2 * self textOffset)! !
+
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 7/16/2024 12:43:44'!
+textOffset
+	"Answer offset to upper-left of text drawing origin"
+	| off |
+	off := (2 * self borderWidth) + self fontToUse ascent + self fontToUse descent / 4.  "NB: lineGap is frequently zero"
+	^ off @ off! !
+
+!TextEntryMorph methodsFor: 'initialization' stamp: 'KenD 4/2/2022 08:24:32'!
+defaultBackgroundColor
+
+	^ Theme current textPane ! !
+
+!TextEntryMorph methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:08:33'!
+defaultBorderWidth
+	^ Theme current buttonBorderWidth! !
+
+!TextEntryMorph methodsFor: 'initialization' stamp: 'cbr 12/3/2010 23:29'!
+defaultColor
+	"answer the default color/fill style for the receiver"
+	^ Theme current text! !
+
+!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 11/5/2008 12:15'!
+initWithContents: aString font: aFont emphasis: emphasisCode 
+	self initialize.
+	
+	font _ aFont.
+	emphasis _ emphasisCode.
+	self contents: aString! !
+
+!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 4/16/2023 17:06:38'!
+initialize
+	super initialize.
+	contents := UnicodeString new.
+	font := nil.
+	emphasis := 0.
+	showTextCursor := false. "Should never be nil"
+	backgroundColor := self defaultBackgroundColor.! !
 
 !TextEntryMorph methodsFor: 'testing' stamp: 'jmv 11/5/2008 12:41'!
 hasSelection
@@ -468,6 +543,11 @@ hasSelection
 hasTextCursor
 
 	^ self hasKeyboardFocus and: [editor notNil and: [editor hasSelection not]]! !
+
+!TextEntryMorph methodsFor: 'typing/selecting keys' stamp: 'jmv 3/16/2011 10:45'!
+selectAll
+	self editor selectAll.
+	self redrawNeeded! !
 
 !TextEntryMorph methodsFor: 'unaccepted edits' stamp: 'jmv 3/14/2011 09:21'!
 hasUnacceptedEdits: aBoolean
@@ -492,55 +572,6 @@ installEditor
 updateFromContents
 
 	contents := self editor string.
-	self redrawNeeded! !
-
-!TextEntryMorph methodsFor: 'geometry' stamp: 'hlsf 4/16/2023 16:04:30'!
-minimumExtent
-
-	^ self measureContents + self extentBorder! !
-
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
-onBlinkCursor
-	"Blink the cursor"
-	showTextCursor _ showTextCursor not | pauseBlinking.
-	pauseBlinking _ false.
-	textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r]! !
-
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 3/6/2015 08:59'!
-pauseBlinking
-	"Show a solid cursor (non blinking) for a short while"
-	pauseBlinking _ true.
-	self showsBlinkingCursor ifTrue: [
-		"Show cursor right now if needed"
-		showTextCursor ifFalse: [
-			showTextCursor _ true.
-			textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r ]]]! !
-
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 9/6/2017 10:02:15'!
-showsBlinkingCursor
-
-	^self handlesKeyboard and: [ self disablesEditing not ]! !
-
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 2/2/2014 22:20'!
-startBlinking
-	"And show the cursor"
-	pauseBlinking _ true.
-	"Start blinking in a short while"
-	showTextCursor _ true.
-	self startStepping: #onBlinkCursor stepTime: 500! !
-
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
-stopBlinking
-	"And do not show cursor anymore."
-	self stopStepping: #onBlinkCursor.
-	"Hide cursor right now if needed"
-	showTextCursor ifTrue: [
-		showTextCursor _ false.
-		textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r ]]! !
-
-!TextEntryMorph methodsFor: 'typing/selecting keys' stamp: 'jmv 3/16/2011 10:45'!
-selectAll
-	self editor selectAll.
 	self redrawNeeded! !
 
 !TextEntryMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/20/2022 18:50:06'!
@@ -609,16 +640,6 @@ fontToUse
 
 	^ Preferences at: #standardListFont ! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/25/2019 10:08:07'!
-measureContents
-	| myFont |
-
-	(self numCharsToHold) ifNil: [ ^ super measureContents ].
-	
-	myFont := self fontToUse.
-	"Use a wide character as sample for the character width"
-	^ 4 + ((myFont widthOfString: 'A') * (self numCharsToHold max: 3)  @ myFont lineSpacing).! !
-
 !SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/21/2013 15:06'!
 numCharsToHold
 
@@ -668,47 +689,15 @@ valueUpdator: aOneArgBlock
 	
 	valueUpdator := aOneArgBlock! !
 
-!SimpleNumberEntryMorph methodsFor: 'drawing' stamp: 'KenD 6/1/2020 15:39:06'!
-displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
+!SimpleNumberEntryMorph methodsFor: 'geometry' stamp: 'jmv 4/25/2019 10:08:07'!
+measureContents
+	| myFont |
 
-	"Displace my text 4@4 from parent"
-	super displayTextCursorAtX: x + 4 top: top + 2 bottom: bottom + 2 emphasis: anEmphasis on: aCanvas! !
-
-!SimpleNumberEntryMorph methodsFor: 'drawing' stamp: 'hlsf 3/19/2022 10:34:24'!
-drawOn: aCanvas
-	self hasSelection     ifTrue: [ self drawSelectionOn: aCanvas ].
-	self hasTextCursor ifTrue: [ self drawTextCursorOn: aCanvas ].
-	aCanvas
-		drawString: contents
-		at: 4@4
-		font: self fontToUse
-		color: color.
-	(borderWidth > 0) ifTrue: [	
-		aCanvas
-			frameRectangle: (0@0 extent: self morphExtentInOwner)
-			color:borderColor
-			borderWidth: borderWidth
-			borderStyleSymbol: #simple]
-! !
-
-!SimpleNumberEntryMorph methodsFor: 'drawing' stamp: 'KenD 6/1/2020 15:47:50'!
-drawSelectionOn: aCanvas
-	| rightX leftX bottom |
-
-	bottom _ self baseFont lineSpacing.
-	leftX _ self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
-	leftX _ leftX min: extent x.
-	rightX _ self fontToUse widthOfString: contents from: 1 to: editor stopIndex-1.
-	rightX _ rightX min: extent x.
-
-	aCanvas
-		fillRectangle: (leftX+4 @ 4 corner: (rightX + 4) @ (bottom + 3)) "displace from parent"
-		color: (Theme current textHighlightFocused: self hasKeyboardFocus)! !
-
-!SimpleNumberEntryMorph methodsFor: 'geometry' stamp: 'KenD 8/24/2015 19:58'!
-minumExtent
-
-	^ self measureContents + self extentBorder ! !
+	(self numCharsToHold) ifNil: [ ^ super measureContents ].
+	
+	myFont := self fontToUse.
+	"Use a wide character as sample for the character width"
+	^ 4 + ((myFont widthOfString: 'A') * (self numCharsToHold max: 3)  @ myFont lineSpacing).! !
 
 !SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 15:56:48'!
 keyStroke: aKeyboardEvent
