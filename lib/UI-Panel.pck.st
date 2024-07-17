@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6519] on 17 July 2024 at 2:24:56 pm'!
+'From Cuis7.1 [latest update: #6523] on 17 July 2024 at 3:03:28 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 102!
-!requires: 'Cuis-Base' 71 6519 nil!
+!provides: 'UI-Panel' 1 104!
+!requires: 'Cuis-Base' 71 6523 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: #'UI-Panel'!
@@ -488,6 +488,20 @@ example1
 		open: Sample09Clock new 
 		label: 'A Label for the Pane'
 		quickButtons: buttons! !
+
+!DecoratedPane class methodsFor: 'examples' stamp: 'KenD 7/17/2024 15:01:27'!
+example2
+"
+	self example2 openInWorld
+"
+	^LayoutMorph newColumn ::
+		addMorph: DecoratedPane example1;
+		addMorph:  LayoutAdjustingMorph new
+			layoutSpec: (LayoutSpec fixedHeight: 4);
+		addMorph: DecoratedPane example1;
+		borderWidth: 4;
+		borderColor: Color orange;
+		morphExtent: 265@275.! !
 
 !DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/4/2023 19:42:24'!
 new
