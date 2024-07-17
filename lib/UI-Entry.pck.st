@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6519] on 17 July 2024 at 2:28:10 pm'!
+'From Cuis7.1 [latest update: #6519] on 17 July 2024 at 2:42:07 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 49!
+!provides: 'UI-Entry' 1 50!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 71 6513 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -137,10 +137,12 @@ emphasis
 	
 	^ emphasis! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/1/2022 12:53:43'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 7/17/2024 14:41:56'!
 emphasis: emphasisCode
 	
-	emphasis := emphasisCode! !
+	emphasis := emphasisCode.
+	self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
+	self redrawNeeded.! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 1/1/2015 21:16'!
 fitContents
