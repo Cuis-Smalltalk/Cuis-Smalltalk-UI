@@ -3,8 +3,8 @@
 Morphic UI widgets, components and tools to design and explore graphic
 user interface with [Cuis-Smalltalk](http://cuis.st).
 
-There are two meta-packages **UI-Components** and
-**UI-Visual-Properties**, those will to install all related
+There are two packages **UI-Components** and
+**UI-MetaProperties**, those will to install all related
 packages. Of course you can also install individually the component
 you are interested by, the dependency mechanism of Package will also
 install the needed additional packages.
@@ -38,6 +38,13 @@ Model and helper classes.
 - PluggableDropDownListMorph
 - PluggableListOfMorph
  - PluggableDropDownList
+
+### UI-Color-Panel
+- ColorEditorModel
+- ColorEditorPanel
+- ColorPalette
+- ColorPaneMorph
+- ColorSliderMorph
 
 ### UI-DragAndDrop
 - ClickColorMorph

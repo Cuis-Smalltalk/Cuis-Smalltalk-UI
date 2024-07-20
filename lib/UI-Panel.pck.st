@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6523] on 17 July 2024 at 3:03:28 pm'!
+'From Cuis7.1 [latest update: #6523] on 20 July 2024 at 10:25:43 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 104!
-!requires: 'Cuis-Base' 71 6523 nil!
+!provides: 'UI-Panel' 1 101!
+!requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: #'UI-Panel'!
@@ -559,6 +559,10 @@ refreshValueFromModel
 			computeSlider.
 	]! !
 
+!PluggableScrollBar methodsFor: 'as yet unclassified' stamp: 'hlsf 7/20/2024 22:15:02'!
+sliderSlack
+	^self buttonExtent // 15! !
+
 !PluggableScrollBar class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:06'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
@@ -1087,13 +1091,14 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'KenD 7/16/2024 13:52:36'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:27:32'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
 	self newPane ifNotNil: [:pane | layoutMorph 		addMorphUseAll: pane].
 	self newButtonArea ifNotNil: [:buttons | layoutMorph addMorphKeepMorphHeight: buttons].
 	layoutMorph 		separation: self defaultSeparation;
-		axisEdgeWeight: self defaultAlignement.
+		axisEdgeWeight: self defaultAlignement ;
+		adoptWidgetsColor: self widgetsColor.
 	self morphExtent: self minimumExtent! !
 
 !DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 12/30/2021 10:38:36'!
