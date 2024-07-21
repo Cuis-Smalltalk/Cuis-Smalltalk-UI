@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:37:15 pm'!
+'From Cuis7.1 [latest update: #6526] on 21 July 2024 at 11:47:17 pm'!
 'Description '!
-!provides: 'UI-Preference' 1 26!
+!provides: 'UI-Preference' 1 27!
 !requires: 'UI-Click-Select' 1 31 nil!
 !requires: 'UI-Panel' 1 51 nil!
 !requires: 'UI-Widgets' 1 22 nil!
@@ -75,10 +75,11 @@ I am an abstract preference type. My subclasses describe the behavior of a prefe
 I am used with the PreferenceBrowser and visitors to present a preference in a meaningfull way the user can manipulate.
 See uses in DrGeo preferences browser.!
 
-!PreferenceBrowser methodsFor: 'GUI building' stamp: 'hlsf 4/26/2022 00:17:32'!
+!PreferenceBrowser methodsFor: 'GUI building' stamp: 'hlsf 7/21/2024 23:00:58'!
 buildMorphicWindow
 	super buildMorphicWindow.
-	titleMorph showButtonsNamed: #(close expand).! !
+	titleMorph showButtonsNamed: #(close expand).
+	layoutMorph adoptWidgetsColor: self widgetsColor! !
 
 !PreferenceBrowser methodsFor: 'GUI building' stamp: 'hlsf 4/25/2022 17:55:24'!
 newButtonArea
