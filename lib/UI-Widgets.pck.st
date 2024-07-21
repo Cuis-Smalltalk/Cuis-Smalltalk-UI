@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6517] on 14 July 2024 at 4:06:33 pm'!
+'From Cuis7.1 [latest update: #6526] on 21 July 2024 at 11:31:52 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 31!
+!provides: 'UI-Widgets' 1 32!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'UI-Core' 1 6 nil!
 !requires: 'Graphics-Files-Additional' 1 24 nil!
@@ -328,12 +328,12 @@ with: labelsAndControls
 			ifFalse: [row addMorph: control	 layoutSpec: LayoutSpec keepMorphExtent]		.
 		self addMorph: row fixedHeight: height]! !
 
-!LabelGroup methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 12:07:52'!
+!LabelGroup methodsFor: 'as yet unclassified' stamp: 'hlsf 7/21/2024 23:30:40'!
 controls
 	" search for the controls, those all widget not label or layoutmorph"
-	^ self submorphs collect: [:layout | 		layout submorphs second] ! !
+	^ self submorphs collect: [:layout | 		layout submorphs first] ! !
 
-!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 12:09:35'!
+!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 7/21/2024 23:30:05'!
 adoptWidgetsColor: paneColor
 	doAdoptWidgetsColor
 		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
