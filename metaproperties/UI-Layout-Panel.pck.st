@@ -1,6 +1,6 @@
-'From Cuis7.0 [latest update: #6454] on 23 June 2024 at 11:29:02 am'!
+'From Cuis7.1 [latest update: #6526] on 23 July 2024 at 3:04:43 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 13!
+!provides: 'UI-Layout-Panel' 1 14!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
@@ -1157,10 +1157,11 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		"addLine;"
 		add: 'edit my LayoutSpec' action: #editMyLayoutSpec! !
 
-!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 5/28/2022 10:55:31'!
+!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 7/23/2024 15:02:33'!
 editMyLayoutSpec
 
 	self layoutSpec ifNil: [ self layoutSpec: LayoutSpec keepMorphExtent ].
+	self  world firstHand newMouseFocus: nil.  "Hand need to reset mouseFocus"
 	LayoutSpecEditPanel open: self layoutSpec! !
 
 !LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:22'!
@@ -1179,9 +1180,10 @@ direction: horizOrVert
 
 	direction := horizOrVert! !
 
-!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:14'!
+!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 7/23/2024 15:02:10'!
 editMe
 
+	self world firstHand newMouseFocus: nil. "Hand need to reset mouseFocus"
 	LayoutMorphEditPanel open: self! !
 
 !LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 4/18/2015 20:18'!
