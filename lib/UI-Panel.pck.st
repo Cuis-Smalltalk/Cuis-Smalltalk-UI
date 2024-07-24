@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6523] on 20 July 2024 at 10:25:43 pm'!
+'From Cuis7.1 [latest update: #6526] on 23 July 2024 at 6:22:37 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 101!
+!provides: 'UI-Panel' 1 102!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1091,14 +1091,13 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:27:32'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'KenD 7/23/2024 18:12:34'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
 	self newPane ifNotNil: [:pane | layoutMorph 		addMorphUseAll: pane].
 	self newButtonArea ifNotNil: [:buttons | layoutMorph addMorphKeepMorphHeight: buttons].
 	layoutMorph 		separation: self defaultSeparation;
-		axisEdgeWeight: self defaultAlignement ;
-		adoptWidgetsColor: self widgetsColor.
+		axisEdgeWeight: self defaultAlignement.
 	self morphExtent: self minimumExtent! !
 
 !DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 12/30/2021 10:38:36'!
@@ -1210,6 +1209,12 @@ newButtonArea
 		axisEdgeWeight: #center;
 		color: self widgetsColor.
 	^ buttonArea! !
+
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'KenD 7/23/2024 18:20:10'!
+buildMorphicWindow
+
+	super buildMorphicWindow.
+	layoutMorph adoptWidgetsColor: self widgetsColor.! !
 
 !PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 8/27/2023 15:32:30'!
 newButtonArea
