@@ -1,9 +1,9 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 10:45:39 am'!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:14:01 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 32!
+!provides: 'UI-Widgets' 1 33!
 !requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'UI-Core' 1 6 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'UI-Core' 1 11 nil!
+!requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
 
 
@@ -338,19 +338,24 @@ adoptWidgetsColor: paneColor
 	doAdoptWidgetsColor
 		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
 
+!LabelGroup class methodsFor: 'instance creation' stamp: 'KenD 7/24/2024 12:12:45'!
+initializedInstance
+
+	^ self example1! !
+
 !LabelGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/7/2022 11:53:10'!
 with: labelsAndControls
 	"key: label, value: control morph"
 	
 	^ self newColumn with: labelsAndControls! !
 
-!LabelGroup class methodsFor: 'examples' stamp: 'jmv 5/17/2024 18:06:24'!
+!LabelGroup class methodsFor: 'examples' stamp: 'KenD 7/24/2024 12:08:50'!
 example1
 "
 	LabelGroup example1 openInWorld
 "
 	^ self with: {
-		'Name' -> (TextEntryMorph contents: 'send $25 for your name here').
+		'Name' -> (LabelMorph contents: 'send $25 for your name here').
 		'Description which is very long is truncated but a ballon help is set to know about this lenghty label!!' -> (TextModelMorph withText: '' ::
 			emptyTextDisplayMessage: 'Why Smalltalk?')	 .
 		'Smalltalk variants' ->   (PluggableListMorph 
@@ -360,6 +365,11 @@ example1
 			indexSetter: #listIndex: ) }::
 		color: Color lightYellow ;
 		yourself! !
+
+!LabelGroup class methodsFor: 'new-morph participation' stamp: 'KenD 7/24/2024 12:11:40'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
 
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/9/2022 21:15:36'!
 adoptWidgetsColor: paneColor
