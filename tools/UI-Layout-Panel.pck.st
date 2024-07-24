@@ -3,7 +3,7 @@
 !provides: 'UI-Layout-Panel' 1 14!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
-!requires: 'UI-DragAndDrop' 1 6 nil!
+!requires: 'UI-DragAndDrop' 1 1 nil!
 !requires: 'UI-Shapes' 1 39 nil!
 SystemOrganization addCategory: #'UI-Layout-Panel'!
 
