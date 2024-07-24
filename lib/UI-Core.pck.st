@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 10:45:12 am'!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 11:56:32 am'!
 'Description '!
-!provides: 'UI-Core' 1 9!
+!provides: 'UI-Core' 1 11!
 SystemOrganization addCategory: #'UI-Core'!
 
 
@@ -32,6 +32,16 @@ LabelMorph subclass: #SqueezeLabelMorph
 	category: 'UI-Core'!
 !classDefinition: 'SqueezeLabelMorph class' category: #'UI-Core'!
 SqueezeLabelMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #FrameMorph category: #'UI-Core'!
+BoxedMorph subclass: #FrameMorph
+	instanceVariableNames: 'colorIndex borderStyle'
+	classVariableNames: 'Colors'
+	poolDictionaries: ''
+	category: 'UI-Core'!
+!classDefinition: 'FrameMorph class' category: #'UI-Core'!
+FrameMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #LineMorph category: #'UI-Core'!
@@ -113,6 +123,9 @@ I do the same but can be "pinched" to squeeze out letters.
 minChars specifies the minimum number of characters I should display.
 I display at least 3 characters.!
 
+!FrameMorph commentStamp: '<historical>' prior: 0!
+I appear as an empty frame!
+
 !LineMorph commentStamp: '<historical>' prior: 0!
 I am a line from my start point to my end point.!
 
@@ -155,10 +168,11 @@ doesNotUnderstand: aMessage
 
 	^ aMessage sendTo: object.! !
 
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:03'!
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 7/24/2024 11:46:26'!
 defaultBorderColor
-
-	^ DropColorMorph swatchBorderColor 
+	"Match with Visual Menu Item text color: 'UI-DragAndDrop' "
+	
+	^ `Color r: 0.5 g: 0.07 b: 0.5`
 ! !
 
 !SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:16'!
@@ -825,6 +839,153 @@ categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
+!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:02:04'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `10@10`! !
+
+!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 11/7/2021 14:16:26'!
+morphContainsPoint: aPoint
+	"Only the frame contains a point"
+	| outerExtent innerExtent |
+	outerExtent := (0@0 extent: self morphExtentInOwner).
+	innerExtent := outerExtent insetBy: self borderWidth.
+	^ (outerExtent containsPoint: aPoint)
+		and: [(innerExtent containsPoint: aPoint) not].! !
+
+!FrameMorph methodsFor: 'accessing' stamp: 'hlsf 12/16/2021 09:49:05'!
+borderStyle
+
+	^ borderStyle! !
+
+!FrameMorph methodsFor: 'accessing' stamp: 'hlsf 12/16/2021 09:49:05'!
+borderStyle: aSymbol
+
+	(#(simple inset raised) includes: aSymbol) ifFalse: [
+		 Error signal: aSymbol printString, ' must be #raised, #inset, or #simple'
+	].
+	borderStyle := aSymbol! !
+
+!FrameMorph methodsFor: 'accessing' stamp: 'KenD 9/16/2013 14:58'!
+borderWidth
+
+	^ borderWidth ! !
+
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:45'!
+defaultBorderColor
+	"answer the default border color/fill style for the receiver"
+	
+	^  self class colors first! !
+
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:41'!
+defaultBorderWidth
+	"answer the default border width for the receiver"
+	
+	^ 8! !
+
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 9/17/2013 15:25'!
+defaultColor
+
+     ^ Color transparent! !
+
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:59'!
+defaultExtent
+
+	^ 100 @ 60! !
+
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:41'!
+defaultFrameSelector
+	"answer the default frame selector for the receiver"
+	
+	^ #simple! !
+
+!FrameMorph methodsFor: 'initialization' stamp: 'hlsf 12/16/2021 09:47:37'!
+initialize
+
+	super initialize.
+
+	colorIndex := 1.
+	self borderColor:    self defaultBorderColor;
+		 borderStyle: self defaultFrameSelector;
+		 borderWidth:    self defaultBorderWidth;
+		 morphExtent:    self defaultExtent.
+! !
+
+!FrameMorph methodsFor: 'events-processing' stamp: 'KenD 9/15/2013 21:15'!
+cycleBorderColor
+	"Change border color to next in Colors"
+
+	(colorIndex = self class colors size)
+	ifTrue:  [colorIndex := 1]
+	ifFalse: [colorIndex := colorIndex + 1].
+
+	self borderColor: (self class colors at: colorIndex).
+
+	^ self borderColor! !
+
+!FrameMorph methodsFor: 'events-processing' stamp: 'jmv 2/13/2014 14:24'!
+stepAt: millisecondClockValue
+
+	self cycleBorderColor ! !
+
+!FrameMorph methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 09:49:05'!
+drawOn: aCanvas
+	"A canvas is already set with a proper transformation from our coordinates to those of the Canvas target."
+
+	aCanvas
+		frameRectangle: (0@0 extent: extent)
+		color: borderColor
+		borderWidth: borderWidth
+		borderStyleSymbol: borderStyle
+! !
+
+!FrameMorph methodsFor: 'events' stamp: 'KenD 9/15/2013 21:35'!
+stopStepping
+
+	self world stopStepping: self.! !
+
+!FrameMorph class methodsFor: 'accessing' stamp: 'KenD 9/15/2013 21:05'!
+colors
+
+	^ Colors ! !
+
+!FrameMorph class methodsFor: 'accessing' stamp: 'KenD 9/15/2016 15:55:19'!
+setColors: colorArray
+"
+	self setColors: (Color orange mix: Color purple shades: 8).
+	self example1.
+"
+
+	Colors := colorArray! !
+
+!FrameMorph class methodsFor: 'examples' stamp: 'hlsf 12/16/2021 09:47:37'!
+example1
+"
+	self example1 openInWorld.
+"
+	| fm |
+	fm := FrameMorph new..
+	"fm cycleBorderColor."
+	fm borderStyle: #simple.
+	fm borderWidth: 8.
+	fm morphPosition: 20@20.
+	fm morphExtent: 200@100.
+	fm openInWorld.
+	fm startStepping.
+	^ fm
+"
+	fm stopStepping.
+"! !
+
+!FrameMorph class methodsFor: 'class initialization' stamp: 'KenD 12/12/2021 15:52:52'!
+initialize
+"
+	self initialize.
+"
+	Colors := { Color red. Color yellow. Color green. }.! !
+
 !LineMorph methodsFor: 'private' stamp: 'KenD 9/27/2013 15:36'!
 basicExtent: aPoint
 
@@ -1148,3 +1309,65 @@ with: aProperty
 
 	^ self new :: 
 		propertyValue: aProperty! !
+
+!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:54:19'!
+showAccept
+	"I have just been dropped.
+	Draw and erase a green box ."
+
+	| hilightMorph mPos mExtent |
+	mPos     := self morphPositionInWorld.
+	mExtent := self morphExtentInOwner.
+	hilightMorph := FrameMorph new.
+	hilightMorph   borderWidth: 6;
+					borderColor: Color green;
+					morphExtent: mExtent + 6;
+					openInWorld;
+					morphPosition: mPos - (6@6). "surround aMorph"
+
+	hilightMorph addAlarm: #delete after: 400.! !
+
+!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:48:11'!
+showReject
+	"Draw and erase a red X"
+
+	| leftStroke rightStroke mPos mExtent |
+	mPos := self morphPositionInWorld.
+	mExtent := self morphExtentInOwner.
+	"Show a red X"
+	leftStroke   := LineMorph 
+						startPoint: mPos - (10@10) 
+						endPoint: (mPos + mExtent + (10@10)) 
+						width: 6
+						color: Color red.
+	rightStroke := LineMorph 
+						startPoint: mPos + (-10 @ (mExtent y + 10))
+						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
+						width: 6
+						color: Color red.
+	leftStroke   openInWorld.
+	rightStroke openInWorld.
+	
+	"NB: Keep Morph when rejected"
+	leftStroke   addAlarm: #delete after: 400.	
+	rightStroke addAlarm: #delete after: 400.
+	! !
+
+!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:48:05'!
+signMorphForMe
+
+	^ SignMorph forObject: self! !
+
+!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:47:57'!
+wantsDroppedMorph: aMorph event: evt
+	"Return true if the receiver wishes to accept the given morph, 
+	 which is being dropped by a hand in response to the given event. 
+	Note that for a successful drop operation both parties need to agree. 
+	The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self.
+	 Individual Morpks may override by setting the corresponding property
+	 to an appropriate two argument closure."
+
+	^self valueOfProperty: #wantsDroppedMorph:event:
+		 ifPresentDo: [ :wantsMorphEvt | wantsMorphEvt value: aMorph value: evt ]
+		 ifAbsent: [ true ]! !
+FrameMorph initialize!

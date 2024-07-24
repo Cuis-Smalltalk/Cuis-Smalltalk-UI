@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 10:45:29 am'!
-'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 41!
-!requires: 'UI-Core' 1 9 nil!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:03:53 pm'!
+'Description '!
+!provides: 'UI-Shapes' 1 42!
+!requires: 'UI-Core' 1 11 nil!
 SystemOrganization addCategory: #'UI-Shapes'!
 
 
@@ -23,16 +23,6 @@ BoxedMorph subclass: #EllipseMorph
 	category: 'UI-Shapes'!
 !classDefinition: 'EllipseMorph class' category: #'UI-Shapes'!
 EllipseMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #FrameMorph category: #'UI-Shapes'!
-BoxedMorph subclass: #FrameMorph
-	instanceVariableNames: 'colorIndex borderStyle'
-	classVariableNames: 'Colors'
-	poolDictionaries: ''
-	category: 'UI-Shapes'!
-!classDefinition: 'FrameMorph class' category: #'UI-Shapes'!
-FrameMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #ArrowMorph category: #'UI-Shapes'!
@@ -105,9 +95,6 @@ A round bordered Morph. Supports borderWidth and borderColor.
 EllipseMorph new borderWidth:10; borderColor: Color green; openInWorld.
 !
 
-!FrameMorph commentStamp: '<historical>' prior: 0!
-I appear as an empty frame!
-
 !ArrowMorph commentStamp: '<historical>' prior: 0!
 I am a vector graphic arrow. Rotate and scale me.
 
@@ -146,33 +133,6 @@ To move my sides:
   Control point one is rightCenter
   Control point two is bottomCenter!
 
-!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 9/15/2016 16:25:30'!
-endPointMorph
-	
-	^ endPointMorph! !
-
-!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 12/12/2016 15:15:59'!
-endPointMorph: aMorph
-	
-	self endPointMorph ifNotNil: [ :pointer | self removeMorph: pointer ].
-	endPointMorph := aMorph.
-	self addMorphFront: aMorph.
-	self updateEndPoint.
-! !
-
-!PointerLineMorph methodsFor: 'initialization' stamp: 'KenD 9/15/2016 16:40:58'!
-initialize
-
-	super initialize.
-	self endPointMorph:
-		(BoxedMorph new 
-			:: color: Color yellow; 
-			borderColor: Color red; 
-			borderWidth: 3; 
-			morphExtent: 16@16; 
-			yourself).
-	self updateEndPoint.! !
-
 !PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 9/15/2016 16:28:43'!
 morphExtent: newExtent
 
@@ -200,6 +160,33 @@ updateEndPoint
 	endPointOffset := (self rect perform: endPointSelector) + (self lineWidth / 2).
 	self endPointMorph morphPosition: endPointOffset - pointMorphCenter.! !
 
+!PointerLineMorph methodsFor: 'initialization' stamp: 'KenD 9/15/2016 16:40:58'!
+initialize
+
+	super initialize.
+	self endPointMorph:
+		(BoxedMorph new 
+			:: color: Color yellow; 
+			borderColor: Color red; 
+			borderWidth: 3; 
+			morphExtent: 16@16; 
+			yourself).
+	self updateEndPoint.! !
+
+!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 9/15/2016 16:25:30'!
+endPointMorph
+	
+	^ endPointMorph! !
+
+!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 12/12/2016 15:15:59'!
+endPointMorph: aMorph
+	
+	self endPointMorph ifNotNil: [ :pointer | self removeMorph: pointer ].
+	endPointMorph := aMorph.
+	self addMorphFront: aMorph.
+	self updateEndPoint.
+! !
+
 !PointerLineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/15/2016 17:37:25'!
 initializedInstance
 
@@ -214,6 +201,24 @@ example1
   PointerLineMorph example1 openInWorld 
 "
 	^ super example1! !
+
+!EllipseMorph methodsFor: 'visual properties' stamp: 'KenD 12/31/2021 13:07:32'!
+borderStyle
+
+	^ borderStyle! !
+
+!EllipseMorph methodsFor: 'visual properties' stamp: 'KenD 12/31/2021 13:08:14'!
+borderStyle: aSymbol
+
+	( #(simple raised inset) includes: aSymbol )
+		ifFalse: [ self error: 'Border Style must be one of #simple #raised or #inset; got: ', aSymbol printString ].
+		
+	borderStyle := aSymbol! !
+
+!EllipseMorph methodsFor: 'visual properties' stamp: 'jmv 3/10/2018 22:24:29'!
+defaultColor
+	"Return the default fill style for the receiver"
+	^ `Color yellow`! !
 
 !EllipseMorph methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 09:38:39'!
 drawOn: aCanvas 
@@ -254,24 +259,6 @@ defaultBorderWidth
 	"answer the default border width for the receiver"
 	^ 1! !
 
-!EllipseMorph methodsFor: 'visual properties' stamp: 'KenD 12/31/2021 13:07:32'!
-borderStyle
-
-	^ borderStyle! !
-
-!EllipseMorph methodsFor: 'visual properties' stamp: 'KenD 12/31/2021 13:08:14'!
-borderStyle: aSymbol
-
-	( #(simple raised inset) includes: aSymbol )
-		ifFalse: [ self error: 'Border Style must be one of #simple #raised or #inset; got: ', aSymbol printString ].
-		
-	borderStyle := aSymbol! !
-
-!EllipseMorph methodsFor: 'visual properties' stamp: 'jmv 3/10/2018 22:24:29'!
-defaultColor
-	"Return the default fill style for the receiver"
-	^ `Color yellow`! !
-
 !EllipseMorph class methodsFor: 'new-morph participation' stamp: 'pb 6/8/2017 23:50:14'!
 categoryInNewMorphMenu
 	^ 'Basic'! !
@@ -294,185 +281,88 @@ example2
 		color: Color red;
 		morphPosition: 0@0! !
 
-!FrameMorph methodsFor: 'accessing' stamp: 'hlsf 12/16/2021 09:49:05'!
-borderStyle
-
-	^ borderStyle! !
-
-!FrameMorph methodsFor: 'accessing' stamp: 'hlsf 12/16/2021 09:49:05'!
-borderStyle: aSymbol
-
-	(#(simple inset raised) includes: aSymbol) ifFalse: [
-		 Error signal: aSymbol printString, ' must be #raised, #inset, or #simple'
-	].
-	borderStyle := aSymbol! !
-
-!FrameMorph methodsFor: 'accessing' stamp: 'KenD 9/16/2013 14:58'!
-borderWidth
-
-	^ borderWidth ! !
-
-!FrameMorph methodsFor: 'events-processing' stamp: 'KenD 9/15/2013 21:15'!
-cycleBorderColor
-	"Change border color to next in Colors"
-
-	(colorIndex = self class colors size)
-	ifTrue:  [colorIndex := 1]
-	ifFalse: [colorIndex := colorIndex + 1].
-
-	self borderColor: (self class colors at: colorIndex).
-
-	^ self borderColor! !
-
-!FrameMorph methodsFor: 'events-processing' stamp: 'jmv 2/13/2014 14:24'!
-stepAt: millisecondClockValue
-
-	self cycleBorderColor ! !
-
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:45'!
-defaultBorderColor
-	"answer the default border color/fill style for the receiver"
-	
-	^  self class colors first! !
-
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:41'!
-defaultBorderWidth
-	"answer the default border width for the receiver"
-	
-	^ 8! !
-
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 9/17/2013 15:25'!
-defaultColor
-
-     ^ Color transparent! !
-
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:59'!
-defaultExtent
-
-	^ 100 @ 60! !
-
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:41'!
-defaultFrameSelector
-	"answer the default frame selector for the receiver"
-	
-	^ #simple! !
-
-!FrameMorph methodsFor: 'initialization' stamp: 'hlsf 12/16/2021 09:47:37'!
-initialize
-
-	super initialize.
-
-	colorIndex := 1.
-	self borderColor:    self defaultBorderColor;
-		 borderStyle: self defaultFrameSelector;
-		 borderWidth:    self defaultBorderWidth;
-		 morphExtent:    self defaultExtent.
-! !
-
-!FrameMorph methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 09:49:05'!
-drawOn: aCanvas
-	"A canvas is already set with a proper transformation from our coordinates to those of the Canvas target."
-
-	aCanvas
-		frameRectangle: (0@0 extent: extent)
-		color: borderColor
-		borderWidth: borderWidth
-		borderStyleSymbol: borderStyle
-! !
-
-!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:02:04'!
+!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:47:47'!
 minimumExtent
 	"This returns the minimum extent that the morph may be shrunk to.
 	It is expressed in the morph own coordinates, like morphExtent."
 
-	^ `10@10`! !
+	^ `20@20`! !
 
-!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 11/7/2021 14:16:26'!
-morphContainsPoint: aPoint
-	"Only the frame contains a point"
-	| outerExtent innerExtent |
-	outerExtent := (0@0 extent: self morphExtentInOwner).
-	innerExtent := outerExtent insetBy: self borderWidth.
-	^ (outerExtent containsPoint: aPoint)
-		and: [(innerExtent containsPoint: aPoint) not].! !
+!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 5/16/2023 20:36:29'!
+yAxisPointsUp
 
-!FrameMorph methodsFor: 'events' stamp: 'KenD 9/15/2013 21:35'!
-stopStepping
+	^ true! !
 
-	self world stopStepping: self.! !
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:03:17'!
+defaultBorderColor
 
-!FrameMorph class methodsFor: 'accessing' stamp: 'KenD 9/15/2013 21:05'!
-colors
+	^ Color yellow! !
 
-	^ Colors ! !
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:03:37'!
+defaultBorderWidth
 
-!FrameMorph class methodsFor: 'accessing' stamp: 'KenD 9/15/2016 15:55:19'!
-setColors: colorArray
-"
-	self setColors: (Color orange mix: Color purple shades: 8).
-	self example1.
-"
+	^ 2! !
 
-	Colors := colorArray! !
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:47:39'!
+defaultColor
 
-!FrameMorph class methodsFor: 'examples' stamp: 'hlsf 12/16/2021 09:47:37'!
-example1
-"
-	self example1 openInWorld.
-"
-	| fm |
-	fm := FrameMorph new..
-	"fm cycleBorderColor."
-	fm borderStyle: #simple.
-	fm borderWidth: 8.
-	fm morphPosition: 20@20.
-	fm morphExtent: 200@100.
-	fm openInWorld.
-	fm startStepping.
-	^ fm
-"
-	fm stopStepping.
-"! !
+	^ Color yellow! !
 
-!FrameMorph class methodsFor: 'class initialization' stamp: 'KenD 12/12/2021 15:52:52'!
-initialize
-"
-	self initialize.
-"
-	Colors := { Color red. Color yellow. Color green. }.! !
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 16:06:15'!
+defaultFillColor
 
-!ArrowMorph methodsFor: 'private' stamp: 'KenD 5/17/2023 10:09:43'!
-boxExtent
-	"Answer the extent to offset a label. See ArrowMorph>>labelMorph: " 
-	 
-	| e |
-	e := (Preferences at: #windowTitleFont) lineSpacing.
-	^e@e! !
+	^ Color green! !
 
-!ArrowMorph methodsFor: 'drawing' stamp: 'KenD 5/16/2023 16:18:14'!
-drawOn: aCanvas
-	"Draw me an Arrow"
-	| p1 p2 p3 p4 p5 p6 |
-	p1 := tipPoint - (headLength @ (headWingLength + (tailHeight / 2))).
-	p2 := p1 + (0 @ headWingLength).
-	p3 := p2 - (tailLength @ 0).
-	p4 := p3 + (0 @ tailHeight).
-	p5 := p4 + (tailLength @ 0).
-	p6 := p5 + (0 @ headWingLength).
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:49:03'!
+defaultHeadHeight
+
+	^ 2 + self defaultTailHeight! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:50:47'!
+defaultHeadLength
+
+	^ 3! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:57:53'!
+defaultHeadSholder
+
+	^ 2 ! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:02:20'!
+defaultHeadWingLength
+	"Answer how far the arrow head extends from the tail height"
+	^ 2 ! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:48:30'!
+defaultTailHeight
+
+	^ 2! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:48:13'!
+defaultTailLength
+
+	^ 5! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/17/2023 07:24:51'!
+defaultTipPoint
+	"Arrow points to the right, so tip is at right end"
 	
-	aCanvas strokeWidth: borderWidth color: borderColor fillColor: fillColor do: [
-		aCanvas
-			pathSequence: {
-				0. (tipPoint x). (tipPoint y).
-				1. (p1 x). (p1 y).
-				1. (p2 x). (p2 y).
-				1. (p3 x). (p3 y).
-				1. (p4 x). (p4 y).
-				1. (p5 x). (p5 y).
-				1. (p6 x). (p6 y).
-				1. (tipPoint x). (tipPoint y).
-				} asFloat32Array .
-		].! !
+	^ 0@0! !
+
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 16:06:15'!
+initialize
+
+	| patternScale |
+	patternScale := 6.  "scale the pattern"
+	super initialize.
+	tailLength := patternScale * self defaultTailLength.
+	tailHeight  := patternScale * self defaultTailHeight.
+	headLength  := patternScale * self defaultHeadLength.
+	headWingLength := patternScale * self defaultHeadWingLength.
+	tipPoint := self defaultTipPoint.
+	borderColor := self defaultBorderColor.
+	borderWidth := self defaultBorderWidth.
+	fillColor := self defaultFillColor.! !
 
 !ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:27:45'!
 borderColor
@@ -580,93 +470,43 @@ tipPoint:  aPoint
 	tipPoint := aPoint.
 	self redrawNeeded ! !
 
+!ArrowMorph methodsFor: 'drawing' stamp: 'KenD 5/16/2023 16:18:14'!
+drawOn: aCanvas
+	"Draw me an Arrow"
+	| p1 p2 p3 p4 p5 p6 |
+	p1 := tipPoint - (headLength @ (headWingLength + (tailHeight / 2))).
+	p2 := p1 + (0 @ headWingLength).
+	p3 := p2 - (tailLength @ 0).
+	p4 := p3 + (0 @ tailHeight).
+	p5 := p4 + (tailLength @ 0).
+	p6 := p5 + (0 @ headWingLength).
+	
+	aCanvas strokeWidth: borderWidth color: borderColor fillColor: fillColor do: [
+		aCanvas
+			pathSequence: {
+				0. (tipPoint x). (tipPoint y).
+				1. (p1 x). (p1 y).
+				1. (p2 x). (p2 y).
+				1. (p3 x). (p3 y).
+				1. (p4 x). (p4 y).
+				1. (p5 x). (p5 y).
+				1. (p6 x). (p6 y).
+				1. (tipPoint x). (tipPoint y).
+				} asFloat32Array .
+		].! !
+
 !ArrowMorph methodsFor: 'geometry' stamp: 'KenD 5/16/2023 15:11:07'!
 rotationCenter
 
 	^ tipPoint! !
 
-!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:47:47'!
-minimumExtent
-	"This returns the minimum extent that the morph may be shrunk to.
-	It is expressed in the morph own coordinates, like morphExtent."
-
-	^ `20@20`! !
-
-!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 5/16/2023 20:36:29'!
-yAxisPointsUp
-
-	^ true! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:03:17'!
-defaultBorderColor
-
-	^ Color yellow! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:03:37'!
-defaultBorderWidth
-
-	^ 2! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:47:39'!
-defaultColor
-
-	^ Color yellow! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 16:06:15'!
-defaultFillColor
-
-	^ Color green! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:49:03'!
-defaultHeadHeight
-
-	^ 2 + self defaultTailHeight! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:50:47'!
-defaultHeadLength
-
-	^ 3! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:57:53'!
-defaultHeadSholder
-
-	^ 2 ! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:02:20'!
-defaultHeadWingLength
-	"Answer how far the arrow head extends from the tail height"
-	^ 2 ! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:48:30'!
-defaultTailHeight
-
-	^ 2! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:48:13'!
-defaultTailLength
-
-	^ 5! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/17/2023 07:24:51'!
-defaultTipPoint
-	"Arrow points to the right, so tip is at right end"
-	
-	^ 0@0! !
-
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 16:06:15'!
-initialize
-
-	| patternScale |
-	patternScale := 6.  "scale the pattern"
-	super initialize.
-	tailLength := patternScale * self defaultTailLength.
-	tailHeight  := patternScale * self defaultTailHeight.
-	headLength  := patternScale * self defaultHeadLength.
-	headWingLength := patternScale * self defaultHeadWingLength.
-	tipPoint := self defaultTipPoint.
-	borderColor := self defaultBorderColor.
-	borderWidth := self defaultBorderWidth.
-	fillColor := self defaultFillColor.! !
+!ArrowMorph methodsFor: 'private' stamp: 'KenD 5/17/2023 10:09:43'!
+boxExtent
+	"Answer the extent to offset a label. See ArrowMorph>>labelMorph: " 
+	 
+	| e |
+	e := (Preferences at: #windowTitleFont) lineSpacing.
+	^e@e! !
 
 !ArrowMorph class methodsFor: 'instance creation' stamp: 'KenD 5/17/2023 10:34:15'!
 label: aString
@@ -746,6 +586,62 @@ initializeMetaProperties
 
 	! !
 
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:33:40'!
+knowsOwnLocalBounds
+
+	^false! !
+
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:01:25'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `20@20`! !
+
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 1/30/2022 13:01:45'!
+yAxisPointsUp
+
+	^true! !
+
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:44:11'!
+addOptionalHandlesTo: aHalo box: box
+	"Control point is relative to my center.
+	 Translate relative to aHalo"
+	
+	| haloCtlPt |
+	haloCtlPt := aHalo internalizeFromWorld: self controlPointOneInWorld.
+	(aHalo addControlHandle: haloCtlPt)
+		mouseDownSelector: #startControlPoint:with: ;
+		mouseMoveSelector: #doControlOne:with: .
+		
+	haloCtlPt := aHalo internalizeFromWorld: self startPointInWorld.
+	(aHalo addPointHandle: haloCtlPt)
+		mouseDownSelector: #startControlPoint:with: ;
+		mouseMoveSelector: #doStartPoint:with: .
+		
+	haloCtlPt := aHalo internalizeFromWorld: self endPointInWorld.
+	(aHalo addPointHandle: haloCtlPt)
+		mouseDownSelector: #startControlPoint:with: ;
+		mouseMoveSelector: #doEndPoint:with: .! !
+
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:52:41'!
+controlPointOneInWorld
+	"Answer control point one in World coordinates."
+
+	^ self externalizeToWorld: oneControlPoint ! !
+
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:53:48'!
+endPointInWorld
+	"Answer end point in World coordinates."
+
+	^ self externalizeToWorld: endPoint! !
+
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:54:09'!
+startPointInWorld
+	"Answer start point in World coordinates."
+
+	^ self externalizeToWorld: startPoint! !
+
 !BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:29:45'!
 endPoint
 
@@ -796,45 +692,6 @@ startPoint: aPoint
 
 	startPoint := aPoint! !
 
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:44:11'!
-addOptionalHandlesTo: aHalo box: box
-	"Control point is relative to my center.
-	 Translate relative to aHalo"
-	
-	| haloCtlPt |
-	haloCtlPt := aHalo internalizeFromWorld: self controlPointOneInWorld.
-	(aHalo addControlHandle: haloCtlPt)
-		mouseDownSelector: #startControlPoint:with: ;
-		mouseMoveSelector: #doControlOne:with: .
-		
-	haloCtlPt := aHalo internalizeFromWorld: self startPointInWorld.
-	(aHalo addPointHandle: haloCtlPt)
-		mouseDownSelector: #startControlPoint:with: ;
-		mouseMoveSelector: #doStartPoint:with: .
-		
-	haloCtlPt := aHalo internalizeFromWorld: self endPointInWorld.
-	(aHalo addPointHandle: haloCtlPt)
-		mouseDownSelector: #startControlPoint:with: ;
-		mouseMoveSelector: #doEndPoint:with: .! !
-
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:52:41'!
-controlPointOneInWorld
-	"Answer control point one in World coordinates."
-
-	^ self externalizeToWorld: oneControlPoint ! !
-
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:53:48'!
-endPointInWorld
-	"Answer end point in World coordinates."
-
-	^ self externalizeToWorld: endPoint! !
-
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:54:09'!
-startPointInWorld
-	"Answer start point in World coordinates."
-
-	^ self externalizeToWorld: startPoint! !
-
 !BezierQuadraticMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 13:00:46'!
 drawOn: aCanvas
 
@@ -843,23 +700,6 @@ drawOn: aCanvas
 			moveTo: startPoint;
 			quadraticBezierTo: endPoint control: oneControlPoint 
 	]! !
-
-!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:33:40'!
-knowsOwnLocalBounds
-
-	^false! !
-
-!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:01:25'!
-minimumExtent
-	"This returns the minimum extent that the morph may be shrunk to.
-	It is expressed in the morph own coordinates, like morphExtent."
-
-	^ `20@20`! !
-
-!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 1/30/2022 13:01:45'!
-yAxisPointsUp
-
-	^true! !
 
 !BezierQuadraticMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:08:52'!
 initialize
@@ -938,6 +778,26 @@ twoControlPoint: aPoint
 
 	twoControlPoint := aPoint ! !
 
+!BezierCubicMorph methodsFor: 'initialization' stamp: 'KenD 1/30/2022 14:59:51'!
+initialize
+
+	super initialize.
+	self 
+		lineColor: Color yellow ;
+		oneControlPoint: 228@75 ;
+		twoControlPoint: 25 @ 160.! !
+
+!BezierCubicMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 14:55:18'!
+drawOn: aCanvas
+
+	aCanvas strokeWidth: lineWidth color: lineColor do: [
+		aCanvas 
+			moveTo: startPoint;
+			cubicBezierTo: endPoint 
+				control1: oneControlPoint 
+				control2: twoControlPoint 
+	]! !
+
 !BezierCubicMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:44:28'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
@@ -958,25 +818,33 @@ controlPointTwoInWorld
 
 	^self externalizeToWorld: twoControlPoint ! !
 
-!BezierCubicMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 14:55:18'!
-drawOn: aCanvas
-
-	aCanvas strokeWidth: lineWidth color: lineColor do: [
-		aCanvas 
-			moveTo: startPoint;
-			cubicBezierTo: endPoint 
-				control1: oneControlPoint 
-				control2: twoControlPoint 
-	]! !
-
-!BezierCubicMorph methodsFor: 'initialization' stamp: 'KenD 1/30/2022 14:59:51'!
+!BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 1/30/2022 14:55:53'!
 initialize
+	
+	(Smalltalk includesKey: #MetaProperty )
+		ifTrue: [ self initializeMetaProperties ].
+	! !
 
-	super initialize.
-	self 
-		lineColor: Color yellow ;
-		oneControlPoint: 228@75 ;
-		twoControlPoint: 25 @ 160.! !
+!BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:39:25'!
+initializeMetaProperties
+"
+	Bezier2Morph initializeMetaProperties.
+"
+	| classDict propsDict |
+	"Ensure named MetaProperties exist"
+	MetaProperty initializeDictionaries.
+
+	"Seed MetaProperties for known Morphs"
+	propsDict := MetaProperty preDefinedPropsDict.
+	
+	classDict := MetaProperty metaPropsDictForClass: BezierCubicMorph. 
+	
+	"Note that MetaProperties are inherited.."
+	classDict at: #twoControlPoint 
+		put: (propsDict at: #acceptsPoint).  
+
+
+	! !
 
 !BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:35:51'!
 example1
@@ -1011,83 +879,17 @@ example3
 		oneControlPoint: 100 @ 0;
 		twoControlPoint: 100 @ 0! !
 
-!BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 1/30/2022 14:55:53'!
-initialize
-	
-	(Smalltalk includesKey: #MetaProperty )
-		ifTrue: [ self initializeMetaProperties ].
-	! !
+!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:34:53'!
+knowsOwnLocalBounds
 
-!BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:39:25'!
-initializeMetaProperties
-"
-	Bezier2Morph initializeMetaProperties.
-"
-	| classDict propsDict |
-	"Ensure named MetaProperties exist"
-	MetaProperty initializeDictionaries.
+	^false! !
 
-	"Seed MetaProperties for known Morphs"
-	propsDict := MetaProperty preDefinedPropsDict.
-	
-	classDict := MetaProperty metaPropsDictForClass: BezierCubicMorph. 
-	
-	"Note that MetaProperties are inherited.."
-	classDict at: #twoControlPoint 
-		put: (propsDict at: #acceptsPoint).  
+!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:46:10'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
 
-
-	! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:06'!
-center
-
-	^center! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:22'!
-center: aPoint
-
-	center := aPoint! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:51'!
-fillColor
-
-	^ fillColor! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:57'!
-fillColor: aColor
-
-	fillColor := aColor! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:03'!
-lineColor
-
-	^ lineColor ! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:09'!
-lineColor: aColor
-
-	lineColor := aColor! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:15'!
-lineWidth
-
-	^ lineWidth ! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:22'!
-lineWidth: posiriveNumber
-
-	lineWidth := posiriveNumber! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:42'!
-radius
-
-	^radius ! !
-
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:24'!
-radius: aPositiveDistance
-
-	radius := aPositiveDistance! !
+	^ `20@20`! !
 
 !CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 7/19/2023 12:35:26'!
 addOptionalHandlesTo: aHalo box: box
@@ -1143,6 +945,56 @@ startPointInWorld
 
 	^ self externalizeToWorld: center! !
 
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:06'!
+center
+
+	^center! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:22'!
+center: aPoint
+
+	center := aPoint! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:51'!
+fillColor
+
+	^ fillColor! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:57'!
+fillColor: aColor
+
+	fillColor := aColor! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:03'!
+lineColor
+
+	^ lineColor ! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:09'!
+lineColor: aColor
+
+	lineColor := aColor! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:15'!
+lineWidth
+
+	^ lineWidth ! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:22'!
+lineWidth: posiriveNumber
+
+	lineWidth := posiriveNumber! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:42'!
+radius
+
+	^radius ! !
+
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:24'!
+radius: aPositiveDistance
+
+	radius := aPositiveDistance! !
+
 !CircleShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 13:59:25'!
 drawOn: aCanvas
  
@@ -1152,6 +1004,16 @@ drawOn: aCanvas
 		fillColor: fillColor do: [
 			aCanvas circleCenter: center radius: radius
 	]! !
+
+!CircleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:10:25'!
+initialize
+
+	super initialize.
+	lineColor := Color red.
+	fillColor := lineColor alpha: 0.4.
+	lineWidth := 6.
+	center := 0@0.
+	radius := 80.! !
 
 !CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 13:12:13'!
 rotationCenter
@@ -1164,28 +1026,6 @@ yAxisPointsUp
 	"Math coordiated rather than graphics."
 
 	^ true! !
-
-!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:34:53'!
-knowsOwnLocalBounds
-
-	^false! !
-
-!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:46:10'!
-minimumExtent
-	"This returns the minimum extent that the morph may be shrunk to.
-	It is expressed in the morph own coordinates, like morphExtent."
-
-	^ `20@20`! !
-
-!CircleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:10:25'!
-initialize
-
-	super initialize.
-	lineColor := Color red.
-	fillColor := lineColor alpha: 0.4.
-	lineWidth := 6.
-	center := 0@0.
-	radius := 80.! !
 
 !CircleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:34:58'!
 initialize
@@ -1235,6 +1075,31 @@ example1
 		lineColor: Color black;
 		fillColor: (Color black muchLighter alpha: 0.6)
 		! !
+
+!LineShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:50:16'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `10@10`! !
+
+!LineShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 14:29:28'!
+drawOn: aCanvas
+
+	aCanvas strokeWidth: lineWidth color: lineColor do: [
+		aCanvas
+				moveTo: startPoint;
+				lineTo: endPoint
+	]! !
+
+!LineShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:34:46'!
+initialize
+
+	super initialize.
+	lineColor := Color orange.
+	startPoint := 0@0.
+	endPoint := 84@175.
+	lineWidth := 6.! !
 
 !LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:17'!
 endPoint
@@ -1305,15 +1170,6 @@ startPointInWorld
 
 	^ self externalizeToWorld: startPoint! !
 
-!LineShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 14:29:28'!
-drawOn: aCanvas
-
-	aCanvas strokeWidth: lineWidth color: lineColor do: [
-		aCanvas
-				moveTo: startPoint;
-				lineTo: endPoint
-	]! !
-
 !LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 17:35:06'!
 knowsOwnLocalBounds
 
@@ -1331,22 +1187,6 @@ yAxisPointsUp
 	"Math coordiated rather than graphics."
 
 	^ true! !
-
-!LineShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:34:46'!
-initialize
-
-	super initialize.
-	lineColor := Color orange.
-	startPoint := 0@0.
-	endPoint := 84@175.
-	lineWidth := 6.! !
-
-!LineShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:50:16'!
-minimumExtent
-	"This returns the minimum extent that the morph may be shrunk to.
-	It is expressed in the morph own coordinates, like morphExtent."
-
-	^ `10@10`! !
 
 !LineShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 14:23:24'!
 initialize
@@ -1393,75 +1233,12 @@ example1
 		lineWidth: 10;
 		lineColor: Color black! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:37:06'!
-bottomCenter
+!RectangleShapeMorph methodsFor: 'as yet unclassified' stamp: 'KenD 6/10/2024 13:50:29'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
 
-	^(origin x + ((corner x - origin x) // 2) @ corner y)! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:04'!
-corner
-
-	^ corner! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:19'!
-corner: aPoint
-
-	corner := aPoint! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:00'!
-endPoint
-
-	^ corner! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:16'!
-endPoint: aPoint
-
-	corner := aPoint! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
-fillColor
-
-	^ fillColor! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
-fillColor: aColor
-
-	fillColor := aColor! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:38:03'!
-lineColor
-
-	^ lineColor ! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:14'!
-lineColor: aColor
-
-	lineColor := aColor! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:37:49'!
-lineWidth
-
-	^ lineWidth ! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:43'!
-lineWidth: posiriveNumber
-
-	lineWidth := posiriveNumber! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:28'!
-origin
-
-	^ origin! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:37'!
-origin: aPoint
-
-	origin := aPoint! !
-
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:32:53'!
-rightCenter
-
-	^(corner x @ (corner y - ((corner y - origin y) // 2)))! !
+	^ `20@20`! !
 
 !RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 7/19/2023 12:37:29'!
 addOptionalHandlesTo: aHalo box: box
@@ -1549,15 +1326,75 @@ twoControlPoint: aPoint
 
 	corner := corner x @ aPoint y! !
 
-!RectangleShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 13:29:34'!
-drawOn: aCanvas
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:37:06'!
+bottomCenter
 
-	aCanvas 
-		frameAndFillRectangle:
-			(Rectangle origin: origin corner: corner) 
-		fillColor: fillColor 
-		borderWidth: lineWidth 
-		borderColor: lineColor! !
+	^(origin x + ((corner x - origin x) // 2) @ corner y)! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:04'!
+corner
+
+	^ corner! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:19'!
+corner: aPoint
+
+	corner := aPoint! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:00'!
+endPoint
+
+	^ corner! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:16'!
+endPoint: aPoint
+
+	corner := aPoint! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
+fillColor
+
+	^ fillColor! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
+fillColor: aColor
+
+	fillColor := aColor! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:38:03'!
+lineColor
+
+	^ lineColor ! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:14'!
+lineColor: aColor
+
+	lineColor := aColor! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:37:49'!
+lineWidth
+
+	^ lineWidth ! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:43'!
+lineWidth: posiriveNumber
+
+	lineWidth := posiriveNumber! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:28'!
+origin
+
+	^ origin! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:37'!
+origin: aPoint
+
+	origin := aPoint! !
+
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:32:53'!
+rightCenter
+
+	^(corner x @ (corner y - ((corner y - origin y) // 2)))! !
 
 !RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 17:35:18'!
 knowsOwnLocalBounds
@@ -1581,6 +1418,16 @@ yAxisPointsUp
 
 	^ true! !
 
+!RectangleShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 13:29:34'!
+drawOn: aCanvas
+
+	aCanvas 
+		frameAndFillRectangle:
+			(Rectangle origin: origin corner: corner) 
+		fillColor: fillColor 
+		borderWidth: lineWidth 
+		borderColor: lineColor! !
+
 !RectangleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 15:35:49'!
 initialize
 
@@ -1590,13 +1437,6 @@ initialize
 	lineColor := Color cyan.
 	lineWidth := 6.
 	fillColor := lineColor alpha: 0.4. ! !
-
-!RectangleShapeMorph methodsFor: 'as yet unclassified' stamp: 'KenD 6/10/2024 13:50:29'!
-minimumExtent
-	"This returns the minimum extent that the morph may be shrunk to.
-	It is expressed in the morph own coordinates, like morphExtent."
-
-	^ `20@20`! !
 
 !RectangleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:07:11'!
 initialize
@@ -1881,7 +1721,6 @@ haloTargetIcon
 	^ self icons
 		at: #haloTargetIcon
 		ifAbsentPut: [ Theme current targetIcon ]! !
-FrameMorph initialize!
 ArrowMorph initialize!
 BezierQuadraticMorph initialize!
 BezierCubicMorph initialize!
