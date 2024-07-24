@@ -1,7 +1,7 @@
 'From Cuis6.3 [latest update: #6358] on 15 May 2024 at 3:15:07 pm'!
 'Description I supply the ColorEditor Panel'!
 !provides: 'UI-Color-Panel' 1 22!
-!requires: 'UI-DragAndDrop' 1 3 nil!
+!requires: 'UI-DragAndDrop' 1 0 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'Color-Extras' 1 9 nil!

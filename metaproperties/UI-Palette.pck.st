@@ -4,7 +4,7 @@ E.g. see PickAnIconPalette, PickAColorPalette'!
 !provides: 'UI-Palette' 1 13!
 !requires: 'UI-Click-Select' 1 1 nil!
 !requires: 'UI-Panel' 1 17 nil!
-!requires: 'UI-DragAndDrop' 1 7 nil!
+!requires: 'UI-DragAndDrop' 1 1 nil!
 !requires: 'UI-Shapes' 1 29 nil!
 SystemOrganization addCategory: #'UI-Palette'!
 
