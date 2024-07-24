@@ -1,8 +1,19 @@
-'From Cuis6.0 [latest update: #6118] on 10 July 2024 at 2:27:29 pm'!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 10:45:29 am'!
 'Description Bezier Curves et al'!
-!provides: 'UI-Shapes' 1 40!
+!provides: 'UI-Shapes' 1 41!
+!requires: 'UI-Core' 1 9 nil!
 SystemOrganization addCategory: #'UI-Shapes'!
 
+
+!classDefinition: #PointerLineMorph category: #'UI-Shapes'!
+LineMorph subclass: #PointerLineMorph
+	instanceVariableNames: 'endPointMorph'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Shapes'!
+!classDefinition: 'PointerLineMorph class' category: #'UI-Shapes'!
+PointerLineMorph class
+	instanceVariableNames: ''!
 
 !classDefinition: #EllipseMorph category: #'UI-Shapes'!
 BoxedMorph subclass: #EllipseMorph
@@ -22,26 +33,6 @@ BoxedMorph subclass: #FrameMorph
 	category: 'UI-Shapes'!
 !classDefinition: 'FrameMorph class' category: #'UI-Shapes'!
 FrameMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #LineMorph category: #'UI-Shapes'!
-BoxedMorph subclass: #LineMorph
-	instanceVariableNames: 'startPointSelector endPointSelector lineWidth'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Shapes'!
-!classDefinition: 'LineMorph class' category: #'UI-Shapes'!
-LineMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #PointerLineMorph category: #'UI-Shapes'!
-LineMorph subclass: #PointerLineMorph
-	instanceVariableNames: 'endPointMorph'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Shapes'!
-!classDefinition: 'PointerLineMorph class' category: #'UI-Shapes'!
-PointerLineMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #ArrowMorph category: #'UI-Shapes'!
@@ -105,6 +96,9 @@ RectangleShapeMorph class
 	instanceVariableNames: ''!
 
 
+!PointerLineMorph commentStamp: '<historical>' prior: 0!
+I am a LineMorph which has a "pointer" morph which I maintain in position at my endpoint.!
+
 !EllipseMorph commentStamp: '<historical>' prior: 0!
 A round bordered Morph. Supports borderWidth and borderColor. 
 
@@ -113,12 +107,6 @@ EllipseMorph new borderWidth:10; borderColor: Color green; openInWorld.
 
 !FrameMorph commentStamp: '<historical>' prior: 0!
 I appear as an empty frame!
-
-!LineMorph commentStamp: '<historical>' prior: 0!
-I am a line from my start point to my end point.!
-
-!PointerLineMorph commentStamp: '<historical>' prior: 0!
-I am a LineMorph which has a "pointer" morph which I maintain in position at my endpoint.!
 
 !ArrowMorph commentStamp: '<historical>' prior: 0!
 I am a vector graphic arrow. Rotate and scale me.
@@ -157,6 +145,75 @@ I present a vector-graphic rectangle
 To move my sides:
   Control point one is rightCenter
   Control point two is bottomCenter!
+
+!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 9/15/2016 16:25:30'!
+endPointMorph
+	
+	^ endPointMorph! !
+
+!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 12/12/2016 15:15:59'!
+endPointMorph: aMorph
+	
+	self endPointMorph ifNotNil: [ :pointer | self removeMorph: pointer ].
+	endPointMorph := aMorph.
+	self addMorphFront: aMorph.
+	self updateEndPoint.
+! !
+
+!PointerLineMorph methodsFor: 'initialization' stamp: 'KenD 9/15/2016 16:40:58'!
+initialize
+
+	super initialize.
+	self endPointMorph:
+		(BoxedMorph new 
+			:: color: Color yellow; 
+			borderColor: Color red; 
+			borderWidth: 3; 
+			morphExtent: 16@16; 
+			yourself).
+	self updateEndPoint.! !
+
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 9/15/2016 16:28:43'!
+morphExtent: newExtent
+
+	super morphExtent: newExtent.
+	self updateEndPoint.! !
+
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 12/12/2016 15:21:19'!
+setPointSelectorsFromStartPoint: startPoint endPoint: endPoint
+
+	super setPointSelectorsFromStartPoint: startPoint endPoint: endPoint.
+	self updateEndPoint ! !
+
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 12/19/2021 08:17:41'!
+submorphsMightProtrude
+	"My pointer morph sticks out"
+	
+	^ true! !
+
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 11/7/2021 14:13:48'!
+updateEndPoint
+	"Place my pointer morph at my endpoint, centered"
+	
+	| pointMorphCenter endPointOffset |
+	pointMorphCenter := (self endPointMorph morphExtentInOwner) / 2.
+	endPointOffset := (self rect perform: endPointSelector) + (self lineWidth / 2).
+	self endPointMorph morphPosition: endPointOffset - pointMorphCenter.! !
+
+!PointerLineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/15/2016 17:37:25'!
+initializedInstance
+
+	| newInst |
+	newInst  := super initializedInstance.
+	newInst updateEndPoint.
+	^newInst! !
+
+!PointerLineMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 11:40:31'!
+example1
+"
+  PointerLineMorph example1 openInWorld 
+"
+	^ super example1! !
 
 !EllipseMorph methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 09:38:39'!
 drawOn: aCanvas 
@@ -383,284 +440,6 @@ initialize
 	self initialize.
 "
 	Colors := { Color red. Color yellow. Color green. }.! !
-
-!LineMorph methodsFor: 'private' stamp: 'KenD 9/27/2013 15:36'!
-basicExtent: aPoint
-
-	extent := aPoint! !
-
-!LineMorph methodsFor: 'private' stamp: 'KenD 9/27/2013 15:45'!
-rect
-
-	^ Rectangle origin: 0@0 corner: extent! !
-
-!LineMorph methodsFor: 'private' stamp: 'KenD 9/30/2013 15:29'!
-setPointSelectorsFromStartPoint: startPoint endPoint: endPoint
-	"Reset both my start and end points -- points in owner coordinates"
-
-	| origin corner rect |
-	origin  := ((startPoint x) min: (endPoint x)) @ ((startPoint y) min: (endPoint y)).
-	corner := ((startPoint x) max: (endPoint x)) @ ((startPoint y) max: (endPoint y)).
-	
-	rect := Rectangle origin: origin corner: corner. "Owner coordinates"
-
-	(startPoint = rect topLeft)        ifTrue: [ startPointSelector := #topLeft ].
-	(startPoint = rect topRight)       ifTrue: [ startPointSelector := #topRight ].
-	(startPoint = rect bottomLeft)  ifTrue: [ startPointSelector := #bottomLeft ].
-	(startPoint = rect bottomRight) ifTrue: [ startPointSelector := #bottomRight ].
-	
-	(endPoint = rect topLeft)         ifTrue: [ endPointSelector   := #topLeft ].
-	(endPoint = rect topRight)        ifTrue: [ endPointSelector   := #topRight ].
-	(endPoint = rect bottomLeft)   ifTrue: [ endPointSelector   := #bottomLeft ].
-	(endPoint = rect bottomRight)  ifTrue: [ endPointSelector   := #bottomRight ].
-
-	self basicExtent: rect extent.
-	self morphPosition: rect topLeft.
-	"@@DEBUG@@"
-"	('SetArgs: startPoint: ', startPoint asString, ' endPoint: ', endPoint asString) print.
-	('Result:    startPoint: ', self startPoint asString, ' endPoint: ', self endPoint asString) print.
-"! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/27/2013 15:32'!
-color
-
-	^ color! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/27/2013 16:35'!
-color: aColor
-
-	(aColor class = Color) ifFalse: [ Error signal: 'Not a color: ', aColor printString ].
-
-	color := aColor.
-	self redrawNeeded ! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 19:11'!
-endPoint
-	"Answer my endPoint in owner's coordinates"
-
-	^ (self rect perform: endPointSelector) + (self morphPosition) truncated ! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'jmv 9/29/2013 22:47'!
-endPoint: aPoint
-	"aPoint is in owner coordinates.  Set my startPoint in own coordinates"
-	
-	(aPoint isKindOf: Point) ifFalse: [ Error signal: 'Not a Point: ', aPoint printString ].
-		
-	self redrawNeeded.
-	self setPointSelectorsFromStartPoint: self startPoint 
-		  endPoint: aPoint.
-	self redrawNeeded.! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 18:55'!
-length
-
-	^ self startPoint dist: self endPoint! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 16:23'!
-lineWidth
-
-	^ lineWidth ! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
-lineWidth: newWidthInPixels
-
-	self redrawNeeded.
-	lineWidth := newWidthInPixels.
-	self redrawNeeded ! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 19:11'!
-startPoint
-	"Answer my startPoint in owner's coordinates"
-	
-	^ (self rect perform: startPointSelector) + (self morphPosition) truncated! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
-startPoint: aPoint
-	"aPoint is in owner coordinates.  Set my startPoint in own coordinates"
-	
-	(aPoint isKindOf: Point) ifFalse: [ Error signal: 'Not a Point: ', aPoint printString ].
-	
-	self redrawNeeded.
-	self setPointSelectorsFromStartPoint: aPoint 
-		 endPoint: self endPoint.
-	self redrawNeeded.! !
-
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
-startPoint: newStart endPoint: newEnd
-	"Reset my start and end points (Nota Bene: points in owner coordinates)"
-
-	(newStart isKindOf: Point)
-		ifFalse: [ Error signal: 'Not a Point: ', newStart printString ].
-	(newEnd isKindOf: Point)
-		ifFalse: [ Error signal: 'Not a Point: ', newEnd printString ].
-
-	self redrawNeeded.	
-	self setPointSelectorsFromStartPoint: newStart endPoint: newEnd.
-	self redrawNeeded.! !
-
-!LineMorph methodsFor: 'drawing' stamp: 'KenD 12/20/2021 11:48:06'!
-drawOn: aCanvas
-	"Draw self in own coordinates"
-	
-	| rect |
-	"Reduce to avoid external artifacts"
-	rect := self rect insetBy: 1.
-	aCanvas
-		line: (rect perform: startPointSelector)
-		to:  (rect perform: endPointSelector)
-		width: lineWidth
-		color: color! !
-
-!LineMorph methodsFor: 'initialization' stamp: 'KenD 9/27/2013 15:54'!
-initialize
-
-	super initialize.
-	extent := 100@180.
-	startPointSelector := #topLeft.
-	endPointSelector   := #bottomRight.
-	lineWidth := 6.
-	color := Color cyan.
-	! !
-
-!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 9/26/2013 15:39'!
-isOrthoRectangularMorph
-
-	^ false! !
-
-!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:02:40'!
-minimumExtent
-	"This returns the minimum extent that the morph may be shrunk to.
-	It is expressed in the morph own coordinates, like morphExtent."
-
-	^ `10@10`! !
-
-!LineMorph methodsFor: 'geometry' stamp: 'KenD 9/27/2013 16:29'!
-morphExtent
-	"Answer an extent which includes me, taking into account my lineWidth"
-
-	^ extent + lineWidth + lineWidth! !
-
-!LineMorph methodsFor: 'geometry' stamp: 'KenD 9/27/2013 16:28'!
-morphExtent: aPoint 
-	"Set the receiver's extent to value provided. Honor my minimumExtent."
-
-	| innerExtent |
-	innerExtent := aPoint - lineWidth - lineWidth.
-	extent = innerExtent ifTrue: [^ self ].
-	self redrawNeeded.
-	extent _ (innerExtent max: self minimumExtent).
-	self redrawNeeded! !
-
-!LineMorph methodsFor: 'geometry' stamp: 'KenD 2/28/2015 11:31'!
-morphExtentInWorld: newExtent
-	"world coordinates"
-	self flag: #jmvVer2.
-	self morphExtent: (self internalizeDistanceFromWorld: newExtent)! !
-
-!LineMorph methodsFor: 'initialize-release' stamp: 'KenD 9/30/2013 15:25'!
-startPoint: startPoint endPoint: endPoint width: numPixels color: aColor
-
-	lineWidth := numPixels.
-	color       := aColor.
-	self setPointSelectorsFromStartPoint: startPoint endPoint: endPoint.
-	! !
-
-!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 16:21'!
-initializedInstance
-	"Hand out a sample line"
-
-	^ self new startPoint: 20@30 endPoint: 120@160 width: 6 color: Color cyan
-! !
-
-!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 18:51'!
-startPoint: start endPoint: end
-
-	^ self new startPoint: start endPoint: end! !
-
-!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 16:21'!
-startPoint: start endPoint: end width: numPixels color: aColor
-
-	^ self new startPoint: start endPoint: end width: numPixels color: aColor! !
-
-!LineMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 11:41:49'!
-example1
-"
-  LineMorph example1 openInWorld 
-"
-	^ self 
-		startPoint: Display center 
-		endPoint: Display extent // (3/2) 
-		width: 8 
-		color: (Color lightGreen alpha: 0.8)! !
-
-!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 9/15/2016 16:25:30'!
-endPointMorph
-	
-	^ endPointMorph! !
-
-!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 12/12/2016 15:15:59'!
-endPointMorph: aMorph
-	
-	self endPointMorph ifNotNil: [ :pointer | self removeMorph: pointer ].
-	endPointMorph := aMorph.
-	self addMorphFront: aMorph.
-	self updateEndPoint.
-! !
-
-!PointerLineMorph methodsFor: 'initialization' stamp: 'KenD 9/15/2016 16:40:58'!
-initialize
-
-	super initialize.
-	self endPointMorph:
-		(BoxedMorph new 
-			:: color: Color yellow; 
-			borderColor: Color red; 
-			borderWidth: 3; 
-			morphExtent: 16@16; 
-			yourself).
-	self updateEndPoint.! !
-
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 9/15/2016 16:28:43'!
-morphExtent: newExtent
-
-	super morphExtent: newExtent.
-	self updateEndPoint.! !
-
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 12/12/2016 15:21:19'!
-setPointSelectorsFromStartPoint: startPoint endPoint: endPoint
-
-	super setPointSelectorsFromStartPoint: startPoint endPoint: endPoint.
-	self updateEndPoint ! !
-
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 12/19/2021 08:17:41'!
-submorphsMightProtrude
-	"My pointer morph sticks out"
-	
-	^ true! !
-
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 11/7/2021 14:13:48'!
-updateEndPoint
-	"Place my pointer morph at my endpoint, centered"
-	
-	| pointMorphCenter endPointOffset |
-	pointMorphCenter := (self endPointMorph morphExtentInOwner) / 2.
-	endPointOffset := (self rect perform: endPointSelector) + (self lineWidth / 2).
-	self endPointMorph morphPosition: endPointOffset - pointMorphCenter.! !
-
-!PointerLineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/15/2016 17:37:25'!
-initializedInstance
-
-	| newInst |
-	newInst  := super initializedInstance.
-	newInst updateEndPoint.
-	^newInst! !
-
-!PointerLineMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 11:40:31'!
-example1
-"
-  PointerLineMorph example1 openInWorld 
-"
-	^ super example1! !
 
 !ArrowMorph methodsFor: 'private' stamp: 'KenD 5/17/2023 10:09:43'!
 boxExtent
@@ -1867,6 +1646,26 @@ example1
 		lineColor: Color orange;
 		fillColor: (Color orange muchLighter alpha: 0.6)! !
 
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 11:57:54'!
+endPointIcon
+	"Answer a `sun`"
+	^ self fetch: #( '16x16' 'status' 'weather-clear'  )! !
+
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:05:19'!
+moveHorizIcon
+	"Answer horizontal move"
+	^ self fetch: #( '16x16' 'actions' 'go-last'  )! !
+
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:05:46'!
+moveVertIcon
+	"Answer vertical move"
+	^ self fetch: #( '16x16' 'actions' 'go-bottom'  )! !
+
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:27:26'!
+targetIcon
+	"Answer concentric circles"
+	^ self fetch: #( '16x16' 'emblems' 'emblem-important'  )! !
+
 !HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 1/29/2022 16:40:25'!
 addControlHandle: aPoint
 	"Add a handle for the control point and return the handle."
@@ -2082,26 +1881,6 @@ haloTargetIcon
 	^ self icons
 		at: #haloTargetIcon
 		ifAbsentPut: [ Theme current targetIcon ]! !
-
-!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 11:57:54'!
-endPointIcon
-	"Answer a `sun`"
-	^ self fetch: #( '16x16' 'status' 'weather-clear'  )! !
-
-!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:05:19'!
-moveHorizIcon
-	"Answer horizontal move"
-	^ self fetch: #( '16x16' 'actions' 'go-last'  )! !
-
-!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:05:46'!
-moveVertIcon
-	"Answer vertical move"
-	^ self fetch: #( '16x16' 'actions' 'go-bottom'  )! !
-
-!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:27:26'!
-targetIcon
-	"Answer concentric circles"
-	^ self fetch: #( '16x16' 'emblems' 'emblem-important'  )! !
 FrameMorph initialize!
 ArrowMorph initialize!
 BezierQuadraticMorph initialize!

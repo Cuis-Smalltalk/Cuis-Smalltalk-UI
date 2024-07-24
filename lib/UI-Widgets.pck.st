@@ -1,4 +1,4 @@
-'From Cuis7.1 [latest update: #6526] on 21 July 2024 at 11:31:52 pm'!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 10:45:39 am'!
 'Description Widgets for general use.'!
 !provides: 'UI-Widgets' 1 32!
 !requires: 'Cuis-Base' 60 5032 nil!

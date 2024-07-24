@@ -1,8 +1,18 @@
-'From Cuis6.3 [latest update: #6279] on 24 March 2024 at 12:08:20 pm'!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 10:45:12 am'!
 'Description '!
-!provides: 'UI-Core' 1 6!
+!provides: 'UI-Core' 1 9!
 SystemOrganization addCategory: #'UI-Core'!
 
+
+!classDefinition: #SignMorph category: #'UI-Core'!
+HoverHelpMorph subclass: #SignMorph
+	instanceVariableNames: 'object'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Core'!
+!classDefinition: 'SignMorph class' category: #'UI-Core'!
+SignMorph class
+	instanceVariableNames: ''!
 
 !classDefinition: #WindowTitleMorph category: #'UI-Core'!
 LayoutMorph subclass: #WindowTitleMorph
@@ -22,6 +32,16 @@ LabelMorph subclass: #SqueezeLabelMorph
 	category: 'UI-Core'!
 !classDefinition: 'SqueezeLabelMorph class' category: #'UI-Core'!
 SqueezeLabelMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #LineMorph category: #'UI-Core'!
+BoxedMorph subclass: #LineMorph
+	instanceVariableNames: 'startPointSelector endPointSelector lineWidth'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Core'!
+!classDefinition: 'LineMorph class' category: #'UI-Core'!
+LineMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #ListModel category: #'UI-Core'!
@@ -55,6 +75,24 @@ ValueHolder class
 	instanceVariableNames: ''!
 
 
+!SignMorph commentStamp: '<historical>' prior: 0!
+My instances are visual proxy's for objects which do not have a visual representation.
+
+This is helpful for drag-n-drop.
+
+A sign by its nature points to something else.  Use: 
+	SignMorph forObject: <object>
+
+ivar:
+   object - the object I point-to/denote/stand-for
+
+Examples:
+  (SignMorph forObject: Color green) openInHand.
+  (SignMorph forObject: 4.7) openInHand.
+  (SignMorph forObject: 'Ball of string') openInHand.
+  (EllipseMorph initializedInstance signMorphForMe) openInHand.
+!
+
 !WindowTitleMorph commentStamp: 'hlsf 4/14/2022 15:15:50' prior: 0!
 I hold and layout the title section of windows/panels.
 
@@ -75,12 +113,220 @@ I do the same but can be "pinched" to squeeze out letters.
 minChars specifies the minimum number of characters I should display.
 I display at least 3 characters.!
 
+!LineMorph commentStamp: '<historical>' prior: 0!
+I am a line from my start point to my end point.!
+
 !ListModel commentStamp: 'hlsf 4/20/2023 14:30:41' prior: 0!
 I am a model presenting a list of objects. 
 I am used with PluggableListOfMorph or any other pluggable widget handling list.!
 
 !ListMultiModel commentStamp: '<historical>' prior: 0!
 Several items from my collection can be selected.!
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/1/2022 14:31:22'!
+contents: aString
+
+	self contents: aString wrappedTo: nil! !
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 17:15'!
+name
+
+	^ contents ! !
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 16:58'!
+object
+
+	^ object! !
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/2/2022 07:22:44'!
+propertyValue
+
+	^ self object! !
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/2/2022 07:13:35'!
+propertyValue: newValue
+
+	object := newValue.
+	self contents: newValue printString! !
+
+!SignMorph methodsFor: 'delegation' stamp: 'KenD 10/5/2013 16:58'!
+doesNotUnderstand: aMessage
+	"Delegate operations to the object I represent and Answer the result."
+
+	^ aMessage sendTo: object.! !
+
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:03'!
+defaultBorderColor
+
+	^ DropColorMorph swatchBorderColor 
+! !
+
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:16'!
+defaultBorderWidth
+
+	^ 4
+! !
+
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:31'!
+forObject: anObject
+
+	| nameString |
+	
+	nameString := anObject name ifNotNil: [ :name | name ] ifNil: [ anObject printString ].
+	super initialize.  "Initialize extent as required by #redrawNeeded"
+	object := anObject.
+	self contents: nameString
+! !
+
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:41'!
+forObject: anObject withName: aString
+
+	super initialize.  "Initialize extent as required by #redrawNeeded"
+	object := anObject.
+	self contents: aString asString! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 14:50:43'!
+dropAction: aDropTargetMorph
+	"Find accepting MetaProperties of target morph
+	 and allow user to choose action."
+	
+	| metaPropsForMyValue myValue choices selection |
+	(Smalltalk includesKey: #MetaProperty) ifFalse: [^nil ].
+	
+	myValue := self valueWhenDropped.
+	metaPropsForMyValue := 
+		(MetaProperty metaPropsForMorph:  aDropTargetMorph targetMorph)
+			select: [ :metaProp | metaProp accepts: myValue ]. 
+	(metaPropsForMyValue size isZero) ifTrue: [^nil ].
+	
+	choices := OrderedCollection with: #Cancel.
+	choices addAll: (metaPropsForMyValue keys).
+	
+	"I am being carried by the hand.  Disappear and let user make a choice."
+	self delete.
+	selection := PopUpMenu withCaption: 'Choose setter' 
+						chooseFrom: choices.
+	(selection = 1) ifFalse: [ "1 -> Cancel" | propName setterSym metaProp |
+		propName := choices at: selection.
+		setterSym := (propName , ':') asSymbol.
+		metaProp := metaPropsForMyValue at: propName.
+		(metaProp isKindOf: MetaPropertyMultiSelect)
+			ifTrue: [myValue := metaProp encodeProc value: myValue].
+		aDropTargetMorph targetMorph 
+			perform: setterSym
+			with: myValue ;
+			triggerEvent: #propertyChanged.
+	].! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:35:29'!
+justDroppedInto: newOwnerMorph event: anEvent 
+	"This message is sent to a dropped morph after it has been dropped on -- and been accepted by -- a drop-sensitive morph"
+
+	self showAcceptAndDeleteSelf ! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:57:57'!
+rejectDropMorphEvent: dropEvent
+	"The receiver has been rejected.  Disappear"
+	
+"	Transcript newLine; show: 'SignMorph>>rejectDropMorphEvent'. "
+	self showReject; hide; delete.
+	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
+! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/6/2016 18:53:56'!
+valueWhenDropped
+
+	^ self object ! !
+
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:30:50'!
+wantsToBeDroppedInto: aMorph
+	"Who do I wish to be dropped onto?"
+
+	((Smalltalk includesKey: #MorphEditLens) "May not be present"
+	 and: [aMorph isKindOf: (Smalltalk at: #MorphEditLens)])
+		ifTrue: [ ^true ].
+		
+	(aMorph hasProperty: #dropAction)
+		ifTrue: [ ^true ].
+		
+	((Smalltalk includesKey: #VisualPropertyMenuItem)
+	 and: [ aMorph isKindOf: (Smalltalk at: #VisualPropertyMenuItem) ])
+		ifTrue: [ ^true ].
+				
+	^ false! !
+
+!SignMorph methodsFor: 'drawing' stamp: 'KenD 12/9/2022 09:36:16'!
+drawOn: aCanvas
+	"Add border to inherited"
+	| r |
+	r _ self morphLocalBounds.
+	"aCanvas roundRect: r color: self color radius: 4."
+	aCanvas frameAndFillRectangle: r fillColor: self color borderWidth: borderWidth borderColor: borderColor.
+	aCanvas
+		drawTextComposition: textComposition 
+		at: (r insetBy: 4) origin 
+		extent: textComposition usedExtent 
+		color: `Color black` 
+		selectionColor: (Theme current textHighlightFocused: false) avoidOverhang: true.
+! !
+
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
+contents: someString
+
+	Error signal: 'USE: ', self name asString, ' forObject: anObject'
+	! !
+
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:52'!
+forObject: anObject
+
+	^ self basicNew forObject: anObject ! !
+
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 17:28'!
+forObject: anObject withName: aString
+
+	^ self basicNew forObject: anObject withName: aString! !
+
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
+new
+
+	Error signal: 'USE: ', self name asString, ' forObject: anObject'
+	! !
+
+!SignMorph class methodsFor: 'examples' stamp: 'KenD 7/11/2024 13:29:15'!
+example1
+" self example1 openInWorld "
+	^ SignMorph forObject: (Preferences at: #standardListFont)! !
+
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:54:49'!
+example2
+" self example2 openInWorld "
+	^ SignMorph forObject: #giveMeASign! !
+
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:55:49'!
+example3
+" self example3 openInWorld "
+	| rect |
+	rect _ Rectangle origin: 1@2 corner: 2@3.
+	^ SignMorph 
+		forObject: rect 
+		withName: 'aRectangle(' , rect hash asString, ')' ! !
+
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:56:22'!
+example4
+" self example4 openInWorld "
+	| rect |
+	rect _ Rectangle origin: 1@2 corner: 2@3.
+	^ SignMorph forObject: rect! !
+
+!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:56:49'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/5/2013 16:55'!
+includeInNewMorphMenu 
+
+	^ false! !
 
 !WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 4/24/2015 08:01'!
 buttonNamesShown
@@ -578,6 +824,215 @@ example1
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
+
+!LineMorph methodsFor: 'private' stamp: 'KenD 9/27/2013 15:36'!
+basicExtent: aPoint
+
+	extent := aPoint! !
+
+!LineMorph methodsFor: 'private' stamp: 'KenD 9/27/2013 15:45'!
+rect
+
+	^ Rectangle origin: 0@0 corner: extent! !
+
+!LineMorph methodsFor: 'private' stamp: 'KenD 9/30/2013 15:29'!
+setPointSelectorsFromStartPoint: startPoint endPoint: endPoint
+	"Reset both my start and end points -- points in owner coordinates"
+
+	| origin corner rect |
+	origin  := ((startPoint x) min: (endPoint x)) @ ((startPoint y) min: (endPoint y)).
+	corner := ((startPoint x) max: (endPoint x)) @ ((startPoint y) max: (endPoint y)).
+	
+	rect := Rectangle origin: origin corner: corner. "Owner coordinates"
+
+	(startPoint = rect topLeft)        ifTrue: [ startPointSelector := #topLeft ].
+	(startPoint = rect topRight)       ifTrue: [ startPointSelector := #topRight ].
+	(startPoint = rect bottomLeft)  ifTrue: [ startPointSelector := #bottomLeft ].
+	(startPoint = rect bottomRight) ifTrue: [ startPointSelector := #bottomRight ].
+	
+	(endPoint = rect topLeft)         ifTrue: [ endPointSelector   := #topLeft ].
+	(endPoint = rect topRight)        ifTrue: [ endPointSelector   := #topRight ].
+	(endPoint = rect bottomLeft)   ifTrue: [ endPointSelector   := #bottomLeft ].
+	(endPoint = rect bottomRight)  ifTrue: [ endPointSelector   := #bottomRight ].
+
+	self basicExtent: rect extent.
+	self morphPosition: rect topLeft.
+	"@@DEBUG@@"
+"	('SetArgs: startPoint: ', startPoint asString, ' endPoint: ', endPoint asString) print.
+	('Result:    startPoint: ', self startPoint asString, ' endPoint: ', self endPoint asString) print.
+"! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/27/2013 15:32'!
+color
+
+	^ color! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/27/2013 16:35'!
+color: aColor
+
+	(aColor class = Color) ifFalse: [ Error signal: 'Not a color: ', aColor printString ].
+
+	color := aColor.
+	self redrawNeeded ! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 19:11'!
+endPoint
+	"Answer my endPoint in owner's coordinates"
+
+	^ (self rect perform: endPointSelector) + (self morphPosition) truncated ! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'jmv 9/29/2013 22:47'!
+endPoint: aPoint
+	"aPoint is in owner coordinates.  Set my startPoint in own coordinates"
+	
+	(aPoint isKindOf: Point) ifFalse: [ Error signal: 'Not a Point: ', aPoint printString ].
+		
+	self redrawNeeded.
+	self setPointSelectorsFromStartPoint: self startPoint 
+		  endPoint: aPoint.
+	self redrawNeeded.! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 18:55'!
+length
+
+	^ self startPoint dist: self endPoint! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 16:23'!
+lineWidth
+
+	^ lineWidth ! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
+lineWidth: newWidthInPixels
+
+	self redrawNeeded.
+	lineWidth := newWidthInPixels.
+	self redrawNeeded ! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 19:11'!
+startPoint
+	"Answer my startPoint in owner's coordinates"
+	
+	^ (self rect perform: startPointSelector) + (self morphPosition) truncated! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
+startPoint: aPoint
+	"aPoint is in owner coordinates.  Set my startPoint in own coordinates"
+	
+	(aPoint isKindOf: Point) ifFalse: [ Error signal: 'Not a Point: ', aPoint printString ].
+	
+	self redrawNeeded.
+	self setPointSelectorsFromStartPoint: aPoint 
+		 endPoint: self endPoint.
+	self redrawNeeded.! !
+
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
+startPoint: newStart endPoint: newEnd
+	"Reset my start and end points (Nota Bene: points in owner coordinates)"
+
+	(newStart isKindOf: Point)
+		ifFalse: [ Error signal: 'Not a Point: ', newStart printString ].
+	(newEnd isKindOf: Point)
+		ifFalse: [ Error signal: 'Not a Point: ', newEnd printString ].
+
+	self redrawNeeded.	
+	self setPointSelectorsFromStartPoint: newStart endPoint: newEnd.
+	self redrawNeeded.! !
+
+!LineMorph methodsFor: 'drawing' stamp: 'KenD 12/20/2021 11:48:06'!
+drawOn: aCanvas
+	"Draw self in own coordinates"
+	
+	| rect |
+	"Reduce to avoid external artifacts"
+	rect := self rect insetBy: 1.
+	aCanvas
+		line: (rect perform: startPointSelector)
+		to:  (rect perform: endPointSelector)
+		width: lineWidth
+		color: color! !
+
+!LineMorph methodsFor: 'initialization' stamp: 'KenD 9/27/2013 15:54'!
+initialize
+
+	super initialize.
+	extent := 100@180.
+	startPointSelector := #topLeft.
+	endPointSelector   := #bottomRight.
+	lineWidth := 6.
+	color := Color cyan.
+	! !
+
+!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 9/26/2013 15:39'!
+isOrthoRectangularMorph
+
+	^ false! !
+
+!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:02:40'!
+minimumExtent
+	"This returns the minimum extent that the morph may be shrunk to.
+	It is expressed in the morph own coordinates, like morphExtent."
+
+	^ `10@10`! !
+
+!LineMorph methodsFor: 'geometry' stamp: 'KenD 9/27/2013 16:29'!
+morphExtent
+	"Answer an extent which includes me, taking into account my lineWidth"
+
+	^ extent + lineWidth + lineWidth! !
+
+!LineMorph methodsFor: 'geometry' stamp: 'KenD 9/27/2013 16:28'!
+morphExtent: aPoint 
+	"Set the receiver's extent to value provided. Honor my minimumExtent."
+
+	| innerExtent |
+	innerExtent := aPoint - lineWidth - lineWidth.
+	extent = innerExtent ifTrue: [^ self ].
+	self redrawNeeded.
+	extent _ (innerExtent max: self minimumExtent).
+	self redrawNeeded! !
+
+!LineMorph methodsFor: 'geometry' stamp: 'KenD 2/28/2015 11:31'!
+morphExtentInWorld: newExtent
+	"world coordinates"
+	self flag: #jmvVer2.
+	self morphExtent: (self internalizeDistanceFromWorld: newExtent)! !
+
+!LineMorph methodsFor: 'initialize-release' stamp: 'KenD 9/30/2013 15:25'!
+startPoint: startPoint endPoint: endPoint width: numPixels color: aColor
+
+	lineWidth := numPixels.
+	color       := aColor.
+	self setPointSelectorsFromStartPoint: startPoint endPoint: endPoint.
+	! !
+
+!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 16:21'!
+initializedInstance
+	"Hand out a sample line"
+
+	^ self new startPoint: 20@30 endPoint: 120@160 width: 6 color: Color cyan
+! !
+
+!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 18:51'!
+startPoint: start endPoint: end
+
+	^ self new startPoint: start endPoint: end! !
+
+!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 16:21'!
+startPoint: start endPoint: end width: numPixels color: aColor
+
+	^ self new startPoint: start endPoint: end width: numPixels color: aColor! !
+
+!LineMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 11:41:49'!
+example1
+"
+  LineMorph example1 openInWorld 
+"
+	^ self 
+		startPoint: Display center 
+		endPoint: Display extent // (3/2) 
+		width: 8 
+		color: (Color lightGreen alpha: 0.8)! !
 
 !ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:30:19'!
 list
