@@ -1,8 +1,7 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 10:45:18 am'!
-'Description I supply Morphs which are used "in transit" between a Drag and a Drop.'!
-!provides: 'UI-DragAndDrop' 1 22!
-!requires: 'Cuis-Base' 60 5588 nil!
-!requires: 'UI-Core' 1 9 nil!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:28:06 pm'!
+'Description '!
+!provides: 'UI-DragAndDrop' 1 0!
+!requires: 'UI-Core' 1 12 nil!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
 
 
@@ -51,7 +50,7 @@ See method #dropAction:
 
 Note: To click-select a color, see ClickColorMorph!
 
-!FontMorph commentStamp: 'jmv 6/11/2020 16:48:37' prior: 0!
+!FontMorph commentStamp: '<historical>' prior: 0!
 My instances display 'AbBbCc $123' using my specified font an emphysis.
 
 I am used to display a font, e.g. in a FontPallet.
@@ -60,6 +59,27 @@ I am used to display a font, e.g. in a FontPallet.
 (FontMorph font: FontFamily defaultFamilyAndPointSize) openInHand.
 
 ImagePallet systemFonts.!
+
+!ClickColorMorph methodsFor: 'closing' stamp: 'KenD 2/29/2020 13:43:18'!
+closeContainingPanel: nextOwner
+	"After user selection, I need to close my containing Panel; chain up to find it"
+
+	(nextOwner is: #Panel) 
+		ifTrue: [ nextOwner closeButtonClicked ] 
+		ifFalse: [
+			nextOwner 
+				ifNil: [ ^self ] 
+				ifNotNil: [ self closeContainingPanel: nextOwner owner]
+		]! !
+
+!ClickColorMorph methodsFor: 'initialization' stamp: 'KenD 2/29/2020 09:17:41'!
+fromColor: aColor forTarget: aMorph
+
+	colorTargetMorph := aMorph. "immutable"
+	self 
+		color: aColor;
+		image: (self color icon magnifyTo: 32@32)
+	! !
 
 !ClickColorMorph methodsFor: 'event handling testing' stamp: 'KenD 2/29/2020 09:22:26'!
 handlesMouseDown: aMouseButtonEvent
@@ -102,27 +122,6 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	colorTargetMorph redrawNeeded.
 	self closeContainingPanel: self owner.
 ! !
-
-!ClickColorMorph methodsFor: 'initialization' stamp: 'KenD 2/29/2020 09:17:41'!
-fromColor: aColor forTarget: aMorph
-
-	colorTargetMorph := aMorph. "immutable"
-	self 
-		color: aColor;
-		image: (self color icon magnifyTo: 32@32)
-	! !
-
-!ClickColorMorph methodsFor: 'closing' stamp: 'KenD 2/29/2020 13:43:18'!
-closeContainingPanel: nextOwner
-	"After user selection, I need to close my containing Panel; chain up to find it"
-
-	(nextOwner is: #Panel) 
-		ifTrue: [ nextOwner closeButtonClicked ] 
-		ifFalse: [
-			nextOwner 
-				ifNil: [ ^self ] 
-				ifNotNil: [ self closeContainingPanel: nextOwner owner]
-		]! !
 
 !ClickColorMorph class methodsFor: 'instance creation' stamp: 'KenD 2/29/2020 09:15:05'!
 fromColor: aColor forTarget: aMorph
@@ -247,13 +246,11 @@ initialize
 		borderWidth: 4;
 		borderColor: self class swatchBorderColor ! !
 
-!DropColorMorph class methodsFor: 'instance creation' stamp: 'KenD 7/24/2015 11:20'!
-fromColor: aColor
-"
-	(DropColorMorph fromColor: Color teal) openInHand.
-"
-
-	^ self new fromColor: aColor ! !
+!DropColorMorph class methodsFor: 'accessing' stamp: 'KenD 3/11/2022 15:27:33'!
+swatchBorderColor
+	"Match with Visual Menu Item text color"
+	
+	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
 
 !DropColorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:06'!
 includeInNewMorphMenu
@@ -261,56 +258,13 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!DropColorMorph class methodsFor: 'accessing' stamp: 'KenD 3/11/2022 15:27:33'!
-swatchBorderColor
-	"Match with Visual Menu Item text color"
-	
-	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
+!DropColorMorph class methodsFor: 'instance creation' stamp: 'KenD 7/24/2015 11:20'!
+fromColor: aColor
+"
+	(DropColorMorph fromColor: Color teal) openInHand.
+"
 
-!FontMorph methodsFor: 'geometry' stamp: 'KenD 11/7/2021 14:16:20'!
-adjustExtent 
-	"Some aspect of my font has changed. Don't shrink beyond minimum"
-
-	self morphExtent: (self morphExtentInOwner min: self minimumExtent)! !
-
-!FontMorph methodsFor: 'geometry' stamp: 'KenD 3/28/2020 08:18:42'!
-labelMorphOffset
-	"LabelMorph is offset by combinedBorder"
-	| combinedBorder |
-	combinedBorder := self labelMorph extentBorder 
-							+ self borderWidth
-							+ (self font pointSize / 2).
-	
-	^ (combinedBorder)@(combinedBorder)! !
-
-!FontMorph methodsFor: 'initialization' stamp: 'KenD 11/29/2016 09:54:03'!
-defaultColor
-	^ super defaultColor muchLighter ! !
-
-!FontMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:32:19'!
-font: aFont emphasis: emphasisCode
-
-	self 
-		font: aFont emphasis: emphasisCode string: self class defaultString;
-		borderWidth: 4;
-		borderColor: DropColorMorph swatchBorderColor ! !
-
-!FontMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:33:04'!
-font: aFont emphasis: emphasisCode string: aString
-	"I am a UI Morph showing a LabelMorph.
-	Make it so."
-	
-	labelMorph := LabelMorph new
-				initWithContents: aString 
-				font: aFont 
-				emphasis: emphasisCode.
-	self 
-		morphExtent: self minimumExtent;
-		addMorph: labelMorph;
-		borderWidth: 4;
-		borderColor: DropColorMorph swatchBorderColor.
-		
-	labelMorph morphPosition: self labelMorphOffset.! !
+	^ self new fromColor: aColor ! !
 
 !FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:53:07'!
 emphasis
@@ -364,6 +318,22 @@ string: aString
 
 	self labelMorph contents: aString.
 	self adjustExtent ! !
+
+!FontMorph methodsFor: 'geometry' stamp: 'KenD 11/7/2021 14:16:20'!
+adjustExtent 
+	"Some aspect of my font has changed. Don't shrink beyond minimum"
+
+	self morphExtent: (self morphExtentInOwner min: self minimumExtent)! !
+
+!FontMorph methodsFor: 'geometry' stamp: 'KenD 3/28/2020 08:18:42'!
+labelMorphOffset
+	"LabelMorph is offset by combinedBorder"
+	| combinedBorder |
+	combinedBorder := self labelMorph extentBorder 
+							+ self borderWidth
+							+ (self font pointSize / 2).
+	
+	^ (combinedBorder)@(combinedBorder)! !
 
 !FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:50:39'!
 dropAction: aDropTargetMorph
@@ -426,6 +396,50 @@ wantsToBeDroppedInto: aMorph
 				
 	^ false! !
 
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 11/29/2016 09:54:03'!
+defaultColor
+	^ super defaultColor muchLighter ! !
+
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:32:19'!
+font: aFont emphasis: emphasisCode
+
+	self 
+		font: aFont emphasis: emphasisCode string: self class defaultString;
+		borderWidth: 4;
+		borderColor: DropColorMorph swatchBorderColor ! !
+
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:33:04'!
+font: aFont emphasis: emphasisCode string: aString
+	"I am a UI Morph showing a LabelMorph.
+	Make it so."
+	
+	labelMorph := LabelMorph new
+				initWithContents: aString 
+				font: aFont 
+				emphasis: emphasisCode.
+	self 
+		morphExtent: self minimumExtent;
+		addMorph: labelMorph;
+		borderWidth: 4;
+		borderColor: DropColorMorph swatchBorderColor.
+		
+	labelMorph morphPosition: self labelMorphOffset.! !
+
+!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 10:08:53'!
+font: aFont
+
+	^ self new font: aFont emphasis: self defaultEmphasis string: self defaultString! !
+
+!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 10:08:56'!
+font: aFont emphasis: emphasisCode
+
+	^ self new font: aFont emphasis: emphasisCode string: self defaultString ! !
+
+!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 09:21:59'!
+font: aFont emphasis: emphasisCode string: aString
+
+	^ self new font: aFont emphasis: emphasisCode string: aString! !
+
 !FontMorph class methodsFor: 'defaults' stamp: 'KenD 11/29/2016 09:25:45'!
 defaultEmphasis
 	"Answer the emphasis code  to display in the typical case"
@@ -442,21 +456,6 @@ defaultString
 initializedInstance
 
 	^ self font: FontFamily defaultFamilyAndPointSize! !
-
-!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 10:08:53'!
-font: aFont
-
-	^ self new font: aFont emphasis: self defaultEmphasis string: self defaultString! !
-
-!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 10:08:56'!
-font: aFont emphasis: emphasisCode
-
-	^ self new font: aFont emphasis: emphasisCode string: self defaultString ! !
-
-!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 09:21:59'!
-font: aFont emphasis: emphasisCode string: aString
-
-	^ self new font: aFont emphasis: emphasisCode string: aString! !
 
 !FontMorph class methodsFor: 'examples' stamp: 'KenD 1/1/2022 08:06:28'!
 example1
@@ -484,82 +483,3 @@ example2
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
-
-!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/3/2022 11:57:28'!
-showAccept
-	"I have just been dropped.
-	Draw and erase a green box ."
-
-	| hilightMorph mPos mExtent |
-	mPos     := self morphPositionInWorld.
-	mExtent := self morphExtentInOwner.
-	hilightMorph := FrameMorph new.
-	hilightMorph   borderWidth: 6;
-					borderColor: Color green;
-					morphExtent: mExtent + 6;
-					openInWorld;
-					morphPosition: mPos - (6@6). "surround aMorph"
-
-	hilightMorph addAlarm: #delete after: 400.! !
-
-!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/3/2022 11:56:45'!
-showAcceptAndDeleteSelf
-	"I have just been dropped.
-	Draw and erase a green box and delete self."
-
-	| hilightMorph mPos mExtent |
-	mPos     := self morphPositionInWorld.
-	mExtent := self morphExtentInOwner.
-	hilightMorph := FrameMorph new.
-	hilightMorph   borderWidth: 6;
-					borderColor: Color green;
-					morphExtent: mExtent + 6;
-					openInWorld;
-					morphPosition: mPos - (6@6). "surround aMorph"
-
-	self               addAlarm: #delete after: 200.
-	hilightMorph addAlarm: #delete after: 400.! !
-
-!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/3/2022 11:39:25'!
-showReject
-	"Draw and erase a red X"
-
-	| leftStroke rightStroke mPos mExtent |
-	mPos := self morphPositionInWorld.
-	mExtent := self morphExtentInOwner.
-	"Show a red X"
-	leftStroke   := LineMorph 
-						startPoint: mPos - (10@10) 
-						endPoint: (mPos + mExtent + (10@10)) 
-						width: 6
-						color: Color red.
-	rightStroke := LineMorph 
-						startPoint: mPos + (-10 @ (mExtent y + 10))
-						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
-						width: 6
-						color: Color red.
-	leftStroke   openInWorld.
-	rightStroke openInWorld.
-	
-	"NB: Keep Morph when rejected"
-	leftStroke   addAlarm: #delete after: 400.	
-	rightStroke addAlarm: #delete after: 400.
-	! !
-
-!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 1/1/2022 08:04:09'!
-signMorphForMe
-
-	^ SignMorph forObject: self! !
-
-!Morph methodsFor: '*ui-draganddrop' stamp: 'KenD 3/4/2022 12:56:00'!
-wantsDroppedMorph: aMorph event: evt
-	"Return true if the receiver wishes to accept the given morph, 
-	 which is being dropped by a hand in response to the given event. 
-	Note that for a successful drop operation both parties need to agree. 
-	The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self.
-	 Individual Morpks may override by setting the corresponding property
-	 to an appropriate two argument closure."
-
-	^self valueOfProperty: #wantsDroppedMorph:event:
-		 ifPresentDo: [ :wantsMorphEvt | wantsMorphEvt value: aMorph value: evt ]
-		 ifAbsent: [ true ]! !

@@ -1,6 +1,7 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 11:56:32 am'!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:26:50 pm'!
 'Description '!
-!provides: 'UI-Core' 1 11!
+!provides: 'UI-Core' 1 12!
+!requires: 'Cuis-Base' 71 6526 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
 
@@ -1325,6 +1326,24 @@ showAccept
 					openInWorld;
 					morphPosition: mPos - (6@6). "surround aMorph"
 
+	hilightMorph addAlarm: #delete after: 400.! !
+
+!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 12:25:29'!
+showAcceptAndDeleteSelf
+	"I have just been dropped.
+	Draw and erase a green box and delete self."
+
+	| hilightMorph mPos mExtent |
+	mPos     := self morphPositionInWorld.
+	mExtent := self morphExtentInOwner.
+	hilightMorph := FrameMorph new.
+	hilightMorph   borderWidth: 6;
+					borderColor: Color green;
+					morphExtent: mExtent + 6;
+					openInWorld;
+					morphPosition: mPos - (6@6). "surround aMorph"
+
+	self               addAlarm: #delete after: 200.
 	hilightMorph addAlarm: #delete after: 400.! !
 
 !Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:48:11'!
