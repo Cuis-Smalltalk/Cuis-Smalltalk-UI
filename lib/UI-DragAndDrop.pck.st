@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:28:06 pm'!
+'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:37:32 pm'!
 'Description '!
-!provides: 'UI-DragAndDrop' 1 0!
+!provides: 'UI-DragAndDrop' 1 1!
 !requires: 'UI-Core' 1 12 nil!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
 
@@ -123,10 +123,10 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	self closeContainingPanel: self owner.
 ! !
 
-!ClickColorMorph class methodsFor: 'instance creation' stamp: 'KenD 2/29/2020 09:15:05'!
+!ClickColorMorph class methodsFor: 'instance creation' stamp: 'KenD 7/24/2024 12:34:42'!
 fromColor: aColor forTarget: aMorph
 "
-	(DropColorMorph fromColor: Color teal) openInHand.
+	(DropColorMorph fromColor: Color green) openInHand.
 "
 
 	^ self new fromColor: aColor forTarget: aMorph! !
@@ -258,10 +258,10 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!DropColorMorph class methodsFor: 'instance creation' stamp: 'KenD 7/24/2015 11:20'!
+!DropColorMorph class methodsFor: 'instance creation' stamp: 'KenD 7/24/2024 12:34:30'!
 fromColor: aColor
 "
-	(DropColorMorph fromColor: Color teal) openInHand.
+	(DropColorMorph fromColor: Color green) openInHand.
 "
 
 	^ self new fromColor: aColor ! !
