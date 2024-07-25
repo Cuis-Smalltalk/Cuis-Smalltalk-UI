@@ -1,6 +1,6 @@
-'From Cuis6.3 [latest update: #6358] on 15 May 2024 at 3:15:07 pm'!
+'From Cuis7.1 [latest update: #6535] on 25 July 2024 at 4:37:40 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 22!
+!provides: 'UI-Color-Panel' 1 23!
 !requires: 'UI-DragAndDrop' 1 0 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -31,16 +31,6 @@ ImageMorph subclass: #ColorSliderMorph
 ColorSliderMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #ColorEditorPanel category: #'UI-Color-Panel'!
-DialogPanel subclass: #ColorEditorPanel
-	instanceVariableNames: 'alphaFrame alphaSlider alphaSwatch colorPane colorSwatch sliderColumn closeColorSwatch closeColorLabel closestRGB radioSelection rgbRadio hsvRadio closestColordictColor rgbString'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Color-Panel'!
-!classDefinition: 'ColorEditorPanel class' category: #'UI-Color-Panel'!
-ColorEditorPanel class
-	instanceVariableNames: ''!
-
 !classDefinition: #ColorPalette category: #'UI-Color-Panel'!
 ImagePickerPanel subclass: #ColorPalette
 	instanceVariableNames: ''
@@ -49,6 +39,16 @@ ImagePickerPanel subclass: #ColorPalette
 	category: 'UI-Color-Panel'!
 !classDefinition: 'ColorPalette class' category: #'UI-Color-Panel'!
 ColorPalette class
+	instanceVariableNames: ''!
+
+!classDefinition: #ColorEditorPanel category: #'UI-Color-Panel'!
+DialogPanel subclass: #ColorEditorPanel
+	instanceVariableNames: 'alphaFrame alphaSlider alphaSwatch colorPane colorSwatch sliderColumn closeColorSwatch closeColorLabel closestRGB radioSelection rgbRadio hsvRadio closestColordictColor rgbString'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Color-Panel'!
+!classDefinition: 'ColorEditorPanel class' category: #'UI-Color-Panel'!
+ColorEditorPanel class
 	instanceVariableNames: ''!
 
 !classDefinition: #ColorEditorModel category: #'UI-Color-Panel'!
@@ -98,15 +98,15 @@ The associated ColorPane has a Focus Color (x,y) at constant z.
 This pane shows the range of color of z at the focus point -- constant (x,y)
 !
 
+!ColorPalette commentStamp: '<historical>' prior: 0!
+I am just a way to get a Color palette.  See my class side.!
+
 !ColorEditorPanel commentStamp: '<historical>' prior: 0!
 I present the ColorEditor UI
 
 Usage: 
 	ColorEditorPanel open.
 	ColorEditorPanel openWithColor: Color forestGreen.!
-
-!ColorPalette commentStamp: '<historical>' prior: 0!
-I am just a way to get a Color palette.  See my class side.!
 
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorEditor.!
@@ -836,6 +836,69 @@ includeInNewMorphMenu
 	
 	^ false! !
 
+!ColorPalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 14:15:59'!
+initializedInstance
+
+	^ ImagePickerPanel namedColors! !
+
+!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:08'!
+categoryInNewMorphMenu
+
+	^ 'User Interface'! !
+
+!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/24/2013 17:55'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
+
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
+useCSS3ColorDict
+"
+	self useCSS3ColorDict.
+"
+	Feature require: 'CSS3-NamedColors'.
+	Color setColorNamesDict: Color css3ColorDictionary.! !
+
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 7/24/2015 11:33'!
+useCrayonColorDict
+"
+	ColorPalette useCrayonColorDict.
+"
+
+	Feature require: 'Crayon-NamedColors'.
+	Color setColorNamesDict: Color crayonColorDictionary.! !
+
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
+useNBSISCCColorDict
+"
+	self useNBSISCCColorDict.
+"
+	Feature require: 'NBSISCC-NamedColors'.
+	Color setColorNamesDict: Color nbsisccColorDictionary.! !
+
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
+useSmallColorDict
+
+	Color setColorNamesDict: Color defaultColorNamesDictionary.! !
+
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
+useXKCDColorDict
+"
+	self useXKCDColorDict.
+"
+
+	Feature require: 'XKCD-NamedColors'.
+	Color setColorNamesDict: Color xkcdColorDictionary.! !
+
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:59'!
+useXKCDFirst48ColorDict
+"
+	self useXKCDFirst48ColorDict.
+"
+
+	Color setColorNamesDict: Color xkcdFirst48ColorNamesDictionary.! !
+
 !ColorEditorPanel methodsFor: 'private' stamp: 'KenD 11/26/2013 21:27'!
 colorPane
 
@@ -957,7 +1020,7 @@ buildColorPaneColumn
 	
 	^ column! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 5/28/2022 11:37:50'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 16:26:40'!
 buildMorphicWindow
 " Our layout is a bit different to a traditional dialog, so we override as 
 we don't need button area at the bottom and main panel is a row of morphs." 
@@ -967,6 +1030,7 @@ we don't need button area at the bottom and main panel is a row of morphs."
 		addMorph: self buildColorPaneColumn;
 		addMorph: self buildSliderColumn;
 		addMorph: self buildRadioButtonColumn;
+		color: Theme current textPane;
 		morphExtent: self minimumExtent.
 	self model 
 		when: #colorChanged 
@@ -1049,7 +1113,7 @@ buildSliderColumn
 
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/11/2022 13:17:54'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 16:22:31'!
 buildSwatchLayout
 	"Display swatch of current color and closest named color"
 
@@ -1077,6 +1141,7 @@ Closest Web Color' .
 	labelColumn        := LayoutMorph newColumn.
 	closeColorLabel   := LabelMorph new contents: ''.
 	labelColumn
+		color: Color transparent;
 		axisEdgeWeight: #center;
 		separation: 3;
 		addMorph: closeColorFrame layoutSpec: (LayoutSpec keepMorphExtent);
@@ -1360,69 +1425,6 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
-
-!ColorPalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 14:15:59'!
-initializedInstance
-
-	^ ImagePickerPanel namedColors! !
-
-!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:08'!
-categoryInNewMorphMenu
-
-	^ 'User Interface'! !
-
-!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/24/2013 17:55'!
-includeInNewMorphMenu
-	"Return true for all classes that can be instantiated from the menu"
-	
-	^ true! !
-
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
-useCSS3ColorDict
-"
-	self useCSS3ColorDict.
-"
-	Feature require: 'CSS3-NamedColors'.
-	Color setColorNamesDict: Color css3ColorDictionary.! !
-
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 7/24/2015 11:33'!
-useCrayonColorDict
-"
-	ColorPalette useCrayonColorDict.
-"
-
-	Feature require: 'Crayon-NamedColors'.
-	Color setColorNamesDict: Color crayonColorDictionary.! !
-
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
-useNBSISCCColorDict
-"
-	self useNBSISCCColorDict.
-"
-	Feature require: 'NBSISCC-NamedColors'.
-	Color setColorNamesDict: Color nbsisccColorDictionary.! !
-
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
-useSmallColorDict
-
-	Color setColorNamesDict: Color defaultColorNamesDictionary.! !
-
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
-useXKCDColorDict
-"
-	self useXKCDColorDict.
-"
-
-	Feature require: 'XKCD-NamedColors'.
-	Color setColorNamesDict: Color xkcdColorDictionary.! !
-
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:59'!
-useXKCDFirst48ColorDict
-"
-	self useXKCDFirst48ColorDict.
-"
-
-	Color setColorNamesDict: Color xkcdFirst48ColorNamesDictionary.! !
 
 !ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 2/6/2022 14:25:45'!
 baseColor
