@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6526] on 23 July 2024 at 6:22:37 pm'!
+'From Cuis7.1 [latest update: #6535] on 25 July 2024 at 4:09:40 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 102!
+!provides: 'UI-Panel' 1 103!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1172,16 +1172,17 @@ editModel: anObject
 
 	editModel := anObject! !
 
-!EditPanel methodsFor: 'GUI building' stamp: 'hlsf 7/3/2022 13:07:19'!
+!EditPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 16:05:11'!
 newButtonArea
 	"Answer a LayoutMorph with Update and Cancel buttons"
 	
-	buttonArea _ LayoutMorph newRow 
+	buttonArea := LayoutMorph newRow 
+		color: Color transparent;
 		separation: 8@0;
 		addMorph: (PluggableButtonMorph 
 				model: self 
 				action:  #updateMasterFromCopy
-				label: 'Update')
+				label: 'Update'  :: color: Theme current acceptButton)
 			layoutSpec: (LayoutSpec 
 							proportionalWidth: 0.3 
 							proportionalHeight:  1 
@@ -1189,7 +1190,7 @@ newButtonArea
 		addMorph: (PluggableButtonMorph 
 				model: self 
 				action:  #cancelAndForgetEverything
-				label: 'Cancel')
+				label: 'Cancel' :: color: Theme current cancelButton )
 			layoutSpec: (LayoutSpec 
 							proportionalWidth: 0.3 
 							proportionalHeight:  1 
@@ -1197,7 +1198,7 @@ newButtonArea
 		addMorph: (PluggableButtonMorph 
 				model: self 
 				action:  #showHaloButtonClicked
-				label: 'Show Halo')
+				label: 'Show Halo' :: color: Theme current defaultWindowColor)
 			layoutSpec: (LayoutSpec 
 							proportionalWidth: 0.3 
 							proportionalHeight:  1 
@@ -1206,8 +1207,8 @@ newButtonArea
 							proportionalWidth: 1 
 							fixedHeight: (2 * (Preferences at: #windowTitleFont) lineSpacing)
 							offAxisEdgeWeight: #center);
-		axisEdgeWeight: #center;
-		color: self widgetsColor.
+		axisEdgeWeight: #center";
+		color: self widgetsColor".
 	^ buttonArea! !
 
 !PluggableDialogPanel methodsFor: 'GUI building' stamp: 'KenD 7/23/2024 18:20:10'!

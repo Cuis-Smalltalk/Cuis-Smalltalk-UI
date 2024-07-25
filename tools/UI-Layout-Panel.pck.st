@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6526] on 23 July 2024 at 3:04:43 pm'!
+'From Cuis7.1 [latest update: #6535] on 25 July 2024 at 4:09:33 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 14!
+!provides: 'UI-Layout-Panel' 1 15!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 1 nil!
@@ -51,28 +51,30 @@ buildMorphicWindow
 	self titleMorph showButtonsNamed: #( close pin collapse showHalo ).
 ! !
 
-!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'hlsf 12/30/2021 10:30:09'!
+!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 15:54:14'!
 newPane
 	| controlArea leftCol rightCol  |	
 		
-	directionArea _ self newDirectionArea.
-	paddingArea _ self newPaddingArea.
-	separationArea _ self newSeparationtionArea.
-	colorArea _ self newColorArea.
+	directionArea := self newDirectionArea.
+	paddingArea := self newPaddingArea.
+	separationArea := self newSeparationtionArea.
+	colorArea := self newColorArea.
 
-	controlArea  _ LayoutMorph newRow.  "A row of two columns"
-	controlArea separation: 2.
+	controlArea  := LayoutMorph newRow.  "A row of two columns"
+	controlArea separation: 2; color: Color transparent.
 		
-	leftCol _ LayoutMorph newColumn.
+	leftCol := LayoutMorph newColumn.
 	leftCol 
 		separation: self defaultSeparation;
 		axisEdgeWeight: #columnTop;
 		addMorph: directionArea;
-		addMorph: paddingArea.
+		addMorph: paddingArea;
+		color: Color transparent.
 	controlArea addMorph: leftCol.
 
-	rightCol _ LayoutMorph newColumn.
+	rightCol := LayoutMorph newColumn.
 	rightCol 
+		color: Color transparent;
 		separation: self defaultSeparation;
 		axisEdgeWeight: #columnTop;
 		addMorph: separationArea ;
@@ -669,20 +671,21 @@ buildMorphicWindow
 	self titleMorph showButtonsNamed: #( close pin collapse showHalo ); layoutSubmorphs.
 ! !
 
-!LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'hlsf 12/30/2021 10:42:31'!
+!LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 16:08:09'!
 newPane
 	| controlsArea |
 		
-	widthArea _ self newWidthArea.
-	heightArea _ self newHeightArea.
-	paddingArea _ self newPaddingArea.
+	widthArea := self newWidthArea.
+	heightArea := self newHeightArea.
+	paddingArea := self newPaddingArea.
 	
-	controlsArea _ LayoutMorph newRow.
+	controlsArea := LayoutMorph newRow.
 	controlsArea 
 		separation: self defaultSeparation;
 		addMorph: widthArea;
 		addMorph: heightArea;
-		addMorph: paddingArea.
+		addMorph: paddingArea;
+		color: Theme current textPane.
 	^ controlsArea ! !
 
 !LayoutSpecEditPanel methodsFor: 'geometry' stamp: 'KenD 8/26/2015 14:43'!
@@ -1157,11 +1160,10 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		"addLine;"
 		add: 'edit my LayoutSpec' action: #editMyLayoutSpec! !
 
-!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 7/23/2024 15:02:33'!
+!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 7/25/2024 15:20:47'!
 editMyLayoutSpec
 
 	self layoutSpec ifNil: [ self layoutSpec: LayoutSpec keepMorphExtent ].
-	self  world firstHand newMouseFocus: nil.  "Hand need to reset mouseFocus"
 	LayoutSpecEditPanel open: self layoutSpec! !
 
 !LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:22'!
@@ -1180,10 +1182,9 @@ direction: horizOrVert
 
 	direction := horizOrVert! !
 
-!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 7/23/2024 15:02:10'!
+!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 7/25/2024 15:21:30'!
 editMe
 
-	self world firstHand newMouseFocus: nil. "Hand need to reset mouseFocus"
 	LayoutMorphEditPanel open: self! !
 
 !LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 4/18/2015 20:18'!
