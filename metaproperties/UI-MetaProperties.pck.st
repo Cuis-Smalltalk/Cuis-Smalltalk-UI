@@ -1,17 +1,12 @@
-'From Cuis7.1 [latest update: #6523] on 21 July 2024 at 11:15:21 am'!
-'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'UI-MetaProperties' 1 132!
+'From Cuis7.1 [latest update: #6526] on 25 July 2024 at 12:05:44 pm'!
+'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
+!provides: 'UI-MetaProperties' 1 133!
 !requires: 'Complex' 1 0 nil!
-!requires: 'UI-Entry' 1 7 nil!
-!requires: 'UI-Core' 1 6 nil!
-!requires: 'Cuis-Base' 60 6118 nil!
+!requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'UI-Packager' 1 0 nil!
-!requires: 'UI-Click-Select' 1 2 nil!
-!requires: 'UI-Color-Panel' 1 3 nil!
-!requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-Layout-Panel' 1 10 nil!
-!requires: 'Graphics-Files-Additional' 1 18 nil!
+!requires: 'UI-Color-Panel' 1 3 nil!
 SystemOrganization addCategory: #'UI-MetaProperties'!
 
 
