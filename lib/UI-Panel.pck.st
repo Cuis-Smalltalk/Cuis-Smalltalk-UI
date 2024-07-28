@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6539] on 28 July 2024 at 11:11:22 am'!
+'From Cuis7.1 [latest update: #6539] on 28 July 2024 at 2:45:05 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 106!
+!provides: 'UI-Panel' 1 107!
 !requires: 'Cuis-Base' 71 6519 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -727,7 +727,7 @@ boxExtent
 	e _ (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 10/3/2019 12:52:58'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 7/28/2024 14:35:46'!
 fitInWorld
 
 	"Try to be contained in the world; return boundingBox"
@@ -736,6 +736,7 @@ fitInWorld
 	boundingBox  := self morphPositionInWorld extent: self morphExtentInWorld.
 	boundingBox := boundingBox translatedToBeWithin: displayRect.
 	self morphPositionInWorld: boundingBox origin.
+	self runningWorld firstHand releaseMouseFocus .
 	^boundingBox! !
 
 !Panel methodsFor: 'geometry' stamp: 'KenD 8/26/2015 12:31'!
