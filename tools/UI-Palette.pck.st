@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:37:32 pm'!
+'From Cuis7.1 [latest update: #6539] on 28 July 2024 at 10:40:24 am'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 13!
+!provides: 'UI-Palette' 1 14!
 !requires: 'UI-Click-Select' 1 1 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 1 nil!
@@ -538,7 +538,7 @@ useXKCDColorDict
 	Feature require: 'XKCD-NamedColors'.
 	Color setColorNamesDict: Color xkcdColorDictionary.! !
 
-!ImagePickerPanel class methodsFor: 'private' stamp: 'KenD 11/7/2021 14:18:18'!
+!ImagePickerPanel class methodsFor: 'private' stamp: 'hlsf 7/28/2024 10:32:29'!
 privateBuildPanelLabel: aStringLabel 
 collection: sortedNameImageCollection
 transducer: imageProcessor
@@ -547,7 +547,7 @@ transducer: imageProcessor
 	| picker scrollPane  |
 	picker := Panel new.
 	picker 
-		color: Panel windowColor paler;
+		color: picker defaultColor paler;
 		setLabel: aStringLabel;
 		showButtonsNamed: #( close collapse ).
 
