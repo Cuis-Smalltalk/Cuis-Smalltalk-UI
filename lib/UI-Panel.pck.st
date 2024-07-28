@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6539] on 27 July 2024 at 7:27:41 pm'!
+'From Cuis7.1 [latest update: #6539] on 28 July 2024 at 11:11:22 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 104!
-!requires: 'Cuis-Base' 60 5588 nil!
+!provides: 'UI-Panel' 1 106!
+!requires: 'Cuis-Base' 71 6519 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
 SystemOrganization addCategory: #'UI-Panel'!
@@ -849,12 +849,12 @@ textBackgroundColor
 
 	^ Theme current paneBackgroundFrom: self widgetsColor! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/24/2024 12:38:29'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 7/28/2024 10:24:05'!
 widgetsColor
 
 	widgetsColor ifNotNil: [ ^ widgetsColor ].
 	^Display depth > 2
-		ifTrue: [ self widgetsColor: self windowColor.
+		ifTrue: [ self widgetsColor: self defaultColor.
 			widgetsColor]
 		ifFalse: [ Color white ]
 ! !
@@ -867,10 +867,6 @@ widgetsColor: aColor
 	widgetsColor := aColor.
 	self color: self textBackgroundColor.
 	self adoptWidgetsColor: widgetsColor! !
-
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/24/2024 12:50:33'!
-windowColor
-	^ Theme current defaultWindowColor ! !
 
 !Panel methodsFor: 'dropping/grabbing' stamp: 'KenD 9/17/2019 13:26:55'!
 valueWhenDropped
@@ -943,7 +939,7 @@ defaultSeparation
 
 	^ 10 "Pixels between controls/layouts"! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 12:35:52'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 7/28/2024 10:23:53'!
 initialize
 	"Initialize a system window. Add label, stripes, etc., if desired"
 
@@ -951,7 +947,7 @@ initialize
 	self buildTitle.
 	^self 
 		beColumn;  "by default"
-		widgetsColor: self windowColor;
+		widgetsColor: self defaultColor;
 		yourself
 	
 ! !
@@ -1091,7 +1087,7 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'KenD 7/23/2024 18:12:34'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 7/27/2024 23:07:50'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
 	self newPane ifNotNil: [:pane | layoutMorph 		addMorphUseAll: pane].
@@ -1808,6 +1804,11 @@ example3
 "
 	super example3 openInWorld
 "! !
+
+!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 7/21/2024 23:02:44'!
+buildMorphicWindow
+	super buildMorphicWindow .
+	layoutMorph adoptWidgetsColor: self widgetsColor! !
 
 !WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 12/27/2021 10:25:18'!
 newButtonArea
