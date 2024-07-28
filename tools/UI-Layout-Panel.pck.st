@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6539] on 27 July 2024 at 11:10:28 pm'!
+'From Cuis7.1 [latest update: #6539] on 27 July 2024 at 7:05:36 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 17!
+!provides: 'UI-Layout-Panel' 1 18!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 1 nil!
@@ -44,12 +44,12 @@ I am a simple editor for a LayoutSpec.
 
 !
 
-!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'hlsf 7/27/2024 23:07:37'!
+!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'KenD 7/27/2024 18:41:16'!
 buildMorphicWindow
 	super buildMorphicWindow.
 	self setLabel: 'Layout: ', (self model printStringLimitedTo: 30).
 	self titleMorph showButtonsNamed: #( close pin collapse showHalo ).
-	layoutMorph adoptWidgetsColor: self widgetsColor.
+	"layoutMorph adoptWidgetsColor: self widgetsColor."
 ! !
 
 !LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 15:54:14'!
@@ -665,12 +665,12 @@ propWidthPercent
 		addMorph: (LabelMorph contents: '%');
 		yourself! !
 
-!LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'hlsf 7/27/2024 22:54:02'!
+!LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 7/27/2024 18:55:12'!
 buildMorphicWindow
 	super buildMorphicWindow.
 	self setLabel: 'LayoutSpec: ', (self model morph printStringLimitedTo: 30).
 	self titleMorph showButtonsNamed: #( close pin collapse showHalo ); layoutSubmorphs..
-	layoutMorph adoptWidgetsColor: self widgetsColor.
+	"layoutMorph adoptWidgetsColor: self widgetsColor."
 ! !
 
 !LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 16:08:09'!
