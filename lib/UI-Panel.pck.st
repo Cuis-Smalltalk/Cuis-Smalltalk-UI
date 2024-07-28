@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6535] on 25 July 2024 at 4:09:40 pm'!
+'From Cuis7.1 [latest update: #6539] on 27 July 2024 at 7:27:41 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 103!
+!provides: 'UI-Panel' 1 104!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -1172,7 +1172,7 @@ editModel: anObject
 
 	editModel := anObject! !
 
-!EditPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 16:05:11'!
+!EditPanel methodsFor: 'GUI building' stamp: 'KenD 7/27/2024 19:24:36'!
 newButtonArea
 	"Answer a LayoutMorph with Update and Cancel buttons"
 	
@@ -1198,7 +1198,8 @@ newButtonArea
 		addMorph: (PluggableButtonMorph 
 				model: self 
 				action:  #showHaloButtonClicked
-				label: 'Show Halo' :: color: Theme current defaultWindowColor)
+				label: 'Show Halo' :: 
+					color: (Theme current buttonColorFrom: Theme current defaultWindowColor))
 			layoutSpec: (LayoutSpec 
 							proportionalWidth: 0.3 
 							proportionalHeight:  1 
