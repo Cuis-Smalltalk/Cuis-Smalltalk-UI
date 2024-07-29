@@ -1,4 +1,4 @@
-'From Cuis7.1 [latest update: #6539] on 28 July 2024 at 2:45:05 pm'!
+'From Cuis7.1 [latest update: #6539] on 29 July 2024 at 11:00:34 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
 !provides: 'UI-Panel' 1 107!
@@ -40,7 +40,7 @@ PluggableScrollBar class
 
 !classDefinition: #Panel category: #'UI-Panel'!
 PluggableMorph subclass: #Panel
-	instanceVariableNames: 'widgetsColor titleMorph layoutMorph stayUp'
+	instanceVariableNames: 'titleMorph layoutMorph stayUp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -850,24 +850,9 @@ textBackgroundColor
 
 	^ Theme current paneBackgroundFrom: self widgetsColor! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 7/28/2024 10:24:05'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 7/29/2024 10:35:53'!
 widgetsColor
-
-	widgetsColor ifNotNil: [ ^ widgetsColor ].
-	^Display depth > 2
-		ifTrue: [ self widgetsColor: self defaultColor.
-			widgetsColor]
-		ifFalse: [ Color white ]
-! !
-
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/24/2024 12:53:59'!
-widgetsColor: aColor
-	"aColor will be used for titles, borders, etc.
-	A variation of it, #paneColorFrom:, will be used for panes background"
-
-	widgetsColor := aColor.
-	self color: self textBackgroundColor.
-	self adoptWidgetsColor: widgetsColor! !
+	^ borderColor ! !
 
 !Panel methodsFor: 'dropping/grabbing' stamp: 'KenD 9/17/2019 13:26:55'!
 valueWhenDropped
@@ -940,16 +925,16 @@ defaultSeparation
 
 	^ 10 "Pixels between controls/layouts"! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 7/28/2024 10:23:53'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 7/29/2024 10:34:10'!
 initialize
 	"Initialize a system window. Add label, stripes, etc., if desired"
 
 	super initialize.
-	self buildTitle.
-	^self 
-		beColumn;  "by default"
-		widgetsColor: self defaultColor;
-		yourself
+	self buildTitle;
+		beColumn.  "by default"
+	borderColor := self defaultColor. " widget color "
+	self color: self textBackgroundColor ;
+		adoptWidgetsColor: self widgetsColor.
 	
 ! !
 
@@ -1232,10 +1217,10 @@ newButtonArea
 			label: altButtonLabel)].
 	^ buttonArea ! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 4/20/2023 11:45:44'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 7/29/2024 10:31:16'!
 newPane
 	^ (model perform: viewSelector)
-		adoptWidgetsColor: widgetsColor;
+		adoptWidgetsColor: self widgetsColor;
 		yourself! !
 
 !PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:34:57'!
@@ -1304,15 +1289,6 @@ open: model label: aString view: viewSelector action: acceptSelectorOrAction alt
 buildTitle
 " No title, no window "! !
 
-!PluggablePane methodsFor: 'GUI building' stamp: 'hlsf 6/4/2023 17:24:43'!
-widgetsColor: aColor
-	"aColor will be used for titles, borders, etc.
-	A variation of it, #paneColorFrom:, will be used for panes background"
-
-	widgetsColor := aColor.
-	self color: (Theme current paneBackgroundFrom: aColor ).
-	self adoptWidgetsColor: widgetsColor ! !
-
 !PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/28/2023 21:30:11'!
 defaultBorderWidth
 	^ 0! !
@@ -1321,10 +1297,11 @@ defaultBorderWidth
 defaultSeparation
 	^ 0! !
 
-!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 8/27/2023 15:32:30'!
+!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 7/29/2024 10:33:38'!
 initialize
 	super initialize.
-	actionOnAltButton := nil! !
+	actionOnAltButton := nil.
+	self color: (Theme current paneBackgroundFrom: self widgetsColor).! !
 
 !PluggablePane methodsFor: 'drawing' stamp: 'hlsf 5/28/2023 21:47:57'!
 drawOn: aCanvas

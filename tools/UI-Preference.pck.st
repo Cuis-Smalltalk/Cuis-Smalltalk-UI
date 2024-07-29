@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6526] on 21 July 2024 at 11:47:17 pm'!
+'From Cuis7.1 [latest update: #6539] on 29 July 2024 at 11:00:39 am'!
 'Description '!
-!provides: 'UI-Preference' 1 27!
+!provides: 'UI-Preference' 1 28!
 !requires: 'UI-Click-Select' 1 31 nil!
 !requires: 'UI-Panel' 1 51 nil!
 !requires: 'UI-Widgets' 1 22 nil!
@@ -113,14 +113,14 @@ model: aPreferenceSet
 categoryIndex
 	^ categories indexOf: category! !
 
-!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 22:28:00'!
+!PreferenceBrowser methodsFor: 'accessing' stamp: 'hlsf 7/29/2024 10:31:24'!
 categoryIndex: anIndex
 	| group |
-	category _ categories at: anIndex.
-	visitor _ PreferenceBrowserVisitor new.
+	category := categories at: anIndex.
+	visitor := PreferenceBrowserVisitor new.
 	(model selectCategory: category) do: [:preference | preference accept: visitor].	
-	visitor views do: [:view | view adoptWidgetsColor: widgetsColor ].
-	group _ LabelGroup with: visitor sortedViews.
+	visitor views do: [:view | view adoptWidgetsColor: self widgetsColor ].
+	group := LabelGroup with: visitor sortedViews.
 	preferencesGroup 	scroller: group.
 	self redrawNeeded.
 	group morphWidth: preferencesGroup viewableWidth - 20. "No reliable :-("
