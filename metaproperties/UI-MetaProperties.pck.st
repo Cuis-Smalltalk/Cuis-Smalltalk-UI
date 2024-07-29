@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6535] on 25 July 2024 at 4:37:44 pm'!
+'From Cuis7.1 [latest update: #6544] on 29 July 2024 at 10:57:39 am'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 134!
+!provides: 'UI-MetaProperties' 1 135!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -2332,13 +2332,13 @@ refreshView "of visual properties"
 	]
 ! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 12/14/2021 12:07:45'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 7/29/2024 10:54:55'!
 showTargetHalo
 	"Show my targetMorph's halo"
 	| aMorph |
 	aMorph := self targetMorph.
 	aMorph isInWorld 
-		ifTrue: [ aMorph show; addHalo ]
+		ifTrue: [ aMorph show; addHalo. aMorph runningWorld firstHand releaseMouseFocus ]
 		ifFalse: [
 "			(HoverHelpMorph 
 			contents: aMorph printString , ' not shown in world')
