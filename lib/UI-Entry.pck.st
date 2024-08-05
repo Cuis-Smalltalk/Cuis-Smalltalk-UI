@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6519] on 17 July 2024 at 2:42:07 pm'!
+'From Cuis7.1 [latest update: #6561] on 5 August 2024 at 11:47:54 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 50!
+!provides: 'UI-Entry' 1 51!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 71 6513 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -375,12 +375,15 @@ handlesMouseOver: evt
 clickAndHalf: aMouseButtonEvent localPosition: localEventPosition
 	self handleInteraction: [ self editor clickAndHalf ]! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'KenD 7/16/2024 10:10:16'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/1/2024 16:03:46'!
 keyStroke: aKeyboardEvent
 	"Handle a keystroke event."
-
-	(self focusKeyboardFor: aKeyboardEvent)
-		ifTrue: [ ^ self ].
+	super keyStroke: aKeyboardEvent.
+	aKeyboardEvent wasHandled ifTrue: [ 
+		self updateFromContents.
+		self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
+		self redrawNeeded.
+		^self ].
 	
 	"Check for acceptCancelReceiver"
 	(self acceptCancelReceiver) "Check for CR->accept or Esc->cancel"
@@ -404,7 +407,6 @@ keyStroke: aKeyboardEvent
 	self pauseBlinking.
 	self handleInteraction: [ self editor processKeystrokeEvent: aKeyboardEvent ].
 	self updateFromContents.
-	super keyStroke: aKeyboardEvent . "sends to keyStroke event handler, if any"
 	self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
 	self redrawNeeded.! !
 
@@ -575,6 +577,24 @@ updateFromContents
 
 	contents := self editor string.
 	self redrawNeeded! !
+
+!TextEntryMorph methodsFor: 'menu - shortcuts - ehhhh' stamp: 'jmv 8/1/2024 11:47:53'!
+menuNshortcutsSpecsDo: aBlock
+	"Subclasses may implement specific ways of providing menu items and
+	keyboard shortcuts for themselves.
+	See implementors."
+
+	"First take default editor menu and shortcut specs"
+	self editor defaultMenuSpec do: aBlock.
+
+	self window ifNotNil: [ :window |
+		"Then include additions, overrides and deletions registered for #Editor, #TextEditor, #SmalltalkEditor, etc.
+		Hierarchy order allows more specific classes to override choices made by superclasses."
+		self editor editorClassesInHierarchyOrderDo: [ :editorClass |
+			(window class registeredMenuAndShortcutsSpecProviders: editorClass name) ifNotNil: [ :providers |
+				providers do: [ :eachMessageSend |
+					(eachMessageSend valueWithPossibleArgument: self) do: aBlock ]]		].
+		]! !
 
 !TextEntryMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/20/2022 18:50:06'!
 categoryInNewMorphMenu
@@ -1125,7 +1145,7 @@ backTo: startIndex
 	self replaceSelectionWith: ''.
 	self markIndex: self pointIndex! !
 
-!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 4/18/2023 11:01:41'!
+!SimpleEditor methodsFor: 'typing support' stamp: 'jmv 8/1/2024 11:34:57'!
 dispatchOn: aKeyboardEvent
 	"Carry out the action associated with this character, if any."
 	| codePoint asciiValue |
@@ -1134,17 +1154,12 @@ dispatchOn: aKeyboardEvent
 	codePoint > 255 ifTrue: [
 		^self normalCharacter: aKeyboardEvent ].
 
-	asciiValue := codePoint.
-	"Control keys are handled by #shortcuts even if they have any modifiers"
-	(asciiValue >= 32 and: [
-		aKeyboardEvent commandAltKeyPressed ]) ifTrue: [
-		^self perform: (self cmdShortcuts at: asciiValue + 1) with: aKeyboardEvent ].
-
 	"We don't support multiple lines. Therefore, we don't process return as a #normalCharacter:"
 	aKeyboardEvent isReturnKey ifTrue: [
 		^ true].
 
-	^ self perform: (self shortcuts at: asciiValue + 1) with: aKeyboardEvent! !
+	asciiValue := codePoint.
+	^ self perform: (self keyboardActions at: asciiValue + 1) with: aKeyboardEvent! !
 
 !SimpleEditor methodsFor: 'typing support' stamp: 'jmv 1/5/2021 14:34:14'!
 processKeystrokeEvent: aKeyboardEvent
@@ -1316,38 +1331,6 @@ startIndex
 stopIndex
 	^ pointIndex max: markIndex! !
 
-!SimpleEditor methodsFor: 'testing' stamp: 'jmv 11/17/2008 17:01'!
-isAtEnd
-	^pointIndex = (string size + 1)! !
-
-!SimpleEditor methodsFor: 'testing' stamp: 'jmv 11/17/2008 17:01'!
-isAtStart
-	^pointIndex = 1! !
-
-!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 9/2/2009 12:40'!
-makeCapitalized: aKeyboardEvent
-	"Force the current selection to uppercase.  Triggered by Cmd-X."
-	| prev |
-	prev _ $-.  "not a letter"
-	self replaceSelectionWith:
-		(self selection collect: [:c |
-			prev _ prev isLetter ifTrue: [c asLowercase] ifFalse: [c asUppercase]]).
-	^ true! !
-
-!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 12/19/2011 12:22'!
-makeLowercase: aKeyboardEvent
-	"Force the current selection to lowercase.  Triggered by Cmd-X."
-
-	self replaceSelectionWith: self selection asLowercase.
-	^ true! !
-
-!SimpleEditor methodsFor: 'editing keys' stamp: 'jmv 12/19/2011 12:22'!
-makeUppercase: aKeyboardEvent
-	"Force the current selection to uppercase.  Triggered by Cmd-Y."
-
-	self replaceSelectionWith: self selection asUppercase.
-	^ true! !
-
 !SimpleEditor methodsFor: 'private' stamp: 'jmv 9/20/2011 08:46'!
 privateCurrentString
 	"Answer the string I'm editing. Private. Just for internal Editor use."
@@ -1389,20 +1372,20 @@ selectLine
 	self hasSelection ifTrue:[^self].
 	self selectAll! !
 
-!SimpleEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 6/10/2012 11:07'!
-cmdShortcutsSpec
+!SimpleEditor methodsFor: 'menu & kbd shortcuts' stamp: 'jmv 8/5/2024 08:49:25'!
+defaultMenuSpec
+	"Spec for the menu and shortcut keys for the regular text editors.
+	See coment at Morph >> #getMenu
 	"
-	Editor initialize
-	"
-	"arranged in QWERTY keyboard order"
-	^#(
-		#(		$a 	#selectAll:				'Select all')
-
-		#(		$x 	#cut:						'Cut selection and store it in the Clipboard')
-		#(		$c 	#copySelection:			'Copy selection to the Clipboard')
-		#(		$v 	#paste:					'Paste Clipboard contents')
-		#(		$ 	#selectWord:			'Select the current word as with double clicking')
-	)! !
+	^
+	#(
+		#(120		'Copy (c)' 				$c 	editor 			copySelection 					copyIcon 				'Copy selection to the Clipboard')
+		#(130		'Cut (x)' 				$x 	editor 			cut 					cutIcon 				'Cut selection and store it in the Clipboard')
+		#(140		'Paste (v)' 				$v 	editor 			paste 					pasteIcon 				'Paste Clipboard contents')
+		"Keyboard shortcuts only"
+		#(999 		nil 				$a 	editor 			selectAll 					nil 				'Select all')
+	).
+! !
 
 !SimpleEditor class methodsFor: 'new morph participation' stamp: 'KenD 1/1/2022 08:16:31'!
 includeInNewMorphMenu
