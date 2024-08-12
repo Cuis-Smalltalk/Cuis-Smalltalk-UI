@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6526] on 22 July 2024 at 10:58:29 pm'!
+'From Cuis7.1 [latest update: #6578] on 12 August 2024 at 11:07:55 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 57!
+!provides: 'UI-Click-Select' 1 58!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -108,7 +108,7 @@ PluggableDropDownListOfMorph class
 
 !classDefinition: #CheckButtonMorph category: #'UI-Click-Select'!
 BoxedMorph subclass: #CheckButtonMorph
-	instanceVariableNames: 'isSelected fillColor'
+	instanceVariableNames: 'isSelected hoverColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -1335,24 +1335,11 @@ handlesMouseOver: evt
 	"Do I want to receive mouseEnter: and mouseLeave: when the button is up and the hand is empty?" 
 	^true! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 22:32:24'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 8/12/2024 18:41:50'!
 adoptWidgetsColor: paneColor
 	self color: (Theme current buttonColorFrom: paneColor).
 	self borderColor: color muchDarker.
-	self fillColor: ( isSelected ifTrue: [color] ifFalse: [borderColor] )! !
-
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'KenD 6/9/2024 15:13:22'!
-fillColor
-
-	^fillColor! !
-
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:31:09'!
-fillColor: aColor
-" The color I am filled "
-	fillColor = aColor ifFalse: [
-		fillColor := aColor.
-		self redrawNeeded ]
-	! !
+	self hoverColor: color! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:23'!
 isSelected
@@ -1372,12 +1359,11 @@ select
 	(self isSelected) ifFalse: [ self isSelected: true ]
 ! !
 
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/8/2024 12:17:19'!
+!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 8/12/2024 19:03:56'!
 selected: aBoolean
 "Do not emit event. Should it not be the prerogative of the model?"
-	(isSelected := aBoolean)
-		ifFalse: [self fillColor: borderColor ] 
-		ifTrue: [	self fillColor: color ]. ! !
+	isSelected := aBoolean.
+	self adjustHoverColor! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:49'!
 toggleSelection
@@ -1391,17 +1377,15 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 		ifTrue: [ self toggleSelection ]
 ! !
 
-!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/9/2024 22:37:57'!
+!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 8/12/2024 18:40:51'!
 mouseEnter: event
 	"The mouse has entered the area of the receiver"
-	self fillColor: (color alphaMixed: 0.5 with: borderColor) ! !
+	self hoverColor: (color alphaMixed: 0.5 with: borderColor) ! !
 
-!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 12:46:57'!
+!CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 8/12/2024 19:02:25'!
 mouseLeave: event
 	"The mouse has left the area of the receiver, restore the fill color depending on my state "
-	self isSelected 
-		ifFalse: [self fillColor: borderColor]
-		ifTrue: [self fillColor: color]! !
+	self adjustHoverColor ! !
 
 !CheckButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 20:47:11'!
 update: aParameter
@@ -1417,23 +1401,35 @@ hasVariableExtent
 requiresVectorCanvas
 	^ true! !
 
-!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 7/22/2024 22:47:49'!
+!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 8/12/2024 19:05:26'!
 drawOn: aCanvas
 	| myBounds  |
 	myBounds := self morphLocalBounds.
-	aCanvas strokeWidth: borderWidth color: borderColor fillColor: fillColor do: [
+	aCanvas strokeWidth: borderWidth color: borderColor fillColor: color do: [
 		aCanvas 
 			roundRectangleMinX: myBounds left maxX: myBounds 
 			right minY: myBounds top maxY: myBounds bottom 
-			rx: myBounds width * 0.4 ry: myBounds height * 0.4
-	].
-	self isSelected ifTrue: [ | pt1 pt2 pt3 |
-		pt1 := (myBounds width * 0.2) @ (myBounds height * 0.5).
-		pt2 := (myBounds width * 0.5) @ (myBounds height * 0.8).
-		pt3 := (myBounds width * 0.9) @ (myBounds height * 0.1).
-		aCanvas line: pt1 to: pt2 width: borderWidth color: Theme current text.
-		aCanvas line: pt2 to: pt3 width: borderWidth color: Theme current text.
-	]! !
+			rx: myBounds width * 0.4 ry: myBounds height * 0.4						].
+	myBounds := self morphLocalBounds insetBy: borderWidth * 1.1.
+	aCanvas fillColor: hoverColor do: [
+		aCanvas 
+		roundRectangleMinX: myBounds left maxX: myBounds 
+		right minY: myBounds top maxY: myBounds bottom 
+		rx: myBounds width * 0.4 ry: myBounds height * 0.4								]! !
+
+!CheckButtonMorph methodsFor: 'private' stamp: 'hlsf 8/12/2024 19:03:41'!
+adjustHoverColor
+" Adjust my hover color depending on my state "
+	self isSelected 
+		ifFalse: [self hoverColor: color]
+		ifTrue: [self hoverColor: borderColor]! !
+
+!CheckButtonMorph methodsFor: 'private' stamp: 'hlsf 8/12/2024 18:49:50'!
+hoverColor: aColor
+" The color when cursor is over me "
+	hoverColor := aColor.
+	self redrawNeeded
+	! !
 
 !CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 16:51:06'!
 defaultDiameter
@@ -1460,7 +1456,7 @@ ofSize: numPixels
 
 	^ self new ofSize: numPixels! !
 
-!RadioButtonMorph methodsFor: 'drawing' stamp: 'hlsf 6/8/2024 12:16:07'!
+!RadioButtonMorph methodsFor: 'drawing' stamp: 'hlsf 8/12/2024 18:40:12'!
 drawOn: aCanvas 
 	| radius |
 	radius := extent // 2.
@@ -1469,7 +1465,7 @@ drawOn: aCanvas
 		radius: radius 
 		borderWidth: borderWidth 
 		borderColor: borderColor 
-		fillColor: fillColor! !
+		fillColor: hoverColor! !
 
 !RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 1/25/2022 20:59:26'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
@@ -1478,10 +1474,10 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 		ifTrue: [ self isSelected: true ]
 ! !
 
-!RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 6/8/2024 13:15:51'!
+!RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 8/12/2024 18:55:08'!
 mouseEnter: event
 	"The mouse has entered the area of the receiver"
-	self isSelected ifFalse: [self fillColor: (color + borderColor) / 2]! !
+	self isSelected ifFalse: [self hoverColor: (color + borderColor) / 2]! !
 
 !RadioButtonMorph methodsFor: 'accessing' stamp: 'KenD 6/9/2024 15:17:19'!
 adoptWidgetsColor: paneColor
@@ -1493,6 +1489,13 @@ isSelected: aBoolean
 	self selected: aBoolean.
 	isSelected ifTrue: [			self triggerEvent: #radioSelection with: self	]
 ! !
+
+!RadioButtonMorph methodsFor: 'private' stamp: 'hlsf 8/12/2024 19:04:16'!
+adjustHoverColor
+" Adjust my hover color depending on my state "
+	self isSelected 
+		ifFalse: [self hoverColor: borderColor]
+		ifTrue: [self hoverColor: color ]! !
 
 !RadioButtonMorph class methodsFor: 'examples' stamp: 'hlsf 7/22/2024 22:56:24'!
 example1
