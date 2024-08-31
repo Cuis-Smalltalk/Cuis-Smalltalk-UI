@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6578] on 12 August 2024 at 11:07:55 pm'!
+'From Cuis7.1 [latest update: #6629] on 31 August 2024 at 3:03:04 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 58!
+!provides: 'UI-Click-Select' 1 59!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1474,10 +1474,10 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 		ifTrue: [ self isSelected: true ]
 ! !
 
-!RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 8/12/2024 18:55:08'!
+!RadioButtonMorph methodsFor: 'event handling' stamp: 'hlsf 8/31/2024 15:00:42'!
 mouseEnter: event
 	"The mouse has entered the area of the receiver"
-	self isSelected ifFalse: [self hoverColor: (color + borderColor) / 2]! !
+	self isSelected ifFalse: [super mouseEnter: event]! !
 
 !RadioButtonMorph methodsFor: 'accessing' stamp: 'KenD 6/9/2024 15:17:19'!
 adoptWidgetsColor: paneColor
