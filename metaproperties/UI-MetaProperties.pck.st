@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6579] on 12 August 2024 at 10:32:30 am'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:56:29 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 136!
+!provides: 'UI-MetaProperties' 1 137!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -354,12 +354,12 @@ addPropertiesDisplay
 
 	self notYetImplemented ! !
 
-!VisualPropertyEditor methodsFor: 'construction' stamp: 'KenD 11/7/2021 14:25:14'!
+!VisualPropertyEditor methodsFor: 'construction' stamp: 'KenD 9/2/2024 19:55:09'!
 adjustSubmorphsLayout
 
 	| calculatedExtent |
 	super adjustSubmorphsLayout.
-	calculatedExtent := self morphExtentInOwner.
+	calculatedExtent := self extentInOwner.
 	self morphExtent: (calculatedExtent x max: self minItemWidth) @ calculatedExtent y.
 	self titleMorph morphExtent: (calculatedExtent x max: self minItemWidth) @ self titleMorph morphHeight.
 ! !
@@ -541,7 +541,7 @@ fontPreferenceChanged
 	super fontPreferenceChanged.
 	self refreshView.! !
 
-!VisualPropertyEditor methodsFor: 'events' stamp: 'KenD 11/7/2021 14:16:06'!
+!VisualPropertyEditor methodsFor: 'events' stamp: 'KenD 9/2/2024 19:55:18'!
 refreshView
 
 	"Something may have changed.."
@@ -556,7 +556,7 @@ refreshView
 	self showAllIvars  ifTrue: [ self addIVarsDisplay ].
 	self showAllProps ifTrue: [ self addOrdinaryPropertiesDisplay ].
 	
-	self titleMorph morphExtent: (self titleMorph morphExtentInOwner x) @ (Preferences windowTitleFont lineSpacing).
+	self titleMorph morphExtent: (self titleMorph extentInOwner x) @ (Preferences windowTitleFont lineSpacing).
 	self adjustSubmorphsLayout;
 		yourself! !
 
@@ -1177,13 +1177,13 @@ processMouseDown: evt localPosition: localEventPosition
 
 ! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 11/7/2021 14:17:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 9/2/2024 19:55:22'!
 showReject: aMorph
 	"Draw and erase a red X"
 
 	| leftStroke rightStroke mPos mExtent |
-	mPos := aMorph morphPositionInWorld.
-	mExtent := aMorph morphExtentInOwner.
+	mPos := aMorph positionInWorld.
+	mExtent := aMorph extentInOwner.
 	leftStroke   := LineMorph 
 						startPoint: mPos - (10@10) 
 						endPoint: (mPos + mExtent + (10@10)) 
@@ -1415,7 +1415,7 @@ initialize
 	"self initializeDictionaries." "invoked in VisualPropertyEditor class>>initialize"
 ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 7/25/2024 16:35:58'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 9/2/2024 19:55:58'!
 initializeDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1437,8 +1437,8 @@ initializeDictionaries
 						StringEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::						
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner;
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner;
 							    fitInWorld
 							 ]).
 	props at: #acceptsSymbol 
@@ -1448,8 +1448,8 @@ initializeDictionaries
 						StringEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner;
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner;
 								fitInWorld ]).
 	props at: #acceptsCharacter 
 			put: (MetaProperty 
@@ -1458,8 +1458,8 @@ initializeDictionaries
 						CharacterEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner; fitInWorld
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner; fitInWorld
 						]).
 	props at: #acceptsNumber put: (MetaProperty kind: Number).
 	props at: #acceptsColor 
@@ -1476,8 +1476,8 @@ initializeDictionaries
 						PointEntryPanel 
 								open: menuItem 
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner; fitInWorld ]).
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner; fitInWorld ]).
 	props at: #acceptsRectangle put: (MetaProperty kind: Rectangle).
 	props at: #acceptsBoolean put: (MetaProperty kind: Boolean).
 	props at: #acceptsMorph put: (MetaProperty kind: Morph).
@@ -1619,7 +1619,7 @@ minValue: aValue
 
 	minValue := aValue ! !
 
-!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 1/11/2022 15:27:11'!
+!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 9/2/2024 19:55:52'!
 addToInitialDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1636,8 +1636,8 @@ addToInitialDictionaries
 						PointEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner
 								; fitInWorld ]).
 	props at: #acceptsPositiveNumber 
 		  put: (MetaPropertyFrom 
@@ -1647,8 +1647,8 @@ addToInitialDictionaries
 					PositiveFloatEntryPanel
 						open: menuItem
 						label: (menuItem name asString) ::
-						morphPosition: morph morphPositionInWorld 
-											+ morph morphExtentInOwner;
+						morphPosition: morph positionInWorld 
+											+ morph extentInOwner;
 						fitInWorld ]).
 	props at: #acceptsPositiveInteger
 		    put: (MetaPropertyFrom 
@@ -1658,8 +1658,8 @@ addToInitialDictionaries
 						PositiveIntegerEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner;
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner;
 								fitInWorld ]).
 	! !
 
@@ -2208,7 +2208,7 @@ nameForWorkspace
 openVisualPropertyEditor
 
 	(VisualPropertyEditor forMorph: self) openInWorld ::
-		morphPositionInWorld: self morphPositionInWorld
+		positionInWorld: self positionInWorld
 								  + (self displayFullBounds extent // 2) ;
 		removeHalo ! !
 

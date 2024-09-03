@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6561] on 5 August 2024 at 11:47:54 am'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:37:48 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 51!
+!provides: 'UI-Entry' 1 52!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 71 6513 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -279,11 +279,11 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 		line: x0+halfW@bottom to: x1+halfW@(top+w)
 		width: w color: textCursorColor! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/16/2024 12:53:16'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 9/2/2024 19:33:50'!
 drawOn: aCanvas
 
 	aCanvas
-		fillRectangle: self morphLocalBounds
+		fillRectangle: self localBounds
 		color: backgroundColor
 		borderWidth: borderWidth
 		borderStyleSymbol: #simple

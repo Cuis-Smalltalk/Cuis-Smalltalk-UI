@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6539] on 27 July 2024 at 7:05:12 pm'!
+'From Cuis7.1 [latest update: #6670] on 3 September 2024 at 10:22:08 am'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 24!
+!provides: 'UI-Color-Panel' 1 25!
 !requires: 'UI-DragAndDrop' 1 0 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -1675,7 +1675,7 @@ color: aColor
 
 	^ self new setColor: aColor! !
 
-!Color class methodsFor: '*ui-color-panel' stamp: 'hlsf 12/29/2021 11:10:21'!
+!Color class methodsFor: '*ui-color-panel' stamp: 'hlsf 9/3/2024 10:20:50'!
 colorSelectionMenu
 	"Open a popUp menu and let user select color selection option"
 "
@@ -1705,7 +1705,7 @@ colorSelectionMenu
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
 			pickerPanel := ImagePickerPanel namedColors. 
-			savedExtent := pickerPanel morphExtentInOwner. 
+			savedExtent := pickerPanel extentInOwner. 
 			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
 			pickerPanel morphExtent: savedExtent. 
 		].
@@ -1713,7 +1713,7 @@ colorSelectionMenu
 
 	! !
 
-!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 5/17/2023 10:53:03'!
+!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 9/3/2024 10:20:43'!
 colorSelectionMenu: aColor
 	"Open a popUp menu and let user select color selection option"
 "
@@ -1743,7 +1743,7 @@ colorSelectionMenu: aColor
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
 			pickerPanel := ImagePickerPanel namedColors. 
-			savedExtent := pickerPanel morphExtentInOwner. 
+			savedExtent := pickerPanel extentInOwner. 
 			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
 			pickerPanel morphExtent: savedExtent. 
 		].

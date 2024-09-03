@@ -1,6 +1,6 @@
 'From Cuis 6.0 [latest update: #5202] on 30 May 2022 at 12:41:20 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'Color-Edit-Panel' 1 19!
+!provides: 'Color-Edit-Panel' 1 20!
 !requires: 'UI-DragAndDrop' 1 3 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -907,7 +907,7 @@ buildAlphaSwatch
 		morphPosition: 4@4 ;
 		setBalloonText: 
 'Drag:
-Color plus ˆ' .
+Color plus Âˆ' .
 	
 	^alphaFrame
 	! !
@@ -949,7 +949,7 @@ buildColorPaneColumn
 		addMorph: colorPane ;
 		addMorph: hexDisplayLayout; 
 		addMorph: alphaSlider ;
-		addMorph: (LabelMorph contents: 'transparent <-ˆ-> opaque') ;
+		addMorph: (LabelMorph contents: 'transparent <-Âˆ-> opaque') ;
 		axisEdgeWeight: #columnTop;
 		separation: 4;
 		color: Color transparent.
@@ -1100,7 +1100,7 @@ Closest Web Color' .
 		morphPosition: 4@4 ;
 		setBalloonText: 
 'Drag: 
-Color without ˆ' .
+Color without Âˆ' .
 
 	swatchLayout := LayoutMorph newRow.
 	^ swatchLayout 
@@ -1702,7 +1702,7 @@ colorSelectionMenu
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
 			pickerPanel := ImagePickerPanel namedColors. 
-			savedExtent := pickerPanel morphExtentInOwner. 
+			savedExtent := pickerPanel extentInOwner. 
 			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
 			pickerPanel morphExtent: savedExtent. 
 		].
@@ -1741,7 +1741,7 @@ colorSelectionMenu: originalColor
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
 			pickerPanel := ImagePickerPanel namedColors. 
-			savedExtent := pickerPanel morphExtentInOwner. 
+			savedExtent := pickerPanel extentInOwner. 
 			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
 			pickerPanel morphExtent: savedExtent. 
 		].

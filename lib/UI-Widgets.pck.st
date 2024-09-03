@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6629] on 29 August 2024 at 12:25:28 pm'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:45:11 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 34!
+!provides: 'UI-Widgets' 1 35!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'UI-Core' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -184,14 +184,14 @@ selected: aBoolean
 toggleSelection
 	self selected: selected not! !
 
-!FilePreviewMorph methodsFor: 'drawing' stamp: 'hlsf 3/30/2024 17:16:17'!
+!FilePreviewMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:44:13'!
 drawOn: aCanvas
 	| border |
 	self isSelected 
 		ifTrue: [border := Theme current focusIndicator]
 		ifFalse: [border := borderColor ].
 	aCanvas
-		fillRectangle: self morphLocalBounds
+		fillRectangle: self localBounds
 		color: color
 		borderWidth: borderWidth
 		borderStyleSymbol: #simple
@@ -383,19 +383,19 @@ selectedColor
 selectedColor: aColor
 	selectedColor _ aColor ! !
 
-!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 8/29/2024 12:23:48'!
+!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:44:20'!
 drawMyShapeOn: canvas with: background
 	| borderStyleSymbol |
 	borderStyleSymbol := self isPressed ifFalse: [ #raised ] ifTrue: [ #inset ].
 	self isRoundButton 
 		ifTrue:  [ | r rect |
 			r := Theme current roundedButtonRadius.
-			rect := self morphLocalBounds.
+			rect := self localBounds.
 			r := r min: (rect width min: rect height) * 0.5.
 			canvas roundRect: rect color: (self enableColorWith: background ) radius: r			]
 		ifFalse: [
 			canvas
-				fillRectangle: self morphLocalBounds
+				fillRectangle: self localBounds
 				color: background 
 				borderWidth: borderWidth
 				borderStyleSymbol: borderStyleSymbol
@@ -615,14 +615,14 @@ sendScrollEvent: cursorPoint
 
 ! !
 
-!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 6/15/2024 11:02:25'!
+!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:44:27'!
 drawOn: aCanvas
 	| interval delta frame x0 x1 y0 y1 deltaX deltaY  |
 	delta := borderColor .
 	borderColor := borderColor muchDarker alpha: 0.5.
 	super drawOn: aCanvas.		"border & background"
 	borderColor := delta .
-	frame := self morphLocalBounds insetBy: 2.
+	frame := self localBounds insetBy: 2.
 	aCanvas frameRectangle: frame color: color borderWidth: 4 borderStyleSymbol: #raised.
 	frame := frame insetBy: 1.
 	x0 := frame origin x.

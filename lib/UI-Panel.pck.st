@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6539] on 29 July 2024 at 11:00:34 am'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 9:33:23 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 107!
+!provides: 'UI-Panel' 1 109!
 !requires: 'Cuis-Base' 71 6519 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -666,7 +666,7 @@ drawRoundedFrameOn: aCanvas color: theUIsColor
 		insideColor: color 
 		labelHeight: self labelHeight + borderWidth! !
 
-!Panel methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 10:43:34'!
+!Panel methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:39:01'!
 makeMeFullyVisible 
 
 	self world morphExtent > (0@0) ifFalse: [^ self].
@@ -674,7 +674,7 @@ makeMeFullyVisible
 	(self morphPosition >= (0@0) and: [ self morphPosition < (self world morphExtent-extent)]) ifTrue: [
 		^ self "OK -- visible"].
 
-	self morphPosition: (RealEstateAgent initialFrameFor: self initialExtent: self morphExtentInWorld world: self world) topLeft! !
+	self morphPosition: (RealEstateAgent initialFrameFor: self initialExtent: self extentInWorld world: self world) topLeft! !
 
 !Panel methodsFor: 'drawing' stamp: 'KenD 12/9/2013 17:08'!
 makeMeVisible 
@@ -727,15 +727,15 @@ boxExtent
 	e _ (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 7/28/2024 14:35:46'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 9/2/2024 19:38:57'!
 fitInWorld
 
 	"Try to be contained in the world; return boundingBox"
 	| displayRect boundingBox |
 	displayRect := RealEstateAgent maximumUsableAreaInWorld: self runningWorld.
-	boundingBox  := self morphPositionInWorld extent: self morphExtentInWorld.
+	boundingBox  := self positionInWorld extent: self extentInWorld.
 	boundingBox := boundingBox translatedToBeWithin: displayRect.
-	self morphPositionInWorld: boundingBox origin.
+	self positionInWorld: boundingBox origin.
 	self runningWorld firstHand releaseMouseFocus .
 	^boundingBox! !
 
@@ -779,12 +779,12 @@ labelRectangleForEmbossed
 	
 ! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 11/7/2021 14:17:20'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 9/2/2024 19:39:16'!
 layoutBounds
 	"Return the bounds for laying out children of the receiver"
 	"Exclude the label area"
 
-	^  (0@0 extent: self morphExtentInOwner) insetBy: (0 @ (self labelHeight) corner: 0 @ 0)! !
+	^  (0@0 extent: self extentInOwner) insetBy: (0 @ (self labelHeight) corner: 0 @ 0)! !
 
 !Panel methodsFor: 'geometry' stamp: 'KenD 4/10/2021 08:48:50'!
 minPaneHeightForReframe
@@ -1303,12 +1303,12 @@ initialize
 	actionOnAltButton := nil.
 	self color: (Theme current paneBackgroundFrom: self widgetsColor).! !
 
-!PluggablePane methodsFor: 'drawing' stamp: 'hlsf 5/28/2023 21:47:57'!
+!PluggablePane methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:40:10'!
 drawOn: aCanvas
 	"A canvas is already set with a proper transformation from our coordinates to those of the Canvas target."
 
 	aCanvas
-		fillRectangle: self morphLocalBounds
+		fillRectangle: self localBounds
 		color: color
 		borderWidth: borderWidth
 		borderStyleSymbol: #simple
@@ -1319,12 +1319,12 @@ label
 	^ 'a pane'
 	! !
 
-!PluggablePane methodsFor: 'geometry' stamp: 'hlsf 5/28/2023 22:06:52'!
+!PluggablePane methodsFor: 'geometry' stamp: 'hlsf 9/2/2024 19:39:20'!
 layoutBounds
 	"Return the bounds for laying out children of the receiver"
 	"Exclude the label area"
 
-	^  0@0 extent: self morphExtentInOwner! !
+	^  0@0 extent: self extentInOwner! !
 
 !PluggablePane methodsFor: 'as yet unclassified' stamp: 'hlsf 7/16/2024 10:54:35'!
 adjustExtent
@@ -1995,6 +1995,83 @@ standardPage: aString on: aWizard
 		wizard: aWizard ;
 		standardPage: aString;
 		yourself! !
+
+!Color class methodsFor: '*ui-panel-color' stamp: 'hlsf 12/29/2021 11:10:21'!
+colorSelectionMenu
+	"Open a popUp menu and let user select color selection option"
+"
+	Color colorSelectionMenu.
+"
+	| menu choices choicesSetter selectedIndex |
+	choices := #( 'CSS3 (Web) Colors'      "1"
+					'Crayon Colors'   "2"
+					'NBSISCC Colors' "3"
+					'XKCD Colors'     "4"
+					'ColorMix Editor'           "5"
+					'Cancel'                        "6"
+				   ).
+				
+	choicesSetter := #(
+				useCSS3ColorDict 
+				useCrayonColorDict
+				useNBSISCCColorDict
+				useXKCDColorDict
+				).
+	
+	menu := PopUpMenu labelArray: choices.
+	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
+	(selectedIndex = 5)
+		ifTrue: [ ColorEditorPanel open].
+	((selectedIndex > 0) and: [selectedIndex < 5])
+		ifTrue: [ | pickerPanel savedExtent |
+			ColorPalette perform: ( choicesSetter at: selectedIndex ).
+			pickerPanel := ImagePickerPanel namedColors. 
+			savedExtent := pickerPanel extentInOwner. 
+			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
+			pickerPanel morphExtent: savedExtent. 
+		].
+	"else cancel -> no action"
+
+	! !
+
+!Color class methodsFor: '*ui-panel-color' stamp: 'KenD 1/10/2022 13:21:32'!
+colorSelectionMenu: originalColor
+	"Open a popUp menu and let user select color selection option.
+	 If the user selects ColorMix Editor, set the color from originalColor"
+"
+	Color colorSelectionMenu.
+"
+	| menu choices choicesSetter selectedIndex |
+	choices := #( 'CSS3 (Web) Colors'      "1"
+					'Crayon Colors'   "2"
+					'NBSISCC Colors' "3"
+					'XKCD Colors'     "4"
+					'ColorMix Editor'           "5"
+					'Cancel'                        "6"
+				   ).
+				
+	choicesSetter := #(
+				useCSS3ColorDict 
+				useCrayonColorDict
+				useNBSISCCColorDict
+				useXKCDColorDict
+				).
+	
+	menu := PopUpMenu labelArray: choices.
+	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
+	(selectedIndex = 5)
+		ifTrue: [ ColorEditorPanel openWithColor: originalColor].
+	((selectedIndex > 0) and: [selectedIndex < 5])
+		ifTrue: [ | pickerPanel savedExtent |
+			ColorPalette perform: ( choicesSetter at: selectedIndex ).
+			pickerPanel := ImagePickerPanel namedColors. 
+			savedExtent := pickerPanel extentInOwner. 
+			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
+			pickerPanel morphExtent: savedExtent. 
+		].
+	"else cancel -> no action"
+
+	! !
 
 !InnerTextMorph methodsFor: '*UI-Panel' stamp: 'hlsf 3/25/2022 11:16:07'!
 contents

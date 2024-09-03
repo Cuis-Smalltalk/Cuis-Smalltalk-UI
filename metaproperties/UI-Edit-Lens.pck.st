@@ -5,7 +5,7 @@ I display SVG control points and allow change, e.g. to bezier curves.
 
 I also allow one to drop morphs which make changes to myMorph.
 Each such morph has property DropActionMorph set to true.'!
-!provides: 'UI-Edit-Lens' 1 8!
+!provides: 'UI-Edit-Lens' 1 9!
 !requires: 'UI-DragAndDrop' 1 7 nil!
 SystemOrganization addCategory: 'UI-Edit-Lens'!
 
@@ -138,11 +138,11 @@ openFor: aMorph
 	"Nota Bene: must set my extent before asking about label"
 
 	self 
-		morphExtent: aMorph morphExtentInOwner + self boxExtent;
+		morphExtent: aMorph extentInOwner + self boxExtent;
 		setLabel: ('Morph Lens: ', (aMorph printStringLimitedTo: 64));
 		openInWorld; "Ignores settings; RESET them!!!!"
-		morphPosition: aMorph morphPositionInWorld - (2 * self boxExtent) ;
-		morphExtent: aMorph morphExtentInOwner + (3 * self boxExtent);
+		morphPosition: aMorph positionInWorld - (2 * self boxExtent) ;
+		morphExtent: aMorph extentInOwner + (3 * self boxExtent);
 		color: (Color teal alpha: 0.3);
 		refreshSubmorphs;
 		yourself

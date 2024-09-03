@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:37:32 pm'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:47:12 pm'!
 'Description '!
-!provides: 'UI-DragAndDrop' 1 1!
+!provides: 'UI-DragAndDrop' 1 2!
 !requires: 'UI-Core' 1 12 nil!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
 
@@ -319,11 +319,11 @@ string: aString
 	self labelMorph contents: aString.
 	self adjustExtent ! !
 
-!FontMorph methodsFor: 'geometry' stamp: 'KenD 11/7/2021 14:16:20'!
+!FontMorph methodsFor: 'geometry' stamp: 'KenD 9/2/2024 19:46:02'!
 adjustExtent 
 	"Some aspect of my font has changed. Don't shrink beyond minimum"
 
-	self morphExtent: (self morphExtentInOwner min: self minimumExtent)! !
+	self morphExtent: (self extentInOwner min: self minimumExtent)! !
 
 !FontMorph methodsFor: 'geometry' stamp: 'KenD 3/28/2020 08:18:42'!
 labelMorphOffset
