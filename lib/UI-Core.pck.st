@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:26:50 pm'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 8:24:34 pm'!
 'Description '!
-!provides: 'UI-Core' 1 12!
+!provides: 'UI-Core' 1 15!
 !requires: 'Cuis-Base' 71 6526 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -270,11 +270,11 @@ wantsToBeDroppedInto: aMorph
 				
 	^ false! !
 
-!SignMorph methodsFor: 'drawing' stamp: 'KenD 12/9/2022 09:36:16'!
+!SignMorph methodsFor: 'drawing' stamp: 'KenD 9/2/2024 19:33:33'!
 drawOn: aCanvas
 	"Add border to inherited"
 	| r |
-	r _ self morphLocalBounds.
+	r := self localBounds.
 	"aCanvas roundRect: r color: self color radius: 4."
 	aCanvas frameAndFillRectangle: r fillColor: self color borderWidth: borderWidth borderColor: borderColor.
 	aCanvas
@@ -411,10 +411,10 @@ dontShrinkTitle
 		redrawNeeded.
 		! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 11/7/2021 14:14:49'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 9/2/2024 19:34:52'!
 height
 
-	^ self morphExtentInOwner y! !
+	^ self extentInOwner y! !
 
 !WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 4/23/2015 17:01'!
 pinButton
@@ -433,10 +433,10 @@ titleString: aString
 	titleMorph contents: aString
 	! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 11/7/2021 14:14:53'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 9/2/2024 19:34:56'!
 width
 
-	^ self morphExtentInOwner x! !
+	^ self extentInOwner x! !
 
 !WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 10/25/2021 15:10:36'!
 buttonExtent
@@ -847,11 +847,11 @@ minimumExtent
 
 	^ `10@10`! !
 
-!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 11/7/2021 14:16:26'!
+!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 9/2/2024 19:35:05'!
 morphContainsPoint: aPoint
 	"Only the frame contains a point"
 	| outerExtent innerExtent |
-	outerExtent := (0@0 extent: self morphExtentInOwner).
+	outerExtent := (0@0 extent: self extentInOwner).
 	innerExtent := outerExtent insetBy: self borderWidth.
 	^ (outerExtent containsPoint: aPoint)
 		and: [(innerExtent containsPoint: aPoint) not].! !
@@ -1154,12 +1154,6 @@ morphExtent: aPoint
 	extent _ (innerExtent max: self minimumExtent).
 	self redrawNeeded! !
 
-!LineMorph methodsFor: 'geometry' stamp: 'KenD 2/28/2015 11:31'!
-morphExtentInWorld: newExtent
-	"world coordinates"
-	self flag: #jmvVer2.
-	self morphExtent: (self internalizeDistanceFromWorld: newExtent)! !
-
 !LineMorph methodsFor: 'initialize-release' stamp: 'KenD 9/30/2013 15:25'!
 startPoint: startPoint endPoint: endPoint width: numPixels color: aColor
 
@@ -1311,14 +1305,14 @@ with: aProperty
 	^ self new :: 
 		propertyValue: aProperty! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:54:19'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 9/2/2024 20:24:18'!
 showAccept
 	"I have just been dropped.
 	Draw and erase a green box ."
 
 	| hilightMorph mPos mExtent |
-	mPos     := self morphPositionInWorld.
-	mExtent := self morphExtentInOwner.
+	mPos     := self positionInWorld.
+	mExtent := self extentInOwner.
 	hilightMorph := FrameMorph new.
 	hilightMorph   borderWidth: 6;
 					borderColor: Color green;
@@ -1328,14 +1322,14 @@ showAccept
 
 	hilightMorph addAlarm: #delete after: 400.! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 12:25:29'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 9/2/2024 20:24:21'!
 showAcceptAndDeleteSelf
 	"I have just been dropped.
 	Draw and erase a green box and delete self."
 
 	| hilightMorph mPos mExtent |
-	mPos     := self morphPositionInWorld.
-	mExtent := self morphExtentInOwner.
+	mPos     := self positionInWorld.
+	mExtent := self extentInOwner.
 	hilightMorph := FrameMorph new.
 	hilightMorph   borderWidth: 6;
 					borderColor: Color green;
@@ -1346,13 +1340,13 @@ showAcceptAndDeleteSelf
 	self               addAlarm: #delete after: 200.
 	hilightMorph addAlarm: #delete after: 400.! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:48:11'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 9/2/2024 20:24:28'!
 showReject
 	"Draw and erase a red X"
 
 	| leftStroke rightStroke mPos mExtent |
-	mPos := self morphPositionInWorld.
-	mExtent := self morphExtentInOwner.
+	mPos := self positionInWorld.
+	mExtent := self extentInOwner.
 	"Show a red X"
 	leftStroke   := LineMorph 
 						startPoint: mPos - (10@10) 

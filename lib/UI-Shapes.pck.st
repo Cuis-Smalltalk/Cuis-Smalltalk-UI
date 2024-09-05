@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6526] on 24 July 2024 at 12:03:53 pm'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:59:21 pm'!
 'Description '!
-!provides: 'UI-Shapes' 1 42!
+!provides: 'UI-Shapes' 1 44!
 !requires: 'UI-Core' 1 11 nil!
 SystemOrganization addCategory: #'UI-Shapes'!
 
@@ -151,12 +151,12 @@ submorphsMightProtrude
 	
 	^ true! !
 
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 11/7/2021 14:13:48'!
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 9/2/2024 19:45:01'!
 updateEndPoint
 	"Place my pointer morph at my endpoint, centered"
 	
 	| pointMorphCenter endPointOffset |
-	pointMorphCenter := (self endPointMorph morphExtentInOwner) / 2.
+	pointMorphCenter := (self endPointMorph extentInOwner) / 2.
 	endPointOffset := (self rect perform: endPointSelector) + (self lineWidth / 2).
 	self endPointMorph morphPosition: endPointOffset - pointMorphCenter.! !
 
@@ -240,18 +240,18 @@ knowsOwnLocalBounds
 
 	^false! !
 
-!EllipseMorph methodsFor: 'geometry testing' stamp: 'pb 3/17/2020 13:36:07'!
+!EllipseMorph methodsFor: 'geometry testing' stamp: 'pb 9/2/2024 19:44:24'!
 morphContainsPoint: aLocalPoint
 
 	| radius other delta xOverY |
-	(self morphLocalBounds containsPoint: aLocalPoint) ifFalse: [^ false].  "quick elimination"
+	(self localBounds containsPoint: aLocalPoint) ifFalse: [^ false].  "quick elimination"
 	extent > `1@1`
 		ifFalse: [^ true].  "Degenerate case -- code below fails by a bit"
 
-	radius _ extent y asFloat / 2.
-	other _ extent x asFloat / 2.
-	delta _ aLocalPoint - (other@radius).
-	xOverY _ extent x asFloat / extent y asFloat.
+	radius := extent y asFloat / 2.
+	other := extent x asFloat / 2.
+	delta := aLocalPoint - (other@radius).
+	xOverY := extent x asFloat / extent y asFloat.
 	^ (delta x asFloat / xOverY) squared + delta y squared <= radius squared! !
 
 !EllipseMorph methodsFor: 'initialization' stamp: 'dgd 2/14/2003 22:37'!
@@ -1506,24 +1506,24 @@ targetIcon
 	"Answer concentric circles"
 	^ self fetch: #( '16x16' 'emblems' 'emblem-important'  )! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 1/29/2022 16:40:25'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 9/2/2024 19:57:45'!
 addControlHandle: aPoint
 	"Add a handle for the control point and return the handle."
 
 	| handle  colorToUse form icon e |
-	colorToUse _ Color green. "@@parameterize by theme@@"
-	handle _ HaloHandleMorph new color: colorToUse.
+	colorToUse := Color green. "@@parameterize by theme@@"
+	handle := HaloHandleMorph new color: colorToUse.
 	self addMorph: handle.
-	e _ Preferences haloHandleSize asPoint.
-	handle morphPosition: aPoint-(e//2) extent: e.
-	form _ self class haloTargetIcon.
+	e := Preferences haloHandleSize asPoint.
+	handle position: aPoint-(e//2) extent: e.
+	form := self class haloTargetIcon.
 	(form extent = e) ifFalse: [ 
-		form _ form  "Be as smooth as possible, these images are small."
+		form := form  "Be as smooth as possible, these images are small."
 				magnify: form boundingBox
 				to: e
 				smoothing: 2 
 	].
-	icon _ ImageMorph new
+	icon := ImageMorph new
 				image: form;
 				color: colorToUse makeForegroundColor;
 				lock.
@@ -1534,24 +1534,24 @@ addControlHandle: aPoint
 		yourself
 ! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/4/2022 11:55:51'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 9/2/2024 19:57:48'!
 addHorizLineHandle: aPoint
 	"Add a handle for the control point and return the handle."
 
 	| handle  colorToUse form icon e |
-	colorToUse _ Color green. "@@parameterize by theme@@"
-	handle _ HaloHandleMorph new color: colorToUse.
+	colorToUse := Color green. "@@parameterize by theme@@"
+	handle := HaloHandleMorph new color: colorToUse.
 	self addMorph: handle.
-	e _ Preferences haloHandleSize asPoint.
-	handle morphPosition: aPoint-(e//2) extent: e.
-	form _ self class haloGrabLineHorizIcon.
+	e := Preferences haloHandleSize asPoint.
+	handle position: aPoint-(e//2) extent: e.
+	form := self class haloGrabLineHorizIcon.
 	(form extent = e) ifFalse: [ 
-		form _ form  "Be as smooth as possible, these images are small."
+		form := form  "Be as smooth as possible, these images are small."
 				magnify: form boundingBox
 				to: e
 				smoothing: 2 
 	].
-	icon _ ImageMorph new
+	icon := ImageMorph new
 				image: form;
 				color: colorToUse makeForegroundColor;
 				lock.
@@ -1562,24 +1562,24 @@ addHorizLineHandle: aPoint
 		yourself
 ! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 1/30/2022 16:04:05'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 9/2/2024 19:57:52'!
 addPointHandle: aPoint
 	"Add a handle for the control point and return the handle."
 
 	| handle  colorToUse form icon e |
-	colorToUse _ Color green. "@@parameterize by theme@@"
-	handle _ HaloHandleMorph new color: colorToUse.
+	colorToUse := Color green. "@@parameterize by theme@@"
+	handle := HaloHandleMorph new color: colorToUse.
 	self addMorph: handle.
-	e _ Preferences haloHandleSize asPoint.
-	handle morphPosition: aPoint-(e//2) extent: e.
-	form _ self class haloPointIcon.
+	e := Preferences haloHandleSize asPoint.
+	handle position: aPoint-(e//2) extent: e.
+	form := self class haloPointIcon.
 	(form extent = e) ifFalse: [ 
-		form _ form  "Be as smooth as possible, these images are small."
+		form := form  "Be as smooth as possible, these images are small."
 				magnify: form boundingBox
 				to: e
 				smoothing: 2 
 	].
-	icon _ ImageMorph new
+	icon := ImageMorph new
 				image: form;
 				color: colorToUse makeForegroundColor;
 				lock.
@@ -1590,24 +1590,24 @@ addPointHandle: aPoint
 		yourself
 ! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/4/2022 11:56:05'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 9/2/2024 19:57:57'!
 addVertLineHandle: aPoint
 	"Add a handle for the control point and return the handle."
 
 	| handle  colorToUse form icon e |
-	colorToUse _ Color green. "@@parameterize by theme@@"
-	handle _ HaloHandleMorph new color: colorToUse.
+	colorToUse := Color green. "@@parameterize by theme@@"
+	handle := HaloHandleMorph new color: colorToUse.
 	self addMorph: handle.
-	e _ Preferences haloHandleSize asPoint.
-	handle morphPosition: aPoint-(e//2) extent: e.
-	form _ self class haloGrabLineVertIcon.
+	e := Preferences haloHandleSize asPoint.
+	handle position: aPoint-(e//2) extent: e.
+	form := self class haloGrabLineVertIcon.
 	(form extent = e) ifFalse: [ 
-		form _ form  "Be as smooth as possible, these images are small."
+		form := form  "Be as smooth as possible, these images are small."
 				magnify: form boundingBox
 				to: e
 				smoothing: 2 
 	].
-	icon _ ImageMorph new
+	icon := ImageMorph new
 				image: form;
 				color: colorToUse makeForegroundColor;
 				lock.
@@ -1629,7 +1629,7 @@ doControlOne: evt with: controlPointHandle
 		
 	"Track the hand"
 	controlPointHandle 
-		morphPositionInWorld: evt eventPosition 
+		positionInWorld: evt eventPosition 
 					- (controlPointHandle morphExtent // 2).	
 
 	self redrawNeeded.! !
@@ -1645,7 +1645,7 @@ doControlTwo: evt with: controlPointHandle
 		
 	"Track the hand"
 	controlPointHandle 
-		morphPositionInWorld: evt eventPosition 
+		positionInWorld: evt eventPosition 
 					- (controlPointHandle morphExtent // 2).	
 
 	self redrawNeeded.! !
@@ -1661,7 +1661,7 @@ doEndPoint: evt with: controlPointHandle
 		
 	"Track the hand"
 	controlPointHandle 
-		morphPositionInWorld: evt eventPosition 
+		positionInWorld: evt eventPosition 
 					- (controlPointHandle morphExtent // 2).	
 
 	self redrawNeeded.! !
@@ -1677,7 +1677,7 @@ doStartPoint: evt with: controlPointHandle
 		
 	"Track the hand"
 	controlPointHandle 
-		morphPositionInWorld: evt eventPosition 
+		positionInWorld: evt eventPosition 
 					- (controlPointHandle morphExtent // 2).	
 
 	self redrawNeeded.! !

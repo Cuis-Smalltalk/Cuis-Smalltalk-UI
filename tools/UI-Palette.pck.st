@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6539] on 28 July 2024 at 10:40:24 am'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:52:26 pm'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 14!
+!provides: 'UI-Palette' 1 15!
 !requires: 'UI-Click-Select' 1 1 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 1 nil!
@@ -122,7 +122,7 @@ allowsSubmorphDrag
 
 	^ true! !
 
-!PaletteLayoutMorph methodsFor: 'layout' stamp: 'KenD 11/7/2021 14:14:42'!
+!PaletteLayoutMorph methodsFor: 'layout' stamp: 'KenD 9/2/2024 19:49:55'!
 shrinkWrap
 	"Resize self to minimally contain submorphs with specified separation"
 	
@@ -133,12 +133,12 @@ shrinkWrap
 			width := sep + 
 				(self submorphs 
 					inject: 0 
-					into: [ :subTotal :m |  subTotal + (m morphExtentInOwner x) + sep ]).
+					into: [ :subTotal :m |  subTotal + (m extentInOwner x) + sep ]).
 			sep := 2 * self ySeparation.
 			height := 
 				(self submorphs 
 					inject: 10 
-					into: [ :maxHeight :m |  maxHeight max: (m morphExtentInOwner y) + sep ]).
+					into: [ :maxHeight :m |  maxHeight max: (m extentInOwner y) + sep ]).
 			self layoutSpec: 
 					(LayoutSpec 
 							fixedWidth: width
@@ -150,12 +150,12 @@ shrinkWrap
 			width := 
 				(self submorphs 
 					inject: 10 
-					into: [ :maxWidth :m |  maxWidth max: (m morphExtentInOwner x) + sep ]).
+					into: [ :maxWidth :m |  maxWidth max: (m extentInOwner x) + sep ]).
 			sep := self ySeparation.
 			height := sep + 
 				(self submorphs 
 					inject: 0 
-					into: [ :subTotal :m |  subTotal + (m morphExtentInOwner y) + sep ]).
+					into: [ :subTotal :m |  subTotal + (m extentInOwner y) + sep ]).
 			self layoutSpec: 
 					(LayoutSpec 
 							fixedWidth: width 
@@ -207,7 +207,7 @@ nameImageCollection
 
 	^ nameImageCollection ! !
 
-!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 11/7/2021 14:16:42'!
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/2/2024 19:50:00'!
 collection: aNameImageCollection filter: imageTransducer
 
 	| numImages maxWidth numAcross numDown spacedExtent |
@@ -221,7 +221,7 @@ collection: aNameImageCollection filter: imageTransducer
 		ifTrue: [Error signal: 'Collection too large to display safely'].
 	"@@FIXME: assumes all images same size@@"
 	self imageExtent: 
-		(self processImage: (aNameImageCollection anyOne value)) morphExtentInOwner.
+		(self processImage: (aNameImageCollection anyOne value)) extentInOwner.
 
 	maxWidth := (DisplayScreen actualScreenSize x) // 1.2.
 	spacedExtent := imageExtent + self spaceWidth.
@@ -538,7 +538,7 @@ useXKCDColorDict
 	Feature require: 'XKCD-NamedColors'.
 	Color setColorNamesDict: Color xkcdColorDictionary.! !
 
-!ImagePickerPanel class methodsFor: 'private' stamp: 'hlsf 7/28/2024 10:32:29'!
+!ImagePickerPanel class methodsFor: 'private' stamp: 'KenD 9/2/2024 19:50:06'!
 privateBuildPanelLabel: aStringLabel 
 collection: sortedNameImageCollection
 transducer: imageProcessor
@@ -569,8 +569,8 @@ transducer: imageProcessor
 		color: `Color orange`.
 
 	^ picker 
-		morphExtent: scrollPane scroller morphExtentInOwner 
-			+ (0 @ picker titleMorph morphExtentInOwner y)
+		morphExtent: scrollPane scroller extentInOwner 
+			+ (0 @ picker titleMorph extentInOwner y)
 			+ (8@4); "interior border"
 		yourself
 		! !

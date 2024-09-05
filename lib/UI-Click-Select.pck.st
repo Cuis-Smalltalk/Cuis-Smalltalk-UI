@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6629] on 31 August 2024 at 3:03:04 pm'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:37:43 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 59!
+!provides: 'UI-Click-Select' 1 60!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -684,7 +684,7 @@ toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
 			self world addMorphFront: dropDownList position: 
-				self morphPositionInWorld 
+				self positionInWorld 
 					+ self morphBottomLeft 
 					- (dropDownList scroller xSeparation @0) ]
 		ifNotNil: [dropDownList delete]! !
@@ -859,7 +859,7 @@ toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
 			self world addMorphFront: dropDownList position: 
-				self morphPositionInWorld 
+				self positionInWorld 
 					+ self morphBottomLeft]
 		ifNotNil: [dropDownList delete]! !
 
@@ -976,13 +976,13 @@ drawBoundsForRow: row
 	^ (submorphs atLast: row) fullBoundsInOwner expandBy: separation * (1 @ 0.5)
 ! !
 
-!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/19/2022 21:13:31'!
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:33:36'!
 drawHighlightOn: aCanvas
 	| selectionDrawBounds |
 	highlightedRow ifNil: [ ^self ].
 	highlightedRow = 0 ifTrue: [ ^self ].
-	selectionDrawBounds _ self drawBoundsForRow: highlightedRow.
-	selectionDrawBounds _ selectionDrawBounds intersect: self morphLocalBounds.
+	selectionDrawBounds := self drawBoundsForRow: highlightedRow.
+	selectionDrawBounds := selectionDrawBounds intersect: self localBounds.
 	aCanvas
 		fillRectangle: selectionDrawBounds
 		color: ((Theme current listHighlightFocused: owner hasKeyboardFocus) alpha: 0.3)! !
@@ -993,13 +993,13 @@ drawOn: aCanvas
 	self drawHighlightOn: aCanvas.
 	self drawSelectionOn: aCanvas ! !
 
-!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 1/18/2022 21:29:27'!
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:33:41'!
 drawSelectionOn: aCanvas
 	| selectionDrawBounds |
 	selectedRow ifNil: [ ^self ].
 	selectedRow = 0 ifTrue: [ ^self ].
-	selectionDrawBounds _ self drawBoundsForRow: selectedRow.
-	selectionDrawBounds _ selectionDrawBounds intersect: self morphLocalBounds.
+	selectionDrawBounds := self drawBoundsForRow: selectedRow.
+	selectionDrawBounds := selectionDrawBounds intersect: self localBounds.
 	aCanvas
 		fillRectangle: selectionDrawBounds
 		color: (Theme current listHighlightFocused: owner hasKeyboardFocus)! !
@@ -1401,16 +1401,16 @@ hasVariableExtent
 requiresVectorCanvas
 	^ true! !
 
-!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 8/12/2024 19:05:26'!
+!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:33:46'!
 drawOn: aCanvas
 	| myBounds  |
-	myBounds := self morphLocalBounds.
+	myBounds := self localBounds.
 	aCanvas strokeWidth: borderWidth color: borderColor fillColor: color do: [
 		aCanvas 
 			roundRectangleMinX: myBounds left maxX: myBounds 
 			right minY: myBounds top maxY: myBounds bottom 
 			rx: myBounds width * 0.4 ry: myBounds height * 0.4						].
-	myBounds := self morphLocalBounds insetBy: borderWidth * 1.1.
+	myBounds := self localBounds insetBy: borderWidth * 1.1.
 	aCanvas fillColor: hoverColor do: [
 		aCanvas 
 		roundRectangleMinX: myBounds left maxX: myBounds 

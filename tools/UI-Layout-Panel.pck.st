@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6543] on 28 July 2024 at 3:04:04 pm'!
+'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:52:23 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 20!
+!provides: 'UI-Layout-Panel' 1 21!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 1 nil!
@@ -1066,7 +1066,7 @@ containingLayout
 				ifFalse: [ ^ owner containingLayout ]
 		]! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 11/7/2021 14:13:03'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/2/2024 19:49:42'!
 frameLayouts: colors depth: depth
 	"Display frames around LayoutMorphs, then erase"
 	
@@ -1079,14 +1079,14 @@ frameLayouts: colors depth: depth
 		frame := FrameMorph new 
 			:: borderColor: (colors at: colorIndex); 
 			borderWidth: 2;
-			morphExtent: self morphExtentInOwner;
-			morphPosition: self morphPositionInWorld;
+			morphExtent: self extentInOwner;
+			morphPosition: self positionInWorld;
 			yourself.
 		frame openInWorld.
 		self submorphsDo: [ :m | m frameLayouts: colors depth: depth + 1 ].
 	].! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 11/7/2021 14:13:12'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/2/2024 19:49:46'!
 frameNonLayouts: colors depth: depth
 	"Display frames around LayoutMorphs, then erase"
 	
@@ -1099,8 +1099,8 @@ frameNonLayouts: colors depth: depth
 		frame := FrameMorph new 
 			:: borderColor: (colors at: colorIndex); 
 			borderWidth: 2;
-			morphExtent: self morphExtentInOwner;
-			morphPosition: self morphPositionInWorld;
+			morphExtent: self extentInOwner;
+			morphPosition: self positionInWorld;
 			yourself.
 		frame openInWorld.
 		self submorphsDo: [ :m | m frameNonLayouts: colors depth: depth + 1 ].

@@ -1,6 +1,6 @@
 'From Cuis 6.0 [latest update: #5588] on 9 December 2022 at 1:41:48 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 122!
+!provides: 'Morphic-MetaProperties' 1 123!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -705,8 +705,8 @@ showReject: aMorph
 	"Draw and erase a red X"
 
 	| leftStroke rightStroke mPos mExtent |
-	mPos := aMorph morphPositionInWorld.
-	mExtent := aMorph morphExtentInOwner.
+	mPos := aMorph positionInWorld.
+	mExtent := aMorph extentInOwner.
 	leftStroke   := LineMorph 
 						startPoint: mPos - (10@10) 
 						endPoint: (mPos + mExtent + (10@10)) 
@@ -933,7 +933,7 @@ adjustSubmorphsLayout
 
 	| calculatedExtent |
 	super adjustSubmorphsLayout.
-	calculatedExtent := self morphExtentInOwner.
+	calculatedExtent := self extentInOwner.
 	self morphExtent: (calculatedExtent x max: self minItemWidth) @ calculatedExtent y.
 	self titleMorph morphExtent: (calculatedExtent x max: self minItemWidth) @ self titleMorph morphHeight.
 ! !
@@ -1130,7 +1130,7 @@ refreshView
 	self showAllIvars  ifTrue: [ self addIVarsDisplay ].
 	self showAllProps ifTrue: [ self addOrdinaryPropertiesDisplay ].
 	
-	self titleMorph morphExtent: (self titleMorph morphExtentInOwner x) @ (Preferences windowTitleFont lineSpacing).
+	self titleMorph morphExtent: (self titleMorph extentInOwner x) @ (Preferences windowTitleFont lineSpacing).
 	self adjustSubmorphsLayout;
 		yourself! !
 
@@ -1438,8 +1438,8 @@ initializeDictionaries
 						StringEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::						
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner;
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner;
 							    fitInWorld
 							 ]).
 	props at: #acceptsSymbol 
@@ -1449,8 +1449,8 @@ initializeDictionaries
 						StringEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner;
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner;
 								fitInWorld ]).
 	props at: #acceptsCharacter 
 			put: (MetaProperty 
@@ -1459,8 +1459,8 @@ initializeDictionaries
 						CharacterEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner; fitInWorld
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner; fitInWorld
 						]).
 	props at: #acceptsNumber put: (MetaProperty kind: Number).
 	props at: #acceptsColor 
@@ -1477,8 +1477,8 @@ initializeDictionaries
 						PointEntryPanel 
 								open: menuItem 
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner; fitInWorld ]).
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner; fitInWorld ]).
 	props at: #acceptsRectangle put: (MetaProperty kind: Rectangle).
 	props at: #acceptsBoolean put: (MetaProperty kind: Boolean).
 	props at: #acceptsMorph put: (MetaProperty kind: Morph).
@@ -1633,8 +1633,8 @@ addToInitialDictionaries
 						PointEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner
 								; fitInWorld ]).
 	props at: #acceptsPositiveNumber 
 		  put: (MetaPropertyFrom 
@@ -1644,8 +1644,8 @@ addToInitialDictionaries
 					PositiveFloatEntryPanel
 						open: menuItem
 						label: (menuItem name asString) ::
-						morphPosition: morph morphPositionInWorld 
-											+ morph morphExtentInOwner;
+						morphPosition: morph positionInWorld 
+											+ morph extentInOwner;
 						fitInWorld ]).
 	props at: #acceptsPositiveInteger
 		    put: (MetaPropertyFrom 
@@ -1655,8 +1655,8 @@ addToInitialDictionaries
 						PositiveIntegerEntryPanel 
 								open: menuItem
 								label: (menuItem name asString) ::
-								morphPosition: morph morphPositionInWorld 
-												+ morph morphExtentInOwner;
+								morphPosition: morph positionInWorld 
+												+ morph extentInOwner;
 								fitInWorld ]).
 	! !
 
@@ -2226,7 +2226,7 @@ nameForWorkspace
 openVisualPropertyEditor
 
 	(VisualPropertyEditor forMorph: self) openInWorld ::
-		morphPositionInWorld: self morphPositionInWorld
+		positionInWorld: self positionInWorld
 								  + (self displayFullBounds extent // 2) ;
 		removeHalo ! !
 

@@ -1,6 +1,6 @@
 'From Cuis 6.0 [latest update: #5968] on 3 August 2023 at 2:55:33 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'Layout-Edit-Panels' 1 12!
+!provides: 'Layout-Edit-Panels' 1 13!
 !requires: 'UI-Click-Select' 1 2 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-DragAndDrop' 1 6 nil!
@@ -1078,8 +1078,8 @@ frameLayouts: colors depth: depth
 		frame := FrameMorph new 
 			:: borderColor: (colors at: colorIndex); 
 			borderWidth: 2;
-			morphExtent: self morphExtentInOwner;
-			morphPosition: self morphPositionInWorld;
+			morphExtent: self extentInOwner;
+			morphPosition: self positionInWorld;
 			yourself.
 		frame openInWorld.
 		self submorphsDo: [ :m | m frameLayouts: colors depth: depth + 1 ].
@@ -1098,8 +1098,8 @@ frameNonLayouts: colors depth: depth
 		frame := FrameMorph new 
 			:: borderColor: (colors at: colorIndex); 
 			borderWidth: 2;
-			morphExtent: self morphExtentInOwner;
-			morphPosition: self morphPositionInWorld;
+			morphExtent: self extentInOwner;
+			morphPosition: self positionInWorld;
 			yourself.
 		frame openInWorld.
 		self submorphsDo: [ :m | m frameNonLayouts: colors depth: depth + 1 ].
