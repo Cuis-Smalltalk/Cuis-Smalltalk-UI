@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6664] on 31 August 2024 at 3:32:34 pm'!
+'From Cuis7.1 [latest update: #6676] on 5 September 2024 at 1:56:06 pm'!
 'Description Models and morphs for defining and displaying tables.'!
-!provides: 'UI-Table' 1 4!
+!provides: 'UI-Table' 1 5!
 !requires: 'Cuis-Base' 60 5166 nil!
 SystemOrganization addCategory: #'UI-Table'!
 
@@ -16,8 +16,8 @@ AlignedLabelMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #TableMorph category: #'UI-Table'!
-BoxedMorph subclass: #TableMorph
-	instanceVariableNames: 'model style maximumExtent'
+PluggableScrollPane subclass: #TableMorph
+	instanceVariableNames: 'style maximumExtent'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Table'!
@@ -98,34 +98,30 @@ initialize
 	super initialize.
 	alignment := #left! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 13:10:54'!
+!TableMorph methodsFor: 'as yet unclassified' stamp: 'KenD 9/5/2024 13:48:36'!
 adjustExtent
 	| strangeDelta minimumExtent adjustedExtent |
 	strangeDelta := 0.001. self flag: 'find out why this is needed'.
-	minimumExtent := self layoutMorph minimumExtent + (self scrollPane xtraBorder * 2) + strangeDelta.
+	minimumExtent := self layoutMorph minimumExtent "+ (self scrollPane xtraBorder * 2) + strangeDelta".
 	minimumExtent y > maximumExtent y ifTrue: [
 		minimumExtent := minimumExtent x + ScrollBar scrollbarThickness @ minimumExtent y].
 	adjustedExtent := minimumExtent min: maximumExtent.
 	self scrollPane morphExtent: adjustedExtent.
 	self morphExtent: adjustedExtent! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 19:02:57'!
+!TableMorph methodsFor: 'as yet unclassified' stamp: 'KenD 9/5/2024 13:42:31'!
 initialize
-	| layoutMorph scrollPane |
+
 	super initialize.
 	maximumExtent := Display extent.
-	layoutMorph := LayoutMorph newColumn.
-	scrollPane := PluggableScrollPane new.
-	scrollPane scroller: layoutMorph.
-	self
-		addMorph: scrollPane;
-		color: Color green;
+	self scroller: LayoutMorph newColumn.
+	self	color: Color green;
 		style: TableStyle new;
 		morphExtent: `400@300`! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 13:27:32'!
+!TableMorph methodsFor: 'as yet unclassified' stamp: 'KenD 9/5/2024 13:46:32'!
 layoutMorph
-	^self scrollPane scroller! !
+	^self scroller! !
 
 !TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 21:02:05'!
 maximumExtent
