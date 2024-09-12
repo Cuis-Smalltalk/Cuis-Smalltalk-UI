@@ -1,6 +1,6 @@
 'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:47:12 pm'!
 'Description '!
-!provides: 'UI-DragAndDrop' 1 2!
+!provides: 'UI-DragAndDrop' 1 3!
 !requires: 'UI-Core' 1 12 nil!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
 
@@ -26,7 +26,7 @@ DropColorMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #FontMorph category: #'UI-DragAndDrop'!
-BoxedMorph subclass: #FontMorph
+BorderedBoxMorph subclass: #FontMorph
 	instanceVariableNames: 'labelMorph'
 	classVariableNames: ''
 	poolDictionaries: ''

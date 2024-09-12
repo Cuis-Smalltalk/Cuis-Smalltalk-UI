@@ -1,6 +1,6 @@
 'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 10:57:12 am'!
 'Description '!
-!provides: 'UI-Core' 1 16!
+!provides: 'UI-Core' 1 17!
 !requires: 'Cuis-Base' 71 6526 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -46,7 +46,7 @@ LineMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #FrameMorph category: #'UI-Core'!
-BoxedMorph subclass: #FrameMorph
+BorderedBoxMorph subclass: #FrameMorph
 	instanceVariableNames: 'colorIndex borderStyle'
 	classVariableNames: 'Colors'
 	poolDictionaries: ''

@@ -1,6 +1,6 @@
 'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:59:21 pm'!
 'Description '!
-!provides: 'UI-Shapes' 1 44!
+!provides: 'UI-Shapes' 1 45!
 !requires: 'UI-Core' 1 11 nil!
 SystemOrganization addCategory: #'UI-Shapes'!
 
@@ -16,7 +16,7 @@ PointerLineMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #EllipseMorph category: #'UI-Shapes'!
-BoxedMorph subclass: #EllipseMorph
+BorderedBoxMorph subclass: #EllipseMorph
 	instanceVariableNames: 'borderStyle'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -165,7 +165,7 @@ initialize
 
 	super initialize.
 	self endPointMorph:
-		(BoxedMorph new 
+		(BorderedBoxMorph new 
 			:: color: Color yellow; 
 			borderColor: Color red; 
 			borderWidth: 3; 

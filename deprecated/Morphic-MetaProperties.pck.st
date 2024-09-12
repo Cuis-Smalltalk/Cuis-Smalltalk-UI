@@ -1,6 +1,6 @@
 'From Cuis 6.0 [latest update: #5588] on 9 December 2022 at 1:41:48 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor.'!
-!provides: 'Morphic-MetaProperties' 1 123!
+!provides: 'Morphic-MetaProperties' 1 124!
 !requires: 'UI-Edit-Lens' 1 1 nil!
 !requires: 'Cuis-Base' 60 5588 nil!
 !requires: 'Color-Edit-Panel' 1 3 nil!
@@ -1196,7 +1196,7 @@ initialize
 	classDict := MetaProperty metaPropsDictForClass: PlacedMorph.
 	classDict at: #layoutSpec   put: (propsDict at: #acceptsLayoutSpec). 
 
-	classDict := MetaProperty metaPropsDictForClass: BoxedMorph.
+	classDict := MetaProperty metaPropsDictForClass: BorderedBoxMorph.
 	classDict at: #morphExtent   put: (propsDict at: #acceptsPositivePoint). 
 	classDict at: #morphPosition put: (propsDict at: #acceptsPoint). 
 	classDict at: #color put: (propsDict at: #acceptsColor). 

@@ -1,6 +1,6 @@
 'From Cuis7.1 [latest update: #6670] on 3 September 2024 at 10:22:08 am'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 25!
+!provides: 'UI-Color-Panel' 1 26!
 !requires: 'UI-DragAndDrop' 1 0 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -738,7 +738,7 @@ colorPane: aColorPaneMorph
 initialize
 
 	super initialize.
-	sliderMorph := BoxedMorph new.
+	sliderMorph := BorderedBoxMorph new.
 	sliderMorph 
 		color: Color transparent;
 		borderColor: Color black;

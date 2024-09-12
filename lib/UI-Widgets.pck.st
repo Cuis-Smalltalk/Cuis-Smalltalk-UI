@@ -1,6 +1,6 @@
 'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 11:29:00 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 36!
+!provides: 'UI-Widgets' 1 37!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'UI-Core' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -38,7 +38,7 @@ ButtonMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #WheelMorph category: #'UI-Widgets'!
-BoxedMorph subclass: #WheelMorph
+BorderedBoxMorph subclass: #WheelMorph
 	instanceVariableNames: 'target actionSelector factor circular old angle maxAngle lastRedraw isHorizontal'
 	classVariableNames: ''
 	poolDictionaries: ''

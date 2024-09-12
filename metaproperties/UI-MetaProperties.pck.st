@@ -1,6 +1,6 @@
 'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:56:29 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 137!
+!provides: 'UI-MetaProperties' 1 138!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -622,7 +622,7 @@ initialize
 	classDict := MetaProperty metaPropsDictForClass: PlacedMorph.
 	classDict at: #layoutSpec   put: (propsDict at: #acceptsLayoutSpec). 
 
-	classDict := MetaProperty metaPropsDictForClass: BoxedMorph.
+	classDict := MetaProperty metaPropsDictForClass: BorderedBoxMorph.
 	classDict at: #morphExtent   put: (propsDict at: #acceptsPositivePoint). 
 	classDict at: #morphPosition put: (propsDict at: #acceptsPoint). 
 	classDict at: #color put: (propsDict at: #acceptsColor). 
