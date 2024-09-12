@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 10:57:08 am'!
+'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 11:28:54 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 61!
+!provides: 'UI-Click-Select' 1 62!
 !requires: 'Cuis-Base' 60 5031 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -817,16 +817,17 @@ withModel: anObject listGetter: getListSel indexGetter: getSelectionSel indexSet
 	^self new
 		model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel ! !
 
-!DropDownButtonMorph class methodsFor: 'examples' stamp: 'jmv 5/17/2024 18:05:49'!
+!DropDownButtonMorph class methodsFor: 'examples' stamp: 'hlsf 9/12/2024 11:25:05'!
 example1
 "
 	self example1 openInWorld
 "
 | palette |
 	palette := #(#blue #white #red #green #black #orange) collect: [ :aColor |
-		BoxedMorph new ::
+		BorderedBoxMorph new ::
 			morphExtent: 80@15;
 			color: (Color perform: aColor);
+			padding: 0;
 			borderWidth: 1;
 			borderColor: Color black;
 			yourself].
@@ -1487,15 +1488,16 @@ suitedExtent
 defaultBorderWidth
 	^ 1! !
 
-!PluggableListOfMorph class methodsFor: 'examples' stamp: 'jmv 5/17/2024 18:06:55'!
+!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 9/12/2024 11:27:24'!
 example1
 "
 	self example1 openInWorld
 "
 | palette |
 	palette := #(#blue #white #red #green #black #orange) collect: [ :aColor |
-		BoxedMorph new ::
+		BorderedBoxMorph new ::
 			morphExtent: 80@15;
+			padding: 0;
 			color: (Color perform: aColor);
 			borderWidth: 1;
 			borderColor: Color black;

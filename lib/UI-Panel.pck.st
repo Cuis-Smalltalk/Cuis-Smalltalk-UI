@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 10:57:18 am'!
+'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 11:28:57 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 110!
+!provides: 'UI-Panel' 1 111!
 !requires: 'Cuis-Base' 71 6519 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -428,7 +428,7 @@ defaultBorderColor
 defaultColor
 	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 9/12/2024 10:44:43'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 9/12/2024 11:25:43'!
 initialize
 	| row |
 	super initialize.	
@@ -440,7 +440,7 @@ initialize
 	row := LayoutMorph newRow :: separation: 2@0; color: Color transparent .
 	row 
 		addMorph: label;
-		addMorphUseAll: (BoxedMorph new :: borderWidth: 0 ; color: Color transparent; yourself);
+		addMorphUseAll: (ColoredBoxMorph new :: color: Color transparent; yourself);
 		addMorph: quickButtons layoutSpec: (LayoutSpec proportionalWidth: 0 proportionalHeight: 0) .
 	self 	addMorph: row layoutSpec: (LayoutSpec proportionalHeight: 0)! !
 

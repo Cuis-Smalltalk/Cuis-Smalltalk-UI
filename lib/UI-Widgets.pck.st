@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:45:11 pm'!
+'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 11:29:00 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 35!
+!provides: 'UI-Widgets' 1 36!
 !requires: 'Cuis-Base' 60 5032 nil!
 !requires: 'UI-Core' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -225,13 +225,12 @@ mouseButton1Up: event localPosition: position
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!FilePreviewMorph methodsFor: 'initialization' stamp: 'hlsf 5/4/2023 15:47:53'!
+!FilePreviewMorph methodsFor: 'initialization' stamp: 'hlsf 9/12/2024 11:25:55'!
 file: aFileEntry 		image: aForm	 buttons: buttons
 	| row |
 	file := aFileEntry.
 	self addMorph: (ImageMorph new image: aForm);
-		addMorphUseAll: (BoxedMorph new 
-			borderWidth: 0;
+		addMorphUseAll: (ColoredBoxMorph new 
 			color: Color transparent; 
 			yourself).
 	row := LayoutMorph newRow separation: 2@0 :: 
