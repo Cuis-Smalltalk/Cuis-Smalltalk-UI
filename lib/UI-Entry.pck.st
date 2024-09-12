@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:37:48 pm'!
+'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 10:57:15 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 52!
+!provides: 'UI-Entry' 1 53!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 71 6513 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -8,7 +8,7 @@ SystemOrganization addCategory: #'UI-Entry'!
 
 
 !classDefinition: #TextEntryMorph category: #'UI-Entry'!
-BoxedMorph subclass: #TextEntryMorph
+BorderedBoxMorph subclass: #TextEntryMorph
 	instanceVariableNames: 'font emphasis contents editor showTextCursor pauseBlinking textCursorRect keyboardFocusWatcher crAction acceptCancelReceiver backgroundColor'
 	classVariableNames: ''
 	poolDictionaries: ''

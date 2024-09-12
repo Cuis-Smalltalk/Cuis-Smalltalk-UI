@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 9:33:23 pm'!
+'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 10:57:18 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 109!
+!provides: 'UI-Panel' 1 110!
 !requires: 'Cuis-Base' 71 6519 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -298,6 +298,10 @@ It emits event when
  - the user press apply and cancel
 !
 
+!WizardPage commentStamp: '<historical>' prior: 0!
+See WizardPanel.
+I am a model of page to add to a WizardPanel.!
+
 !BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 9/30/2023 17:15:02'!
 initialize
 	super initialize.
@@ -424,11 +428,11 @@ defaultBorderColor
 defaultColor
 	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 7/28/2023 14:36:51'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 9/12/2024 10:44:43'!
 initialize
 	| row |
 	super initialize.	
-	self separation: 10@10;
+	self padding: 10@10;
 		doAdoptWidgetsColor.
 		
 	label := LabelMorph new.
@@ -444,7 +448,7 @@ initialize
 textBackgroundColor
 	^Theme current paneBackgroundFrom: borderColor ! !
 
-!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 7/14/2024 09:54:45'!
+!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 9/12/2024 10:45:23'!
 drawOn: canvas
 	|  startPosition endPosition |
 	endPosition := self topRow morphPosition + (0 @ self topRow morphExtent y / 2).
@@ -455,13 +459,13 @@ drawOn: canvas
 		canvas moveTo: startPosition;
 			rel_LineTo: self elasticMorph morphWidth@0;
 			rel_MoveTo: quickButtons morphWidth @ 0;
-			rel_ArcTo: separation / 2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
-			lineToY: extent y - separation y;
-			rel_ArcTo: separation * (-1@1) / 2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
-			lineToX:  separation x;
-			rel_ArcTo: separation / -2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
-			lineToY: endPosition y + (separation y / 2);
-			rel_ArcTo: separation * (-1@1) / -2  radius: separation / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true]! !
+			rel_ArcTo: padding / 2  radius: padding / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
+			lineToY: extent y - padding y;
+			rel_ArcTo: padding * (-1@1) / 2  radius: padding / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
+			lineToX:  padding x;
+			rel_ArcTo: padding / -2  radius: padding / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true;
+			lineToY: endPosition y + (padding y / 2);
+			rel_ArcTo: padding * (-1@1) / -2  radius: padding / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true]! !
 
 !DecoratedPane methodsFor: 'geometry testing' stamp: 'hlsf 5/4/2023 21:32:35'!
 requiresVectorCanvas
