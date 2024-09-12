@@ -2,7 +2,7 @@
 'Description Save combined Morph into a package which requires its dependent code.
 Restore via
   Feature require: <package>'!
-!provides: 'Morphic-Packager' 1 14!
+!provides: 'Morphic-Packager' 1 15!
 !requires: 'Cuis-Base' 60 5092 nil!
 SystemOrganization addCategory: 'Morphic-Packager'!
 
@@ -125,7 +125,7 @@ saveAsPackage
  with the name you specify?')
 		ifFalse: [ ^nil ].
 
-	packageName := FillInTheBlankMorph request: 'Enter a Unique Name'.
+	packageName := StringRequestMorph request: 'Enter a Unique Name'.
 	(packageName notEmpty) 
 		ifFalse: [ ^nil ].
 	

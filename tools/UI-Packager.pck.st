@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6451] on 6 June 2024 at 10:03:11 am'!
+'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:42:21 pm'!
 'Description Save combined Morph into a package which requires its dependent code.
 Restore via
   Feature require: <package>'!
-!provides: 'UI-Packager' 1 1!
+!provides: 'UI-Packager' 1 2!
 SystemOrganization addCategory: #'UI-Packager'!
 
 
@@ -114,7 +114,7 @@ initialize
 ).
 	PopUpMenu inform: packageFileEntry name , ' saved'.! !
 
-!Morph methodsFor: '*ui-packager' stamp: 'KenD 3/12/2022 14:25:17'!
+!Morph methodsFor: '*ui-packager' stamp: 'jmv 9/12/2024 12:41:39'!
 saveAsPackage
 	"Save me and create a package which requires all my dependent code."
 	
@@ -124,7 +124,7 @@ saveAsPackage
  with the name you specify?')
 		ifFalse: [ ^nil ].
 
-	packageName := FillInTheBlankMorph request: 'Enter a Unique Name'.
+	packageName := StringRequestMorph request: 'Enter a Unique Name'.
 	(packageName notEmpty) 
 		ifFalse: [ ^nil ].
 	

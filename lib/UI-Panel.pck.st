@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 11:28:57 am'!
+'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:42:25 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 111!
+!provides: 'UI-Panel' 1 112!
 !requires: 'Cuis-Base' 71 6519 nil!
 !requires: 'UI-Core' 1 0 nil!
 !requires: 'UI-Entry' 1 8 nil!
@@ -971,11 +971,11 @@ labelHeight
 
 	^  (Preferences at: #windowTitleFont) lineSpacing+1! !
 
-!Panel methodsFor: 'label' stamp: 'KenD 4/25/2015 12:54'!
+!Panel methodsFor: 'label' stamp: 'jmv 9/12/2024 12:41:43'!
 relabel
 
 	| newLabel |
-	newLabel _ FillInTheBlankMorph 
+	newLabel := StringRequestMorph 
 		request: 'New title for this window'
 		initialAnswer: self labelString.
 	newLabel isEmpty ifTrue: [^self].
