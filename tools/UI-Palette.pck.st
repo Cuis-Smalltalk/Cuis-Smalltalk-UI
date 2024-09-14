@@ -1,11 +1,12 @@
-'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:52:26 pm'!
+'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:32:43 pm'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 15!
-!requires: 'UI-Click-Select' 1 1 nil!
+!provides: 'UI-Palette' 1 16!
+!requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Panel' 1 17 nil!
-!requires: 'UI-DragAndDrop' 1 1 nil!
-!requires: 'UI-Shapes' 1 29 nil!
+!requires: 'UI-Click-Select' 1 63 nil!
+!requires: 'UI-DragAndDrop' 1 4 nil!
+!requires: 'UI-Shapes' 1 45 nil!
 SystemOrganization addCategory: #'UI-Palette'!
 
 
@@ -17,16 +18,6 @@ LayoutMorph subclass: #PaletteLayoutMorph
 	category: 'UI-Palette'!
 !classDefinition: 'PaletteLayoutMorph class' category: #'UI-Palette'!
 PaletteLayoutMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #InnerPluggableImagePalette category: #'UI-Palette'!
-InnerPluggableMorph subclass: #InnerPluggableImagePalette
-	instanceVariableNames: 'nameImageCollection imageFilter imageExtent calculatedExtent'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Palette'!
-!classDefinition: 'InnerPluggableImagePalette class' category: #'UI-Palette'!
-InnerPluggableImagePalette class
 	instanceVariableNames: ''!
 
 !classDefinition: #PluggableImagePalette category: #'UI-Palette'!
@@ -79,12 +70,19 @@ ImagePickerPanel subclass: #PickAnIconPalette
 PickAnIconPalette class
 	instanceVariableNames: ''!
 
+!classDefinition: #InnerPluggableImagePalette category: #'UI-Palette'!
+InnerPluggableMorph subclass: #InnerPluggableImagePalette
+	instanceVariableNames: 'nameImageCollection imageFilter imageExtent calculatedExtent'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Palette'!
+!classDefinition: 'InnerPluggableImagePalette class' category: #'UI-Palette'!
+InnerPluggableImagePalette class
+	instanceVariableNames: ''!
+
 
 !PaletteLayoutMorph commentStamp: '<historical>' prior: 0!
 I am a LayoutMorph which allows grabbing (cloning) my submorphs.!
-
-!InnerPluggableImagePalette commentStamp: '<historical>' prior: 0!
-I display pick/clone-able images in a PluggableImagePalette which is a PluggableScrollPane!
 
 !ImagePickerPanel commentStamp: '<historical>' prior: 0!
 I present a scrollable view of images to pick from. 
@@ -106,6 +104,9 @@ I am just a way of getting an initializedInstance from the New Morph.. menu..
 
 See my class side.!
 
+!InnerPluggableImagePalette commentStamp: '<historical>' prior: 0!
+I display pick/clone-able images in a PluggableImagePalette which is a PluggableScrollPane!
+
 !PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 5/11/2019 01:39:50'!
 aboutToGrab: aMorph
 	"submorph is being grabbed by a hand.
@@ -122,19 +123,19 @@ allowsSubmorphDrag
 
 	^ true! !
 
-!PaletteLayoutMorph methodsFor: 'layout' stamp: 'KenD 9/2/2024 19:49:55'!
+!PaletteLayoutMorph methodsFor: 'layout' stamp: 'KenD 9/14/2024 15:07:39'!
 shrinkWrap
 	"Resize self to minimally contain submorphs with specified separation"
 	
 	| width height sep |
 	((self direction) = #horizontal) "(a row)"
 		ifTrue:  [
-			sep := self xSeparation.
+			sep := self gap.
 			width := sep + 
 				(self submorphs 
 					inject: 0 
 					into: [ :subTotal :m |  subTotal + (m extentInOwner x) + sep ]).
-			sep := 2 * self ySeparation.
+			sep := 2 * self gap.
 			height := 
 				(self submorphs 
 					inject: 10 
@@ -146,12 +147,12 @@ shrinkWrap
 							offAxisEdgeWeight: #rowTop)
 		]
 		ifFalse: [ " vertical  (a column)"
-			sep := 2 * self xSeparation.
+			sep := 2 * self gap.
 			width := 
 				(self submorphs 
 					inject: 10 
 					into: [ :maxWidth :m |  maxWidth max: (m extentInOwner x) + sep ]).
-			sep := self ySeparation.
+			sep := self gap.
 			height := sep + 
 				(self submorphs 
 					inject: 0 
@@ -170,170 +171,6 @@ shrinkWrap
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
-
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:42:54'!
-adjustExtent
-	
-	"Nothing to do here"! !
-
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:10'!
-imageExtent
-	"Answer extent of an image contained in me.
-	Assume all images of same extent"
-	^imageExtent ! !
-
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:38:18'!
-imageExtent: aPointExtent
-
-	imageExtent := aPointExtent ! !
-
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:16'!
-imageHeight
-
-	^ imageExtent y! !
-
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:21'!
-imageWidth
-
-	^ imageExtent x! !
-
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:37:45'!
-minimumExtent
-
-	^self calculatedExtent ! !
-
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:40'!
-nameImageCollection
-
-	^ nameImageCollection ! !
-
-!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/2/2024 19:50:00'!
-collection: aNameImageCollection filter: imageTransducer
-
-	| numImages maxWidth numAcross numDown spacedExtent |
-	nameImageCollection := aNameImageCollection.
-	imageFilter := imageTransducer.
-	
-	numImages := aNameImageCollection size.
-	numImages isZero 
-		ifTrue: [Error signal: 'I require a non-empty collection to display!!'].
-	numImages> 1000 
-		ifTrue: [Error signal: 'Collection too large to display safely'].
-	"@@FIXME: assumes all images same size@@"
-	self imageExtent: 
-		(self processImage: (aNameImageCollection anyOne value)) extentInOwner.
-
-	maxWidth := (DisplayScreen actualScreenSize x) // 1.2.
-	spacedExtent := imageExtent + self spaceWidth.
-
-	numAcross := (((maxWidth - self spaceWidth) // spacedExtent x) 
-						max: 1) min: numImages.
-	numDown := (numImages / numAcross) ceiling.
-	((numDown < 3) and: [numAcross > 40])
-		ifTrue: [ 
-			numAcross := 40. 
-			numDown := (numImages / numAcross) ceiling.
-		].
-"
-Transcript show: 'numAcross: ', (numAcross asString), '  numDown: ', (numDown asString)
-	; newLine.
-"
-	self calculatedExtent:  
-			(((self imageWidth + self spaceWidth) * numAcross)
-			@ ((self imageHeight + self spaceWidth) * numDown))
-							+ (2 * self spaceWidth). "frame"
-"
-Transcript show: 'calculatedExtent: ', (self calculatedExtent asString)
-	; newLine.
-"
-	"Answer LayoutMorph with images"
-	^ self layoutImages: numAcross extent: self calculatedExtent.
-
-
-
-! !
-
-!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/16/2021 13:18:54'!
-initialize
-
-	super initialize.
-	imageFilter := [:any| any].
-	^ self 
-		layoutSpec: LayoutSpec useAll;
-		yourself! !
-
-!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/16/2021 13:11:57'!
-layoutImages: numAcross extent: layoutExtent
-	"Lay out images in a LayoutMorph and return it."
-	
-	| column nextRow count rowLayoutSpec |
-	rowLayoutSpec := LayoutSpec 
-							fixedWidth: layoutExtent x  
-							fixedHeight: self imageHeight
-							offAxisEdgeWeight: #columnLeft.
-							
-	column := LayoutMorph newColumn.
-	column 
-		separation:    self spaceWidth;
-		morphExtent: self calculatedExtent;
-		axisEdgeWeight: #columnTop.
-
-	count := -1.
-	self nameImageCollection do: [ :nameImageAssoc |
-			| name image imageMorph |
-		     name  := nameImageAssoc key.
-			image := nameImageAssoc value.
-			count := count + 1.  "Image count"
-			(count \\ numAcross) isZero ifTrue: [ "Start a new Row"
-				nextRow := PaletteLayoutMorph newRow 
-							separation: (self spaceWidth @ 0).
-				nextRow layoutSpec: rowLayoutSpec.
-				column addMorph: nextRow.
-			].
-			imageMorph := self processImage: image.
-			imageMorph setBalloonText: name asString.
-			nextRow addMorph: imageMorph.
-	].
-	"Don't spread out morphs in the last row"
-	((nextRow submorphs size) > 0) ifTrue: [ nextRow shrinkWrap.].
-	column 
-		color: `Color orange`;
-		addMorph: nextRow; "add last row"
-		layoutSpec: (LayoutSpec
-							fixedWidth: self imageWidth
-							fixedHeight: layoutExtent y). 
-	^ column
-! !
-
-!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:02'!
-calculatedExtent
-
-	^ calculatedExtent! !
-
-!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:36:55'!
-calculatedExtent: aPointExtent
-
-	calculatedExtent := aPointExtent.
-	self morphExtent: calculatedExtent ! !
-
-!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:10'!
-processImage: anImage
-
-	^ imageFilter value: anImage
-! !
-
-!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:16'!
-spaceWidth
-	"Answer the space in pixels between images"
-	
-	^ 2! !
-
-!InnerPluggableImagePalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 11:58:06'!
-fromCollection: sortedColors imageFilter: colorTransducer
-
-		^ self basicNew initialize 
-			collection: sortedColors 
-			filter: colorTransducer ! !
 
 !PluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/15/2021 08:31:54'!
 innerMorphClass
@@ -538,7 +375,7 @@ useXKCDColorDict
 	Feature require: 'XKCD-NamedColors'.
 	Color setColorNamesDict: Color xkcdColorDictionary.! !
 
-!ImagePickerPanel class methodsFor: 'private' stamp: 'KenD 9/2/2024 19:50:06'!
+!ImagePickerPanel class methodsFor: 'private' stamp: 'KenD 9/14/2024 15:24:11'!
 privateBuildPanelLabel: aStringLabel 
 collection: sortedNameImageCollection
 transducer: imageProcessor
@@ -562,7 +399,6 @@ transducer: imageProcessor
 			(scrollPane scroller 
 				collection: sortedNameImageCollection
 				filter: imageProcessor ) .
-	scrollPane scroller borderWidth: 0.
 	
 		picker  layoutMorph 
 		addMorph: scrollPane;
@@ -622,6 +458,170 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
+
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:42:54'!
+adjustExtent
+	
+	"Nothing to do here"! !
+
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:10'!
+imageExtent
+	"Answer extent of an image contained in me.
+	Assume all images of same extent"
+	^imageExtent ! !
+
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:38:18'!
+imageExtent: aPointExtent
+
+	imageExtent := aPointExtent ! !
+
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:16'!
+imageHeight
+
+	^ imageExtent y! !
+
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:21'!
+imageWidth
+
+	^ imageExtent x! !
+
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:37:45'!
+minimumExtent
+
+	^self calculatedExtent ! !
+
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:40'!
+nameImageCollection
+
+	^ nameImageCollection ! !
+
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/2/2024 19:50:00'!
+collection: aNameImageCollection filter: imageTransducer
+
+	| numImages maxWidth numAcross numDown spacedExtent |
+	nameImageCollection := aNameImageCollection.
+	imageFilter := imageTransducer.
+	
+	numImages := aNameImageCollection size.
+	numImages isZero 
+		ifTrue: [Error signal: 'I require a non-empty collection to display!!'].
+	numImages> 1000 
+		ifTrue: [Error signal: 'Collection too large to display safely'].
+	"@@FIXME: assumes all images same size@@"
+	self imageExtent: 
+		(self processImage: (aNameImageCollection anyOne value)) extentInOwner.
+
+	maxWidth := (DisplayScreen actualScreenSize x) // 1.2.
+	spacedExtent := imageExtent + self spaceWidth.
+
+	numAcross := (((maxWidth - self spaceWidth) // spacedExtent x) 
+						max: 1) min: numImages.
+	numDown := (numImages / numAcross) ceiling.
+	((numDown < 3) and: [numAcross > 40])
+		ifTrue: [ 
+			numAcross := 40. 
+			numDown := (numImages / numAcross) ceiling.
+		].
+"
+Transcript show: 'numAcross: ', (numAcross asString), '  numDown: ', (numDown asString)
+	; newLine.
+"
+	self calculatedExtent:  
+			(((self imageWidth + self spaceWidth) * numAcross)
+			@ ((self imageHeight + self spaceWidth) * numDown))
+							+ (2 * self spaceWidth). "frame"
+"
+Transcript show: 'calculatedExtent: ', (self calculatedExtent asString)
+	; newLine.
+"
+	"Answer LayoutMorph with images"
+	^ self layoutImages: numAcross extent: self calculatedExtent.
+
+
+
+! !
+
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/16/2021 13:18:54'!
+initialize
+
+	super initialize.
+	imageFilter := [:any| any].
+	^ self 
+		layoutSpec: LayoutSpec useAll;
+		yourself! !
+
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/14/2024 15:17:21'!
+layoutImages: numAcross extent: layoutExtent
+	"Lay out images in a LayoutMorph and return it."
+	
+	| column nextRow count rowLayoutSpec |
+	rowLayoutSpec := LayoutSpec 
+							fixedWidth: layoutExtent x  
+							fixedHeight: self imageHeight
+							offAxisEdgeWeight: #columnLeft.
+							
+	column := LayoutMorph newColumn.
+	column 
+		gap:    self spaceWidth;
+		morphExtent: self calculatedExtent;
+		axisEdgeWeight: #columnTop.
+
+	count := -1.
+	self nameImageCollection do: [ :nameImageAssoc |
+			| name image imageMorph |
+		     name  := nameImageAssoc key.
+			image := nameImageAssoc value.
+			count := count + 1.  "Image count"
+			(count \\ numAcross) isZero ifTrue: [ "Start a new Row"
+				nextRow := PaletteLayoutMorph newRow 
+							gap: (self spaceWidth).
+				nextRow layoutSpec: rowLayoutSpec.
+				column addMorph: nextRow.
+			].
+			imageMorph := self processImage: image.
+			imageMorph setBalloonText: name asString.
+			nextRow addMorph: imageMorph.
+	].
+	"Don't spread out morphs in the last row"
+	((nextRow submorphs size) > 0) ifTrue: [ nextRow shrinkWrap.].
+	column 
+		color: `Color orange`;
+		addMorph: nextRow; "add last row"
+		layoutSpec: (LayoutSpec
+							fixedWidth: self imageWidth
+							fixedHeight: layoutExtent y). 
+	^ column
+! !
+
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:02'!
+calculatedExtent
+
+	^ calculatedExtent! !
+
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:36:55'!
+calculatedExtent: aPointExtent
+
+	calculatedExtent := aPointExtent.
+	self morphExtent: calculatedExtent ! !
+
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:10'!
+processImage: anImage
+
+	^ imageFilter value: anImage
+! !
+
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:16'!
+spaceWidth
+	"Answer the space in pixels between images"
+	
+	^ 2! !
+
+!InnerPluggableImagePalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 11:58:06'!
+fromCollection: sortedColors imageFilter: colorTransducer
+
+		^ self basicNew initialize 
+			collection: sortedColors 
+			filter: colorTransducer ! !
 
 !Morph methodsFor: '*ui-palette' stamp: 'KenD 11/5/2021 13:48:39'!
 changeColor

@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 11:28:54 am'!
+'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:30:38 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 62!
-!requires: 'Cuis-Base' 60 5031 nil!
+!provides: 'UI-Click-Select' 1 63!
+!requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
 
@@ -76,26 +76,6 @@ MenuMorph subclass: #MultiSelectMenu
 MultiSelectMenu class
 	instanceVariableNames: ''!
 
-!classDefinition: #CheckButtonMorph category: #'UI-Click-Select'!
-BorderedBoxMorph subclass: #CheckButtonMorph
-	instanceVariableNames: 'isSelected hoverColor'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Click-Select'!
-!classDefinition: 'CheckButtonMorph class' category: #'UI-Click-Select'!
-CheckButtonMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #RadioButtonMorph category: #'UI-Click-Select'!
-CheckButtonMorph subclass: #RadioButtonMorph
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Click-Select'!
-!classDefinition: 'RadioButtonMorph class' category: #'UI-Click-Select'!
-RadioButtonMorph class
-	instanceVariableNames: ''!
-
 !classDefinition: #PluggableDropDownListMorph category: #'UI-Click-Select'!
 PluggableListMorph subclass: #PluggableDropDownListMorph
 	instanceVariableNames: ''
@@ -124,6 +104,26 @@ PluggableListOfMorph subclass: #PluggableDropDownListOfMorph
 	category: 'UI-Click-Select'!
 !classDefinition: 'PluggableDropDownListOfMorph class' category: #'UI-Click-Select'!
 PluggableDropDownListOfMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #CheckButtonMorph category: #'UI-Click-Select'!
+BorderedBoxMorph subclass: #CheckButtonMorph
+	instanceVariableNames: 'isSelected hoverColor'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'CheckButtonMorph class' category: #'UI-Click-Select'!
+CheckButtonMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #RadioButtonMorph category: #'UI-Click-Select'!
+CheckButtonMorph subclass: #RadioButtonMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'RadioButtonMorph class' category: #'UI-Click-Select'!
+RadioButtonMorph class
 	instanceVariableNames: ''!
 
 
@@ -176,6 +176,13 @@ For example, TextEmphasis codes are a bit ORing of values:
  2r01000000	64 	with ST-80 Glyphs
  !
 
+!PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
+I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
+My width is adjusted to the larger morph of my list.!
+
+!PluggableDropDownListOfMorph commentStamp: '<historical>' prior: 0!
+I am a list of Morph with a modal behavior. When the user moves the mouse cursor outisde of me, I am deleted.!
+
 !CheckButtonMorph commentStamp: 'hlsf 6/8/2024 12:06:19' prior: 0!
 I am simple check button.
 
@@ -185,13 +192,6 @@ Convention:
 
 !RadioButtonMorph commentStamp: '<historical>' prior: 0!
 I am a very simple radio button.!
-
-!PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
-I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
-My width is adjusted to the larger morph of my list.!
-
-!PluggableDropDownListOfMorph commentStamp: '<historical>' prior: 0!
-I am a list of Morph with a modal behavior. When the user moves the mouse cursor outisde of me, I am deleted.!
 
 !CheckGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:54'!
 buttonClass
@@ -950,12 +950,12 @@ selectedRow: index
 adjustExtent
 	self morphExtent: self minimumExtent ! !
 
-!InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:50'!
+!InnerListOfMorph methodsFor: 'geometry' stamp: 'KenD 9/14/2024 15:12:03'!
 maximumItemHeight
 "The maximum height among the item"
 	^ submorphs 
 		ifEmpty: [0]
-		ifNotEmpty: [submorphs max: [:morph | morph fullBoundsInOwner height + (self ySeparation * 2)]]! !
+		ifNotEmpty: [submorphs max: [:morph | morph fullBoundsInOwner height + (self gap * 2)]]! !
 
 !InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 9/12/2024 10:30:37'!
 minimumWidth
@@ -1192,6 +1192,100 @@ includeInNewMorphMenu
 	
 	^ false! !
 
+!PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!
+keyboardFocusChange: aBoolean
+	aBoolean ifFalse: [		self delete ].! !
+
+!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 10/10/2023 22:22:48'!
+updateList
+	super updateList.
+	self morphExtent: (scroller desiredWidth + ScrollBar scrollbarThickness + 10) @ extent y! !
+
+!PluggableDropDownListMorph methodsFor: 'access' stamp: 'hlsf 9/30/2023 17:24:52'!
+adoptWidgetsColor: paneColor
+	super adoptWidgetsColor: paneColor.
+	borderColor := color darker.
+	color := color lighter.
+	! !
+
+!PluggableDropDownListMorph methodsFor: 'access' stamp: 'hlsf 9/28/2023 21:20:34'!
+list
+	^ list! !
+
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 9/30/2023 17:24:12'!
+defaultBorderWidth
+	^ 1! !
+
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 10/10/2023 22:05:42'!
+initialize
+	super initialize.
+	extent := 150 @100! !
+
+!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
+getList
+	getListSelector 		ifNil: [^ #()].
+	list _ model perform: getListSelector.
+	list ifNil: [^ #()].	
+	scroller removeAllMorphs.
+	list do: [:aMorph | 	self addToScroller: aMorph].
+	self suitedExtent.
+	^ list! !
+
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:39:41'!
+initialize
+	super initialize.
+	self hHideScrollBar.! !
+
+!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
+innerMorphClass
+	^ InnerListOfMorph ! !
+
+!PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
+is: aSymbol
+	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:30'!
+minimumItemExtent
+"the minimum list item extent to consider to fit in the UI"
+	^ scroller minimumWidth @ scroller maximumItemHeight ! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
+scrollDeltaHeight
+	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
+
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/22/2022 10:47:06'!
+suitedExtent
+	self morphHeight: (extent y min: scroller totalHeight max: 100).
+	self morphWidth: self minimumExtent x + scroller minimumWidth! !
+
+!PluggableListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 6/5/2022 11:18:17'!
+defaultBorderWidth
+	^ 1! !
+
+!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 9/12/2024 11:27:24'!
+example1
+"
+	self example1 openInWorld
+"
+| palette |
+	palette := #(#blue #white #red #green #black #orange) collect: [ :aColor |
+		BorderedBoxMorph new ::
+			morphExtent: 80@15;
+			padding: 0;
+			color: (Color perform: aColor);
+			borderWidth: 1;
+			borderColor: Color black;
+			yourself].
+	^ PluggableListOfMorph 
+		withModel: (ListModel with: palette)
+		listGetter: #list
+		indexGetter: #listIndex
+		indexSetter: #listIndex:! !
+
+!PluggableDropDownListOfMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:08:25'!
+keyboardFocusChange: aBoolean
+	aBoolean ifFalse: [		self delete ].! !
+
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 6/8/2024 12:34:01'!
 defaultBorderColor
 
@@ -1417,97 +1511,3 @@ example1
 	^ super example1 
 		when: #radioSelection send: #show: to: Transcript.
 ! !
-
-!PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!
-keyboardFocusChange: aBoolean
-	aBoolean ifFalse: [		self delete ].! !
-
-!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 10/10/2023 22:22:48'!
-updateList
-	super updateList.
-	self morphExtent: (scroller desiredWidth + ScrollBar scrollbarThickness + 10) @ extent y! !
-
-!PluggableDropDownListMorph methodsFor: 'access' stamp: 'hlsf 9/30/2023 17:24:52'!
-adoptWidgetsColor: paneColor
-	super adoptWidgetsColor: paneColor.
-	borderColor := color darker.
-	color := color lighter.
-	! !
-
-!PluggableDropDownListMorph methodsFor: 'access' stamp: 'hlsf 9/28/2023 21:20:34'!
-list
-	^ list! !
-
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 9/30/2023 17:24:12'!
-defaultBorderWidth
-	^ 1! !
-
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 10/10/2023 22:05:42'!
-initialize
-	super initialize.
-	extent := 150 @100! !
-
-!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
-getList
-	getListSelector 		ifNil: [^ #()].
-	list _ model perform: getListSelector.
-	list ifNil: [^ #()].	
-	scroller removeAllMorphs.
-	list do: [:aMorph | 	self addToScroller: aMorph].
-	self suitedExtent.
-	^ list! !
-
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/22/2022 12:39:41'!
-initialize
-	super initialize.
-	self hHideScrollBar.! !
-
-!PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 1/8/2022 12:09:36'!
-innerMorphClass
-	^ InnerListOfMorph ! !
-
-!PluggableListOfMorph methodsFor: 'testing' stamp: 'hlsf 1/8/2022 12:10:10'!
-is: aSymbol
-	^ aSymbol == #PluggableListOfMorph or: [ super is: aSymbol ]! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/21/2022 11:17:30'!
-minimumItemExtent
-"the minimum list item extent to consider to fit in the UI"
-	^ scroller minimumWidth @ scroller maximumItemHeight ! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
-scrollDeltaHeight
-	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
-
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/22/2022 10:47:06'!
-suitedExtent
-	self morphHeight: (extent y min: scroller totalHeight max: 100).
-	self morphWidth: self minimumExtent x + scroller minimumWidth! !
-
-!PluggableListOfMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 6/5/2022 11:18:17'!
-defaultBorderWidth
-	^ 1! !
-
-!PluggableListOfMorph class methodsFor: 'examples' stamp: 'hlsf 9/12/2024 11:27:24'!
-example1
-"
-	self example1 openInWorld
-"
-| palette |
-	palette := #(#blue #white #red #green #black #orange) collect: [ :aColor |
-		BorderedBoxMorph new ::
-			morphExtent: 80@15;
-			padding: 0;
-			color: (Color perform: aColor);
-			borderWidth: 1;
-			borderColor: Color black;
-			yourself].
-	^ PluggableListOfMorph 
-		withModel: (ListModel with: palette)
-		listGetter: #list
-		indexGetter: #listIndex
-		indexSetter: #listIndex:! !
-
-!PluggableDropDownListOfMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:08:25'!
-keyboardFocusChange: aBoolean
-	aBoolean ifFalse: [		self delete ].! !

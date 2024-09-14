@@ -1,6 +1,7 @@
-'From Cuis7.1 [latest update: #6670] on 3 September 2024 at 10:22:08 am'!
+'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:31:08 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 26!
+!provides: 'UI-Color-Panel' 1 27!
+!requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-DragAndDrop' 1 0 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 2 nil!
@@ -976,7 +977,7 @@ Color plus α' .
 	^alphaFrame
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 3/13/2022 10:42:34'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:14:10'!
 buildColorPaneColumn
 
 	| selector column hexDisplayLayout  |
@@ -995,7 +996,7 @@ buildColorPaneColumn
 							proportionalWidth: 0.2 
 							proportionalHeight: 0.1
 							offAxisEdgeWeight: #center);
-		separation: 1;
+		gap: 1;
 		color: Color transparent;
 		addMorph: (LabelMorph new contents: '16r') layoutSpec: (LayoutSpec keepMorphExtent);
 		addMorph: self rgbString;
@@ -1015,17 +1016,18 @@ buildColorPaneColumn
 		addMorph: alphaSlider ;
 		addMorph: (LabelMorph contents: 'transparent <-α-> opaque') ;
 		axisEdgeWeight: #columnTop;
-		separation: 4;
+		gap: 4;
 		color: Color transparent.
 	
 	^ column! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 16:26:40'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:20:35'!
 buildMorphicWindow
 " Our layout is a bit different to a traditional dialog, so we override as 
 we don't need button area at the bottom and main panel is a row of morphs." 
 	
-	self layoutMorph separation: self defaultSeparation ;
+	self layoutMorph gap: self defaultSeparation ;
+		padding: 10;
 		axisEdgeWeight: self defaultAlignement ;
 		addMorph: self buildColorPaneColumn;
 		addMorph: self buildSliderColumn;
@@ -1042,14 +1044,14 @@ we don't need button area at the bottom and main panel is a row of morphs."
 		yourself
 ! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 12/30/2021 12:42:57'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:14:33'!
 buildRadioButtonColumn
 
 	| radioCol setupEntryMorph valueEntryMorph |
 	rgbRadio := RadioGroup fromList: #(Red Green Blue).
-	rgbRadio separation: 2.
+	rgbRadio gap: 2.
 	hsvRadio := RadioGroup fromList: #(Hue Saturation Brightness).
-	hsvRadio separation: 2.
+	hsvRadio gap: 2.
 	rgbRadio when: #informRadioSelection send: #newRadioSelection: to: self.
 	hsvRadio when: #informRadioSelection send: #newRadioSelection: to: self.
 	setupEntryMorph := [ :sym :entryMorph | | selector |
@@ -1091,7 +1093,7 @@ buildRadioButtonColumn
 
 	radioCol := LayoutMorph newColumn.
 	^ radioCol 
-		separation: 0;
+		gap: 0;
 		axisEdgeWeight: #columnTop;
 		addMorph: rgbRadio;
 		addMorph: hsvRadio;
@@ -1113,7 +1115,7 @@ buildSliderColumn
 
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 16:22:31'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:14:40'!
 buildSwatchLayout
 	"Display swatch of current color and closest named color"
 
@@ -1143,7 +1145,7 @@ Closest Web Color' .
 	labelColumn
 		color: Color transparent;
 		axisEdgeWeight: #center;
-		separation: 3;
+		gap: 3;
 		addMorph: closeColorFrame layoutSpec: (LayoutSpec keepMorphExtent);
 		addMorph: closestRGB          layoutSpec: (LayoutSpec keepMorphExtent);
 		addMorph: closeColorLabel   layoutSpec: (LayoutSpec keepMorphExtent).
@@ -1170,7 +1172,7 @@ Color without α' .
 
 	swatchLayout := LayoutMorph newRow.
 	^ swatchLayout 
-		separation: 6;
+		gap: 6;
 		addMorph: colorFrame layoutSpec: (LayoutSpec keepMorphExtent);
 		addMorph: labelColumn;
 		color: Color transparent;
@@ -1182,7 +1184,7 @@ resetSliderColumn
 
 	self resetSliderColumn: self colorSelectionSymbol! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/7/2022 11:30:01'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:14:45'!
 resetSliderColumn: sliderSym
 	"Radio selector changed.."
 
@@ -1212,7 +1214,7 @@ resetSliderColumn: sliderSym
 	
 	^self sliderColumn 
 		removeAllMorphs;
-		separation: 6;
+		gap: 6;
 		layoutSpec: (LayoutSpec 
 					fixedWidth: 4 
 					  + (FontFamily 

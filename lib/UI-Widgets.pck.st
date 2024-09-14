@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6709] on 12 September 2024 at 11:29:00 am'!
+'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:33:33 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 37!
-!requires: 'Cuis-Base' 60 5032 nil!
-!requires: 'UI-Core' 1 11 nil!
+!provides: 'UI-Widgets' 1 38!
+!requires: 'Cuis-Base' 71 6722 nil!
+!requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
 
@@ -300,13 +300,13 @@ defaultColor
 
 	^ Color transparent ! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:24'!
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 9/14/2024 15:13:09'!
 initialize
 
 	super initialize.
-	self separation: 2! !
+	self gap: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 4/16/2023 14:39:52'!
+!LabelGroup methodsFor: 'initialization' stamp: 'KenD 9/14/2024 15:13:20'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
@@ -318,7 +318,7 @@ with: labelsAndControls
 	labelMorphs withIndexDo: [:label :i | | row height control | 
 		control := (labelsAndControls at: i) value.
 		height := label morphHeight max: control morphHeight.
-		row := LayoutMorph newRow separation: 4.
+		row := LayoutMorph newRow gap: 4.
 		row 
 			color: self defaultColor;
 			addMorph: label layoutSpec: ( LayoutSpec fixedWidth: labelWidth proportionalHeight: 0.5 offAxisEdgeWeight: #center).

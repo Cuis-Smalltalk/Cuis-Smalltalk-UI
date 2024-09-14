@@ -1,7 +1,8 @@
-'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:47:12 pm'!
+'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:31:57 pm'!
 'Description '!
-!provides: 'UI-DragAndDrop' 1 3!
-!requires: 'UI-Core' 1 12 nil!
+!provides: 'UI-DragAndDrop' 1 4!
+!requires: 'Cuis-Base' 71 6722 nil!
+!requires: 'UI-Core' 1 18 nil!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
 
 
@@ -325,15 +326,11 @@ adjustExtent
 
 	self morphExtent: (self extentInOwner min: self minimumExtent)! !
 
-!FontMorph methodsFor: 'geometry' stamp: 'KenD 3/28/2020 08:18:42'!
+!FontMorph methodsFor: 'geometry' stamp: 'KenD 9/14/2024 15:28:02'!
 labelMorphOffset
 	"LabelMorph is offset by combinedBorder"
-	| combinedBorder |
-	combinedBorder := self labelMorph extentBorder 
-							+ self borderWidth
-							+ (self font pointSize / 2).
 	
-	^ (combinedBorder)@(combinedBorder)! !
+	^(2 * self interiorOrigin) + (self font pointSize / 2)! !
 
 !FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:50:39'!
 dropAction: aDropTargetMorph

@@ -1,10 +1,10 @@
-'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:42:25 pm'!
+'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:33:06 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 112!
-!requires: 'Cuis-Base' 71 6519 nil!
-!requires: 'UI-Core' 1 0 nil!
-!requires: 'UI-Entry' 1 8 nil!
+!provides: 'UI-Panel' 1 113!
+!requires: 'Cuis-Base' 71 6722 nil!
+!requires: 'UI-Core' 1 18 nil!
+!requires: 'UI-Entry' 1 53 nil!
 SystemOrganization addCategory: #'UI-Panel'!
 
 
@@ -1158,13 +1158,13 @@ editModel: anObject
 
 	editModel := anObject! !
 
-!EditPanel methodsFor: 'GUI building' stamp: 'KenD 7/27/2024 19:24:36'!
+!EditPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:15:23'!
 newButtonArea
 	"Answer a LayoutMorph with Update and Cancel buttons"
 	
 	buttonArea := LayoutMorph newRow 
 		color: Color transparent;
-		separation: 8@0;
+		gap: 8;
 		addMorph: (PluggableButtonMorph 
 				model: self 
 				action:  #updateMasterFromCopy
@@ -1204,11 +1204,11 @@ buildMorphicWindow
 	super buildMorphicWindow.
 	layoutMorph adoptWidgetsColor: self widgetsColor.! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 8/27/2023 15:32:30'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:23'!
 newButtonArea
 "Return the morph where the buttons are layed out"
 	buttonArea := LayoutMorph newRow ::
-		separation: 8@0;
+		gap: 8;
 		axisEdgeWeight: #rowRight;
 		addMorph: (PluggableButtonMorph
 			model: actionOnButton 
@@ -1372,11 +1372,11 @@ valueWhenDropped
 		ifNotNil: [ :m | 	m propertyValue: entry value ] 
 		ifNil: [ entry value ]! !
 
-!ValueEntryPanel methodsFor: 'GUI building' stamp: 'KenD 7/16/2024 13:43:45'!
+!ValueEntryPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:36'!
 newButtonArea
 	"Add ACCEPT and CANCEL buttons"
 	buttonArea := LayoutMorph newRow
-		separation: 8@0;
+		gap: 8;
 		addMorph: (PluggableButtonMorph 
 				model: self 
 				action:  #accept
@@ -1398,12 +1398,12 @@ newButtonArea
 		
 	^ buttonArea ! !
 
-!ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 3/19/2022 10:22:57'!
+!ValueEntryPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:45'!
 newPane
 	| entryLayout |
 	entryLayout := LayoutMorph newRow.
 	entryLayout 
-		separation: self defaultSeparation;
+		gap: self defaultSeparation;
 		axisEdgeWeight: #center;
 		addMorph: entry ; "set in #initialize"
 		color: (Color transparent).
@@ -1522,13 +1522,13 @@ initialize
 		acceptCancelReceiver: self;
 		yourself! !
 
-!PointEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 12/25/2021 16:47:44'!
+!PointEntryPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:50'!
 newPane
 
 	| entryLayout |
 	entryLayout := LayoutMorph newRow.
 	entryLayout 
-		separation: self defaultSeparation;
+		gap: self defaultSeparation;
 		axisEdgeWeight: #center;
 		addMorph: xEntryMorph; "set in #initialize"
 		addMorph: (LabelMorph new :: contents: '@' );
@@ -1699,13 +1699,13 @@ initialize
 			fixedHeight: (Preferences at: #windowTitleFont) lineSpacing )
 		! !
 
-!StringEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 4/9/2022 10:21:28'!
+!StringEntryPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:57'!
 newPane
 
 	| entryLayout |
 	entryLayout := LayoutMorph newRow.
 	entryLayout 
-		separation: self defaultSeparation;
+		gap: self defaultSeparation;
 		axisEdgeWeight: #rowLeft;
 		addMorph: entry ; "set in #initialize"
 		color: Color transparent;
@@ -1892,11 +1892,11 @@ example1
 			contents: 'Another description for apply page').
 	^ wizard! !
 
-!WizardPage methodsFor: 'accessing' stamp: 'hlsf 10/31/2021 20:47:46'!
+!WizardPage methodsFor: 'accessing' stamp: 'KenD 9/14/2024 15:17:33'!
 buttons
 	^ buttons ifNil: [
-		buttons _ LayoutMorph newRow 
-		separation: 5;
+		buttons := LayoutMorph newRow 
+		gap: 5;
 		axisEdgeWeight: #rowRight;
 		yourself]! !
 
@@ -1999,83 +1999,6 @@ standardPage: aString on: aWizard
 		wizard: aWizard ;
 		standardPage: aString;
 		yourself! !
-
-!Color class methodsFor: '*ui-panel-color' stamp: 'hlsf 12/29/2021 11:10:21'!
-colorSelectionMenu
-	"Open a popUp menu and let user select color selection option"
-"
-	Color colorSelectionMenu.
-"
-	| menu choices choicesSetter selectedIndex |
-	choices := #( 'CSS3 (Web) Colors'      "1"
-					'Crayon Colors'   "2"
-					'NBSISCC Colors' "3"
-					'XKCD Colors'     "4"
-					'ColorMix Editor'           "5"
-					'Cancel'                        "6"
-				   ).
-				
-	choicesSetter := #(
-				useCSS3ColorDict 
-				useCrayonColorDict
-				useNBSISCCColorDict
-				useXKCDColorDict
-				).
-	
-	menu := PopUpMenu labelArray: choices.
-	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
-	(selectedIndex = 5)
-		ifTrue: [ ColorEditorPanel open].
-	((selectedIndex > 0) and: [selectedIndex < 5])
-		ifTrue: [ | pickerPanel savedExtent |
-			ColorPalette perform: ( choicesSetter at: selectedIndex ).
-			pickerPanel := ImagePickerPanel namedColors. 
-			savedExtent := pickerPanel extentInOwner. 
-			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
-			pickerPanel morphExtent: savedExtent. 
-		].
-	"else cancel -> no action"
-
-	! !
-
-!Color class methodsFor: '*ui-panel-color' stamp: 'KenD 1/10/2022 13:21:32'!
-colorSelectionMenu: originalColor
-	"Open a popUp menu and let user select color selection option.
-	 If the user selects ColorMix Editor, set the color from originalColor"
-"
-	Color colorSelectionMenu.
-"
-	| menu choices choicesSetter selectedIndex |
-	choices := #( 'CSS3 (Web) Colors'      "1"
-					'Crayon Colors'   "2"
-					'NBSISCC Colors' "3"
-					'XKCD Colors'     "4"
-					'ColorMix Editor'           "5"
-					'Cancel'                        "6"
-				   ).
-				
-	choicesSetter := #(
-				useCSS3ColorDict 
-				useCrayonColorDict
-				useNBSISCCColorDict
-				useXKCDColorDict
-				).
-	
-	menu := PopUpMenu labelArray: choices.
-	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
-	(selectedIndex = 5)
-		ifTrue: [ ColorEditorPanel openWithColor: originalColor].
-	((selectedIndex > 0) and: [selectedIndex < 5])
-		ifTrue: [ | pickerPanel savedExtent |
-			ColorPalette perform: ( choicesSetter at: selectedIndex ).
-			pickerPanel := ImagePickerPanel namedColors. 
-			savedExtent := pickerPanel extentInOwner. 
-			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
-			pickerPanel morphExtent: savedExtent. 
-		].
-	"else cancel -> no action"
-
-	! !
 
 !InnerTextMorph methodsFor: '*UI-Panel' stamp: 'hlsf 3/25/2022 11:16:07'!
 contents
