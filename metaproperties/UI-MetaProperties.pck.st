@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:56:29 pm'!
+'From Cuis7.1 [latest update: #6722] on 15 September 2024 at 8:42:54 am'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 138!
+!provides: 'UI-MetaProperties' 1 139!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -605,7 +605,7 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 8/12/2024 10:30:44'!
+!VisualPropertyEditor class methodsFor: 'class initialization' stamp: 'KenD 9/15/2024 08:35:08'!
 initialize
 "
 	VisualPropertyEditor initialize.
@@ -621,13 +621,18 @@ initialize
 
 	classDict := MetaProperty metaPropsDictForClass: PlacedMorph.
 	classDict at: #layoutSpec   put: (propsDict at: #acceptsLayoutSpec). 
+	classDict at: #morphPosition put: (propsDict at: #acceptsPoint). 
+
+	classDict := MetaProperty metaPropsDictForClass: BoxMorph.
+	classDict at: #morphExtent   put: (propsDict at: #acceptsPositivePoint). 
+
+	classDict := MetaProperty metaPropsDictForClass: ColoredBoxMorph.
+	classDict at: #color put: (propsDict at: #acceptsColor). 
 
 	classDict := MetaProperty metaPropsDictForClass: BorderedBoxMorph.
-	classDict at: #morphExtent   put: (propsDict at: #acceptsPositivePoint). 
-	classDict at: #morphPosition put: (propsDict at: #acceptsPoint). 
-	classDict at: #color put: (propsDict at: #acceptsColor). 
 	classDict at: #borderColor put: (propsDict at: #acceptsColor). 
 	classDict at: #borderWidth put: (propsDict at: #acceptsPositiveNumber).
+	classDict at: #padding put: (propsDict at: #acceptsPoint). 
 "	classDict at: #borderStyle put: (propsDict at: #acceptsBorderStyle)."
 
 	classDict := MetaProperty metaPropsDictForClass: CheckButtonMorph.
@@ -660,13 +665,10 @@ initialize
 
 	classDict := MetaProperty metaPropsDictForClass: ImageMorph.
 	classDict at: #image put: (propsDict at: #acceptsForm).
-	classDict at: #borderColor put: (propsDict at: #acceptsColor).
-	classDict at: #borderWidth put: (propsDict at: #acceptsPositiveInteger).
 	"classDict at: #borderStyle put: (propsDict at: #acceptsBorderStyle)."
 
 	classDict := MetaProperty metaPropsDictForClass: LayoutMorph.
-	classDict at: #borderColor put: (propsDict at: #acceptsColor).
-	classDict at: #borderWidth put: (propsDict at: #acceptsPositiveInteger).
+	classDict at: #gap put: (propsDict at: #acceptsPositiveInteger).
 "	classDict at: #borderStyle put: (propsDict at: #acceptsBorderStyle)."
 
 	classDict := MetaProperty metaPropsDictForClass: FrameMorph.
@@ -2331,13 +2333,13 @@ refreshView "of visual properties"
 	]
 ! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 7/29/2024 10:54:55'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 9/15/2024 08:05:02'!
 showTargetHalo
 	"Show my targetMorph's halo"
 	| aMorph |
 	aMorph := self targetMorph.
 	aMorph isInWorld 
-		ifTrue: [ aMorph show; addHalo. aMorph runningWorld firstHand releaseMouseFocus ]
+		ifTrue: [ aMorph show; addHalo. aMorph runningWorld activeHand releaseMouseFocus ]
 		ifFalse: [
 "			(HoverHelpMorph 
 			contents: aMorph printString , ' not shown in world')

@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6722] on 15 September 2024 at 5:02:18 am'!
+'From Cuis7.1 [latest update: #6722] on 15 September 2024 at 8:43:05 am'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 22!
+!provides: 'UI-Layout-Panel' 1 23!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
@@ -197,14 +197,14 @@ modelBeColumn
 	self refreshEdgeWeightArea.
 "	self editModel refreshExtent."! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/14/2024 16:18:28'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/15/2024 08:40:36'!
 modelBeRow
 	"My editModel should be a Row"
 	
 	self editModel beRow.
 	self refreshDirectionArea.
 	self refreshEdgeWeightArea.
-	self editModel refreshExtent.! !
+	"self editModel refreshExtent."! !
 
 !LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 12/17/2013 12:35'!
 modelColor: aColor
