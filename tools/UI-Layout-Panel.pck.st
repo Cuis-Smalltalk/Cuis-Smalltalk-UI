@@ -1,16 +1,17 @@
-'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:52:23 pm'!
+'From Cuis7.1 [latest update: #6722] on 15 September 2024 at 5:02:18 am'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 21!
-!requires: 'UI-Click-Select' 1 2 nil!
-!requires: 'UI-Panel' 1 17 nil!
-!requires: 'UI-DragAndDrop' 1 1 nil!
-!requires: 'UI-Shapes' 1 39 nil!
+!provides: 'UI-Layout-Panel' 1 22!
+!requires: 'Cuis-Base' 71 6722 nil!
+!requires: 'UI-DragAndDrop' 1 4 nil!
+!requires: 'UI-Click-Select' 1 63 nil!
+!requires: 'UI-Shapes' 1 45 nil!
+!requires: 'UI-Panel' 1 113 nil!
 SystemOrganization addCategory: #'UI-Layout-Panel'!
 
 
 !classDefinition: #LayoutMorphEditPanel category: #'UI-Layout-Panel'!
 EditPanel subclass: #LayoutMorphEditPanel
-	instanceVariableNames: 'directionArea paddingArea separationArea colorArea padRadio padEntry'
+	instanceVariableNames: 'directionArea edgeWeightArea separationArea colorArea axisRadio axisEntry'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Layout-Panel'!
@@ -50,24 +51,24 @@ buildMorphicWindow
 	self setLabel: 'Layout: ', (self model printStringLimitedTo: 30).
 	self titleMorph showButtonsNamed: #( close pin collapse showHalo )! !
 
-!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'KenD 7/25/2024 15:54:14'!
+!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 16:22:53'!
 newPane
 	| controlArea leftCol rightCol  |	
 		
 	directionArea := self newDirectionArea.
-	paddingArea := self newPaddingArea.
+	edgeWeightArea := self newEdgeWeightArea.
 	separationArea := self newSeparationtionArea.
 	colorArea := self newColorArea.
 
 	controlArea  := LayoutMorph newRow.  "A row of two columns"
-	controlArea separation: 2; color: Color transparent.
+	controlArea gap: 2; color: Color transparent.
 		
 	leftCol := LayoutMorph newColumn.
 	leftCol 
 		separation: self defaultSeparation;
 		axisEdgeWeight: #columnTop;
 		addMorph: directionArea;
-		addMorph: paddingArea;
+		addMorph: edgeWeightArea;
 		color: Color transparent.
 	controlArea addMorph: leftCol.
 
@@ -104,25 +105,25 @@ directionArea: newDirectonArea
 
 	directionArea := newDirectonArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 12/17/2013 14:43'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 9/14/2024 16:20:35'!
 padEntry
 
-	^ padEntry! !
+	^ axisEntry! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 12/17/2013 14:34'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 9/14/2024 16:20:54'!
 padRadio
 
-	^ padRadio! !
+	^ axisRadio! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 12/16/2013 15:29'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 9/14/2024 16:19:27'!
 paddingArea
 
-	^ paddingArea! !
+	^ edgeWeightArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 12/17/2013 12:27'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 9/14/2024 16:19:27'!
 paddingArea: newPaddingArea
 
-	paddingArea := newPaddingArea! !
+	edgeWeightArea := newPaddingArea! !
 
 !LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 12/16/2013 15:29'!
 separationArea
@@ -187,22 +188,22 @@ xxMminimumExtent
 	].
 	^ width @ height! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 2/26/2020 07:57:15'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/15/2024 04:46:44'!
 modelBeColumn
 	"My editModel should be a Column"
 
 	self editModel beColumn.
 	self refreshDirectionArea.
-	self refreshPaddingArea.
-	self editModel refreshExtent.! !
+	self refreshEdgeWeightArea.
+"	self editModel refreshExtent."! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 2/26/2020 07:57:26'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/14/2024 16:18:28'!
 modelBeRow
 	"My editModel should be a Row"
 	
 	self editModel beRow.
 	self refreshDirectionArea.
-	self refreshPaddingArea.
+	self refreshEdgeWeightArea.
 	self editModel refreshExtent.! !
 
 !LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 12/17/2013 12:35'!
@@ -211,22 +212,28 @@ modelColor: aColor
 	self editModel color: aColor.
 	self refreshColorArea.! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 5/22/2020 13:32:33'!
-modelPadding: numPixels
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/14/2024 16:18:28'!
+modelEdgeWeight: numPixels
 	
 	self editModel axisEdgeWeight: numPixels.
-	self refreshPaddingArea.! !
+	self refreshEdgeWeightArea.! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 12/17/2013 12:36'!
-modelXSeparation: numPixels
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/14/2024 16:13:21'!
+modelGap: numPixels
 
-	self editModel separation: numPixels @ self editModel ySeparation.
+	self editModel gap: numPixels.
 	self refreshSeparationtionArea.! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 12/17/2013 12:36'!
-modelYSeparation: numPixels
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/15/2024 04:45:11'!
+modelXPadding: numPixels
 
-	self editModel separation: (self editModel xSeparation @ numPixels).
+	self editModel padding: (numPixels @ editModel padding y).
+	self refreshSeparationtionArea.! !
+
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/15/2024 04:45:21'!
+modelYPadding: numPixels
+
+	self editModel padding: (editModel padding x @numPixels).
 	self refreshSeparationtionArea.! !
 
 !LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 12/17/2013 14:18'!
@@ -236,12 +243,12 @@ newDirectionSelection: dirSymbol
 		ifTrue: [ self modelBeRow ] 
 		ifFalse: [ self modelBeColumn ]! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 4/19/2015 15:19'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/14/2024 16:18:28'!
 refreshView
 
 	self refreshColorArea; 
 		refreshDirectionArea; 
-		refreshPaddingArea; 
+		refreshEdgeWeightArea; 
 		refreshSeparationtionArea! !
 
 !LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 7/27/2015 16:26'!
@@ -257,7 +264,7 @@ showHaloButtonClicked
 				popUpForHand: self  world activeHand
 	]! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 5/22/2020 13:26:01'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/15/2024 04:59:50'!
 updateMasterFromCopy
 	"Update model from editModel"
 	
@@ -266,9 +273,10 @@ updateMasterFromCopy
 	editCopy := self editModel.
 	original direction: editCopy direction.
 	original axisEdgeWeight: editCopy axisEdgeWeight.
-	original separation: ( editCopy xSeparation @ editCopy ySeparation ).
+	original gap: editCopy gap.
+	original padding: editCopy padding.
 	original color: editCopy color.
-	original refreshExtent; layoutSubmorphs; redrawNeeded.
+	original layoutSubmorphs; redrawNeeded.
 	original owner ifNotNil: [ :container | container layoutSubmorphs; redrawNeeded ].
 	self editModel: nil.
 	original triggerEvent: #propertyChanged.
@@ -348,42 +356,42 @@ newDirectionArea
 	
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 10/23/2020 08:35:35'!
-newPaddingArea
-	"Answer a FramedLayoutMorph with controls for Padding"
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/14/2024 16:23:16'!
+newEdgeWeightArea
+	"Answer a FramedLayoutMorph with controls for AxisEdgeWeight"
 	
-	| padArea label direction |
-	padArea := LayoutMorph newColumn :: borderWidth: 2.
+	| edgeArea label direction |
+	edgeArea := LayoutMorph newColumn :: borderWidth: 2.
 	label := LabelMorph contents: 'EdgeWeight' ::
 					 emphasis: AbstractFont boldCode.
 	direction := self editModel direction.
-	padRadio := RadioGroup fromList: ( 
+	axisRadio := RadioGroup fromList: ( 
 		(direction = #horizontal)
 			ifTrue: [ #(Left Center Right Specify) ] 
 			ifFalse: [ #(Top Center Bottom Specify) ]
 	)..
 	
 	"Setup"
-	padEntry := SimpleNumberEntryMorph realFactor: 1.0 maxNumChars: 3.
-	(padRadio rowFor: #Specify) addMorph: padEntry.
-	padEntry valueAccessor: [ :myModel | myModel axisEdgeWeight ].
-	padEntry valueUpdator: [ :newPad | self modelPadding: newPad ].
-	padEntry refreshValueFrom: self editModel.
-	self setPadRadio: padRadio fromPadFactor: padEntry value.
+	axisEntry := SimpleNumberEntryMorph realFactor: 1.0 maxNumChars: 3.
+	(axisRadio rowFor: #Specify) addMorph: axisEntry.
+	axisEntry valueAccessor: [ :myModel | myModel axisEdgeWeight ].
+	axisEntry valueUpdator: [ :newPad | self modelEdgeWeight: newPad ].
+	axisEntry refreshValueFrom: self editModel.
+	self setPadRadio: axisRadio fromPadFactor: axisEntry value.
 	
-	padRadio when: #informRadioSelection send: #newPaddingSelection: to: self.
+	axisRadio when: #informRadioSelection send: #newEdgeWeightSelection: to: self.
 		
-	^ padArea
+	^ edgeArea
 		color: Color transparent ;
 		separation: 4;
 		addMorph: label;
-		addMorph: padRadio;
+		addMorph: axisRadio;
 		yourself 
 	
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 12/17/2013 14:51'!
-newPaddingSelection: padSym
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/14/2024 16:23:16'!
+newEdgeWeightSelection: padSym
 
 	| radio |
 	radio := self padRadio.
@@ -398,54 +406,70 @@ newPaddingSelection: padSym
 
 ! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 10/23/2020 08:35:44'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/15/2024 04:55:10'!
 newSeparationtionArea
-	"Answer a FramedLayoutMorph with controls for x & y separation"
+	"Answer a FramedLayoutMorph with controls for gap and padding"
 	
-	| sepArea label xArea yArea xSep ySep |
+	| sepArea gapLabel padLabel xArea yArea gapArea gapEntry xPadEntry yPadEntry |
 	sepArea := LayoutMorph newColumn :: borderWidth: 2.
-	label := LabelMorph contents: 'Separation' ::
-					 emphasis: AbstractFont boldCode.
-		
+	padLabel := LabelMorph contents: 'Frame Pad around Submorphs' ::
+					 emphasis: AbstractFont boldCode.					
 	"Setup"
-	xSep := SimpleNumberEntryMorph 
+	xPadEntry := SimpleNumberEntryMorph 
 			integerRangeFrom: 0 
 			to: DisplayScreen actualScreenSize x 
 			maxNumChars: 5.
 	xArea := LayoutMorph newRow.
 	xArea 
 		color: Color  transparent;
-		separation: 2;
+		gap: 2;
 		addMorph: (LabelMorph contents: '  X ');
-		addMorph: xSep;
+		addMorph: xPadEntry;
 		addMorph: (LabelMorph contents: 'pixels').
 		
-	ySep := SimpleNumberEntryMorph 
+	yPadEntry := SimpleNumberEntryMorph 
 			integerRangeFrom: 0 
 			to: DisplayScreen actualScreenSize y
 			maxNumChars: 5.
 	yArea := LayoutMorph newRow.
 	yArea 
 		color: Color  transparent;
-		separation: 2;
+		gap: 2;
 		addMorph: (LabelMorph contents: '  Y ');
-		addMorph: ySep;
+		addMorph: yPadEntry;
 		addMorph: (LabelMorph contents: 'pixels').
 
 	"Value flow"
-	xSep valueAccessor: [ :myModel | myModel xSeparation ].
-	xSep valueUpdator:   [ :newX | self modelXSeparation: newX ].
-	ySep valueAccessor: [ :myModel | myModel ySeparation ].
-	ySep valueUpdator:   [ :newY | self modelYSeparation: newY ].
-	xSep refreshValueFrom: self editModel.
-	ySep refreshValueFrom: self editModel.
+	xPadEntry valueAccessor: [ :myModel | myModel padding x ].
+	xPadEntry valueUpdator:   [ :newX | self modelXPadding: newX ].
+	yPadEntry valueAccessor: [ :myModel | myModel padding y ].
+	yPadEntry valueUpdator:   [ :newY | self modelYPadding: newY ].
+	xPadEntry refreshValueFrom: self editModel.
+	yPadEntry refreshValueFrom: self editModel.
+
+	gapLabel := LabelMorph contents: 'Gap Between Morphs' ::
+					 emphasis: AbstractFont boldCode.
+	gapEntry := SimpleNumberEntryMorph 
+			integerRangeFrom: 0 
+			to: DisplayScreen actualScreenSize x 
+			maxNumChars: 5.
+	gapArea := LayoutMorph newRow :: 
+		color: Color  transparent;
+		gap: 2;
+		addMorph: gapLabel;
+		addMorph: gapEntry.
+	gapEntry valueAccessor: [ :myModel | myModel gap ].
+	gapEntry valueUpdator:   [ :newGap | self modelGap: newGap ].
+	gapEntry refreshValueFrom: self editModel.
+
 		
 	 ^ sepArea
 		color: Color  transparent ;
-		separation: 2;
-		addMorph: label;
+		gap: 2;
+		addMorph: padLabel;
 		addMorph: xArea;
 		addMorph: yArea;
+		addMorph: gapArea;
 		yourself 
 	
 	! !
@@ -472,13 +496,13 @@ refreshDirectionArea
 	self directionArea: newArea 
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 12/17/2013 12:29'!
-refreshPaddingArea
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/14/2024 16:22:53'!
+refreshEdgeWeightArea
 	"Update my view"
 	
 	| oldArea newArea |
 	oldArea := self paddingArea.
-	newArea := self newPaddingArea.
+	newArea := self newEdgeWeightArea.
 	self replaceArea: oldArea with: newArea.
 	self paddingArea: newArea 
 	! !
@@ -1158,11 +1182,11 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		"addLine;"
 		add: 'edit my LayoutSpec' action: #editMyLayoutSpec! !
 
-!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 7/28/2024 15:02:58'!
+!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/14/2024 15:55:38'!
 editMyLayoutSpec
 
 	self layoutSpec ifNil: [ self layoutSpec: LayoutSpec keepMorphExtent ].
-	self runningWorld firstHand releaseMouseFocus .
+	self runningWorld activeHand releaseMouseFocus .
 	LayoutSpecEditPanel open: self layoutSpec! !
 
 !LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 12/24/2013 15:22'!
@@ -1181,10 +1205,10 @@ direction: horizOrVert
 
 	direction := horizOrVert! !
 
-!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 7/28/2024 15:03:28'!
+!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 9/14/2024 15:56:32'!
 editMe
 
-	self runningWorld firstHand releaseMouseFocus .
+	self runningWorld activeHand releaseMouseFocus .
 	LayoutMorphEditPanel open: self! !
 
 !LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 4/18/2015 20:18'!
