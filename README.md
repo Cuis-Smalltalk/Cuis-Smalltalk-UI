@@ -55,7 +55,10 @@ Model and helper classes.
 ### UI-Entry
 - SimpleEditor
 - TextEntryMorph
- - SimpleNumberEntryMorph
+- SimpleNumberEntryMorph
+
+## UI-Graphic-Import
+- IconImporter
 
 ### UI-Panel
 - BreadcrumbsPane
