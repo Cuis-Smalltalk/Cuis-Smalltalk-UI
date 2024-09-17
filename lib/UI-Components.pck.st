@@ -8,6 +8,7 @@ not supplied in the base system Morphic-Widgets category.'!
 !requires: 'UI-Panel' 1 102 nil!
 !requires: 'UI-Widgets' 1 33 nil!
 !requires: 'UI-Core' 1 12 nil!
+!requires: 'UI-Graphic-Import' 1 1 nil!
 SystemOrganization addCategory: #'UI-Components'!
 
 
