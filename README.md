@@ -57,7 +57,7 @@ Model and helper classes.
 - TextEntryMorph
 - SimpleNumberEntryMorph
 
-## UI-Graphic-Import
+### UI-Graphic-Import
 - IconImporter
 
 ### UI-Panel
