@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6727] on 17 September 2024 at 9:23:50 pm'!
+'From Cuis7.1 [latest update: #6727] on 18 September 2024 at 9:55:01 am'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 9!
+!provides: 'UI-StrokeRecognizer' 1 11!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -40,6 +40,16 @@ BorderedBoxMorph subclass: #StrokeInputMorph
 	category: 'UI-StrokeRecognizer'!
 !classDefinition: 'StrokeInputMorph class' category: #'UI-StrokeRecognizer'!
 StrokeInputMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #EditorwithStrokeInput category: #'UI-StrokeRecognizer'!
+Morph subclass: #EditorwithStrokeInput
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-StrokeRecognizer'!
+!classDefinition: 'EditorwithStrokeInput class' category: #'UI-StrokeRecognizer'!
+EditorwithStrokeInput class
 	instanceVariableNames: ''!
 
 !classDefinition: #EditorWithStrokeInput category: #'UI-StrokeRecognizer'!
@@ -104,9 +114,13 @@ I allow the user to select between exemplar sets used by the recognizer.
 
 I also display the result match value.!
 
+!EditorwithStrokeInput commentStamp: '<historical>' prior: 0!
+I am just a way of getting an EditorWithStrokeInput from the "New Morph.." Menu.!
+
 !EditorWithStrokeInput commentStamp: '<historical>' prior: 0!
 I am a Text Editor which has an added EditorStrokeInputMorph which feeds me keystrokes.
-!
+
+EditorWithStrokeInput open.!
 
 !CompassExemplar commentStamp: '<historical>' prior: 0!
 When a pattern matches my #pattern, then the #name has been recognized.
@@ -243,6 +257,22 @@ new
 	newSelf morphExtent: newSelf minimumExtent.
 	^newSelf! !
 
+!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 07:59:32'!
+categoryInNewMorphMenu
+
+	^ 'Stroke Input'! !
+
+!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 07:59:24'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
+
+!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 07:59:10'!
+initializedInstance
+
+	^self new! !
+
 !EditorStrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/17/2024 16:56:50'!
 informRadioSelection: whatSym
 	"Radio Selection of Exemplar match set."
@@ -358,6 +388,12 @@ resultIsUseful
 keyboardHandler: evtHandler
 
 	eventHandlerObject := evtHandler! !
+
+!EditorStrokeInputMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 09:08:54'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ false! !
 
 !EditorStrokeInputMorph class methodsFor: 'instance creation' stamp: 'KenD 9/17/2024 14:38:54'!
 newFor: handlerObj
@@ -2186,6 +2222,38 @@ strokeMorph
 "
 
 	^ ImageMorph newWith: self strokeForm! !
+
+!StrokeInputMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 08:04:27'!
+categoryInNewMorphMenu
+
+	^ 'Stroke Input'! !
+
+!StrokeInputMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 08:04:35'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
+
+!StrokeInputMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 08:04:55'!
+initializedInstance
+
+	^StrokeInputMorph strokeMorph! !
+
+!EditorwithStrokeInput class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 09:53:21'!
+categoryInNewMorphMenu
+
+	^ 'Stroke Input'! !
+
+!EditorwithStrokeInput class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 09:53:29'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
+
+!EditorwithStrokeInput class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 09:54:05'!
+initializedInstance
+
+	^EditorWithStrokeInput open! !
 
 !EditorWithStrokeInput class methodsFor: 'instance creation' stamp: 'KenD 9/17/2024 16:39:05'!
 open
