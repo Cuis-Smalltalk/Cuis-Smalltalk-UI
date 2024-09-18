@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6727] on 17 September 2024 at 4:57:13 pm'!
+'From Cuis7.1 [latest update: #6727] on 17 September 2024 at 9:23:50 pm'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 8!
+!provides: 'UI-StrokeRecognizer' 1 9!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -396,16 +396,17 @@ handlesMouseMove: anEvent
 
 	^ true! !
 
-!StrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/9/2024 15:56:19'!
+!StrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/17/2024 21:21:01'!
 mouseButton1Down: evt localPosition: position
 
 	points := OrderedCollection new.
+	(self isValidPoint: position) ifTrue: [ 	points add: position ].
 ! !
 
-!StrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/10/2024 15:10:48'!
+!StrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/17/2024 21:20:22'!
 mouseButton1Up: evt localPosition: position
 	
-	points add: position.
+	(self isValidPoint: position) ifTrue: [ 	points add: position ].
 	self owner strokeResult: points.
 	! !
 
