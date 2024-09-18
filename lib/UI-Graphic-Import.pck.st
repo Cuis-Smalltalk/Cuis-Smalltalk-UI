@@ -1,6 +1,7 @@
-'From Cuis7.1 [latest update: #6719] on 17 September 2024 at 6:19:59 pm'!
+'From Cuis7.1 [latest update: #6727] on 18 September 2024 at 8:24:53 pm'!
 'Description Utility code to fetch grapics from file system.'!
-!provides: 'UI-Graphic-Import' 1 1!
+!provides: 'UI-Graphic-Import' 1 2!
+!requires: 'SVG' 1 21 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Graphic-Import'!
 
