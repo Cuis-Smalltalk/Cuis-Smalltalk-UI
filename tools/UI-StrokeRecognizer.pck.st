@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6731] on 19 September 2024 at 11:54:07 am'!
+'From Cuis7.1 [latest update: #6731] on 19 September 2024 at 12:37:54 pm'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 13!
+!provides: 'UI-StrokeRecognizer' 1 14!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -2595,7 +2595,7 @@ useNumbers
 
 	^ self new :: useNumberExemplars ! !
 
-!CompassRecognizer class methodsFor: 'class initialization' stamp: 'KenD 9/18/2024 12:38:25'!
+!CompassRecognizer class methodsFor: 'class initialization' stamp: 'KenD 9/19/2024 12:18:46'!
 initBase
 
 	BasePatterns :=
@@ -2639,6 +2639,23 @@ initBase
  (CompassExemplar name: #Y pattern: #(#North #South #NorthWest #South #NorthWest #East #North #NorthEast #North #South #North #South #East #South #SouthEast #South #South #West #South #West #South #North #SouthWest #NorthEast #SouthWest #NorthEast #South #NorthEast #East #North #NorthEast)) . "Y"
  (CompassExemplar name: #Y pattern: #(#North #South #NorthWest #South #West #North #North #North #North #South #North #South #East #South #South #South #South #West #South #West #SouthWest #North #SouthWest #NorthEast #SouthWest #East #East #East #East #NorthEast #East)) . "alt Y"
  (CompassExemplar name: #Z pattern: #(#North #East #North #East #North #East #North #South #NorthEast #SouthWest #North #SouthWest #North #SouthWest #West #SouthWest #West #SouthWest #SouthWest #South #SouthWest #East #South #East #South #East #South #East #SouthEast #East #SouthEast)) .
+"Alternates"
+ (CompassExemplar name: #S pattern: #(#NorthEast #North #North #North #North #West #North #West #North #SouthWest #NorthWest #South #NorthWest #East #NorthWest #SouthEast #NorthWest #SouthEast #SouthEast #South #SouthEast #South #South #SouthWest #South #West #South #West #South #NorthWest #SouthWest)).
+ (CompassExemplar name: #S pattern: #(#NorthEast #NorthWest #North #NorthWest #North #SouthWest #North #South #North #South #North #SouthEast #North #East #East #SouthEast #East #South #SouthEast #SouthWest #South #West #South #West #South #NorthWest #SouthWest #North #SouthWest #NorthEast #West)).
+  (CompassExemplar name: #S pattern: #(#North #West #North #NorthWest #North #West #North #SouthWest #North #South #NorthWest #SouthEast #NorthWest #East #North #SouthEast #East #SouthEast #East #South #SouthEast #South #South #SouthWest #South #West #South #NorthWest #South #North #SouthWest)).
+  (CompassExemplar name: #C pattern: #(#East #NorthWest #NorthEast #NorthWest #North #West #North #West #North #West #North #SouthWest #NorthWest #South #West #South #West #South #SouthWest #SouthEast #South #East #South #East #South #East #South #NorthEast #SouthEast #NorthEast #SouthEast)).
+  (CompassExemplar name: #C pattern: #(#NorthEast #NorthWest #North #NorthWest #North #West #North #SouthWest #North #South #North #South #NorthWest #South #West #South #West #South #SouthWest #SouthEast #South #East #South #East #South #East #South #NorthEast #SouthEast #NorthEast #SouthEast)).
+  (CompassExemplar name: #R pattern: #(#North #South #North #South #SouthWest #South #South #West #South #North #West #North #NorthWest #North #North #East #North #SouthEast #North #South #East #West #SouthWest #East #South #SouthEast #SouthEast #SouthEast #SouthEast #South #South)).
+  (CompassExemplar name: #R pattern: #(#NorthWest #South #NorthWest #South #West #South #South #North #SouthWest #North #West #North #NorthWest #North #North #East #North #South #NorthEast #West #North #SouthEast #East #East #East #SouthEast #East #South #SouthEast #SouthWest #SouthEast)).
+  (CompassExemplar name: #D pattern: #(#North #South #North #South #NorthWest #South #South #South #South #North #South #North #West #North #North #North #North #East #North #SouthEast #NorthEast #SouthEast #East #South #East #SouthWest #South #SouthWest #South #West #South)).
+  (CompassExemplar name: #B pattern: #(#North #North #North #South #North #South #North #South #North #South #West #South #South #South #South #North #South #North #East #East #East #SouthEast #East #South #SouthEast #SouthWest #South #SouthWest #South #NorthWest #South)).
+  (CompassExemplar name: #D pattern: #(#North #North #North #South #North #South #North #South #NorthEast #South #SouthEast #South #South #North #South #North #SouthEast #North #North #West #NorthWest #SouthWest #West #South #SouthWest #South #South #East #South #NorthEast #South)).
+  (CompassExemplar name: #A pattern: #(#North #North #North #NorthWest #North #SouthWest #North #South #NorthWest #South #West #South #SouthWest #East #South #North #South #North #North #North #North #South #NorthEast #South #South #SouthEast #South #East #SouthEast #NorthEast #East)).
+  (CompassExemplar name: #D pattern: #(#SouthEast #North #East #NorthWest #NorthWest #West #West #South #West #South #SouthWest #SouthEast #South #NorthEast #South #North #SouthEast #North #North #North #North #North #North #South #North #South #NorthEast #South #SouthEast #South #South)).
+  (CompassExemplar name: #E pattern: #(#West #East #West #East #East #East #East #NorthEast #NorthEast #North #North #West #North #West #North #SouthWest #NorthWest #South #West #South #SouthWest #South #South #East #South #East #South #NorthEast #SouthEast #NorthEast #East)) .
+ (CompassExemplar name: #E pattern: #(#NorthEast #North #North #West #North #West #North #SouthWest #North #South #North #South #NorthWest #SouthEast #West #NorthEast #NorthEast #SouthWest #West #SouthWest #SouthWest #South #SouthWest #South #South #East #South #East #South #East #South)) .
+ (CompassExemplar name: #E pattern: #(#North #NorthWest #North #NorthWest #North #SouthWest #North #SouthWest #NorthWest #South #NorthWest #East #NorthWest #East #North #SouthWest #North #SouthWest #SouthWest #South #South #South #South #East #South #East #South #East #South #East #SouthEast)) .
+ (CompassExemplar name: #E pattern: #(#NorthEast #NorthWest #North #West #North #West #North #SouthWest #North #South #NorthWest #SouthEast #North #East #North #SouthWest #West #South #SouthWest #South #SouthWest #South #South #SouthEast #South #East #South #NorthEast #South #NorthEast #SouthEast)) .
 } asOrderedCollection.
 
 	! !
