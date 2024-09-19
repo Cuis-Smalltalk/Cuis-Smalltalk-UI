@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6727] on 18 September 2024 at 12:56:57 pm'!
+'From Cuis7.1 [latest update: #6731] on 19 September 2024 at 11:54:07 am'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 12!
+!provides: 'UI-StrokeRecognizer' 1 13!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -2643,7 +2643,7 @@ initBase
 
 	! !
 
-!CompassRecognizer class methodsFor: 'class initialization' stamp: 'KenD 9/18/2024 12:38:37'!
+!CompassRecognizer class methodsFor: 'class initialization' stamp: 'KenD 9/19/2024 11:52:51'!
 initNumbers
 
 	NumberPatterns :=
@@ -2661,7 +2661,7 @@ initNumbers
  (CompassExemplar name: #'1' pattern: #(#North #SouthWest #North #South #North #South #North #South #North #South #North #South #North #South #North #South #South #South #South #South #South #South #South #South #South #South #South #South #South #South #South)).
  (CompassExemplar name: #'2' pattern: #(#NorthWest #East #North #East #North #East #North #South #North #South #NorthEast #South #East #SouthWest #South #SouthWest #South #SouthWest #SouthWest #SouthWest #SouthWest #East #South #East #South #East #South #East #SouthEast #East #SouthEast)). 
 (CompassExemplar name: #'2' pattern: #(#NorthWest #North #North #East #North #East #North #SouthEast #North #South #NorthEast #South #East #SouthWest #South #SouthWest #South #SouthWest #South #SouthWest #SouthWest #East #South #East #South #East #South #East #SouthEast #East #SouthEast)). 
-(CompassExemplar name: #'2b' pattern: #(#NorthWest #North #North #East #North #East #North #SouthEast #North #South #NorthEast #South #NorthEast #South #SouthEast #SouthWest #South #SouthWest #South #SouthWest #SouthWest #East #SouthWest #East #South #East #South #East #South #East #SouthEast)). 
+(CompassExemplar name: #'2' pattern: #(#NorthWest #North #North #East #North #East #North #SouthEast #North #South #NorthEast #South #NorthEast #South #SouthEast #SouthWest #South #SouthWest #South #SouthWest #SouthWest #East #SouthWest #East #South #East #South #East #South #East #SouthEast)). 
 (CompassExemplar name: #'3' pattern: #(#North #East #North #East #North #SouthEast #North #South #North #SouthWest #North #SouthWest #NorthWest #SouthEast #NorthWest #East #East #SouthEast #East #South #SouthEast #South #South #SouthWest #South #West #South #West #South #NorthWest #SouthWest)).
  (CompassExemplar name: #'3' pattern: #(#NorthWest #NorthEast #North #East #North #South #North #South #North #SouthWest #West #NorthEast #North #East #North #East #NorthEast #South #East #South #SouthEast #South #SouthEast #SouthWest #South #West #South #West #South #NorthWest #SouthWest)). 
 (CompassExemplar name: #'4' pattern: #(#North #South #North #South #North #South #North #South #NorthWest #SouthWest #West #SouthWest #West #South #SouthWest #South #SouthWest #East #SouthWest #East #South #East #South #East #SouthEast #East #SouthEast #East #SouthEast #East #East)). 
@@ -2679,12 +2679,17 @@ initNumbers
 
 	! !
 
-!CompassRecognizer class methodsFor: 'class initialization' stamp: 'KenD 9/18/2024 12:38:02'!
+!CompassRecognizer class methodsFor: 'class initialization' stamp: 'KenD 9/19/2024 11:53:58'!
 initPunctuation
 
 	PunctuationPatterns :=
-	
 	 {(CompassExemplar name: #Period pattern: #(#center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center #ignored #center)). 
+(CompassExemplar name: #Space pattern: #(#West #East #West #East #West #East #West #East #West #East #West #East #West #East #West #East #East #East #East #East #East #East #East #East #East #East #East #East #East #East #East)).
+(CompassExemplar name: #BackSpace pattern: #(#East #West #East #West #East #West #East #West #East #West #East #West #East #West #East #West #West #West #West #West #West #West #West #West #West #West #West #West #West #West #West)) .
+(CompassExemplar name: #Return pattern: #(#NorthEast #SouthWest #NorthEast #SouthWest #NorthEast #SouthWest #NorthEast #SouthWest #NorthEast #SouthWest #NorthEast #SouthWest #NorthEast #SouthWest #NorthEast #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest #SouthWest)).
+(CompassExemplar name: #CharRight pattern: #(#West #East #West #East #West #East #West #East #East #East #East #East #East #East #East #East #East #West #East #West #East #West #East #West #West #West #West #West #West #West #West)) .
+(CompassExemplar name: #CharLeft pattern: #(#East #West #East #West #East #West #West #West #West #West #West #West #West #West #West #East #West #East #West #East #West #East #East #East #East #East #East #East #East #East #East)).
+
  (CompassExemplar name: #? pattern: #(#NorthWest #NorthEast #NorthWest #East #North #East #North #East #North #East #North #SouthEast #NorthEast #South #NorthEast #South #East #South #SouthEast #SouthWest #South #West #South #SouthWest #South #South #South #South #South #South #South)). 
  (CompassExemplar name: #, pattern: #(#North #SouthWest #North #SouthWest #North #South #North #South #North #South #North #South #North #South #NorthEast #SouthWest #South #SouthWest #South #South #South #South #South #South #South #South #South #SouthWest #South #South #South)). 
  (CompassExemplar name: #!! pattern: #(#South #North #South #North #South #North #South #North #South #North #South #North #South #North #South #North #North #North #North #North #North #North #North #North #North #North #North #North #North #North #North)). 
