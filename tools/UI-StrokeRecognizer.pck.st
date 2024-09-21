@@ -1,16 +1,26 @@
-'From Cuis7.1 [latest update: #6738] on 20 September 2024 at 2:51:17 pm'!
+'From Cuis7.1 [latest update: #6734] on 21 September 2024 at 12:46:54 pm'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 16!
+!provides: 'UI-StrokeRecognizer' 1 17!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-StrokeRecognizer'!
 
+
+!classDefinition: #CompassSampleSizeMorph category: #'UI-StrokeRecognizer'!
+LayoutMorph subclass: #CompassSampleSizeMorph
+	instanceVariableNames: 'recognizer sample resultsArray'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-StrokeRecognizer'!
+!classDefinition: 'CompassSampleSizeMorph class' category: #'UI-StrokeRecognizer'!
+CompassSampleSizeMorph class
+	instanceVariableNames: ''!
 
 !classDefinition: #CompassTrainingMorph category: #'UI-StrokeRecognizer'!
 LayoutMorph subclass: #CompassTrainingMorph
@@ -93,6 +103,16 @@ CompassRecognizer class
 	instanceVariableNames: ''!
 
 
+!CompassSampleSizeMorph commentStamp: '<historical>' prior: 0!
+Compare input gesture at different sample size resulutions.
+
+Useful to compare "close" distinctions, e.g. between $B $D $P $R.
+
+What "sample resolution" gives crisp results?
+
+Note: CompassTrainingMorph
+!
+
 !CompassTrainingMorph commentStamp: '<historical>' prior: 0!
 I am a Morph useful to try out stroke recognition and add new pattern exemplars to recognizer.
 
@@ -174,6 +194,95 @@ This is an original strategy, but uses ideas from pror art:
 
 
 !
+
+!CompassSampleSizeMorph methodsFor: 'event handling' stamp: 'KenD 9/21/2024 12:38:10'!
+strokeResult: points
+
+	"Update view of user input"
+	| someResult |
+	sample := points.
+	1 to: 3 do: [ :index |
+		someResult := CompassPattern 
+							fromPoints: sample 
+							sizeWanted: (self sampleSizeArray at: index).
+		((resultsArray at: index) at: 1) contents:
+ 			someResult directionsFromCentroid asString.
+		((resultsArray at: index) at: 2) contents:
+			someResult pointTravelDirections asString.	
+	].
+! !
+
+!CompassSampleSizeMorph methodsFor: 'gui building' stamp: 'KenD 9/21/2024 12:34:17'!
+resultsArea
+
+	| resultsLayout col1 col2 col3 resultCols |
+	resultsLayout := LayoutMorph newRow :: color: Color transparent.
+	col1 := LayoutMorph newColumn :: color:  Color transparent.
+	col2 := LayoutMorph newColumn :: color:  Color transparent.
+	col3 := LayoutMorph newColumn :: color:  Color transparent.
+	resultsLayout 
+		addMorph: col1;
+		addMorph: col2;
+		addMorph: col3.
+	1 to: 3 do: [ :rIndex |
+		resultsArray at: rIndex
+					put: {  TextParagraphMorph contents: '#()'.  
+						     TextParagraphMorph contents: '#()'. }
+	].
+	resultCols := { col1. col2. col3. }.
+	1 to: 3 do: [ :cIndex |
+		(resultCols at: cIndex) 
+			addMorph: 
+					(LabelMorph contents: (self sampleSizeArray at: cIndex) asString);
+			addMorph: ((resultsArray at: cIndex) at: 1);
+			addMorph: ((resultsArray at: cIndex) at: 2).
+	].
+
+	^resultsLayout
+
+	
+	! !
+
+!CompassSampleSizeMorph methodsFor: 'initialization' stamp: 'KenD 9/21/2024 12:44:32'!
+initialize
+
+	super initialize.
+	resultsArray := Array new: 3.
+	self
+		addMorph: StrokeInputMorph new;
+		addMorph: self resultsArea;
+		color: Color green.! !
+
+!CompassSampleSizeMorph methodsFor: 'accessing' stamp: 'KenD 9/21/2024 12:09:08'!
+sampleSizeArray
+
+	^ `#(16 20 30)`! !
+
+!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/21/2024 12:40:09'!
+categoryInNewMorphMenu
+
+	^ 'Stroke Input'! !
+
+!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/21/2024 12:40:18'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
+
+!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/21/2024 12:40:25'!
+initializedInstance
+
+	^self new! !
+
+!CompassSampleSizeMorph class methodsFor: 'instance creation' stamp: 'KenD 9/21/2024 12:39:10'!
+new
+	
+	^self newColumn! !
+
+!CompassSampleSizeMorph class methodsFor: 'instance creation' stamp: 'KenD 9/21/2024 12:39:29'!
+open
+	
+	^self newColumn openInWorld! !
 
 !CompassTrainingMorph methodsFor: 'event handling' stamp: 'KenD 9/10/2024 15:48:27'!
 saveStroke
@@ -2424,6 +2533,29 @@ fromPoints: aPointCollection
 	directionVector := (isPeriod) ifTrue: [PeriodArray] ifFalse: [directionColl asArray]
 	! !
 
+!CompassPattern methodsFor: 'initialization' stamp: 'KenD 9/21/2024 12:17:19'!
+fromPoints: aPointCollection sizeWanted: numPoints
+
+	| sampleColl directionColl center prevPt isPeriod |
+	sampleColl := self translatePointsIn: (self resample: aPointCollection 
+											with: numPoints)
+	 				   toOrigin: (50@50).
+	directionColl := OrderedCollection new.
+	center := self centroid: sampleColl.
+	prevPt := sampleColl at: 1.
+	isPeriod := (center dist: prevPt) <= CloseDistance.
+	2 to: sampleColl size do: [ :index | | currentPt |
+		currentPt := sampleColl at: index.
+		((center dist: prevPt) > CloseDistance) ifTrue: [isPeriod:= false].
+		directionColl add: (center point2direction: prevPt).
+		directionColl add: (prevPt point2direction: currentPt).
+		prevPt := currentPt.
+	].
+	directionColl add: (center point2direction: sampleColl last).
+	
+	directionVector := (isPeriod) ifTrue: [PeriodArray] ifFalse: [directionColl asArray]
+	! !
+
 !CompassPattern methodsFor: 'accessing' stamp: 'KenD 9/9/2024 14:49:46'!
 at: index
 
@@ -2484,6 +2616,11 @@ fromPoints: aPointCollection
 
 	^self new fromPoints: aPointCollection! !
 
+!CompassPattern class methodsFor: 'instance creation' stamp: 'KenD 9/21/2024 12:20:56'!
+fromPoints: aPointCollection sizeWanted: numPoints
+
+	^self new fromPoints: aPointCollection sizeWanted: numPoints! !
+
 !CompassPattern class methodsFor: 'accessing' stamp: 'KenD 9/10/2024 04:41:40'!
 periodArray
 
@@ -2493,6 +2630,16 @@ periodArray
 periodPattern
 
 	^ CompassPattern new :: pattern: PeriodArray ! !
+
+!CompassPattern class methodsFor: 'accessing' stamp: 'KenD 9/21/2024 11:41:47'!
+sampleSize
+
+	^ SampleSize ! !
+
+!CompassPattern class methodsFor: 'accessing' stamp: 'KenD 9/21/2024 11:42:07'!
+sampleSize: positiveInteger
+
+	SampleSize := positiveInteger ! !
 
 !CompassRecognizer methodsFor: 'initialization' stamp: 'KenD 9/15/2024 14:13:46'!
 initialize
