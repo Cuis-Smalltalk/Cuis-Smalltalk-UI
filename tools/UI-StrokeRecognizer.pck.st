@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6734] on 21 September 2024 at 1:17:28 pm'!
+'From Cuis7.1 [latest update: #6738] on 21 September 2024 at 2:22:43 pm'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 19!
+!provides: 'UI-StrokeRecognizer' 1 20!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -524,13 +524,13 @@ drawOn: aCanvas
 		aCanvas line: lastP to: curP width: 6 color: Color black].
 ! !
 
-!StrokeInputMorph methodsFor: 'private' stamp: 'KenD 9/12/2024 12:24:40'!
+!StrokeInputMorph methodsFor: 'private' stamp: 'KenD 9/21/2024 14:21:01'!
 isValidPoint: aPoint
 
 	"Sampled points may contain NaN values or lay outside our extent."
 	"Note: (NaN isNumber) --> true!!"
-	(aPoint x) isNaN ifTrue: [ ^false ].
-	(aPoint y) isNaN ifTrue: [ ^false ].
+	(aPoint x) isFinite ifFalse: [ ^false ].
+	(aPoint y) isFinite ifFalse: [ ^false ].
 	^(0@0 extent: self morphExtent) containsPoint:  aPoint! !
 
 !StrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/9/2024 15:55:53'!
