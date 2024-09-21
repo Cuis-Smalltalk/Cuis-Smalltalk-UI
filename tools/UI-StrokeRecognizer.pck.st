@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6734] on 21 September 2024 at 12:46:54 pm'!
+'From Cuis7.1 [latest update: #6734] on 21 September 2024 at 1:02:02 pm'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 17!
+!provides: 'UI-StrokeRecognizer' 1 18!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -212,7 +212,7 @@ strokeResult: points
 	].
 ! !
 
-!CompassSampleSizeMorph methodsFor: 'gui building' stamp: 'KenD 9/21/2024 12:34:17'!
+!CompassSampleSizeMorph methodsFor: 'gui building' stamp: 'KenD 9/21/2024 12:56:12'!
 resultsArea
 
 	| resultsLayout col1 col2 col3 resultCols |
@@ -235,6 +235,7 @@ resultsArea
 			addMorph: 
 					(LabelMorph contents: (self sampleSizeArray at: cIndex) asString);
 			addMorph: ((resultsArray at: cIndex) at: 1);
+			addMorph: (LabelMorph contents: '^point location^  vv stroke direction vv ');
 			addMorph: ((resultsArray at: cIndex) at: 2).
 	].
 
