@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6734] on 21 September 2024 at 1:02:02 pm'!
+'From Cuis7.1 [latest update: #6734] on 21 September 2024 at 1:17:28 pm'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 18!
+!provides: 'UI-StrokeRecognizer' 1 19!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -2400,7 +2400,7 @@ name: aStringOrSymbol pattern: aCompassPatternOrDIrectionArray
 		ifTrue: [ pattern := aCompassPatternOrDIrectionArray pattern]
 		ifFalse: [ 	pattern := aCompassPatternOrDIrectionArray 	].! !
 
-!CompassExemplar methodsFor: 'comparing' stamp: 'KenD 9/9/2024 15:28:35'!
+!CompassExemplar methodsFor: 'comparing' stamp: 'KenD 9/21/2024 13:11:21'!
 compare: aCompassPattern
 
 	"Answer an association: float->name
@@ -2415,7 +2415,11 @@ compare: aCompassPattern
 	numElts := aCompassPattern pattern size.
 	2 to: numElts do: [ :index |
 			(pattern at: index) = (aCompassPattern at: index)
-			ifTrue: [ numSame := numSame + 1 ]
+			ifTrue: [ "Weight stroke directions more highley"
+				(index even) 
+					ifTrue:  [ numSame := numSame + 2 ]
+				 	ifFalse: [ numSame := numSame + 1 ]
+			]
 	].
 
 	^ (numSame / numElts) asFloat -> name! !
