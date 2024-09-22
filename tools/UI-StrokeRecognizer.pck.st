@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6738] on 21 September 2024 at 2:22:43 pm'!
+'From Cuis7.1 [latest update: #6734] on 22 September 2024 at 12:00:07 pm'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 20!
+!provides: 'UI-StrokeRecognizer' 1 22!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -524,13 +524,13 @@ drawOn: aCanvas
 		aCanvas line: lastP to: curP width: 6 color: Color black].
 ! !
 
-!StrokeInputMorph methodsFor: 'private' stamp: 'KenD 9/21/2024 14:21:01'!
+!StrokeInputMorph methodsFor: 'private' stamp: 'KenD 9/12/2024 12:24:40'!
 isValidPoint: aPoint
 
 	"Sampled points may contain NaN values or lay outside our extent."
 	"Note: (NaN isNumber) --> true!!"
-	(aPoint x) isFinite ifFalse: [ ^false ].
-	(aPoint y) isFinite ifFalse: [ ^false ].
+	(aPoint x) isNaN ifTrue: [ ^false ].
+	(aPoint y) isNaN ifTrue: [ ^false ].
 	^(0@0 extent: self morphExtent) containsPoint:  aPoint! !
 
 !StrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/9/2024 15:55:53'!
@@ -2400,7 +2400,7 @@ name: aStringOrSymbol pattern: aCompassPatternOrDIrectionArray
 		ifTrue: [ pattern := aCompassPatternOrDIrectionArray pattern]
 		ifFalse: [ 	pattern := aCompassPatternOrDIrectionArray 	].! !
 
-!CompassExemplar methodsFor: 'comparing' stamp: 'KenD 9/21/2024 13:11:21'!
+!CompassExemplar methodsFor: 'comparing' stamp: 'KenD 9/22/2024 11:40:36'!
 compare: aCompassPattern
 
 	"Answer an association: float->name
@@ -2414,15 +2414,36 @@ compare: aCompassPattern
 	numSame := 1.
 	numElts := aCompassPattern pattern size.
 	2 to: numElts do: [ :index |
-			(pattern at: index) = (aCompassPattern at: index)
+			((pattern at: index) = (aCompassPattern at: index))
 			ifTrue: [ "Weight stroke directions more highley"
 				(index even) 
 					ifTrue:  [ numSame := numSame + 2 ]
 				 	ifFalse: [ numSame := numSame + 1 ]
 			]
+			ifFalse: [
+				((index even) and: 
+					[self direction: (aCompassPattern at: index) 
+					 	 isCloseToExpected: (pattern at: index)])
+				ifTrue: [numSame := numSame + 0.9] "give `partial credit` score"
+			]
 	].
 
 	^ (numSame / numElts) asFloat -> name! !
+
+!CompassExemplar methodsFor: 'comparing' stamp: 'KenD 9/22/2024 11:04:47'!
+direction: sampleDirection  isCloseToExpected: exemplarDirection
+
+	exemplarDirection caseOf: {
+		[#North]->[^#(#NorthEast. #North. #NorthWest) includes: sampleDirection].
+		[#NorthEast]->[#(#North. #NorthEast. #East.) includes: sampleDirection].
+		[#East]->[#(#NorthEast. #East. #SouthEast.) includes: sampleDirection].
+		[#SouthEast]->[#(#East. #SouthEast. #South.) includes: sampleDirection].
+		[#South]->[^#(#SouthEast. #South. #SouthWest) includes: sampleDirection].
+		[#SouthWest]->[#(#South. #SouthWest. #West.) includes: sampleDirection].
+		[#West]->[#(#SouthWest. #West. #NorthWest.) includes: sampleDirection].
+		[#NorthWest]->[#(#West. #NorthWest. #North.) includes: sampleDirection].
+	}.		
+	^false! !
 
 !CompassExemplar methodsFor: 'printing' stamp: 'KenD 9/15/2024 15:02:20'!
 printOn: aStream
@@ -2747,7 +2768,7 @@ useNumbers
 
 	^ self new :: useNumberExemplars ! !
 
-!CompassRecognizer class methodsFor: 'class initialization' stamp: 'KenD 9/20/2024 14:04:01'!
+!CompassRecognizer class methodsFor: 'class initialization' stamp: 'KenD 9/22/2024 11:46:20'!
 initBase
 
 	BasePatterns :=
@@ -2810,6 +2831,9 @@ initBase
  (CompassExemplar name: #E pattern: #(#NorthEast #NorthWest #North #West #North #West #North #SouthWest #North #South #NorthWest #SouthEast #North #East #North #SouthWest #West #South #SouthWest #South #SouthWest #South #South #SouthEast #South #East #South #NorthEast #South #NorthEast #SouthEast)) .
  (CompassExemplar name: #Z pattern: #(#NorthWest #East #North #East #North #East #North #East #NorthEast #SouthWest #North #SouthWest #North #SouthWest #NorthWest #SouthWest #SouthWest #SouthWest #SouthWest #South #SouthWest #East #South #East #South #East #South #East #South #SouthEast #SouthEast)) .
  (CompassExemplar name: #U pattern: #(#North #South #NorthWest #South #NorthWest #South #West #South #West #South #SouthWest #SouthEast #South #SouthEast #South #East #South #NorthEast #South #NorthEast #SouthEast #North #East #North #East #North #East #North #NorthEast #North #NorthEast)) .
+ (CompassExemplar name: #G pattern: #(#North #West #North #West #North #SouthWest #North #SouthWest #NorthWest #South #West #South #West #South #SouthWest #SouthEast #South #East #South #East #South #North #SouthEast #NorthWest #South #NorthWest #South #East #East #East #East)) .
+ (CompassExemplar name: #G pattern: #(#North #NorthWest #North #West #North #South #North #South #NorthWest #South #West #South #SouthWest #South #SouthWest #East #South #East #South #East #South #North #SouthEast #NorthWest #East #NorthWest #East #East #East #East #East)) .
+ (CompassExemplar name: #G pattern: #(#NorthEast #NorthWest #NorthEast #NorthWest #North #West #North #West #North #SouthWest #NorthWest #South #West #South #West #South #SouthWest #SouthEast #South #East #South #East #South #NorthEast #SouthEast #North #SouthEast #North #SouthEast #East #East)) .
 } asOrderedCollection.
 
 	! !
