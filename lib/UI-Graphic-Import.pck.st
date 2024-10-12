@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6727] on 18 September 2024 at 8:24:53 pm'!
+'From Cuis7.1 [latest update: #6764] on 12 October 2024 at 3:44:36 pm'!
 'Description Utility code to fetch grapics from file system.'!
-!provides: 'UI-Graphic-Import' 1 2!
+!provides: 'UI-Graphic-Import' 1 3!
 !requires: 'SVG' 1 21 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Graphic-Import'!
@@ -34,7 +34,7 @@ getForm: iconSymbolWithSize
 		getForm: (iconSymbolWithSize select: [:c | c isLetter ])
 		ofSize: size asNumber! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'KenD 9/15/2024 12:35:15'!
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 10/12/2024 15:44:22'!
 getForm: icon ofSize: rectWidthPixels
 " Search first for SVG icon, then PNG one "
 	^ forms 
@@ -45,7 +45,7 @@ getForm: icon ofSize: rectWidthPixels
 					svg := [SVGMainMorph fromFile: file] 
 						on: SVGWarning 
 						do: [:warning | warning resume].
-					svg imageForm: rectWidthPixels asPoint depth: 32]									
+					(svg imageForm: 512 asPoint depth: 32) magnifyTo: rectWidthPixels asPoint										]									
 				ifFalse: [(file := path // (icon , '.png')) exists
 					ifTrue: [| form |
 						form := PNGReadWriter formFromFileEntry: file.
