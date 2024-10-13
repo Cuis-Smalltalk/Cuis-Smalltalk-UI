@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:33:33 pm'!
+'From Cuis7.1 [latest update: #6764] on 13 October 2024 at 1:13:05 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 38!
+!provides: 'UI-Widgets' 1 39!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -1182,28 +1182,28 @@ closeAllSubToolbars
 "Ask to the main toolbar, not to a subtoolbar"
 	owner closeAllSubToolbars ! !
 
-!CircularSubToolbarMorph class methodsFor: 'examples' stamp: 'hlsf 1/4/2022 09:19:14'!
+!CircularSubToolbarMorph class methodsFor: 'examples' stamp: 'hlsf 10/12/2024 19:13:57'!
 example1
 "
 	self example1 openInWorld
 "
 	| tools icons someIcons |
 	Feature require: 'VectorGraphics'.
-	tools _ CircularToolbarMorph new 
+	tools := CircularToolbarMorph new 
 		extent: 150;
 		buttonSize: 20; 
-		dropDownHeight: 15; 
+		dropDownHeight: 8; 
 		dropDownGap: 5.
 	tools color: (Color black alpha: 0.7).
-	someIcons _ {Theme current newIcon. Theme current openIcon .
+	someIcons := {Theme current newIcon. Theme current openIcon .
 		Theme current saveIcon. Theme current copyIcon.}.
-	icons _ {Theme current newIcon. Theme current openIcon .Theme current saveIcon. 
+	icons := {Theme current newIcon. Theme current openIcon .Theme current saveIcon. 
 		Theme current copyIcon. Theme current pasteIcon. Theme current undoIcon. 
 		Theme current redoIcon. Theme current closeIcon. Theme current quitIcon}.
 	icons do: [:icon | | button drop |	
-		button _ tools addButton: icon.
+		button := tools addButton: icon.
 		button setBalloonText: 'test'.
-		drop _ button addDropDown.
+		drop := button addDropDown.
 		someIcons do: [: icn | 
 			(drop subtoolbar addButton: icn) setBalloonText: 'I''am a button in a circular sub toolbar']
 	].

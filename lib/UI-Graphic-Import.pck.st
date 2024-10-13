@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6764] on 12 October 2024 at 3:44:36 pm'!
+'From Cuis7.1 [latest update: #6764] on 13 October 2024 at 5:28:04 pm'!
 'Description Utility code to fetch grapics from file system.'!
-!provides: 'UI-Graphic-Import' 1 3!
+!provides: 'UI-Graphic-Import' 1 5!
 !requires: 'SVG' 1 21 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Graphic-Import'!
@@ -34,17 +34,25 @@ getForm: iconSymbolWithSize
 		getForm: (iconSymbolWithSize select: [:c | c isLetter ])
 		ofSize: size asNumber! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'hlsf 10/12/2024 15:44:22'!
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 10/13/2024 12:34:10'!
 getForm: icon ofSize: rectWidthPixels
 " Search first for SVG icon, then PNG one "
+	^ self getForm: icon ofSize: rectWidthPixels fill: nil! !
+
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 10/13/2024 16:33:58'!
+getForm: icon ofSize: rectWidthPixels fill: aColor
+" Search first for SVG icon, then PNG one "
+	| iconKey |
+	iconKey := (icon, (aColor ifNotNil: [aColor colorName capitalized ] ifNil: ['']), rectWidthPixels asString) asSymbol.
 	^ forms 
-		at: (icon, rectWidthPixels asString) asSymbol
+		at: iconKey
 		ifAbsentPut: [ | file | 
 			(file := path // (icon, '.svg')) exists
 				ifTrue: [ |svg|
 					svg := [SVGMainMorph fromFile: file] 
 						on: SVGWarning 
 						do: [:warning | warning resume].
+					aColor ifNotNil: [svg submorphsDo: [:each | each fillColor: aColor] ].
 					(svg imageForm: 512 asPoint depth: 32) magnifyTo: rectWidthPixels asPoint										]									
 				ifFalse: [(file := path // (icon , '.png')) exists
 					ifTrue: [| form |
