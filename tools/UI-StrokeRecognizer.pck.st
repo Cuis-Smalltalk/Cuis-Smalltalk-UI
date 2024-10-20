@@ -1,16 +1,26 @@
-'From Cuis7.1 [latest update: #6738] on 23 September 2024 at 10:56:57 pm'!
+'From Cuis7.1 [latest update: #6776] on 20 October 2024 at 11:10:11 am'!
 'Description Single-stroke character recognizer designed for Palm Graffiti gestures.
 
 The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 25!
+!provides: 'UI-StrokeRecognizer' 1 27!
 !requires: 'Cuis-Base' 71 6727 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-StrokeRecognizer'!
 
+
+!classDefinition: #CompassSampleCompareMorph category: #'UI-StrokeRecognizer'!
+LayoutMorph subclass: #CompassSampleCompareMorph
+	instanceVariableNames: 'samples comparisonIndices'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-StrokeRecognizer'!
+!classDefinition: 'CompassSampleCompareMorph class' category: #'UI-StrokeRecognizer'!
+CompassSampleCompareMorph class
+	instanceVariableNames: ''!
 
 !classDefinition: #CompassSampleSizeMorph category: #'UI-StrokeRecognizer'!
 LayoutMorph subclass: #CompassSampleSizeMorph
@@ -30,6 +40,16 @@ LayoutMorph subclass: #CompassTrainingMorph
 	category: 'UI-StrokeRecognizer'!
 !classDefinition: 'CompassTrainingMorph class' category: #'UI-StrokeRecognizer'!
 CompassTrainingMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #CompassSampleMorph category: #'UI-StrokeRecognizer'!
+CompassTrainingMorph subclass: #CompassSampleMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-StrokeRecognizer'!
+!classDefinition: 'CompassSampleMorph class' category: #'UI-StrokeRecognizer'!
+CompassSampleMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #EditorStrokeInputMorph category: #'UI-StrokeRecognizer'!
@@ -103,8 +123,23 @@ CompassRecognizer class
 	instanceVariableNames: ''!
 
 
+!CompassSampleCompareMorph commentStamp: '<historical>' prior: 0!
+I am a Row of CompassSampleMorphs.
+
+As the samples each gather stroke info, I generate a comparisonIndices array
+of boolean values indicating which sample CompassPatterns compare 
+the same across all valid samples.
+
+I give this array back to the #samples so that they can display matches (in black)
+and mismatches (in red).
+
+This allows for comparing gesture variants and close gestures (e.g. P, B, R, D) to find
+differences significant enough to recognize.  We also want to avoid "false positives".
+
+!
+
 !CompassSampleSizeMorph commentStamp: '<historical>' prior: 0!
-Compare input gesture at different sample size resulutions.
+Compare input gesture at different sample size resolutions.
 
 Useful to compare "close" distinctions, e.g. between $B $D $P $R.
 
@@ -118,7 +153,14 @@ I am a Morph useful to try out stroke recognition and add new pattern exemplars 
 
 Feature require: 'StrokeRecognizer'.
 CompassTrainingMorph new openInHand.
-StrokeInputMorph strokeMorph openInHand. !
+StrokeInputMorph strokeMorph openInHand. "Shows PalmOS Graffiti gestures"!
+
+!CompassSampleMorph commentStamp: '<historical>' prior: 0!
+I am used to compare one of a number of stroke training samples.
+
+I inform my owner of new samples and can colorize my results
+to show matches and mis-matches.
+!
 
 !EditorStrokeInputMorph commentStamp: '<historical>' prior: 0!
 I am useful within a Text Editor to feed it synthesized KeyboardEvents.
@@ -134,6 +176,15 @@ I allow the user to select between exemplar sets used by the recognizer.
 
 I also display the result match value.!
 
+!StrokeInputMorph commentStamp: '<historical>' prior: 0!
+I am just a BorderedBoxMorph which records mouseDown+move locations
+within my #interiorExtent and inform my owner on mouseUp.
+
+Points are saved and returned as an OrderedCollection.  See #moseButton1Up:localPosition:
+"self owner strokeResult: points."
+
+I also display the mouse positions as recorded (see my #drawOn: method).!
+
 !EditorwithStrokeInput commentStamp: '<historical>' prior: 0!
 I am just a way of getting an EditorWithStrokeInput from the "New Morph.." Menu.!
 
@@ -143,7 +194,14 @@ I am a Text Editor which has an added EditorStrokeInputMorph which feeds me keys
 EditorWithStrokeInput open.!
 
 !CompassExemplar commentStamp: '<historical>' prior: 0!
+I hold a named CompassPattern.
+
+I #compare: my CompassPattern with a sampled CompassPattern.
+
 When a pattern matches my #pattern, then the #name has been recognized.
+
+Names are typically one-character symbols, e.g. #A, but may be symbolic, e.g. #backSpace.
+
 !
 
 !CompassPattern commentStamp: '<historical>' prior: 0!
@@ -153,7 +211,7 @@ from a set of points.
 
 Points are resampled to a standard number, 
   the centroid found,
-  directin is relative to centroid
+  compassDirection is point direction relative to centroid
   strokeDirection is 2nd point relative to first point as origin
 
 One special case for Graffiti gestures: Period.
@@ -195,7 +253,73 @@ This is an original strategy, but uses ideas from pror art:
 
 !
 
-!CompassSampleSizeMorph methodsFor: 'event handling' stamp: 'KenD 9/21/2024 12:38:10'!
+!CompassSampleCompareMorph methodsFor: 'initialization' stamp: 'KenD 10/19/2024 15:39:15'!
+initialize
+
+	| sharedRecognizer |
+	super initialize.
+	sharedRecognizer := CompassRecognizer new. 
+	1 to: 3 do: [ :idx | | sampler |
+		sampler := CompassSampleMorph new.
+		sampler recognizer: sharedRecognizer.
+		sampler when: #NewSample send: #newSample to: self.
+		self addMorph: sampler.
+	].! !
+
+!CompassSampleCompareMorph methodsFor: 'event handling' stamp: 'KenD 10/20/2024 11:00:26'!
+newSample
+
+	"Compare across all samples to colorize match/misMatch."
+	
+	| validSamples booleanCompareArray |
+	validSamples := OrderedCollection new.
+	self submorphsDo: [ :sample | 
+		sample strokeSample ifNotNil: [validSamples add: sample].
+	].
+	booleanCompareArray := 
+		CompassPattern matchArrayFromSamples: validSamples.
+
+	validSamples do: [ :compassSampleToColorize | 
+		compassSampleToColorize colorizeDirections: booleanCompareArray.
+	"Transcript log: compassSampleToColorize printString."
+	].
+	
+	! !
+
+!CompassSampleCompareMorph class methodsFor: 'access' stamp: 'KenD 10/15/2024 14:03:40'!
+matchColor
+
+	"Answer text color for matchs" 
+	^Color black! !
+
+!CompassSampleCompareMorph class methodsFor: 'access' stamp: 'KenD 10/15/2024 14:04:00'!
+misMatchColor
+
+	"Answer text color for non-matches" 
+	^Color red! !
+
+!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/19/2024 10:40:05'!
+categoryInNewMorphMenu
+
+	^ 'Stroke Input'! !
+
+!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/19/2024 10:39:57'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ true! !
+
+!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/19/2024 15:22:45'!
+initializedInstance
+" self initializedInstance openInWorld. "
+	^self new! !
+
+!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/19/2024 15:23:03'!
+new
+
+	^self newRow! !
+
+!CompassSampleSizeMorph methodsFor: 'event handling' stamp: 'KenD 10/19/2024 15:08:52'!
 strokeResult: points
 
 	"Update view of user input"
@@ -206,9 +330,9 @@ strokeResult: points
 							fromPoints: sample 
 							sizeWanted: (self sampleSizeArray at: index).
 		((resultsArray at: index) at: 1) contents:
- 			someResult directionsFromCentroid asString.
+ 			someResult directionsFromCentroid.
 		((resultsArray at: index) at: 2) contents:
-			someResult pointTravelDirections asString.	
+			someResult strokeTravelDirections.	
 	].
 ! !
 
@@ -298,15 +422,15 @@ saveStroke
 			(CompassExemplar name: daName asSymbol pattern: sample)
 	].! !
 
-!CompassTrainingMorph methodsFor: 'event handling' stamp: 'KenD 9/12/2024 13:10:09'!
+!CompassTrainingMorph methodsFor: 'event handling' stamp: 'KenD 10/19/2024 15:09:13'!
 strokeResult: points
 
 	"Update view of user input"
 	sample := CompassPattern fromPoints: points.
 	result := recognizer bestMatch: sample.
 	resultLabel contents: (result key printStringFractionDigits: 3), ' -> ', result value asString.
-	pointDirections contents: sample directionsFromCentroid asString.
-	strokeDirections contents: sample pointTravelDirections asString.	
+	pointDirections contents: sample directionsFromCentroid.
+	strokeDirections contents: sample strokeTravelDirections.	
 	! !
 
 !CompassTrainingMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2024 21:51:47'!
@@ -359,6 +483,30 @@ resultRegion
 				addMorph: downMsg;
 				layoutSpec: (LayoutSpec proportionalWidth: 0.4  proportionalHeight: 0.1 ).! !
 
+!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:34:37'!
+pointDirections
+
+	"Answer a TextParagraphMorph"
+	^pointDirections ! !
+
+!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:54:02'!
+recognizer: aCompassRecognizer
+
+	recognizer := aCompassRecognizer ! !
+
+!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:34:31'!
+strokeDirections
+	
+	"Answer a TextParagraphMorph"
+	^strokeDirections ! !
+
+!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:37:43'!
+strokeSample
+
+	"Answer a CompassPattern whose #pattern is 
+	 an array of compass direction symbols."
+	^sample ! !
+
 !CompassTrainingMorph class methodsFor: 'instance creation' stamp: 'KenD 9/10/2024 17:55:41'!
 new
 
@@ -382,6 +530,55 @@ includeInNewMorphMenu
 initializedInstance
 
 	^self new! !
+
+!CompassSampleMorph methodsFor: 'event handling' stamp: 'KenD 10/20/2024 10:59:43'!
+colorizeDirections: aBooleanVector
+
+	"aBooleanVector elements are used to colorize"
+	pointDirections contents: ''.
+	pointDirections contents: 
+		(sample directionsFromCentroidMatched: aBooleanVector).
+	strokeDirections contents: ''.
+	strokeDirections contents: 
+		(sample strokeTravelDirectionsMatched: aBooleanVector).	
+
+
+	
+	
+	! !
+
+!CompassSampleMorph methodsFor: 'event handling' stamp: 'KenD 10/19/2024 15:36:52'!
+strokeResult: points
+
+	"Update view of user input"
+	super strokeResult: points.
+	self triggerEvent: #NewSample.
+	
+	! !
+
+!CompassSampleMorph methodsFor: 'initialization' stamp: 'KenD 10/20/2024 07:51:40'!
+initialization
+
+	super initialize.
+	self separation: 10. "override"! !
+
+!CompassSampleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/17/2024 13:48:13'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	
+	^ false! !
+
+!CompassSampleMorph class methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:49:59'!
+matchColor
+
+	"Answer text color for matches" 
+	^Color black! !
+
+!CompassSampleMorph class methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:49:07'!
+misMatchColor
+
+	"Answer text color for non-matches" 
+	^Color red! !
 
 !EditorStrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/17/2024 16:56:50'!
 informRadioSelection: whatSym
@@ -524,14 +721,14 @@ drawOn: aCanvas
 		aCanvas line: lastP to: curP width: 6 color: Color black].
 ! !
 
-!StrokeInputMorph methodsFor: 'private' stamp: 'KenD 9/12/2024 12:24:40'!
+!StrokeInputMorph methodsFor: 'private' stamp: 'KenD 10/15/2024 13:14:57'!
 isValidPoint: aPoint
 
 	"Sampled points may contain NaN values or lay outside our extent."
 	"Note: (NaN isNumber) --> true!!"
 	(aPoint x) isNaN ifTrue: [ ^false ].
 	(aPoint y) isNaN ifTrue: [ ^false ].
-	^(0@0 extent: self morphExtent) containsPoint:  aPoint! !
+	^(0@0 extent: self interiorExtent) containsPoint:  aPoint! !
 
 !StrokeInputMorph methodsFor: 'events' stamp: 'KenD 9/9/2024 15:55:53'!
 handlesMouseDown: evt
@@ -2582,22 +2779,73 @@ fromPoints: aPointCollection sizeWanted: numPoints
 	directionVector := (isPeriod) ifTrue: [PeriodArray] ifFalse: [directionColl asArray]
 	! !
 
-!CompassPattern methodsFor: 'accessing' stamp: 'KenD 9/9/2024 14:49:46'!
-at: index
-
-	"My pattern to match is my directionVector."
-	^directionVector at: index! !
-
-!CompassPattern methodsFor: 'accessing' stamp: 'KenD 9/10/2024 14:44:01'!
+!CompassPattern methodsFor: 'direction access' stamp: 'KenD 10/19/2024 15:08:22'!
 directionsFromCentroid
-	"Answer array of direction names"
+	"Answer array of direction names asString"
 
 	| names |
 	names := OrderedCollection new.
 	1 to: directionVector size do: [ :index |
 		(index odd) ifTrue: [ names add: (directionVector at: index)]
 	].
-	^ names asArray! !
+	^ names asArray asString! !
+
+!CompassPattern methodsFor: 'direction access' stamp: 'KenD 10/19/2024 14:44:42'!
+directionsFromCentroidMatched: booleanArray
+	"Answer a colorized Text of centroid->point direction names.
+	 #booleanArray values indicate matches."
+
+	| names |
+	names := '' asText.
+	1 to: directionVector size do: [ :index |
+		(index odd) ifTrue: [ 
+			names := names , 
+					 (((directionVector at: index) printString, ' ') asText
+						 color: ((booleanArray at: index)
+								ifTrue:  [self matchColor] 
+								ifFalse: [self misMatchColor]))
+		]
+	].
+
+	^ names! !
+
+!CompassPattern methodsFor: 'direction access' stamp: 'KenD 10/19/2024 15:07:40'!
+strokeTravelDirections
+	"Answer array of direction names asString
+ 	 (directions from one point to next)"
+
+	| names |
+	names := OrderedCollection new.
+	1 to: directionVector size do: [ :index |
+		(index even) ifTrue: [ names add: (directionVector at: index)]
+	].
+	^ names asArray asString! !
+
+!CompassPattern methodsFor: 'direction access' stamp: 'KenD 10/19/2024 15:07:00'!
+strokeTravelDirectionsMatched: booleanArray
+	"Answer a colorized Text of stroke direction names 
+	 (directions from one point to next).
+	#booleanArray values indicate matches."
+
+	| names |
+	names := '' asText.
+	1 to: directionVector size do: [ :index |
+		(index even) ifTrue: [ 
+			names := names ,
+				 (((directionVector at: index) printString, ' ') asText
+						 color: ((booleanArray at: index)
+								ifTrue:  [self matchColor] 
+								ifFalse: [self misMatchColor]))
+		]
+	].
+
+	^ names! !
+
+!CompassPattern methodsFor: 'accessing' stamp: 'KenD 9/9/2024 14:49:46'!
+at: index
+
+	"My pattern to match is my directionVector."
+	^directionVector at: index! !
 
 !CompassPattern methodsFor: 'accessing' stamp: 'KenD 9/9/2024 14:49:25'!
 pattern
@@ -2611,17 +2859,17 @@ pattern: directionSymbolVec
 	"My pattern to match is my directionVector."
 	directionVector := directionSymbolVec! !
 
-!CompassPattern methodsFor: 'accessing' stamp: 'KenD 9/10/2024 14:45:11'!
-pointTravelDirections
-	"Answer array of direction names
-	 (directions from one point to next)"
+!CompassPattern methodsFor: 'color' stamp: 'KenD 10/20/2024 11:01:23'!
+matchColor
 
-	| names |
-	names := OrderedCollection new.
-	1 to: directionVector size do: [ :index |
-		(index even) ifTrue: [ names add: (directionVector at: index)]
-	].
-	^ names asArray! !
+	"Answer text color for matches" 
+	^Color green darker! !
+
+!CompassPattern methodsFor: 'color' stamp: 'KenD 10/20/2024 11:01:30'!
+misMatchColor
+
+	"Answer text color for non-matches" 
+	^Color red darker darker! !
 
 !CompassPattern class methodsFor: 'class initialization' stamp: 'KenD 9/10/2024 04:38:31'!
 initialize
@@ -2666,6 +2914,26 @@ sampleSize
 sampleSize: positiveInteger
 
 	SampleSize := positiveInteger ! !
+
+!CompassPattern class methodsFor: 'analysis' stamp: 'KenD 10/19/2024 13:41:21'!
+matchArrayFromSamples: aCompassPatternCollection
+
+	"Answer an array of boolean values where `true` indicates a match."
+	| result numDirections |
+	numDirections := (self sampleSize * 2 -1).
+
+	(#(0 1) includes: aCompassPatternCollection size)  "trivial"
+		ifTrue: [^ Array new: numDirections withAll: true ]. 
+	
+	result := OrderedCollection new.
+	1 to: numDirections do: [ :index | | elts |
+		elts := aCompassPatternCollection collect: [ :pattern | pattern strokeSample at: index].
+		result add: ((elts asSet size) = 1) "N way comparison"
+	].
+	^result asArray
+		
+	
+	! !
 
 !CompassRecognizer methodsFor: 'initialization' stamp: 'KenD 9/15/2024 14:13:46'!
 initialize
