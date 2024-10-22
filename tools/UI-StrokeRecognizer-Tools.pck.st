@@ -1,6 +1,7 @@
-'From Cuis7.1 [latest update: #6786] on 20 October 2024 at 12:05:31 pm'!
+'From Cuis7.1 [latest update: #6792] on 22 October 2024 at 1:23:49 pm'!
 'Description Tools to create and investigate CompassRecognizer pattern exemplars.'!
-!provides: 'UI-StrokeRecognizer-Tools' 1 1!
+!provides: 'UI-StrokeRecognizer-Tools' 1 2!
+!requires: 'Cuis-Base' 71 6792 nil!
 !requires: 'UI-StrokeRecognizer' 1 28 nil!
 SystemOrganization addCategory: #'UI-StrokeRecognizer-Tools'!
 
@@ -366,14 +367,12 @@ initializedInstance
 
 	^self new! !
 
-!CompassSampleMorph methodsFor: 'event handling' stamp: 'KenD 10/20/2024 10:59:43'!
+!CompassSampleMorph methodsFor: 'event handling' stamp: 'KenD 10/22/2024 13:18:34'!
 colorizeDirections: aBooleanVector
 
 	"aBooleanVector elements are used to colorize"
-	pointDirections contents: ''.
 	pointDirections contents: 
 		(sample directionsFromCentroidMatched: aBooleanVector).
-	strokeDirections contents: ''.
 	strokeDirections contents: 
 		(sample strokeTravelDirectionsMatched: aBooleanVector).	
 
