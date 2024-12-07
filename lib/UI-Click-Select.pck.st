@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6778] on 27 October 2024 at 10:30:34 pm'!
+'From Cuis7.1 [latest update: #6817] on 7 December 2024 at 11:02:48 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 64!
+!provides: 'UI-Click-Select' 1 65!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -971,10 +971,12 @@ totalHeight
 		inject: gap * 2 
 		into: [:totalHeight :morph | totalHeight  + morph fullBoundsInOwner height]! !
 
-!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 9/12/2024 10:31:59'!
+!InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 12/7/2024 10:09:29'!
 drawBoundsForRow: row
 "calculate the bounds that row should be drawn at.  This might be outside our bounds!!"
-	^ (submorphs atLast: row) fullBoundsInOwner expandBy: padding "* (1 @ 0.5)"
+	^ row = 0
+		ifTrue: [0@0 corner: 0@0]
+		ifFalse: [(submorphs atLast: row) fullBoundsInOwner expandBy: padding "* (1 @ 0.5)"]
 ! !
 
 !InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:33:36'!
