@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6817] on 7 December 2024 at 11:02:48 am'!
+'From Cuis7.1 [latest update: #6817] on 8 December 2024 at 7:56:07 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 65!
+!provides: 'UI-Click-Select' 1 66!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1198,9 +1198,10 @@ includeInNewMorphMenu
 keyboardFocusChange: aBoolean
 	aBoolean ifFalse: [		self delete ].! !
 
-!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 10/10/2023 22:22:48'!
+!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 12/8/2024 19:52:28'!
 updateList
 	super updateList.
+	extent := self defaultExtent.
 	self morphExtent: (scroller desiredWidth + ScrollBar scrollbarThickness + 10) @ extent y! !
 
 !PluggableDropDownListMorph methodsFor: 'access' stamp: 'hlsf 9/30/2023 17:24:52'!
@@ -1217,6 +1218,10 @@ list
 !PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 9/30/2023 17:24:12'!
 defaultBorderWidth
 	^ 1! !
+
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 12/8/2024 19:51:21'!
+defaultExtent
+	^ `150 @100`! !
 
 !PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 10/10/2023 22:05:42'!
 initialize
@@ -1251,8 +1256,9 @@ minimumItemExtent
 "the minimum list item extent to consider to fit in the UI"
 	^ scroller minimumWidth @ scroller maximumItemHeight ! !
 
-!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/16/2022 09:55:03'!
+!PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 12/8/2024 19:24:05'!
 scrollDeltaHeight
+	scroller hasSubmorphs ifFalse: [^1].
 	^ scroller submorphs min: [:item | item fullBoundsInOwner height]! !
 
 !PluggableListOfMorph methodsFor: 'geometry' stamp: 'hlsf 1/22/2022 10:47:06'!
