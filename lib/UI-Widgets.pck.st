@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6817] on 12 December 2024 at 7:49:39 pm'!
+'From Cuis7.1 [latest update: #6817] on 12 December 2024 at 9:43:39 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 42!
+!provides: 'UI-Widgets' 1 43!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -19,7 +19,7 @@ LabelGroup class
 
 !classDefinition: #PreviewMorph category: #'UI-Widgets'!
 LayoutMorph subclass: #PreviewMorph
-	instanceVariableNames: 'object label selected'
+	instanceVariableNames: 'object selected'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
@@ -263,14 +263,6 @@ defaultBorderWidth
 fontToUse
 	^ (Preferences at: #standardMenuFont)! !
 
-!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:59:15'!
-label: aString
-	label := aString ! !
-
-!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:59:33'!
-objectName
-	^ label ifNotNil: [label] ifNil: [object asString]! !
-
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:29:53'!
 selected: aBoolean
 	selected := aBoolean.
@@ -321,10 +313,11 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/12/2024 19:35:33'!
-object: anObject 		image: aForm	 buttons: buttons
-	| row |
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/12/2024 21:42:54'!
+object: anObject 		image: aForm	 buttons: buttons label: aString
+	| row label |
 	object := anObject .
+	label := aString ifNotNil: [aString ] ifNil: [object asString].
 	self layoutSpec: LayoutSpec keepMorphExtent .
 	self addMorph: (ImageMorph new image: aForm);
 		addMorphUseAll: (ColoredBoxMorph new 
@@ -333,9 +326,10 @@ object: anObject 		image: aForm	 buttons: buttons
 	row := LayoutMorph newRow separation: 2@0 :: 
 		adoptWidgetsColor: self defaultColor.
 	row addMorph: (
-		SqueezeLabelMorph contents: self objectName :: 
+		SqueezeLabelMorph contents: label :: 
+			minCharsToShow: 13;
 			centered: buttons isNil;
-			setBalloonText: self objectName).		
+			setBalloonText: label).		
 	buttons ifNotNil: [ 
 		buttons do: [: quickButton | row addMorph: quickButton] ].
 	self addMorphKeepMorphHeight: row.
@@ -345,18 +339,28 @@ object: anObject 		image: aForm	 buttons: buttons
 includeInNewMorphMenu
 	^ false! !
 
-!PreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 12:00:51'!
+!PreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 21:34:04'!
 object: aObject image: aForm
 	^ self object: aObject 
 		image: aForm 
-		buttons: nil! !
+		buttons: nil
+		label: nil! !
 
-!PreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 12:00:34'!
+!PreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 21:34:16'!
 object: aObject image: aForm buttons: buttons
+	^ self 
+		object: aObject 
+		image: aForm 
+		buttons: buttons
+		label: nil! !
+
+!PreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 21:27:37'!
+object: aObject image: aForm buttons: buttons label: aString
 	^ self newColumn
 		object: aObject 
 		image: aForm 
-		buttons: buttons! !
+		buttons: buttons
+		label: aString! !
 
 !PreviewMorph class methodsFor: 'examples' stamp: 'hlsf 12/12/2024 12:05:34'!
 example1
@@ -395,20 +399,17 @@ example1
 fileEntry
 	^ object! !
 
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 12:01:24'!
-objectName
-	^ label ifNotNil: [label] ifNil: [object baseName capitalized]! !
-
 !FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2023 19:16:26'!
 file: aFileEntry image: aForm
 	^ self 	file: aFileEntry image: aForm buttons: nil! !
 
-!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 11:44:21'!
+!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 21:35:05'!
 file: aFileEntry image: aForm buttons: buttons
 	^ self newColumn
 		object: aFileEntry 
 		image: aForm 
-		buttons: buttons! !
+		buttons: buttons
+		label: aFileEntry baseName capitalized! !
 
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/9/2022 21:15:36'!
 adoptWidgetsColor: paneColor
