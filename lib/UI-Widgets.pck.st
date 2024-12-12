@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6817] on 12 December 2024 at 12:06:38 pm'!
+'From Cuis7.1 [latest update: #6817] on 12 December 2024 at 7:49:39 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 41!
+!provides: 'UI-Widgets' 1 42!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -19,7 +19,7 @@ LabelGroup class
 
 !classDefinition: #PreviewMorph category: #'UI-Widgets'!
 LayoutMorph subclass: #PreviewMorph
-	instanceVariableNames: 'object label image selected'
+	instanceVariableNames: 'object label selected'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Widgets'!
@@ -263,10 +263,6 @@ defaultBorderWidth
 fontToUse
 	^ (Preferences at: #standardMenuFont)! !
 
-!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:29:47'!
-image: aForm
-	image := aForm! !
-
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:59:15'!
 label: aString
 	label := aString ! !
@@ -325,10 +321,11 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/12/2024 11:44:06'!
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/12/2024 19:35:33'!
 object: anObject 		image: aForm	 buttons: buttons
 	| row |
 	object := anObject .
+	self layoutSpec: LayoutSpec keepMorphExtent .
 	self addMorph: (ImageMorph new image: aForm);
 		addMorphUseAll: (ColoredBoxMorph new 
 			color: Color transparent; 
