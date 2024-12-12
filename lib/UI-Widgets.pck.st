@@ -1,21 +1,11 @@
-'From Cuis7.1 [latest update: #6764] on 13 October 2024 at 1:13:05 pm'!
+'From Cuis7.1 [latest update: #6817] on 12 December 2024 at 12:06:38 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 39!
+!provides: 'UI-Widgets' 1 41!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
 
-
-!classDefinition: #FilePreviewMorph category: #'UI-Widgets'!
-LayoutMorph subclass: #FilePreviewMorph
-	instanceVariableNames: 'image file selected'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Widgets'!
-!classDefinition: 'FilePreviewMorph class' category: #'UI-Widgets'!
-FilePreviewMorph class
-	instanceVariableNames: ''!
 
 !classDefinition: #LabelGroup category: #'UI-Widgets'!
 LayoutMorph subclass: #LabelGroup
@@ -25,6 +15,26 @@ LayoutMorph subclass: #LabelGroup
 	category: 'UI-Widgets'!
 !classDefinition: 'LabelGroup class' category: #'UI-Widgets'!
 LabelGroup class
+	instanceVariableNames: ''!
+
+!classDefinition: #PreviewMorph category: #'UI-Widgets'!
+LayoutMorph subclass: #PreviewMorph
+	instanceVariableNames: 'object label image selected'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Widgets'!
+!classDefinition: 'PreviewMorph class' category: #'UI-Widgets'!
+PreviewMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #FilePreviewMorph category: #'UI-Widgets'!
+PreviewMorph subclass: #FilePreviewMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Widgets'!
+!classDefinition: 'FilePreviewMorph class' category: #'UI-Widgets'!
+FilePreviewMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #ButtonMorph category: #'UI-Widgets'!
@@ -98,13 +108,22 @@ WaitSpinner class
 	instanceVariableNames: 'spinners isSpinnerRunning process'!
 
 
-!FilePreviewMorph commentStamp: 'hlsf 6/21/2023 14:14:31' prior: 0!
-I represent a preview (image) of a file (file). I am optionally decorated with a toolbar of buttons.
-- on click I raise a #selected event with me as argument.
-- On double-click on me I trigger a #doubleClick event with me as argument.!
-
 !LabelGroup commentStamp: '<historical>' prior: 0!
 A morph laid out with a column of labels and a column of associated controls.!
+
+!PreviewMorph commentStamp: '<historical>' prior: 0!
+I represent a preview of an object. I am optionally decorated with a toolbar of buttons.
+On click I raise a #selected event with me as argument.
+On double-click on me I trigger a #doubleClick event with me as argument.
+- object: the object I am a preview of
+- label: an optional label for the object
+- image: a Form representing a view of the object
+- selected: inform if the user selected me, then surrounded by a bold frame
+!
+
+!FilePreviewMorph commentStamp: '<historical>' prior: 0!
+I represent a preview of a file. 
+- object: a FileEntry!
 
 !ButtonMorph commentStamp: '<historical>' prior: 0!
 An iconic button with a selection color.
@@ -154,146 +173,6 @@ See my Class side:
 	WaitSpinner start.  "Show animated WaitSpinner"
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 3/30/2024 16:59:11'!
-defaultBorderWidth
-	^ 5! !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/1/2023 17:13:25'!
-fileEntry
-	^ file! !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:06:59'!
-fontToUse
-	^ (Preferences at: #standardMenuFont)! !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/1/2023 18:41:38'!
-image: aForm
-	image := aForm! !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 10/19/2021 20:54:22'!
-imageName
-	^ file baseName capitalized ! !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/2/2023 21:56:57'!
-selected: aBoolean
-	selected := aBoolean.
-	self redrawNeeded ! !
-
-!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 5/2/2023 21:57:05'!
-toggleSelection
-	self selected: selected not! !
-
-!FilePreviewMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:44:13'!
-drawOn: aCanvas
-	| border |
-	self isSelected 
-		ifTrue: [border := Theme current focusIndicator]
-		ifFalse: [border := borderColor ].
-	aCanvas
-		fillRectangle: self localBounds
-		color: color
-		borderWidth: borderWidth
-		borderStyleSymbol: #simple
-		baseColorForBorder: border! !
-
-!FilePreviewMorph methodsFor: 'event handling testing' stamp: 'hlsf 10/17/2021 11:20:59'!
-handlesMouseDown: e
-	^ true! !
-
-!FilePreviewMorph methodsFor: 'event handling testing' stamp: 'hlsf 5/1/2023 17:39:49'!
-mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
-	aMouseButtonEvent hand 
-		waitForClicksOrDragOrSimulatedMouseButton2: self 
-		event: aMouseButtonEvent 
-		clkSel: #click:localPosition:
-		clkNHalf: nil
-		dblClkSel: #doubleClick:localPosition: 
-		dblClkNHalfSel: nil
-		tripleClkSel: nil
-		dragSel: ((self valueOfProperty: #allowsItemDrag) = true ifTrue: [ #dragEvent:localPosition: ])! !
-
-!FilePreviewMorph methodsFor: 'events' stamp: 'hlsf 5/1/2023 17:37:43'!
-doubleClick: event localPosition: position
-	self triggerEvent: #doubleClick with: self! !
-
-!FilePreviewMorph methodsFor: 'events' stamp: 'hlsf 5/2/2023 21:39:19'!
-mouseButton1Up: event localPosition: position
-	self triggerEvent: #selected with: self! !
-
-!FilePreviewMorph methodsFor: 'testing' stamp: 'hlsf 10/20/2021 16:11:09'!
-isSelected
-	^ selected ifNil: [selected _ false]! !
-
-!FilePreviewMorph methodsFor: 'initialization' stamp: 'hlsf 9/12/2024 11:25:55'!
-file: aFileEntry 		image: aForm	 buttons: buttons
-	| row |
-	file := aFileEntry.
-	self addMorph: (ImageMorph new image: aForm);
-		addMorphUseAll: (ColoredBoxMorph new 
-			color: Color transparent; 
-			yourself).
-	row := LayoutMorph newRow separation: 2@0 :: 
-		adoptWidgetsColor: self defaultColor.
-	row addMorph: (SqueezeLabelMorph contents: self imageName :: centered: buttons isNil).		
-	buttons ifNotNil: [ 
-		buttons do: [: quickButton | row addMorph: quickButton] ].
-	self addMorphKeepMorphHeight: row.
-	! !
-
-!FilePreviewMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 3/30/2024 17:15:09'!
-adoptWidgetsColor: aColor 
-	super adoptWidgetsColor: aColor.
-	color := Theme current paneBackgroundFrom: aColor.
-	borderColor := color darker! !
-
-!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2023 19:16:26'!
-file: aFileEntry image: aForm
-	^ self 	file: aFileEntry image: aForm buttons: nil! !
-
-!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2023 19:16:10'!
-file: aFileEntry image: aForm buttons: buttons
-	^ self newColumn
-		file: aFileEntry 
-		image: aForm 
-		buttons: buttons! !
-
-!FilePreviewMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 3/15/2022 21:33:41'!
-includeInNewMorphMenu
-	^ false! !
-
-!FilePreviewMorph class methodsFor: 'examples' stamp: 'hlsf 5/2/2023 22:04:42'!
-example1
-"
-	self example1 openInWorld
-"
-	| pallet forms buttons |
-	pallet := LayoutMorph newRow .
-	forms := (Theme content 	from: 'Theme' 	get: {'16x16'. 'places'}) asDictionary.
-	forms  keysAndValuesDo: [:aName :aForm | | preview |
-		buttons :=	 OrderedCollection new.
-		buttons add: (PluggableButtonMorph 
-			model: Switch newOff 			stateGetter: #isOn 		action: #switch ::
-			icon: aForm ;
-			setBalloonText: 'A switch button.';
-			yourself).
-		buttons add: (PluggableButtonMorph 
-			model: Switch newOff 			stateGetter: nil 		action: #switch ::
-			icon: Theme current deleteIcon ;
-			setBalloonText: 'Delete me.';
-			yourself).
-
-		preview := FilePreviewMorph 
-			file: '/tmp' asDirectoryEntry // aName 
-			image: (aForm magnifyTo: 150@100)
-			buttons: buttons.
-		preview when: #selected send: #toggleSelection to: preview .
-		preview when: #doubleClick send: #removeMorph: to: pallet .
-		pallet addMorph: preview].
-	^ pallet
-	
-	
-	! !
 
 !LabelGroup methodsFor: 'initialization' stamp: 'KenD 4/1/2022 12:31:18'!
 defaultColor
@@ -369,6 +248,170 @@ example1
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:28:35'!
+adoptWidgetsColor: aColor 
+	super adoptWidgetsColor: aColor.
+	color := Theme current paneBackgroundFrom: aColor.
+	borderColor := color darker! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:28:40'!
+defaultBorderWidth
+	^ 5! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:27:37'!
+fontToUse
+	^ (Preferences at: #standardMenuFont)! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:29:47'!
+image: aForm
+	image := aForm! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:59:15'!
+label: aString
+	label := aString ! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:59:33'!
+objectName
+	^ label ifNotNil: [label] ifNil: [object asString]! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:29:53'!
+selected: aBoolean
+	selected := aBoolean.
+	self redrawNeeded ! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:29:59'!
+toggleSelection
+	self selected: selected not! !
+
+!PreviewMorph methodsFor: 'events' stamp: 'hlsf 12/12/2024 11:28:46'!
+doubleClick: event localPosition: position
+	self triggerEvent: #doubleClick with: self! !
+
+!PreviewMorph methodsFor: 'events' stamp: 'hlsf 12/12/2024 11:30:26'!
+mouseButton1Up: event localPosition: position
+	self triggerEvent: #selected with: self! !
+
+!PreviewMorph methodsFor: 'drawing' stamp: 'hlsf 12/12/2024 11:29:30'!
+drawOn: aCanvas
+	| border |
+	self isSelected 
+		ifTrue: [border := Theme current focusIndicator]
+		ifFalse: [border := borderColor ].
+	aCanvas
+		fillRectangle: self localBounds
+		color: color
+		borderWidth: borderWidth
+		borderStyleSymbol: #simple
+		baseColorForBorder: border! !
+
+!PreviewMorph methodsFor: 'event handling testing' stamp: 'hlsf 12/12/2024 11:30:08'!
+handlesMouseDown: e
+	^ true! !
+
+!PreviewMorph methodsFor: 'event handling testing' stamp: 'hlsf 12/12/2024 11:30:20'!
+mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
+	aMouseButtonEvent hand 
+		waitForClicksOrDragOrSimulatedMouseButton2: self 
+		event: aMouseButtonEvent 
+		clkSel: #click:localPosition:
+		clkNHalf: nil
+		dblClkSel: #doubleClick:localPosition: 
+		dblClkNHalfSel: nil
+		tripleClkSel: nil
+		dragSel: ((self valueOfProperty: #allowsItemDrag) = true ifTrue: [ #dragEvent:localPosition: ])! !
+
+!PreviewMorph methodsFor: 'testing' stamp: 'hlsf 12/12/2024 11:30:31'!
+isSelected
+	^ selected ifNil: [selected _ false]! !
+
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/12/2024 11:44:06'!
+object: anObject 		image: aForm	 buttons: buttons
+	| row |
+	object := anObject .
+	self addMorph: (ImageMorph new image: aForm);
+		addMorphUseAll: (ColoredBoxMorph new 
+			color: Color transparent; 
+			yourself).
+	row := LayoutMorph newRow separation: 2@0 :: 
+		adoptWidgetsColor: self defaultColor.
+	row addMorph: (
+		SqueezeLabelMorph contents: self objectName :: 
+			centered: buttons isNil;
+			setBalloonText: self objectName).		
+	buttons ifNotNil: [ 
+		buttons do: [: quickButton | row addMorph: quickButton] ].
+	self addMorphKeepMorphHeight: row.
+	! !
+
+!PreviewMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 12/12/2024 11:27:52'!
+includeInNewMorphMenu
+	^ false! !
+
+!PreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 12:00:51'!
+object: aObject image: aForm
+	^ self object: aObject 
+		image: aForm 
+		buttons: nil! !
+
+!PreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 12:00:34'!
+object: aObject image: aForm buttons: buttons
+	^ self newColumn
+		object: aObject 
+		image: aForm 
+		buttons: buttons! !
+
+!PreviewMorph class methodsFor: 'examples' stamp: 'hlsf 12/12/2024 12:05:34'!
+example1
+"
+	self example1 openInWorld
+"
+	| pallet forms buttons |
+	pallet := LayoutMorph newRow .
+	forms := (Theme content 	from: 'Theme' 	get: {'16x16'. 'places'}) asDictionary.
+	forms  keysAndValuesDo: [:aName :aForm | | preview |
+		buttons :=	 OrderedCollection new.
+		buttons add: (PluggableButtonMorph 
+			model: Switch newOff 			stateGetter: #isOn 		action: #switch ::
+			icon: aForm ;
+			setBalloonText: 'A switch button.';
+			yourself).
+		buttons add: (PluggableButtonMorph 
+			model: Switch newOff 			stateGetter: nil 		action: #switch ::
+			icon: Theme current deleteIcon ;
+			setBalloonText: 'Delete me.';
+			yourself).
+
+		preview := PreviewMorph 
+			object: aName 
+			image: (aForm magnifyTo: 150@100)
+			buttons: buttons.
+		preview when: #selected send: #toggleSelection to: preview .
+		preview when: #doubleClick send: #removeMorph: to: pallet .
+		pallet addMorph: preview].
+	^ pallet
+	
+	
+	! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:36:47'!
+fileEntry
+	^ object! !
+
+!FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 12:01:24'!
+objectName
+	^ label ifNotNil: [label] ifNil: [object baseName capitalized]! !
+
+!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2023 19:16:26'!
+file: aFileEntry image: aForm
+	^ self 	file: aFileEntry image: aForm buttons: nil! !
+
+!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 11:44:21'!
+file: aFileEntry image: aForm buttons: buttons
+	^ self newColumn
+		object: aFileEntry 
+		image: aForm 
+		buttons: buttons! !
 
 !ButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/9/2022 21:15:36'!
 adoptWidgetsColor: paneColor
