@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6817] on 12 December 2024 at 9:43:39 pm'!
+'From Cuis7.3 [latest update: #6960] on 31 December 2024 at 7:44:01 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 43!
+!provides: 'UI-Widgets' 1 44!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -313,18 +313,17 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/12/2024 21:42:54'!
-object: anObject 		image: aForm	 buttons: buttons label: aString
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/31/2024 19:43:07'!
+object: anObject image: aForm	 buttons: buttons label: aString
 	| row label |
 	object := anObject .
 	label := aString ifNotNil: [aString ] ifNil: [object asString].
+	self separation: 1@0.
 	self layoutSpec: LayoutSpec keepMorphExtent .
-	self addMorph: (ImageMorph new image: aForm);
-		addMorphUseAll: (ColoredBoxMorph new 
-			color: Color transparent; 
-			yourself).
-	row := LayoutMorph newRow separation: 2@0 :: 
-		adoptWidgetsColor: self defaultColor.
+	self addMorph: (ImageMorph new image: aForm).
+	row := LayoutMorph newRow separation: 2@4 :: 
+		adoptWidgetsColor: self defaultColor;
+		layoutSpec: (LayoutSpec fixedHeight: 0).
 	row addMorph: (
 		SqueezeLabelMorph contents: label :: 
 			minCharsToShow: 13;
@@ -332,7 +331,7 @@ object: anObject 		image: aForm	 buttons: buttons label: aString
 			setBalloonText: label).		
 	buttons ifNotNil: [ 
 		buttons do: [: quickButton | row addMorph: quickButton] ].
-	self addMorphKeepMorphHeight: row.
+	self addMorph: row
 	! !
 
 !PreviewMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 12/12/2024 11:27:52'!
