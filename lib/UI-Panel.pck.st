@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6722] on 15 September 2024 at 8:42:50 am'!
+'From Cuis7.3 [latest update: #6971] on 7 January 2025 at 12:07:28 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 114!
+!provides: 'UI-Panel' 1 115!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -471,6 +471,12 @@ drawOn: canvas
 requiresVectorCanvas
 	^ true! !
 
+!DecoratedPane methodsFor: 'geometry' stamp: 'jmv 1/7/2025 11:53:33'!
+morphExtent: newExtent
+	super morphExtent: newExtent.
+	"Hack. This BoxMorph is drawing outside its bounds."
+	self redrawNeeded! !
+
 !DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/29/2023 12:32:24'!
 example1
 "
@@ -643,21 +649,19 @@ drawClassicFrameOn: aCanvas color: titleColor
 	The look is that the title area is inside the window"
 	aCanvas fillRectangle: (borderWidth@borderWidth extent: extent x - (2*borderWidth)@ self labelHeight) color: titleColor! !
 
-!Panel methodsFor: 'drawing' stamp: 'KenD 10/27/2021 12:46:29'!
+!Panel methodsFor: 'drawing' stamp: 'jmv 1/7/2025 11:48:37'!
 drawOn: aCanvas
 
 	| titleColor |
 
-	titleColor _ self defaultColor.
+	titleColor := self defaultColor.
 	(Theme current roundWindowCorners)
 		ifTrue: [
 			"Round corners. Optional title gradient."
 			self drawRoundedFrameOn: aCanvas color: titleColor ]
 		ifFalse: [
 			"No round corners. No title gradient."
-			self drawClassicFrameOn: aCanvas color: titleColor ].
-
-	self titleMorph ifNotNil: [ :titleM | titleM drawOn: aCanvas ].! !
+			self drawClassicFrameOn: aCanvas color: titleColor ].! !
 
 !Panel methodsFor: 'drawing' stamp: 'hlsf 3/23/2023 10:40:08'!
 drawRoundedFrameOn: aCanvas color: theUIsColor
@@ -722,6 +726,22 @@ layoutSubmorphs
 	
 	self layoutNeeded: false! !
 
+!Panel methodsFor: 'layout' stamp: 'jmv 1/7/2025 11:03:01'!
+layoutSubmorphsIfNeeded
+	"Return self. Recompute the layout if necessary."
+
+	self isLayoutNeeded ifTrue: [
+		self layoutSubmorphs ].
+! !
+
+!Panel methodsFor: 'layout' stamp: 'jmv 1/7/2025 11:30:44'!
+someSubmorphPositionOrExtentChanged
+	"Some submorph changed at any nested level.
+	Must layout submorphs again."
+
+	super someSubmorphPositionOrExtentChanged.
+	self layoutNeeded: true.! !
+
 !Panel methodsFor: 'geometry' stamp: 'hlsf 7/3/2022 13:07:02'!
 boxExtent
 	"answer the extent to use in all the buttons. 
@@ -730,6 +750,12 @@ boxExtent
 	| e |
 	e _ (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
+
+!Panel methodsFor: 'geometry' stamp: 'jmv 1/7/2025 12:02:16'!
+extentChanged: oldExtent
+	"Our extent changed. Must layout submorphs again."
+
+	self layoutNeeded: true.! !
 
 !Panel methodsFor: 'geometry' stamp: 'KenD 9/15/2024 08:05:15'!
 fitInWorld
