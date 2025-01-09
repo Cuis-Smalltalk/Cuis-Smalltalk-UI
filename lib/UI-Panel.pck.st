@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #6971] on 7 January 2025 at 12:07:28 pm'!
+'From Cuis7.3 [latest update: #6971] on 9 January 2025 at 8:42:28 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 115!
+!provides: 'UI-Panel' 1 116!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -203,7 +203,7 @@ WizardPage class
 A breadcrumbs panel to navigate a tree of objects. A visitor (viewer) is used to get the appropriate view of the browsed objects.
 At the top, the navigation, a collection of buttons to access the browsed objects. 
 At the bottom, a view of the visited object.
-When clicking a button, the bottow view is replaced by the associated buttons's object view. The navigation is adjusted accordingly.
+When clicking a button, the bottom view is replaced by the associated buttons's object view. The navigation is adjusted accordingly.
 The browsed objects listen to events:
 - #browseTo, to instruct me to browse the given objet. See my method #browseTo:
 - #edited, to updated a button label when its associated object was edited. Its name may have changed
@@ -388,6 +388,10 @@ on: anObject with: viewerVisitorClass
 		root: anObject ;		
 		yourself! !
 
+!BreadcrumbsPane class methodsFor: 'new-morph participation' stamp: 'hlsf 1/9/2025 20:37:37'!
+includeInNewMorphMenu
+	^ false! !
+
 !DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 00:11:54'!
 adoptWidgetsColor: aColor 
 	super adoptWidgetsColor: aColor.
@@ -512,6 +516,10 @@ example2
 		borderWidth: 4;
 		borderColor: Color orange;
 		morphExtent: 265@275.! !
+
+!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 1/9/2025 20:40:42'!
+initializedInstance
+	^ self example1! !
 
 !DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/4/2023 19:42:24'!
 new
