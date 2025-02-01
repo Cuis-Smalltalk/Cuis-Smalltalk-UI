@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6722] on 15 September 2024 at 8:43:05 am'!
+'From Cuis7.3 [latest update: #7044] on 1 February 2025 at 11:46:44 am'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 23!
+!provides: 'UI-Layout-Panel' 1 24!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
@@ -264,7 +264,7 @@ showHaloButtonClicked
 				popUpForHand: self  world activeHand
 	]! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 9/15/2024 04:59:50'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 2/1/2025 11:45:56'!
 updateMasterFromCopy
 	"Update model from editModel"
 	
@@ -277,7 +277,10 @@ updateMasterFromCopy
 	original padding: editCopy padding.
 	original color: editCopy color.
 	original layoutSubmorphs; redrawNeeded.
-	original owner ifNotNil: [ :container | container layoutSubmorphs; redrawNeeded ].
+	original owner ifNotNil: [ :container | 
+		container respondsTo: #layoutSubmorphs :: ifTrue: [
+			container layoutSubmorphs; redrawNeeded ]
+	].
 	self editModel: nil.
 	original triggerEvent: #propertyChanged.
 	
