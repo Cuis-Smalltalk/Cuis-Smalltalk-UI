@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6817] on 8 December 2024 at 7:56:07 pm'!
+'From Cuis7.3 [latest update: #7044] on 6 February 2025 at 12:14:37 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 66!
+!provides: 'UI-Click-Select' 1 67!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -74,6 +74,16 @@ MenuMorph subclass: #MultiSelectMenu
 	category: 'UI-Click-Select'!
 !classDefinition: 'MultiSelectMenu class' category: #'UI-Click-Select'!
 MultiSelectMenu class
+	instanceVariableNames: ''!
+
+!classDefinition: #FlapButton category: #'UI-Click-Select'!
+LabelMorph subclass: #FlapButton
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'FlapButton class' category: #'UI-Click-Select'!
+FlapButton class
 	instanceVariableNames: ''!
 
 !classDefinition: #PluggableDropDownListMorph category: #'UI-Click-Select'!
@@ -1193,6 +1203,57 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
+
+!FlapButton methodsFor: 'initialization' stamp: 'hlsf 2/5/2025 22:29:30'!
+defaultBorderWidth
+	^ 1! !
+
+!FlapButton methodsFor: 'initialization' stamp: 'hlsf 2/5/2025 22:28:34'!
+defaultPadding
+	^ `8@8`! !
+
+!FlapButton methodsFor: 'as yet unclassified' stamp: 'hlsf 2/6/2025 00:12:02'!
+borderColor: aColor
+	color := aColor luminance > 0.5 ifTrue: [Color black] ifFalse: [Color white].
+	super borderColor: aColor ! !
+
+!FlapButton methodsFor: 'as yet unclassified' stamp: 'hlsf 2/6/2025 00:08:32'!
+drawOn: aCanvas
+	| pen control inExtent halfBorder |
+	halfBorder := borderWidth / 2.0.
+	pen := halfBorder  @ (extent y - halfBorder).
+	inExtent := self interiorExtent.
+	aCanvas strokeWidth: borderWidth color: borderColor fillColor: borderColor twiceLighter do: [
+		control := pen + (padding x + borderWidth @ 0).
+		aCanvas moveTo: pen;
+			quadraticBezierTo: (pen := pen + (padding x + borderWidth @ padding y negated) )
+			control: control.
+		aCanvas lineTo: (pen := pen - (0 @ (inExtent y + borderWidth))).
+		control := pen - (0@ padding y).
+		aCanvas 
+			quadraticBezierTo:  (pen := pen + (padding x @ padding y negated))
+			control:  control.
+		aCanvas lineTo: (pen := pen + (inExtent x - padding x - padding x - borderWidth @ 0)).
+		control := pen + (padding x @ 0).
+		aCanvas 
+			quadraticBezierTo: (pen := pen + padding)
+			control: control.
+		aCanvas lineTo: (pen := pen + (0 @ (inExtent y ))).
+		pen := extent - halfBorder .
+		control := pen - (padding x + borderWidth @0).
+		aCanvas 
+			quadraticBezierTo: pen
+			control:  control].
+	aCanvas
+		drawString: (contents ifNil: [ '' ])
+		at: self interiorOrigin 
+		font: self fontToUse
+		color: color.
+! !
+
+!FlapButton methodsFor: 'as yet unclassified' stamp: 'hlsf 2/5/2025 22:50:05'!
+requiresVectorCanvas
+	^ true ! !
 
 !PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!
 keyboardFocusChange: aBoolean
