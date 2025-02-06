@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #6971] on 9 January 2025 at 8:42:28 pm'!
+'From Cuis7.3 [latest update: #7044] on 6 February 2025 at 12:24:19 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 116!
+!provides: 'UI-Panel' 1 117!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -26,6 +26,16 @@ LayoutMorph subclass: #DecoratedPane
 	category: 'UI-Panel'!
 !classDefinition: 'DecoratedPane class' category: #'UI-Panel'!
 DecoratedPane class
+	instanceVariableNames: ''!
+
+!classDefinition: #TableMorph category: #'UI-Panel'!
+PluggableScrollPane subclass: #TableMorph
+	instanceVariableNames: 'cellWidth cells'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'TableMorph class' category: #'UI-Panel'!
+TableMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #PluggableScrollBar category: #'UI-Panel'!
@@ -237,9 +247,9 @@ Examples:
   LayoutMorphEditPanel open:  (LayoutMorph newRow).
   LayoutSpecEditPanel open: (LayoutSpec useAll).!
 
-!PluggableDialogPanel commentStamp: 'hlsf 5/28/2023 21:01:08' prior: 0!
+!PluggableDialogPanel commentStamp: '<historical>' prior: 0!
 A pluggable Dialog panel with 'Accept' and 'Cancel' buttons. 
-The model shoulw answer to:
+The model should answer to:
 - viewSelector (yeah...) to get a view to plug in the panel.
 - actionOnAccept (block or symbol) when the 'Accept' button is pressed.
 
@@ -537,6 +547,80 @@ open: aPane label: aString quickButtons: aCollection
 		quickButtons: aCollection;
 		contents: aPane.
 	^ pane! !
+
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:11:57'!
+defaultBorderColor
+	^ Theme current transcript! !
+
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:11:46'!
+defaultColor
+	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
+
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 12:01:07'!
+defaultExtent
+	^ `400@300`! !
+
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:54:55'!
+initialize
+	super initialize.
+	self layoutSpec: LayoutSpec useAll;
+		scroller: LayoutMorph newColumn! !
+
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:56:50'!
+newRow
+	^ ​ LayoutMorph newRow :: 
+		separation: self gap ; 
+		adoptWidgetsColor: color
+	! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 12:16:45'!
+cells: morphs
+	cells := morphs.
+	self updateLayout! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 11:56:55'!
+gap
+" Gap between two previews in a row "
+	^ 12	! !
+
+!TableMorph methodsFor: 'layout' stamp: 'hlsf 2/6/2025 12:22:10'!
+updateCellWidth
+	cellWidth := (cells collect: [:each | 
+		each displayBounds 
+			ifNil: [50] 
+			ifNotNil: [:d | d width] ]) max! !
+
+!TableMorph methodsFor: 'layout' stamp: 'hlsf 2/6/2025 12:23:01'!
+updateLayout
+	| cellsPerRow tableWidth |
+	scroller removeAllMorphs.
+	self updateCellWidth.
+	tableWidth := extent x .
+	cellsPerRow := tableWidth // (cellWidth + self gap).
+	cells groupsOf: cellsPerRow atATimeDo: [:cellsRow |
+		scroller addMorph: (cellsRow inject: self newRow into: [:row :cell| row addMorph: cell]) ].
+	" Is there is an incomplete last row to add? 	"
+	cells size \\ cellsPerRow ifNotZero: [
+		scroller addMorph: (
+			(cells allButFirst: (cells size // cellsPerRow * cellsPerRow)) 
+				inject: self newRow 
+				into: [:row :cell | row addMorph: cell]) ]! !
+
+!TableMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 2/6/2025 12:10:10'!
+extentChanged: oldExtent
+	super extentChanged: oldExtent.
+	self updateLayout ! !
+
+!TableMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2025 12:07:57'!
+example1
+"
+	self example1
+"
+	| table cells |
+	table := self new openInWorld.
+	cells := OrderedCollection new.
+	10 timesRepeat: [ cells add: (Sample09Clock new scale:  Random next + 0.2)].
+	table cells: cells! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
 fontPreferenceChanged

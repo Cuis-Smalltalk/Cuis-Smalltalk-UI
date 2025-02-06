@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 6 February 2025 at 12:14:37 am'!
+'From Cuis7.3 [latest update: #7044] on 6 February 2025 at 12:24:16 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 67!
+!provides: 'UI-Click-Select' 1 68!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1212,12 +1212,21 @@ defaultBorderWidth
 defaultPadding
 	^ `8@8`! !
 
-!FlapButton methodsFor: 'as yet unclassified' stamp: 'hlsf 2/6/2025 00:12:02'!
+!FlapButton methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:17:24'!
+initialize
+	super initialize.
+	self borderColor: self defaultBorderColor ! !
+
+!FlapButton methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 00:12:02'!
 borderColor: aColor
 	color := aColor luminance > 0.5 ifTrue: [Color black] ifFalse: [Color white].
 	super borderColor: aColor ! !
 
-!FlapButton methodsFor: 'as yet unclassified' stamp: 'hlsf 2/6/2025 00:08:32'!
+!FlapButton methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 11:16:15'!
+color: aColor
+" Label color is automatically set. See #borderColor: "! !
+
+!FlapButton methodsFor: 'drawing' stamp: 'hlsf 2/6/2025 10:30:07'!
 drawOn: aCanvas
 	| pen control inExtent halfBorder |
 	halfBorder := borderWidth / 2.0.
@@ -1243,17 +1252,22 @@ drawOn: aCanvas
 		control := pen - (padding x + borderWidth @0).
 		aCanvas 
 			quadraticBezierTo: pen
-			control:  control].
+			control:  control.
+		"aCanvas  moveTo: halfBorder  @ (extent y - halfBorder)"].
 	aCanvas
 		drawString: (contents ifNil: [ '' ])
-		at: self interiorOrigin 
+		at: self interiorOrigin
 		font: self fontToUse
 		color: color.
 ! !
 
-!FlapButton methodsFor: 'as yet unclassified' stamp: 'hlsf 2/5/2025 22:50:05'!
+!FlapButton methodsFor: 'geometry testing' stamp: 'hlsf 2/5/2025 22:50:05'!
 requiresVectorCanvas
 	^ true ! !
+
+!FlapButton class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
+includeInNewMorphMenu
+	^ false! !
 
 !PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!
 keyboardFocusChange: aBoolean
