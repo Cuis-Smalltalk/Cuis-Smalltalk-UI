@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7044] on 6 February 2025 at 12:24:19 pm'!
+'From Cuis7.3 [latest update: #7044] on 6 February 2025 at 8:36:57 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 117!
+!provides: 'UI-Panel' 1 118!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -30,7 +30,7 @@ DecoratedPane class
 
 !classDefinition: #TableMorph category: #'UI-Panel'!
 PluggableScrollPane subclass: #TableMorph
-	instanceVariableNames: 'cellWidth cells'
+	instanceVariableNames: 'cells'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -224,6 +224,9 @@ The browsed objects listen to events:
 !DecoratedPane commentStamp: '<historical>' prior: 0!
 - I present morphs in a pane with optional scrollbars
 - I am decorated with a surounding thin line and quick buttons for actions in my model!
+
+!TableMorph commentStamp: 'hlsf 2/6/2025 20:36:46' prior: 0!
+Arrange in table a collection of kind of BoxMorphs!
 
 !PluggableScrollBar commentStamp: '<historical>' prior: 0!
 I am a ScrollBar which can get new values from my model.!
@@ -560,61 +563,67 @@ defaultColor
 defaultExtent
 	^ `400@300`! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:54:55'!
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 19:24:09'!
 initialize
 	super initialize.
 	self layoutSpec: LayoutSpec useAll;
-		scroller: LayoutMorph newColumn! !
+		scroller: (LayoutMorph newColumn color: Color transparent)! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:56:50'!
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 19:23:26'!
 newRow
 	^ ​ LayoutMorph newRow :: 
 		separation: self gap ; 
-		adoptWidgetsColor: color
+		color: Color transparent 
 	! !
 
-!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 12:16:45'!
+!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:23:31'!
 cells: morphs
-	cells := morphs.
+	cells := morphs.	
 	self updateLayout! !
 
-!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 11:56:55'!
+!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:20:23'!
 gap
 " Gap between two previews in a row "
 	^ 12	! !
 
-!TableMorph methodsFor: 'layout' stamp: 'hlsf 2/6/2025 12:22:10'!
-updateCellWidth
-	cellWidth := (cells collect: [:each | 
-		each displayBounds 
-			ifNil: [50] 
-			ifNotNil: [:d | d width] ]) max! !
-
-!TableMorph methodsFor: 'layout' stamp: 'hlsf 2/6/2025 12:23:01'!
+!TableMorph methodsFor: 'layout' stamp: 'hlsf 2/6/2025 20:31:38'!
 updateLayout
-	| cellsPerRow tableWidth |
-	scroller removeAllMorphs.
-	self updateCellWidth.
-	tableWidth := extent x .
-	cellsPerRow := tableWidth // (cellWidth + self gap).
-	cells groupsOf: cellsPerRow atATimeDo: [:cellsRow |
-		scroller addMorph: (cellsRow inject: self newRow into: [:row :cell| row addMorph: cell]) ].
-	" Is there is an incomplete last row to add? 	"
-	cells size \\ cellsPerRow ifNotZero: [
-		scroller addMorph: (
-			(cells allButFirst: (cells size // cellsPerRow * cellsPerRow)) 
-				inject: self newRow 
-				into: [:row :cell | row addMorph: cell]) ]! !
+	| tableWidth leftSpace row |
+	tableWidth := self viewableWidth.
+	scroller 
+		removeAllMorphs;
+		morphExtent: tableWidth @ 0.
+	leftSpace := 0.
+	cells do: [:cell | | w |
+		w := cell morphWidth.
+		w + self gap > leftSpace ifTrue: [ 
+			scroller addMorph: (row := self newRow).
+			leftSpace := tableWidth - self gap].
+		row addMorph: cell.
+		leftSpace := leftSpace - w - self gap]! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 2/6/2025 12:10:10'!
-extentChanged: oldExtent
-	super extentChanged: oldExtent.
-	self updateLayout ! !
+!TableMorph methodsFor: 'geometry' stamp: 'hlsf 2/6/2025 20:06:44'!
+extentChanged: oldExtent	
+	self updateLayout.
+	super extentChanged: oldExtent.! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2025 12:07:57'!
+!TableMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2025 20:34:54'!
 example1
 "
 	self example1
+"
+	| table cells |
+	table := self new openInWorld.
+	cells := OrderedCollection new.
+	50 timesRepeat: [ cells add: (ColoredBoxMorph new :: 
+			morphExtent: (5 to: 80) atRandom asPoint;
+			color: Color random)].
+	table cells: cells! !
+
+!TableMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2025 20:22:57'!
+example2
+"
+	self example2
 "
 	| table cells |
 	table := self new openInWorld.
