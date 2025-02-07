@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 7 February 2025 at 7:10:43 pm'!
+'From Cuis7.3 [latest update: #7044] on 7 February 2025 at 10:20:28 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 69!
+!provides: 'UI-Click-Select' 1 71!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -76,14 +76,14 @@ MenuMorph subclass: #MultiSelectMenu
 MultiSelectMenu class
 	instanceVariableNames: ''!
 
-!classDefinition: #FlapButton category: #'UI-Click-Select'!
-LabelMorph subclass: #FlapButton
-	instanceVariableNames: 'folded prevPosition objects'
+!classDefinition: #Flap category: #'UI-Click-Select'!
+LabelMorph subclass: #Flap
+	instanceVariableNames: 'folded prevPosition objects panel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
-!classDefinition: 'FlapButton class' category: #'UI-Click-Select'!
-FlapButton class
+!classDefinition: 'Flap class' category: #'UI-Click-Select'!
+Flap class
 	instanceVariableNames: ''!
 
 !classDefinition: #PluggableDropDownListMorph category: #'UI-Click-Select'!
@@ -186,9 +186,9 @@ For example, TextEmphasis codes are a bit ORing of values:
  2r01000000	64 	with ST-80 Glyphs
  !
 
-!FlapButton commentStamp: 'hlsf 2/7/2025 19:09:50' prior: 0!
+!Flap commentStamp: 'hlsf 2/7/2025 20:55:24' prior: 0!
 - folded : boolean, when true the button is set on the bottom of its owner at an arbitrary horizontal position
-- objects : a collection of object I present when unfolded and the user can drag away!
+- objects : a collection of objects I present when unfolded and the user can drag away!
 
 !PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
 I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
@@ -1208,40 +1208,44 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!FlapButton methodsFor: 'initialization' stamp: 'hlsf 2/5/2025 22:29:30'!
+!Flap methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 21:18:11'!
 defaultBorderWidth
-	^ 1! !
+	^ 2! !
 
-!FlapButton methodsFor: 'initialization' stamp: 'hlsf 2/5/2025 22:28:34'!
+!Flap methodsFor: 'initialization' stamp: 'hlsf 2/5/2025 22:28:34'!
 defaultPadding
 	^ `8@8`! !
 
-!FlapButton methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 16:52:56'!
+!Flap methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 21:36:50'!
 initialize
 	super initialize.
-	self borderColor: self defaultBorderColor.
-	folded := true! !
+	self borderColor: self defaultBorderColor! !
 
-!FlapButton methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 00:12:02'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 00:12:02'!
 borderColor: aColor
 	color := aColor luminance > 0.5 ifTrue: [Color black] ifFalse: [Color white].
 	super borderColor: aColor ! !
 
-!FlapButton methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 11:16:15'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 11:16:15'!
 color: aColor
 " Label color is automatically set. See #borderColor: "! !
 
-!FlapButton methodsFor: 'accessing' stamp: 'hlsf 2/7/2025 19:09:09'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/7/2025 21:57:18'!
+fillColor
+
+	^ borderColor twiceLighter! !
+
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/7/2025 19:09:09'!
 objects: placedMorphs
 	objects := placedMorphs ! !
 
-!FlapButton methodsFor: 'drawing' stamp: 'hlsf 2/6/2025 10:30:07'!
+!Flap methodsFor: 'drawing' stamp: 'hlsf 2/7/2025 21:57:18'!
 drawOn: aCanvas
 	| pen control inExtent halfBorder |
 	halfBorder := borderWidth / 2.0.
 	pen := halfBorder  @ (extent y - halfBorder).
 	inExtent := self interiorExtent.
-	aCanvas strokeWidth: borderWidth color: borderColor fillColor: borderColor twiceLighter do: [
+	aCanvas strokeWidth: borderWidth color: borderColor fillColor: self fillColor do: [
 		control := pen + (padding x + borderWidth @ 0).
 		aCanvas moveTo: pen;
 			quadraticBezierTo: (pen := pen + (padding x + borderWidth @ padding y negated) )
@@ -1270,50 +1274,71 @@ drawOn: aCanvas
 		color: color.
 ! !
 
-!FlapButton methodsFor: 'geometry testing' stamp: 'hlsf 2/5/2025 22:50:05'!
+!Flap methodsFor: 'geometry testing' stamp: 'hlsf 2/5/2025 22:50:05'!
 requiresVectorCanvas
 	^ true ! !
 
-!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 17:14:01'!
-dragEvent: aMouseEvent localPosition: localEventPosition
-'event' print.
-super dragEvent: aMouseEvent localPosition: localEventPosition ! !
-
-!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:43:25'!
+!Flap methodsFor: 'events' stamp: 'hlsf 2/7/2025 22:13:28'!
 mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
-	self comeToFront ! !
+	self comeToFront.
+	panel ifNotNil: [panel comeToFront ]! !
 
-!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:56:56'!
+!Flap methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:56:56'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	prevPosition ifNil: [self toggleFolded].
 	prevPosition := nil! !
 
-!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:29:05'!
+!Flap methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:29:05'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
 	prevPosition ifNotNil: [self translateWith: aMouseMoveEvent eventPosition - prevPosition].
 	prevPosition := aMouseMoveEvent eventPosition! !
 
-!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:39:52'!
-toggleFolded
-	folded := folded not.
-	self translateWith: 0@-200! !
-
-!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:27:14'!
-translateWith: aVector
-	self morphPosition: (folded 
-		ifTrue: [self morphPosition x + aVector x @ (borderWidth / 2.0 + owner morphHeight - self morphHeight)]
-		ifFalse: [self morphPosition + aVector])
-! !
-
-!FlapButton methodsFor: 'event handling testing' stamp: 'hlsf 2/7/2025 17:15:25'!
+!Flap methodsFor: 'event handling testing' stamp: 'hlsf 2/7/2025 17:15:25'!
 handlesMouseDown: mouseButtonEvent
 	^ true! !
 
-!FlapButton class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 22:14:37'!
+fold
+	folded := true.
+	panel ifNotNil: [ panel delete].
+	panel := nil.
+	self translateWith: 0@-200! !
+
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 21:37:37'!
+toggleFolded
+	folded ifTrue: [self unfold] ifFalse: [self fold]! !
+
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 22:12:32'!
+translateWith: aVector
+	| newPosition |
+	newPosition :=(folded 
+		ifTrue: [self morphPosition x + aVector x @ (borderWidth / 2.0 + owner morphHeight - self morphHeight)]
+		ifFalse: [self morphPosition + aVector]).
+	self morphPosition: (newPosition adhereTo: (owner fullBoundsInOwner extendBy: (self morphWidth negated @0))).
+	folded ifFalse: [
+		panel
+			morphPosition: 0@ (self morphPosition y + self morphHeight - borderWidth);
+			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight - (borderWidth / 2.0))	]! !
+
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 22:17:47'!
+unfold
+	folded := false.
+	panel := TableMorph new.
+	owner addMorph: panel.
+	panel 
+		cells: objects;
+		morphPosition: 0@ (owner morphHeight - 200);
+		morphExtent: owner morphWidth @ 200;
+		color: self fillColor;
+		adoptWidgetsColor: self fillColor.
+	self translateWith: 0@-200
+	! !
+
+!Flap class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
 includeInNewMorphMenu
 	^ false! !
 
-!FlapButton class methodsFor: 'as yet unclassified' stamp: 'hlsf 2/7/2025 19:07:25'!
+!Flap class methodsFor: 'instance creation' stamp: 'hlsf 2/7/2025 19:07:25'!
 label: aString emphasis: emphasis objects: placedMorphs
 	| flap |
 	flap := self contents: aString font: nil emphasis: emphasis.
@@ -1322,10 +1347,26 @@ label: aString emphasis: emphasis objects: placedMorphs
 	
 ! !
 
-!FlapButton class methodsFor: 'as yet unclassified' stamp: 'hlsf 2/7/2025 19:07:57'!
+!Flap class methodsFor: 'instance creation' stamp: 'hlsf 2/7/2025 19:07:57'!
 label: aString objects: placedMorphs
 	^ self label: aString emphasis: 0 objects: placedMorphs 
 ! !
+
+!Flap class methodsFor: 'examples' stamp: 'hlsf 2/7/2025 21:38:20'!
+example1
+"
+	self example1
+"
+	| flap cells |
+	cells := OrderedCollection new.
+	50 timesRepeat: [ cells add: (ColoredBoxMorph new :: 
+			morphExtent: (5 to: 80) atRandom asPoint;
+			color: Color random)].
+	flap := self contents: ' Hello World!! '.
+	flap objects: cells;
+		openInWorld;
+		fold
+	! !
 
 !PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!
 keyboardFocusChange: aBoolean

@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7044] on 6 February 2025 at 8:36:57 pm'!
+'From Cuis7.3 [latest update: #7044] on 7 February 2025 at 10:19:36 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 118!
+!provides: 'UI-Panel' 1 119!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -563,9 +563,10 @@ defaultColor
 defaultExtent
 	^ `400@300`! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 19:24:09'!
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 22:16:34'!
 initialize
 	super initialize.
+	self alwaysHideHorizontalScrollbar.
 	self layoutSpec: LayoutSpec useAll;
 		scroller: (LayoutMorph newColumn color: Color transparent)! !
 
