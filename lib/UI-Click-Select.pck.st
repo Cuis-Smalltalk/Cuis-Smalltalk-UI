@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 6 February 2025 at 12:24:16 pm'!
+'From Cuis7.3 [latest update: #7044] on 7 February 2025 at 7:10:43 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 68!
+!provides: 'UI-Click-Select' 1 69!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -78,7 +78,7 @@ MultiSelectMenu class
 
 !classDefinition: #FlapButton category: #'UI-Click-Select'!
 LabelMorph subclass: #FlapButton
-	instanceVariableNames: ''
+	instanceVariableNames: 'folded prevPosition objects'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -185,6 +185,10 @@ For example, TextEmphasis codes are a bit ORing of values:
  2r00100000	32 Subscript      
  2r01000000	64 	with ST-80 Glyphs
  !
+
+!FlapButton commentStamp: 'hlsf 2/7/2025 19:09:50' prior: 0!
+- folded : boolean, when true the button is set on the bottom of its owner at an arbitrary horizontal position
+- objects : a collection of object I present when unfolded and the user can drag away!
 
 !PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
 I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
@@ -1212,10 +1216,11 @@ defaultBorderWidth
 defaultPadding
 	^ `8@8`! !
 
-!FlapButton methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:17:24'!
+!FlapButton methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 16:52:56'!
 initialize
 	super initialize.
-	self borderColor: self defaultBorderColor ! !
+	self borderColor: self defaultBorderColor.
+	folded := true! !
 
 !FlapButton methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 00:12:02'!
 borderColor: aColor
@@ -1225,6 +1230,10 @@ borderColor: aColor
 !FlapButton methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 11:16:15'!
 color: aColor
 " Label color is automatically set. See #borderColor: "! !
+
+!FlapButton methodsFor: 'accessing' stamp: 'hlsf 2/7/2025 19:09:09'!
+objects: placedMorphs
+	objects := placedMorphs ! !
 
 !FlapButton methodsFor: 'drawing' stamp: 'hlsf 2/6/2025 10:30:07'!
 drawOn: aCanvas
@@ -1265,9 +1274,58 @@ drawOn: aCanvas
 requiresVectorCanvas
 	^ true ! !
 
+!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 17:14:01'!
+dragEvent: aMouseEvent localPosition: localEventPosition
+'event' print.
+super dragEvent: aMouseEvent localPosition: localEventPosition ! !
+
+!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:43:25'!
+mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
+	self comeToFront ! !
+
+!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:56:56'!
+mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
+	prevPosition ifNil: [self toggleFolded].
+	prevPosition := nil! !
+
+!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:29:05'!
+mouseMove: aMouseMoveEvent localPosition: localEventPosition
+	prevPosition ifNotNil: [self translateWith: aMouseMoveEvent eventPosition - prevPosition].
+	prevPosition := aMouseMoveEvent eventPosition! !
+
+!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:39:52'!
+toggleFolded
+	folded := folded not.
+	self translateWith: 0@-200! !
+
+!FlapButton methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:27:14'!
+translateWith: aVector
+	self morphPosition: (folded 
+		ifTrue: [self morphPosition x + aVector x @ (borderWidth / 2.0 + owner morphHeight - self morphHeight)]
+		ifFalse: [self morphPosition + aVector])
+! !
+
+!FlapButton methodsFor: 'event handling testing' stamp: 'hlsf 2/7/2025 17:15:25'!
+handlesMouseDown: mouseButtonEvent
+	^ true! !
+
 !FlapButton class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
 includeInNewMorphMenu
 	^ false! !
+
+!FlapButton class methodsFor: 'as yet unclassified' stamp: 'hlsf 2/7/2025 19:07:25'!
+label: aString emphasis: emphasis objects: placedMorphs
+	| flap |
+	flap := self contents: aString font: nil emphasis: emphasis.
+	flap objects: 	placedMorphs .
+	^ flap
+	
+! !
+
+!FlapButton class methodsFor: 'as yet unclassified' stamp: 'hlsf 2/7/2025 19:07:57'!
+label: aString objects: placedMorphs
+	^ self label: aString emphasis: 0 objects: placedMorphs 
+! !
 
 !PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!
 keyboardFocusChange: aBoolean
