@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7044] on 7 February 2025 at 10:19:36 pm'!
+'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:36:45 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 119!
+!provides: 'UI-Panel' 1 120!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -30,7 +30,7 @@ DecoratedPane class
 
 !classDefinition: #TableMorph category: #'UI-Panel'!
 PluggableScrollPane subclass: #TableMorph
-	instanceVariableNames: 'cells'
+	instanceVariableNames: 'cells allowsSubmorphDrag'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -563,19 +563,27 @@ defaultColor
 defaultExtent
 	^ `400@300`! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 22:16:34'!
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/8/2025 19:23:23'!
 initialize
 	super initialize.
 	self alwaysHideHorizontalScrollbar.
+	allowsSubmorphDrag := false.
 	self layoutSpec: LayoutSpec useAll;
 		scroller: (LayoutMorph newColumn color: Color transparent)! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 19:23:26'!
+!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/8/2025 19:41:08'!
 newRow
-	^ ​ LayoutMorph newRow :: 
+	| row |
+	row := ​ LayoutMorph newRow :: 
 		separation: self gap ; 
-		color: Color transparent 
+		color: Color transparent.
+	allowsSubmorphDrag ifTrue: [row setProperty: #allowsSubmorphDrag toValue: true].
+	^ row
 	! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 08:40:16'!
+allowsDrag
+	allowsSubmorphDrag := true! !
 
 !TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:23:31'!
 cells: morphs

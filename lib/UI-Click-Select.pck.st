@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 7 February 2025 at 10:20:28 pm'!
+'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:36:42 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 71!
+!provides: 'UI-Click-Select' 1 72!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -66,6 +66,16 @@ LayoutMorph subclass: #InnerListOfMorph
 InnerListOfMorph class
 	instanceVariableNames: ''!
 
+!classDefinition: #FlapItem category: #'UI-Click-Select'!
+PreviewMorph subclass: #FlapItem
+	instanceVariableNames: 'target'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Click-Select'!
+!classDefinition: 'FlapItem class' category: #'UI-Click-Select'!
+FlapItem class
+	instanceVariableNames: ''!
+
 !classDefinition: #MultiSelectMenu category: #'UI-Click-Select'!
 MenuMorph subclass: #MultiSelectMenu
 	instanceVariableNames: 'choices seed result'
@@ -78,7 +88,7 @@ MultiSelectMenu class
 
 !classDefinition: #Flap category: #'UI-Click-Select'!
 LabelMorph subclass: #Flap
-	instanceVariableNames: 'folded prevPosition objects panel'
+	instanceVariableNames: 'folded prevPosition objects panel target'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -166,6 +176,10 @@ A button with a dropdown list to select from.!
 !InnerListOfMorph commentStamp: '<historical>' prior: 0!
 The morph that displays the list of Morph in a PluggableListOfMorph.!
 
+!FlapItem commentStamp: '<historical>' prior: 0!
+I encapsulate Object presented in a Flap.
+- target : a Morph Class I accept to be drop into!
+
 !MultiSelectMenu commentStamp: '<historical>' prior: 0!
 I am used to relate a set of names to an integer incoding, where each  symbolic name is realated to a bit.
 
@@ -186,9 +200,11 @@ For example, TextEmphasis codes are a bit ORing of values:
  2r01000000	64 	with ST-80 Glyphs
  !
 
-!Flap commentStamp: 'hlsf 2/7/2025 20:55:24' prior: 0!
+!Flap commentStamp: '<historical>' prior: 0!
+A flap holding collection of objects to be dragged and drop on targetMorph.
 - folded : boolean, when true the button is set on the bottom of its owner at an arbitrary horizontal position
-- objects : a collection of objects I present when unfolded and the user can drag away!
+- objects : a collection of objects I present when unfolded and the user can drag away
+- target : the target morph Class this flap is dedicated to.!
 
 !PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
 I am a vertical list of Morph. I have no horizontal scrollbar but I may have a vertical one.
@@ -1034,6 +1050,42 @@ includeInNewMorphMenu
 new
 	^ self newColumn! !
 
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 12:07:19'!
+flap
+	^ owner owner owner valueOfProperty: #flap! !
+
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 09:48:38'!
+imageMorph
+	^ submorphs last! !
+
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 12:00:55'!
+target
+	^ target! !
+
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 12:01:03'!
+target: aMoprh
+	target := aMoprh ! !
+
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 12:26:02'!
+aboutToBeGrabbedBy: aMorph
+" I am still owned by my flap, request it the target I am destinated for "
+	^ FlapItem object: object image: self imageMorph form ::
+			target: self flap target;
+			color: color;
+			borderColor: borderColor;
+			borderWidth: 1! !
+
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 11:49:06'!
+rejectDropMorphEvent: dropEvent
+	self hide; delete.
+	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
+! !
+
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 12:29:53'!
+wantsToBeDroppedInto: aMorph
+" This is the siblling attached to the hand morph, use the target atttribute "
+	^ aMorph class =  target! !
+
 !MultiSelectMenu methodsFor: 'events-processing' stamp: 'KenD 12/17/2016 14:36:43'!
 accept
 
@@ -1235,9 +1287,25 @@ fillColor
 
 	^ borderColor twiceLighter! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/7/2025 19:09:09'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 09:47:39'!
 objects: placedMorphs
-	objects := placedMorphs ! !
+	objects := placedMorphs collect: [:each |
+		FlapItem 
+			object: each 
+			image: (each imageForm: 32)
+			buttons: nil 
+			label: each color name ::
+			setProperty: #allowsItemDrag toValue: true;
+			adoptWidgetsColor: borderColor;
+			borderWidth: 1]! !
+
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 11:53:53'!
+target
+	^ target! !
+
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 11:53:44'!
+target: aMorph
+	target := aMorph ! !
 
 !Flap methodsFor: 'drawing' stamp: 'hlsf 2/7/2025 21:57:18'!
 drawOn: aCanvas
@@ -1320,12 +1388,14 @@ translateWith: aVector
 			morphPosition: 0@ (self morphPosition y + self morphHeight - borderWidth);
 			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight - (borderWidth / 2.0))	]! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 22:17:47'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/9/2025 12:04:45'!
 unfold
 	folded := false.
 	panel := TableMorph new.
+	panel setProperty: #flap toValue: self.
 	owner addMorph: panel.
 	panel 
+		allowsDrag ;
 		cells: objects;
 		morphPosition: 0@ (owner morphHeight - 200);
 		morphExtent: owner morphWidth @ 200;
@@ -1333,6 +1403,21 @@ unfold
 		adoptWidgetsColor: self fillColor.
 	self translateWith: 0@-200
 	! !
+
+!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 2/9/2025 08:59:30'!
+addCustomMenuItems: aCustomMenu hand: aHandMorph
+
+	super addCustomMenuItems: aCustomMenu hand: aHandMorph.
+	aCustomMenu add: 'close definitely' action: #delete! !
+
+!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 2/9/2025 09:05:25'!
+defaultBorderColor
+	^ Color pink! !
+
+!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 2/9/2025 09:00:52'!
+delete
+	super delete.
+	panel ifNotNil: [panel delete]! !
 
 !Flap class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
 includeInNewMorphMenu
@@ -1352,7 +1437,7 @@ label: aString objects: placedMorphs
 	^ self label: aString emphasis: 0 objects: placedMorphs 
 ! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 2/7/2025 21:38:20'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 2/9/2025 08:40:44'!
 example1
 "
 	self example1

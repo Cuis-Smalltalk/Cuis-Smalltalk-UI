@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #6960] on 31 December 2024 at 7:44:01 pm'!
+'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:36:51 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 44!
+!provides: 'UI-Widgets' 1 45!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -313,24 +313,27 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/31/2024 19:43:07'!
-object: anObject image: aForm	 buttons: buttons label: aString
-	| row label |
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 2/9/2025 12:36:18'!
+object: anObject image: aForm buttons: buttons label: label
+	| row |
+	doAdoptWidgetsColor := true.
 	object := anObject .
-	label := aString ifNotNil: [aString ] ifNil: [object asString].
-	self separation: 1@0.
-	self layoutSpec: LayoutSpec keepMorphExtent .
-	self addMorph: (ImageMorph new image: aForm).
+	self setBalloonText: label;
+		padding: 4;
+		layoutSpec: LayoutSpec keepMorphExtent;
+		addMorph: (ImageMorph new image: aForm).
+	"Do we have label or buttons to add? "
+	(label isNil and: [buttons isNil]) ifTrue: [^self ]. 
+
 	row := LayoutMorph newRow separation: 2@4 :: 
 		adoptWidgetsColor: self defaultColor;
 		layoutSpec: (LayoutSpec fixedHeight: 0).
-	row addMorph: (
-		SqueezeLabelMorph contents: label :: 
-			minCharsToShow: 13;
-			centered: buttons isNil;
-			setBalloonText: label).		
-	buttons ifNotNil: [ 
-		buttons do: [: quickButton | row addMorph: quickButton] ].
+	label ifNotNil: [
+		row addMorph: (
+			SqueezeLabelMorph contents: label :: 
+				minCharsToShow: 13;
+				centered: buttons isNil) ].
+	buttons ifNotNil: [buttons do: [:quickButton | row addMorph: quickButton]].
 	self addMorph: row
 	! !
 
@@ -361,23 +364,23 @@ object: aObject image: aForm buttons: buttons label: aString
 		buttons: buttons
 		label: aString! !
 
-!PreviewMorph class methodsFor: 'examples' stamp: 'hlsf 12/12/2024 12:05:34'!
+!PreviewMorph class methodsFor: 'examples' stamp: 'hlsf 2/9/2025 11:14:29'!
 example1
 "
 	self example1 openInWorld
 "
 	| pallet forms buttons |
 	pallet := LayoutMorph newRow .
-	forms := (Theme content 	from: 'Theme' 	get: {'16x16'. 'places'}) asDictionary.
+	forms := (Theme content from: 'Theme' get: {'16x16'. 'places'}) asDictionary.
 	forms  keysAndValuesDo: [:aName :aForm | | preview |
 		buttons :=	 OrderedCollection new.
 		buttons add: (PluggableButtonMorph 
-			model: Switch newOff 			stateGetter: #isOn 		action: #switch ::
+			model: Switch newOff stateGetter: #isOn	action: #switch ::
 			icon: aForm ;
 			setBalloonText: 'A switch button.';
 			yourself).
 		buttons add: (PluggableButtonMorph 
-			model: Switch newOff 			stateGetter: nil 		action: #switch ::
+			model: Switch newOff stateGetter: nil	action: #switch ::
 			icon: Theme current deleteIcon ;
 			setBalloonText: 'Delete me.';
 			yourself).
@@ -385,14 +388,12 @@ example1
 		preview := PreviewMorph 
 			object: aName 
 			image: (aForm magnifyTo: 150@100)
-			buttons: buttons.
+			buttons: buttons
+			label: (aName  withoutPossibleSuffix: '.png').
 		preview when: #selected send: #toggleSelection to: preview .
 		preview when: #doubleClick send: #removeMorph: to: pallet .
 		pallet addMorph: preview].
-	^ pallet
-	
-	
-	! !
+	^ pallet! !
 
 !FilePreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:36:47'!
 fileEntry
