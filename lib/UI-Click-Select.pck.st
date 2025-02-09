@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:47:50 pm'!
+'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 6:20:48 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 73!
+!provides: 'UI-Click-Select' 1 74!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1075,16 +1075,24 @@ aboutToBeGrabbedBy: aMorph
 			borderColor: borderColor;
 			borderWidth: 1! !
 
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 17:59:08'!
+justDroppedInto: aTarget event: aDropEvent.
+	self delete! !
+
 !FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 11:49:06'!
 rejectDropMorphEvent: dropEvent
 	self hide; delete.
 	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
 ! !
 
-!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 12:29:53'!
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 18:16:47'!
 wantsToBeDroppedInto: aMorph
 " This is the siblling attached to the hand morph, use the target atttribute "
-	^ aMorph class =  target! !
+	^ aMorph class = target! !
+
+!FlapItem methodsFor: 'testing' stamp: 'hlsf 2/9/2025 18:13:32'!
+is: aSymbol
+	^ aSymbol == #FlapItem or: [ super is: aSymbol ]! !
 
 !MultiSelectMenu methodsFor: 'events-processing' stamp: 'KenD 12/17/2016 14:36:43'!
 accept
@@ -1260,6 +1268,10 @@ includeInNewMorphMenu
 	
 	^ false! !
 
+!Flap methodsFor: 'initialization' stamp: 'hlsf 2/9/2025 09:05:25'!
+defaultBorderColor
+	^ Color pink! !
+
 !Flap methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 21:18:11'!
 defaultBorderWidth
 	^ 2! !
@@ -1365,11 +1377,15 @@ mouseMove: aMouseMoveEvent localPosition: localEventPosition
 handlesMouseDown: mouseButtonEvent
 	^ true! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 22:14:37'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/9/2025 17:40:34'!
 fold
 	folded := true.
 	panel ifNotNil: [ panel delete].
 	panel := nil.
+	self repositionning ! !
+
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/9/2025 17:41:00'!
+repositionning
 	self translateWith: 0@-200! !
 
 !Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 21:37:37'!
@@ -1388,7 +1404,7 @@ translateWith: aVector
 			morphPosition: 0@ (self morphPosition y + self morphHeight - borderWidth);
 			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight - (borderWidth / 2.0))	]! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/9/2025 12:04:45'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/9/2025 17:40:55'!
 unfold
 	folded := false.
 	panel := TableMorph new.
@@ -1401,23 +1417,23 @@ unfold
 		morphExtent: owner morphWidth @ 200;
 		color: self fillColor;
 		adoptWidgetsColor: self fillColor.
-	self translateWith: 0@-200
+	self repositionning 
 	! !
 
-!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 2/9/2025 08:59:30'!
+!Flap methodsFor: 'menu' stamp: 'hlsf 2/9/2025 08:59:30'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
 
 	super addCustomMenuItems: aCustomMenu hand: aHandMorph.
 	aCustomMenu add: 'close definitely' action: #delete! !
 
-!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 2/9/2025 09:05:25'!
-defaultBorderColor
-	^ Color pink! !
-
-!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 2/9/2025 09:00:52'!
+!Flap methodsFor: 'submorphs-add/remove' stamp: 'hlsf 2/9/2025 09:00:52'!
 delete
 	super delete.
 	panel ifNotNil: [panel delete]! !
+
+!Flap methodsFor: 'testing' stamp: 'hlsf 2/9/2025 17:36:25'!
+is: aSymbol
+	^ aSymbol == #Flap or: [super is: aSymbol ]! !
 
 !Flap class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
 includeInNewMorphMenu
@@ -1453,7 +1469,7 @@ example1
 		fold
 	! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 2/9/2025 12:43:26'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 2/9/2025 14:58:41'!
 example2
 "
 	self example2
@@ -1463,7 +1479,8 @@ example2
 	
 	flap := self label: ' Graphics Objects ' emphasis: 1 objects: cells.
 	flap	openInWorld;
-		fold
+		fold.
+	^flap
 	! !
 
 !PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!

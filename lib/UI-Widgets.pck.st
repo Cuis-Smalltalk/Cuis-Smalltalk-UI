@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:36:51 pm'!
+'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 6:20:51 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 45!
+!provides: 'UI-Widgets' 1 46!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -262,6 +262,10 @@ defaultBorderWidth
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:27:37'!
 fontToUse
 	^ (Preferences at: #standardMenuFont)! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 17:56:55'!
+object
+	^ object! !
 
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:29:53'!
 selected: aBoolean
