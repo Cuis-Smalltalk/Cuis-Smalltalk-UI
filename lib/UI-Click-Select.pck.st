@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:36:42 pm'!
+'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:47:50 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 72!
+!provides: 'UI-Click-Select' 1 73!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1287,14 +1287,14 @@ fillColor
 
 	^ borderColor twiceLighter! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 09:47:39'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 12:46:18'!
 objects: placedMorphs
 	objects := placedMorphs collect: [:each |
 		FlapItem 
 			object: each 
 			image: (each imageForm: 32)
 			buttons: nil 
-			label: each color name ::
+			label: each name ::
 			setProperty: #allowsItemDrag toValue: true;
 			adoptWidgetsColor: borderColor;
 			borderWidth: 1]! !
@@ -1450,6 +1450,19 @@ example1
 	flap := self contents: ' Hello World!! '.
 	flap objects: cells;
 		openInWorld;
+		fold
+	! !
+
+!Flap class methodsFor: 'examples' stamp: 'hlsf 2/9/2025 12:43:26'!
+example2
+"
+	self example2
+"
+	| flap cells |
+	cells := Array with: Sample09Clock new with: Sample01Star new.
+	
+	flap := self label: ' Graphics Objects ' emphasis: 1 objects: cells.
+	flap	openInWorld;
 		fold
 	! !
 
