@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:36:45 pm'!
+'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 8:19:08 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 120!
+!provides: 'UI-Panel' 1 121!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -28,14 +28,14 @@ LayoutMorph subclass: #DecoratedPane
 DecoratedPane class
 	instanceVariableNames: ''!
 
-!classDefinition: #TableMorph category: #'UI-Panel'!
-PluggableScrollPane subclass: #TableMorph
+!classDefinition: #FlowLayoutMorph category: #'UI-Panel'!
+PluggableScrollPane subclass: #FlowLayoutMorph
 	instanceVariableNames: 'cells allowsSubmorphDrag'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
-!classDefinition: 'TableMorph class' category: #'UI-Panel'!
-TableMorph class
+!classDefinition: 'FlowLayoutMorph class' category: #'UI-Panel'!
+FlowLayoutMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #PluggableScrollBar category: #'UI-Panel'!
@@ -225,8 +225,9 @@ The browsed objects listen to events:
 - I present morphs in a pane with optional scrollbars
 - I am decorated with a surounding thin line and quick buttons for actions in my model!
 
-!TableMorph commentStamp: 'hlsf 2/6/2025 20:36:46' prior: 0!
-Arrange in table a collection of kind of BoxMorphs!
+!FlowLayoutMorph commentStamp: '<historical>' prior: 0!
+I arrange box morphs in a continuous flow in one or several line depending on my width. 
+If my height is too small to contain all the morphs, I add a vertical scrollbar.!
 
 !PluggableScrollBar commentStamp: '<historical>' prior: 0!
 I am a ScrollBar which can get new values from my model.!
@@ -551,19 +552,19 @@ open: aPane label: aString quickButtons: aCollection
 		contents: aPane.
 	^ pane! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:11:57'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:11:57'!
 defaultBorderColor
 	^ Theme current transcript! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:11:46'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:11:46'!
 defaultColor
 	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 12:01:07'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 12:01:07'!
 defaultExtent
 	^ `400@300`! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/8/2025 19:23:23'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/8/2025 19:23:23'!
 initialize
 	super initialize.
 	self alwaysHideHorizontalScrollbar.
@@ -571,7 +572,7 @@ initialize
 	self layoutSpec: LayoutSpec useAll;
 		scroller: (LayoutMorph newColumn color: Color transparent)! !
 
-!TableMorph methodsFor: 'initialization' stamp: 'hlsf 2/8/2025 19:41:08'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/8/2025 19:41:08'!
 newRow
 	| row |
 	row := ​ LayoutMorph newRow :: 
@@ -581,21 +582,21 @@ newRow
 	^ row
 	! !
 
-!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 08:40:16'!
+!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 08:40:16'!
 allowsDrag
 	allowsSubmorphDrag := true! !
 
-!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:23:31'!
+!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:23:31'!
 cells: morphs
 	cells := morphs.	
 	self updateLayout! !
 
-!TableMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:20:23'!
+!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:20:23'!
 gap
 " Gap between two previews in a row "
 	^ 12	! !
 
-!TableMorph methodsFor: 'layout' stamp: 'hlsf 2/6/2025 20:31:38'!
+!FlowLayoutMorph methodsFor: 'layout' stamp: 'hlsf 2/6/2025 20:31:38'!
 updateLayout
 	| tableWidth leftSpace row |
 	tableWidth := self viewableWidth.
@@ -611,34 +612,58 @@ updateLayout
 		row addMorph: cell.
 		leftSpace := leftSpace - w - self gap]! !
 
-!TableMorph methodsFor: 'geometry' stamp: 'hlsf 2/6/2025 20:06:44'!
+!FlowLayoutMorph methodsFor: 'geometry' stamp: 'hlsf 2/6/2025 20:06:44'!
 extentChanged: oldExtent	
 	self updateLayout.
 	super extentChanged: oldExtent.! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2025 20:34:54'!
+!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 2/13/2025 20:16:55'!
 example1
 "
 	self example1
 "
-	| table cells |
-	table := self new openInWorld.
+	| flow cells |
+	flow := self new openInWorld.
 	cells := OrderedCollection new.
 	50 timesRepeat: [ cells add: (ColoredBoxMorph new :: 
 			morphExtent: (5 to: 80) atRandom asPoint;
 			color: Color random)].
-	table cells: cells! !
+	flow cells: cells! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2025 20:22:57'!
+!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 2/13/2025 20:18:38'!
 example2
-"
+" 	Non working example because the added moprhs are not kind of boxed morph, 
+	those need an intermediate morph to pack in
+	
 	self example2
 "
-	| table cells |
-	table := self new openInWorld.
+	| flow cells |
+	flow := self new openInWorld.
 	cells := OrderedCollection new.
 	10 timesRepeat: [ cells add: (Sample09Clock new scale:  Random next + 0.2)].
-	table cells: cells! !
+	flow cells: cells! !
+
+!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 2/13/2025 20:18:53'!
+example3
+"
+    self example3
+"
+    | flow cells |
+    flow := self new openInWorld.
+    cells := OrderedCollection new.
+    30 timesRepeat: [ |cellContent cellContentExtent cell  |
+             cellContentExtent := (15 to: 80) atRandom asPoint.
+             cellContent := (ColoredBoxMorph new ::  
+                    morphExtent: cellContentExtent; color: Color random).
+
+             cell := (LayoutMorph newRow ::  morphExtent: 100@100;
+                color: Color lightGray; layoutSpec: LayoutSpec keepMorphExtent).
+             cell addMorph: cellContent
+                layoutSpec: (LayoutSpec fixedExtent: cellContentExtent).
+        cell axisEdgeWeight: #center.
+        cells add: cell].
+
+    flow cells: cells! !
 
 !PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
 fontPreferenceChanged

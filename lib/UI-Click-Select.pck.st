@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 11:37:17 am'!
+'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 8:19:05 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 76!
+!provides: 'UI-Click-Select' 1 77!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1412,10 +1412,10 @@ translateWith: aVector
 			morphPosition: 0@ (self morphPosition y + self morphHeight - borderWidth);
 			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight - (borderWidth / 2.0))	]! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/9/2025 17:40:55'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/13/2025 20:12:50'!
 unfold
 	folded := false.
-	panel := TableMorph new.
+	panel := FlowLayoutMorph new.
 	panel setProperty: #flap toValue: self.
 	owner addMorph: panel.
 	panel 
