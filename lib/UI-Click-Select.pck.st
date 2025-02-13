@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 6:20:48 pm'!
+'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 9:44:33 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 74!
+!provides: 'UI-Click-Select' 1 75!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1469,13 +1469,15 @@ example1
 		fold
 	! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 2/9/2025 14:58:41'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 2/13/2025 09:05:18'!
 example2
 "
 	self example2
 "
 	| flap cells |
-	cells := Array with: Sample09Clock new with: Sample01Star new.
+	cells := Array 
+		with: (Sample09Clock new :: setProperty: #morphName toValue: 'An analog clock with a second hand ticking every seconds'; yourself)
+		with: Sample01Star new.
 	
 	flap := self label: ' Graphics Objects ' emphasis: 1 objects: cells.
 	flap	openInWorld;

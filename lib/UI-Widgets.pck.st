@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 6:20:51 pm'!
+'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 9:44:39 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 46!
+!provides: 'UI-Widgets' 1 47!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -317,9 +317,9 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 2/9/2025 12:36:18'!
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 2/13/2025 09:37:55'!
 object: anObject image: aForm buttons: buttons label: label
-	| row |
+	| row labelWidth |
 	doAdoptWidgetsColor := true.
 	object := anObject .
 	self setBalloonText: label;
@@ -332,11 +332,12 @@ object: anObject image: aForm buttons: buttons label: label
 	row := LayoutMorph newRow separation: 2@4 :: 
 		adoptWidgetsColor: self defaultColor;
 		layoutSpec: (LayoutSpec fixedHeight: 0).
-	label ifNotNil: [
-		row addMorph: (
-			SqueezeLabelMorph contents: label :: 
-				minCharsToShow: 13;
-				centered: buttons isNil) ].
+	label ifNotNil: [ | labelMorph |
+		labelMorph := LabelMorph contents: '' :: setBalloonText: label.
+		labelWidth := 8 -4 + aForm width.
+		buttons ifNotNil: [buttons do: [:each | labelWidth := labelWidth - each morphWidth]].
+		labelMorph contents: label constrainedTo: labelWidth.
+		row addMorph: labelMorph ].
 	buttons ifNotNil: [buttons do: [:quickButton | row addMorph: quickButton]].
 	self addMorph: row
 	! !

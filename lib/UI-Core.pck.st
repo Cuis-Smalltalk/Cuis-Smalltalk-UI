@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:31:33 pm'!
+'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 9:44:36 am'!
 'Description '!
-!provides: 'UI-Core' 1 18!
+!provides: 'UI-Core' 1 19!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -751,13 +751,6 @@ drawOn: aCanvas theString: aString position: aPoint
 			color: borderColor
 			borderWidth: borderWidth
 			borderStyleSymbol: #simple ]! !
-
-!SqueezeLabelMorph methodsFor: 'geometry' stamp: 'KenD 12/20/2021 15:11:43'!
-averageCharWidth
-	| currentFont |
-	currentFont := self font.
-	^ (currentFont widthOfString: 'A') + (currentFont widthOfString: 'i') / 2
-	! !
 
 !SqueezeLabelMorph methodsFor: 'geometry' stamp: 'KenD 10/26/2021 05:29:28'!
 measureMinimumContent
