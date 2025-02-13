@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 9:44:33 am'!
+'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 11:37:17 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 75!
+!provides: 'UI-Click-Select' 1 76!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -68,7 +68,7 @@ InnerListOfMorph class
 
 !classDefinition: #FlapItem category: #'UI-Click-Select'!
 PreviewMorph subclass: #FlapItem
-	instanceVariableNames: 'target'
+	instanceVariableNames: 'target flap'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Click-Select'!
@@ -178,7 +178,8 @@ The morph that displays the list of Morph in a PluggableListOfMorph.!
 
 !FlapItem commentStamp: '<historical>' prior: 0!
 I encapsulate Object presented in a Flap.
-- target : a Morph Class I accept to be drop into!
+- target : a Morph Class I accept to be drop into
+- flap : the flap I am from!
 
 !MultiSelectMenu commentStamp: '<historical>' prior: 0!
 I am used to relate a set of names to an integer incoding, where each  symbolic name is realated to a bit.
@@ -204,6 +205,7 @@ For example, TextEmphasis codes are a bit ORing of values:
 A flap holding collection of objects to be dragged and drop on targetMorph.
 - folded : boolean, when true the button is set on the bottom of its owner at an arbitrary horizontal position
 - objects : a collection of objects I present when unfolded and the user can drag away
+- panel : the box morph I am attached to
 - target : the target morph Class this flap is dedicated to.!
 
 !PluggableListOfMorph commentStamp: 'hlsf 1/14/2022 11:01:29' prior: 0!
@@ -1050,9 +1052,13 @@ includeInNewMorphMenu
 new
 	^ self newColumn! !
 
-!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 12:07:19'!
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/13/2025 10:35:41'!
 flap
-	^ owner owner owner valueOfProperty: #flap! !
+	^ flap! !
+
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/13/2025 10:35:07'!
+flap: aFlap
+	flap := aFlap ! !
 
 !FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 09:48:38'!
 imageMorph
@@ -1066,11 +1072,12 @@ target
 target: aMoprh
 	target := aMoprh ! !
 
-!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 12:26:02'!
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/13/2025 10:39:45'!
 aboutToBeGrabbedBy: aMorph
 " I am still owned by my flap, request it the target I am destinated for "
 	^ FlapItem object: object image: self imageMorph form ::
-			target: self flap target;
+			target: flap target;
+			flap: flap;
 			color: color;
 			borderColor: borderColor;
 			borderWidth: 1! !
@@ -1299,7 +1306,7 @@ fillColor
 
 	^ borderColor twiceLighter! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 12:46:18'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 2/13/2025 10:35:33'!
 objects: placedMorphs
 	objects := placedMorphs collect: [:each |
 		FlapItem 
@@ -1307,6 +1314,7 @@ objects: placedMorphs
 			image: (each imageForm: 32)
 			buttons: nil 
 			label: each name ::
+			flap: self;
 			setProperty: #allowsItemDrag toValue: true;
 			adoptWidgetsColor: borderColor;
 			borderWidth: 1]! !
