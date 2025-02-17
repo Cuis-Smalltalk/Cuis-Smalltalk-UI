@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 8:19:05 pm'!
+'From Cuis7.3 [latest update: #7044] on 17 February 2025 at 11:39:12 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 77!
+!provides: 'UI-Click-Select' 1 78!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
@@ -1392,7 +1392,7 @@ fold
 	panel := nil.
 	self repositionning ! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/9/2025 17:41:00'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/17/2025 23:28:06'!
 repositionning
 	self translateWith: 0@-200! !
 
@@ -1400,19 +1400,19 @@ repositionning
 toggleFolded
 	folded ifTrue: [self unfold] ifFalse: [self fold]! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 22:12:32'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/17/2025 23:35:35'!
 translateWith: aVector
 	| newPosition |
 	newPosition :=(folded 
-		ifTrue: [self morphPosition x + aVector x @ (borderWidth / 2.0 + owner morphHeight - self morphHeight)]
+		ifTrue: [self morphPosition x + aVector x @ (borderWidth / 2.0 + owner morphHeight - self morphHeight )]
 		ifFalse: [self morphPosition + aVector]).
 	self morphPosition: (newPosition adhereTo: (owner fullBoundsInOwner extendBy: (self morphWidth negated @0))).
 	folded ifFalse: [
 		panel
 			morphPosition: 0@ (self morphPosition y + self morphHeight - borderWidth);
-			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight - (borderWidth / 2.0))	]! !
+			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight + (borderWidth / 2.0))	]! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/13/2025 20:12:50'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/17/2025 23:27:28'!
 unfold
 	folded := false.
 	panel := FlowLayoutMorph new.
