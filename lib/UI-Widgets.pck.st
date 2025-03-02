@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 9:44:39 am'!
+'From Cuis7.3 [latest update: #7044] on 2 March 2025 at 11:51:28 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 47!
+!provides: 'UI-Widgets' 1 48!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -259,9 +259,11 @@ adoptWidgetsColor: aColor
 defaultBorderWidth
 	^ 5! !
 
-!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:27:37'!
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 3/2/2025 10:52:40'!
 fontToUse
-	^ (Preferences at: #standardMenuFont)! !
+	^ FontFamily 
+		familyName: FontFamily defaultFamilyName 
+		pointSize: ((Preferences at: #defaultFontSize) - 2 max: 6)! !
 
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 17:56:55'!
 object
@@ -317,7 +319,7 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 2/13/2025 09:37:55'!
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 3/2/2025 10:54:22'!
 object: anObject image: aForm buttons: buttons label: label
 	| row labelWidth |
 	doAdoptWidgetsColor := true.
@@ -333,7 +335,7 @@ object: anObject image: aForm buttons: buttons label: label
 		adoptWidgetsColor: self defaultColor;
 		layoutSpec: (LayoutSpec fixedHeight: 0).
 	label ifNotNil: [ | labelMorph |
-		labelMorph := LabelMorph contents: '' :: setBalloonText: label.
+		labelMorph := LabelMorph contents: ''  font: self fontToUse :: setBalloonText: label.
 		labelWidth := 8 -4 + aForm width.
 		buttons ifNotNil: [buttons do: [:each | labelWidth := labelWidth - each morphWidth]].
 		labelMorph contents: label constrainedTo: labelWidth.
