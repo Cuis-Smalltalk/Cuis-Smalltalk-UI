@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 8:19:08 pm'!
+'From Cuis7.3 [latest update: #7062] on 6 March 2025 at 11:19:49 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 121!
+!provides: 'UI-Panel' 1 122!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1238,12 +1238,13 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 7/27/2024 23:07:50'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 3/6/2025 20:17:40'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
-	self newPane ifNotNil: [:pane | layoutMorph 		addMorphUseAll: pane].
+	self newPane ifNotNil: [:pane | layoutMorph addMorphUseAll: pane].
 	self newButtonArea ifNotNil: [:buttons | layoutMorph addMorphKeepMorphHeight: buttons].
-	layoutMorph 		separation: self defaultSeparation;
+	layoutMorph 
+		separation: self defaultSeparation;
 		axisEdgeWeight: self defaultAlignement.
 	self morphExtent: self minimumExtent! !
 
