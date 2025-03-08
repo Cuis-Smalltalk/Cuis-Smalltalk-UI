@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 13 February 2025 at 9:44:36 am'!
+'From Cuis7.3 [latest update: #7066] on 8 March 2025 at 2:23:03 pm'!
 'Description '!
-!provides: 'UI-Core' 1 19!
+!provides: 'UI-Core' 1 20!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -613,13 +613,14 @@ dontShrinkTitle: aString buttonsNamed: aSymbolColleciton
 	].
 ! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 9/14/2024 15:12:44'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 3/8/2025 14:22:01'!
 initialize
 
 	super initialize.
 	self
 		morphPosition: 0@0;
 		gap: self buttonSeparation;
+		padding: 6@6;
 		layoutSpec: (LayoutSpec 
 						proportionalWidth: 1  
 						fixedHeight: (self minimumExtent y) );
