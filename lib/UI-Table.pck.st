@@ -1,4 +1,4 @@
-'From Cuis7.3 [latest update: #7092] on 29 March 2025 at 1:14:46 pm'!
+'From Cuis7.3 [latest update: #7092] on 30 March 2025 at 9:26:23 pm'!
 'Description Models and morphs for defining and displaying tables.'!
 !provides: 'UI-Table' 1 6!
 !requires: 'Cuis-Base' 60 5166 nil!
@@ -16,7 +16,7 @@ AlignedLabelMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #TableMorph category: #'UI-Table'!
-ColoredBoxMorph subclass: #TableMorph
+BorderedBoxMorph subclass: #TableMorph
 	instanceVariableNames: 'model style maximumExtent'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -57,7 +57,7 @@ Table class
 
 !classDefinition: #TableStyle category: #'UI-Table'!
 Object subclass: #TableStyle
-	instanceVariableNames: 'color font separation'
+	instanceVariableNames: 'color font padding gap'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Table'!
@@ -66,15 +66,16 @@ TableStyle class
 	instanceVariableNames: ''!
 
 
-!AlignedLabelMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:43:50'!
-alignment
+!AlignedLabelMorph methodsFor: 'initialization' stamp: 'bp 8/30/2024 22:50:43'!
+initialize
+	super initialize.
 	alignment := #left! !
 
-!AlignedLabelMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:44:14'!
+!AlignedLabelMorph methodsFor: 'accessing' stamp: 'bp 8/30/2024 22:44:14'!
 alignment: aSymbol
 	alignment := aSymbol! !
 
-!AlignedLabelMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:55:15'!
+!AlignedLabelMorph methodsFor: 'drawing' stamp: 'bp 8/30/2024 22:55:15'!
 drawOn: aCanvas
 	| leftOffset |
 	leftOffset := alignment caseOf: {
@@ -93,22 +94,108 @@ drawOn: aCanvas
 			borderWidth: borderWidth
 			borderStyleSymbol: #simple ]! !
 
-!AlignedLabelMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:50:43'!
-initialize
-	super initialize.
-	alignment := #left! !
+!TableMorph methodsFor: 'accessing' stamp: 'bp 8/29/2024 21:02:05'!
+maximumExtent
+	^maximumExtent! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 3/29/2025 13:14:42'!
-adjustExtent
-	| minimumExtent adjustedExtent |
-	minimumExtent := self layoutMorph minimumExtent + (self scrollPane padding * 2).
-	minimumExtent y > maximumExtent y ifTrue: [
-		minimumExtent := minimumExtent x + ScrollBar scrollbarThickness @ minimumExtent y].
-	adjustedExtent := minimumExtent min: maximumExtent.
-	self scrollPane morphExtent: adjustedExtent.
-	self morphExtent: adjustedExtent! !
+!TableMorph methodsFor: 'accessing' stamp: 'bp 8/29/2024 21:05:54'!
+maximumExtent: aPoint
+	maximumExtent := aPoint.
+	self update: #maximumExtent! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'KenD 9/5/2024 13:42:31'!
+!TableMorph methodsFor: 'accessing' stamp: 'bp 8/29/2024 19:08:53'!
+maximumHeight: aNumber
+	self maximumExtent: maximumExtent x @ aNumber! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'bp 8/29/2024 19:08:47'!
+maximumWidth: aNumber
+	self maximumExtent: aNumber @ maximumExtent y! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'bp 8/29/2024 13:00:10'!
+model
+	^model! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'bp 3/30/2025 12:38:42'!
+model: aTable
+	self
+		setModel: aTable;
+		update: #model! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'bp 3/30/2025 21:02:46'!
+rowsMorph
+	^self scrollPane scroller! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'bp 8/29/2024 13:27:24'!
+scrollPane
+	^self firstSubmorph! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'bp 8/29/2024 13:00:35'!
+style
+	^ style! !
+
+!TableMorph methodsFor: 'accessing' stamp: 'bp 3/30/2025 12:39:04'!
+style: aTableStyle
+	self
+		setStyle: aTableStyle;
+		update: #style! !
+
+!TableMorph methodsFor: 'updating' stamp: 'bp 3/30/2025 18:26:35'!
+update: aSymbol
+	super update: aSymbol.
+	aSymbol caseOf: {
+		[#color] -> [self updateColor].
+		[#padding] -> [self updatePadding].
+		[#gap] -> [self updateGap].
+		[#model] -> [self updateRows].
+		[#items] -> [self updateRows].
+		[#columns] -> [self updateRows].
+		[#font] -> [self updateRows].
+		[#style] -> [self updateRows].
+		[#maximumExtent] -> [self updateRows]}.
+	self redrawNeeded! !
+
+!TableMorph methodsFor: 'updating' stamp: 'bp 3/30/2025 21:03:07'!
+updateColor
+	self rowsMorph color: style color.
+	self rowsMorph submorphsDo: [:row | row color: style color]! !
+
+!TableMorph methodsFor: 'updating' stamp: 'bp 3/30/2025 21:03:13'!
+updateGap
+	self adjustExtentFor: [
+		self rowsMorph gap: style yGap.
+		self rowsMorph submorphs do: [:each | each gap: style xGap]]! !
+
+!TableMorph methodsFor: 'updating' stamp: 'bp 3/30/2025 19:27:08'!
+updatePadding
+	self padding: style padding! !
+
+!TableMorph methodsFor: 'updating' stamp: 'bp 3/30/2025 21:03:20'!
+updateRows
+	self adjustExtentFor: [
+		| columnWidths |
+		self padding: style padding.
+		self rowsMorph
+			color: style color;
+			gap: style yGap;
+			removeAllMorphs.
+		columnWidths := Dictionary new.
+		model columns do: [:column |
+			columnWidths at: column put: (column desiredWidth: style font)].
+		model items do: [:item |
+			| row |
+			row := LayoutMorph newRow
+				color: style color;
+				gap: style xGap.
+			model columns do: [:column |
+				row
+					addMorph: (self morphForColumn: column item: item)
+					layoutSpec: ((LayoutSpec
+						morphHeightFixedWidth: (columnWidths at: column))
+							offAxisEdgeWeight: 0.0)].
+			row morphExtent: row minimumExtent.
+			self rowsMorph addMorph: row layoutSpec: LayoutSpec keepMorphExtent]]! !
+
+!TableMorph methodsFor: 'initialization' stamp: 'bp 3/29/2025 15:16:20'!
 initialize
 	| layoutMorph scrollPane |
 	super initialize.
@@ -119,42 +206,22 @@ initialize
 	self
 		addMorph: scrollPane;
 		color: Color green;
-		style: TableStyle new;
 		morphExtent: `400@300`! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'KenD 9/5/2024 13:46:32'!
-layoutMorph
-	^self scrollPane scroller! !
+!TableMorph methodsFor: 'private' stamp: 'bp 3/30/2025 21:05:56'!
+basicAdjustExtentFor: aBlock
+	"Ensure extent is at least minimumExtent and at most maximumExtent."
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 21:02:05'!
-maximumExtent
-	^maximumExtent! !
+	| newExtent |
+	aBlock value.
+	newExtent := self rowsMorph minimumExtent + (2 * self scrollPane padding).
+	newExtent y > maximumExtent y ifTrue: [
+		newExtent := newExtent x + ScrollBar scrollbarThickness @ newExtent y].
+	newExtent := newExtent min: maximumExtent.
+	self scrollPane morphExtent: newExtent.
+	self morphExtent: newExtent! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 21:05:54'!
-maximumExtent: aPoint
-	maximumExtent := aPoint.
-	self update: #maximumExtent! !
-
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 19:08:53'!
-maximumHeight: aNumber
-	self maximumExtent: maximumExtent x @ aNumber! !
-
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 19:08:47'!
-maximumWidth: aNumber
-	self maximumExtent: aNumber @ maximumExtent y! !
-
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 13:00:10'!
-model
-	^model! !
-
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 12:56:15'!
-model: aTable
-	model ifNotNil: [model removeActionsWithReceiver: self].
-	aTable ifNotNil: [aTable addDependent: self].
-	model := aTable.
-	self update: #model! !
-
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:57:11'!
+!TableMorph methodsFor: 'private' stamp: 'bp 8/30/2024 22:57:11'!
 morphForColumn: column item: item
 	^(AlignedLabelMorph contents: (column cellValue: item) font: style font) alignment: column alignment
 	"| text |
@@ -166,76 +233,30 @@ morphForColumn: column item: item
 		noBorder;
 		setHeightOnContent"! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 13:27:24'!
-scrollPane
-	^self firstSubmorph! !
+!TableMorph methodsFor: 'private' stamp: 'bp 3/30/2025 12:37:20'!
+setModel: aTable
+	model ifNotNil: [model removeActionsWithReceiver: self].
+	aTable ifNotNil: [aTable addDependent: self].
+	model := aTable! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 13:00:35'!
-style
-	^ style! !
+!TableMorph methodsFor: 'private' stamp: 'bp 3/30/2025 12:39:37'!
+setModel: aTable style: aTableStyle
+	self
+		setModel: aTable;
+		setStyle: aTableStyle;
+		update: #model! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 18:50:30'!
-style: aTableStyle
+!TableMorph methodsFor: 'private' stamp: 'bp 3/30/2025 12:37:05'!
+setStyle: aTableStyle
 	style ifNotNil: [style removeActionsWithReceiver: self].
 	aTableStyle ifNotNil: [aTableStyle addDependent: self].
-	style := aTableStyle.
-	self layoutMorph color: style color! !
+	style := aTableStyle! !
 
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 12:21:57'!
-update: aSymbol
-	super update: aSymbol.
-	aSymbol caseOf: {
-		[#color] -> [self updateColor].
-		[#separation] -> [self updateSeparation].
-		[#model] -> [self updateRows].
-		[#items] -> [self updateRows].
-		[#columns] -> [self updateRows].
-		[#font] -> [self updateRows].
-		[#maximumExtent] -> [self adjustExtent]}.
-	self redrawNeeded! !
-
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 20:57:41'!
-updateColor
-	self layoutMorph color: style color.
-	self layoutMorph submorphsDo: [:row | row color: style color]! !
-
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:58:06'!
-updateRows
-	| columnWidths strangeDelta |
-	strangeDelta := 1. self flag: 'find out why this is needed'.
-	self layoutMorph
-		color: style color;
-		separation: 0 @ style ySeparation;
-		removeAllMorphs.
-	columnWidths := Dictionary new.
-	model columns do: [:column |
-		columnWidths at: column put: (column desiredWidth: style font)].
-	model items do: [:item |
-		| row |
-		row := LayoutMorph newRow
-			color: style color;
-			separation: style xSeparation @ 0.
-		model columns do: [:column |
-			row
-				addMorph: (self morphForColumn: column item: item)
-				layoutSpec: ((LayoutSpec
-					morphHeightFixedWidth: (columnWidths at: column) + strangeDelta)
-						offAxisEdgeWeight: 0.0)].
-		row morphExtent: row minimumExtent.
-		self layoutMorph addMorph: row layoutSpec: LayoutSpec keepMorphExtent].
-	self adjustExtent! !
-
-!TableMorph methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 13:07:31'!
-updateSeparation
-	self layoutMorph separation: 0 @ style ySeparation.
-	self layoutMorph submorphsDo: [:row | row separation: style xSeparation @ 0].
-	self adjustExtent! !
-
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 13:21:04'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 3/30/2025 20:37:23'!
 example
 	"
 	self example"
-	"To show the dynamic behavior do it step by step in a workspace."
+	"To show the dynamic nature do it step by step in a workspace."
 	| table tableMorph tableStyle |
 	table := Table new
 		addColumn: [:item | item first];
@@ -249,14 +270,16 @@ example
 	
 	tableStyle := tableMorph style.
 	tableStyle color: Color lightBlue.
-	tableStyle separation: 5 @ 3.
-	tableStyle font: self fontParcPlaceLegacy12.
+	tableStyle padding: 10 @ 10.
+	tableStyle gap: 6 @ 3.
+	FontFamily readIfNeeded: DirectoryEntry trueTypeFontsDirectory / 'Cream'.
+	tableStyle font: (FontFamily familyName: 'Parc Place Legacy' pointSize: 24).
 	
 	table addItem: #('Ted' 'Kaehler').
 	table addItem: #('Someone' 'Withaverylonglonglongname').
 	table addItems: #(('John' 'Maloney') ('Juan' 'Vuletich'))! !
 
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 12:44:14'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 8/31/2024 12:44:14'!
 exampleAuthors
 	"
 	self exampleAuthors"
@@ -277,7 +300,7 @@ exampleAuthors
 		maximumHeight: 500;
 		openInWorld! !
 
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 12:42:25'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 8/31/2024 12:42:25'!
 exampleFiles
 	"
 	self exampleFiles"
@@ -294,7 +317,7 @@ exampleFiles
 		maximumExtent: `1000@500`;
 		openInWorld! !
 
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 12:43:57'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 8/31/2024 12:43:57'!
 exampleLOC
 	"
 	self exampleLOC"
@@ -314,7 +337,7 @@ exampleLOC
 		maximumHeight: 500;
 		openInWorld! !
 
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 12:44:35'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 8/31/2024 12:44:35'!
 examplePackages
 	"
 	self examplePackages"
@@ -329,32 +352,7 @@ examplePackages
 
 	(TableMorph model: table) openInWorld! !
 
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 13:03:03'!
-examplePeople
-	"
-	self examplePeople"
-	"To show the dynamic nature do it step by step in a workspace."
-	| table tableMorph tableStyle |
-	table := Table new
-		addColumn: [:item | item first];
-		addColumn: [:item | item second];
-		items: #(('Alan' 'Kay') ('Adele' 'Goldberg')).
-
-	tableMorph := (TableMorph model: table) openInWorld.
-	
-	table addItem: #('Dan' 'Ingalls').
-	table addColumn: [:item | item first , ' ' , item second].
-	
-	tableStyle := tableMorph style.
-	tableStyle color: Color lightBlue.
-	tableStyle separation: 5 @ 3.
-	tableStyle font: (FontFamily familyName: 'Parc Place Legacy' pointSize: 12).
-	
-	table addItem: #('Ted' 'Kaehler').
-	table addItem: #('Someone' 'Withaverylonglonglongname').
-	table addItems: #(('John' 'Maloney') ('Juan' 'Vuletich'))! !
-
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 12:43:18'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 8/31/2024 12:43:18'!
 examplePreferences
 	"
 	self examplePreferences"
@@ -370,22 +368,13 @@ examplePreferences
 		maximumExtent: `1000@500`;
 		openInWorld! !
 
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/31/2024 13:19:13'!
-fontParcPlaceLegacy12
-	FontFamily readIfNeeded: DirectoryEntry trueTypeFontsDirectory / 'Cream'.
-	^FontFamily familyName: 'Parc Place Legacy' pointSize: 12! !
-
-!TableMorph class methodsFor: 'as yet unclassified' stamp: 'bp 8/29/2024 12:58:36'!
+!TableMorph class methodsFor: 'instance creation' stamp: 'bp 3/30/2025 12:31:32'!
 model: aTable
-	^self new model: aTable! !
+	^self new setModel: aTable style: TableStyle new! !
 
-!Column methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:55:59'!
-alignment
-	^alignment! !
-
-!Column methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:56:07'!
-alignment: aSelector
-	alignment := aSelector! !
+!TableMorph class methodsFor: 'instance creation' stamp: 'bp 3/30/2025 12:31:12'!
+model: aTable style: aTableStyle
+	^self new setModel: aTable style: aTableStyle! !
 
 !Column methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 21:48:26'!
 cellValue: anItem
@@ -393,20 +382,28 @@ cellValue: anItem
 		ifTrue: [cellValueBlock value: anItem]
 		ifFalse: [cellValueBlock value: anItem value: table]! !
 
-!Column methodsFor: 'as yet unclassified' stamp: 'bp 5/15/2022 14:35:36'!
+!Column methodsFor: 'initialization' stamp: 'bp 8/30/2024 22:55:48'!
+initialize
+	alignment := #leftFlush! !
+
+!Column methodsFor: 'accessing' stamp: 'bp 8/30/2024 22:55:59'!
+alignment
+	^alignment! !
+
+!Column methodsFor: 'accessing' stamp: 'bp 8/30/2024 22:56:07'!
+alignment: aSelector
+	alignment := aSelector! !
+
+!Column methodsFor: 'accessing' stamp: 'bp 5/15/2022 14:35:36'!
 cellValueBlock: aBlock
 	cellValueBlock _ aBlock! !
 
-!Column methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 12:11:54'!
+!Column methodsFor: 'private' stamp: 'bp 8/30/2024 12:11:54'!
 desiredWidth: font
 	table items ifEmpty: [^0].
 	^table items max: [:each | font widthOfString: (self cellValue: each)]! !
 
-!Column methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:55:48'!
-initialize
-	alignment := #leftFlush! !
-
-!Column methodsFor: 'as yet unclassified' stamp: 'bp 5/15/2022 14:34:48'!
+!Column methodsFor: 'private' stamp: 'bp 5/15/2022 14:34:48'!
 setTable: aTable
 	table _ aTable! !
 
@@ -421,11 +418,11 @@ cellValue: anItem
 	(cellValue is: #String) ifTrue: [^cellValue].
 	^String streamContents: [:stream | cellValue printOn: stream fractionDigits: fractionDigits]! !
 
-!NumberColumn methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 21:07:51'!
+!NumberColumn methodsFor: 'accessing' stamp: 'bp 8/30/2024 21:07:51'!
 fractionDigits: anInteger
 	fractionDigits := anInteger! !
 
-!NumberColumn methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 22:55:48'!
+!NumberColumn methodsFor: 'initialization' stamp: 'bp 8/30/2024 22:55:48'!
 initialize
 	super initialize.
 	alignment := #rightFlush.
@@ -435,14 +432,6 @@ initialize
 addColumn: aBlock
 	| column |
 	column := (Column table: self) cellValueBlock: aBlock.
-	columns add: (column).
-	self changed: #columns! !
-
-!Table methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 21:16:00'!
-addColumn: cellValueBlock config: configBlock
-	| column |
-	column := (Column table: self) cellValueBlock: cellValueBlock.
-	configBlock value: column.
 	columns add: (column).
 	self changed: #columns! !
 
@@ -463,38 +452,23 @@ addNumberColumn: cellValueBlock
 	columns add: (column).
 	self changed: #columns! !
 
-!Table methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 21:16:35'!
-addNumberColumn: cellValueBlock config: configBlock
-	| column |
-	column := (NumberColumn table: self) cellValueBlock: cellValueBlock.
-	configBlock value: column.
-	columns add: (column).
-	self changed: #columns! !
-
-!Table methodsFor: 'as yet unclassified' stamp: 'bp 5/15/2022 15:40:53'!
-columns
-	 ^columns! !
-
-!Table methodsFor: 'as yet unclassified' stamp: 'bp 5/15/2022 14:31:37'!
+!Table methodsFor: 'initialization' stamp: 'bp 5/15/2022 14:31:37'!
 initialize
 	columns := OrderedCollection new.
 	items := OrderedCollection new! !
 
-!Table methodsFor: 'as yet unclassified' stamp: 'bp 5/15/2022 15:06:56'!
+!Table methodsFor: 'accessing' stamp: 'bp 5/15/2022 15:40:53'!
+columns
+	 ^columns! !
+
+!Table methodsFor: 'accessing' stamp: 'bp 5/15/2022 15:06:56'!
 items
 	 ^items! !
 
-!Table methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 18:55:45'!
+!Table methodsFor: 'accessing' stamp: 'bp 8/30/2024 18:55:45'!
 items: aCollection
 	items := aCollection asOrderedCollection.
 	self changed: #items! !
-
-!Table methodsFor: 'as yet unclassified' stamp: 'bp 8/30/2024 12:46:58'!
-previousItem: anItem
-	| index |
-	index := items indexOf: anItem.
-	index = 1 ifTrue: [^nil].
-	^items at: index - 1! !
 
 !TableStyle methodsFor: 'accessing' stamp: 'bp 5/15/2022 16:53:33'!
 color
@@ -522,33 +496,41 @@ font: anObject
 	font := anObject.
 	self changed: #font! !
 
-!TableStyle methodsFor: 'accessing' stamp: 'bp 5/5/2024 19:03:56'!
+!TableStyle methodsFor: 'accessing' stamp: 'bp 3/30/2025 18:20:12'!
+gap: anObject
+	"Set the value of gap"
+
+	gap := anObject.
+	self changed: #gap! !
+
+!TableStyle methodsFor: 'accessing' stamp: 'bp 3/30/2025 18:19:04'!
+padding
+	"Answer the value of padding"
+
+	^ padding! !
+
+!TableStyle methodsFor: 'accessing' stamp: 'bp 3/30/2025 18:20:00'!
+padding: anObject
+	"Set the value of padding"
+
+	padding := anObject.
+	self changed: #padding! !
+
+!TableStyle methodsFor: 'accessing' stamp: 'bp 3/30/2025 18:24:51'!
+xGap
+	^gap isNumber
+		ifTrue: [ gap ]
+		ifFalse: [ gap x ]! !
+
+!TableStyle methodsFor: 'accessing' stamp: 'bp 3/30/2025 18:24:57'!
+yGap
+	^gap isNumber
+		ifTrue: [ gap ]
+		ifFalse: [ gap y ]! !
+
+!TableStyle methodsFor: 'initialization' stamp: 'bp 3/30/2025 20:43:12'!
 initialize
 	color := Color white.
 	font := Preferences at: #standardListFont.
-	separation := 5 @ 1! !
-
-!TableStyle methodsFor: 'accessing' stamp: 'bp 5/15/2022 16:53:33'!
-separation
-	"Answer the value of separation"
-
-	^ separation! !
-
-!TableStyle methodsFor: 'accessing' stamp: 'bp 5/15/2022 17:14:11'!
-separation: anObject
-	"Set the value of separation"
-
-	separation := anObject.
-	self changed: #separation! !
-
-!TableStyle methodsFor: 'accessing' stamp: 'bp 5/15/2022 17:30:16'!
-xSeparation
-	^separation isNumber
-		ifTrue: [ separation ]
-		ifFalse: [ separation x ]! !
-
-!TableStyle methodsFor: 'accessing' stamp: 'bp 5/15/2022 17:30:25'!
-ySeparation
-	^separation isNumber
-		ifTrue: [ separation ]
-		ifFalse: [ separation y ]! !
+	padding := 3 @ 3.
+	gap := 5 @ 1! !
