@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7066] on 8 March 2025 at 2:23:03 pm'!
+'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 12:50:16 pm'!
 'Description '!
-!provides: 'UI-Core' 1 20!
+!provides: 'UI-Core' 1 21!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -703,7 +703,7 @@ minCharsToShow: numChars
 	
 	minChars := numChars max: 3! !
 
-!SqueezeLabelMorph methodsFor: 'drawing' stamp: 'hlsf 9/12/2024 10:50:02'!
+!SqueezeLabelMorph methodsFor: 'drawing' stamp: 'hlsf 4/5/2025 10:02:09'!
 drawOn: aCanvas
 	"We draw a string within a border.
 	If not enough space, the string is squeezed.
@@ -718,7 +718,7 @@ drawOn: aCanvas
 		numChars := fitString size.
 		"NB:  Char size varies.  Approximate"
 		charsToElide := 
-			((stringWidth - maxStringWidth) / self averageCharWidth) ceiling.
+			((stringWidth - maxStringWidth) / self font averageCharWidth) ceiling.
 		charsToElide := charsToElide + 2. "fudge"
 		fitString := fitString 
 			squeezedTo: ((numChars - charsToElide) max: minChars).

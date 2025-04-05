@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7062] on 6 March 2025 at 11:19:49 pm'!
+'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 12:50:26 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 122!
+!provides: 'UI-Panel' 1 123!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1154,6 +1154,10 @@ update: aSymbol
 	super update: aSymbol.
 	aSymbol == #relabel
 		ifTrue: [ model ifNotNil: [ self setLabel: model labelString ]]! !
+
+!Panel methodsFor: 'accessing' stamp: 'hlsf 4/5/2025 09:01:00'!
+layerNumber
+	^ 30! !
 
 !Panel methodsFor: 'accessing' stamp: 'KenD 4/24/2015 15:54'!
 layoutMorph

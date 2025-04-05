@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7066] on 8 March 2025 at 7:16:47 pm'!
+'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 12:50:11 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 79!
+!provides: 'UI-Click-Select' 1 80!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -319,8 +319,8 @@ fromList: arrayOfSymbols
 	self registerEvents.
 	self adjustLabels: labelList to: maxStringWidth ! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 2/12/2022 11:06:16'!
-fromMorphDict: morphDict
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 4/5/2025 10:16:29'!
+fromMorphsDict: morphDict
 	"Set up my submorphs from collectionOfMorphs"
 	
 	|  buttonList morphList |
@@ -338,21 +338,21 @@ fromMorphDict: morphDict
 	self registerEvents.
 	list _ morphList asArray! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:06:51'!
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 4/5/2025 10:16:56'!
 initialize
 	"Initialize self to harmless values"
 	
 	super initialize.
-	list _ #().
-	self    setFont: (Preferences at: #standardButtonFont);
+	list := #().
+	self setFont: (Preferences at: #standardButtonFont);
 		 buttonOnLeft: true;
 		 separation: 2@2;
 		 color: Color transparent! !
 
-!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 1/27/2022 13:34:19'!
+!CheckGroup methodsFor: 'initialization' stamp: 'hlsf 4/5/2025 10:14:35'!
 newButton
 
-	^self buttonClass 	ofSize: self buttonClass defaultDiameter ::
+	^self buttonClass ofSize: self buttonClass defaultDiameter ::
 		layoutSpec: LayoutSpec keepMorphExtent;
 		yourself! !
 
@@ -524,11 +524,11 @@ fromList: buttonLabels buttonOnLeft: boolean
 		buttonOnLeft: boolean;
 		 fromList: listOfSymbols asArray ! !
 
-!CheckGroup class methodsFor: 'instance creation' stamp: 'KenD 10/31/2021 08:46:21'!
+!CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 4/5/2025 10:16:29'!
 fromMorphsDict: aDictionaryOfMorphs
 	"Add dict of (name->morph) to a new instance of me"
 
-	^ self newColumn fromMorphDict: aDictionaryOfMorphs ! !
+	^ self newColumn fromMorphsDict: aDictionaryOfMorphs ! !
 
 !CheckGroup class methodsFor: 'instance creation' stamp: 'hlsf 2/12/2022 11:43:05'!
 fromMorphsDict: aDictionaryOfMorphs buttonOnLeft: boolean
@@ -559,11 +559,10 @@ newSelection: radioButton
 	super newSelection: radioButton.
 	model perform: setSelected with: radioButton isSelected! !
 
-!PluggableCheckboxMorph methodsFor: 'updating' stamp: 'hlsf 2/12/2022 10:39:11'!
+!PluggableCheckboxMorph methodsFor: 'updating' stamp: 'hlsf 4/5/2025 11:05:34'!
 update: aSymbol
-	super update: aSymbol.
-	aSymbol == setSelected 
-		ifTrue: [self buttons first selected: (model perform: getSelected)]. "No event, or ping-ping between model and view"
+	aSymbol == getSelected
+		ifTrue: [self buttons first selected: (model perform: getSelected)].
 	self redrawNeeded.! !
 
 !PluggableCheckboxMorph methodsFor: 'initialization' stamp: 'hlsf 2/14/2022 11:38:47'!
@@ -586,10 +585,10 @@ initializedInstance
 
 	^self example1! !
 
-!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:37:47'!
+!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 4/5/2025 10:31:07'!
 example1
 "
-	self example1 openInWorld
+	self example1 morphPosition: 50@50; openInWorld
 "
 	^ self 
 		model: (ValueHolder with: true)
@@ -612,10 +611,10 @@ example2
 		setBalloonText: 'I am a check box illustrated with a morph.';
 		yourself! !
 
-!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'drgeo 9/11/2022 23:22:53'!
+!PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'hlsf 4/5/2025 10:12:09'!
 model: aModel getSelected: getter setSelected: setter label: aMorphOrString
 	| checkbox | 
-	checkbox _ 	(aMorphOrString is: #Morph) 
+	checkbox := (aMorphOrString is: #Morph) 
 		ifTrue: [self fromMorphsDict: 	(Dictionary  newFromPairs: {aMorphOrString printString .  aMorphOrString})]
 		ifFalse: [self fromList: (Array with: aMorphOrString)	 buttonOnLeft: false].
 	aMorphOrString ifNil: [self error: 'Label must be a string or a morph'].
@@ -623,7 +622,7 @@ model: aModel getSelected: getter setSelected: setter label: aMorphOrString
 		getSelected: getter;
 		setSelected: setter.
 	"Update the view"
-	aModel changed: setter.
+	aModel changed: getter.
 	^ checkbox ! !
 
 !RadioGroup methodsFor: 'accessing' stamp: 'hlsf 1/27/2022 11:55:42'!
@@ -712,14 +711,13 @@ example2
 	
 	^pallet! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 9/12/2024 10:32:52'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 4/5/2025 12:49:01'!
 toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
 			self world addMorphFront: dropDownList position: 
-				self positionInWorld 
-					+ self morphBottomLeft 
-					- (dropDownList scroller gap @0) ]
+				self positionInWorld + self morphBottomLeft - (dropDownList scroller gap @0).
+			dropDownList addAlarm: #delete after: 5000 ]
 		ifNotNil: [dropDownList delete]! !
 
 !DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 10/27/2024 22:27:51'!
@@ -888,13 +886,13 @@ buttonWidth
 		ifNotEmpty: [:aList | aList max: [: aLabel |  dropDownList scroller widthToDisplayItem: aLabel] ])
 		+20! !
 
-!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/2/2022 11:49:59'!
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/5/2025 12:47:45'!
 toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
 			self world addMorphFront: dropDownList position: 
-				self positionInWorld 
-					+ self morphBottomLeft]
+				self positionInWorld + self morphBottomLeft.
+			dropDownList addAlarm: #delete after: 5000]
 		ifNotNil: [dropDownList delete]! !
 
 !DropDownListMorph methodsFor: 'action' stamp: 'hlsf 9/28/2023 21:24:56'!
@@ -1494,10 +1492,6 @@ example2
 	^flap
 	! !
 
-!PluggableDropDownListMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:09:08'!
-keyboardFocusChange: aBoolean
-	aBoolean ifFalse: [		self delete ].! !
-
 !PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 12/8/2024 19:52:28'!
 updateList
 	super updateList.
@@ -1523,10 +1517,18 @@ defaultBorderWidth
 defaultExtent
 	^ `150 @100`! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 10/10/2023 22:05:42'!
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'hlsf 4/5/2025 12:39:38'!
 initialize
 	super initialize.
 	extent := 150 @100! !
+
+!PluggableDropDownListMorph methodsFor: 'accessing' stamp: 'hlsf 4/5/2025 12:43:51'!
+layerNumber
+	^ 29! !
+
+!PluggableDropDownListMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 09:28:57'!
+mouseLeave: event
+	self delete! !
 
 !PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
 getList
@@ -1590,19 +1592,23 @@ example1
 		indexGetter: #listIndex
 		indexSetter: #listIndex:! !
 
-!PluggableDropDownListOfMorph methodsFor: 'event handling' stamp: 'hlsf 4/2/2022 12:08:25'!
-keyboardFocusChange: aBoolean
-	aBoolean ifFalse: [		self delete ].! !
+!PluggableDropDownListOfMorph methodsFor: 'accessing' stamp: 'hlsf 4/5/2025 12:43:38'!
+layerNumber
+	^ 29! !
+
+!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 09:27:53'!
+mouseLeave: event
+	self delete! !
 
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 6/8/2024 12:34:01'!
 defaultBorderColor
 
 	^ `Color gray muchDarker`! !
 
-!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 6/8/2024 12:43:16'!
+!CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 4/5/2025 10:03:54'!
 defaultBorderWidth
 
-	^ 4! !
+	^ 2! !
 
 !CheckButtonMorph methodsFor: 'initialization' stamp: 'hlsf 6/8/2024 11:59:02'!
 defaultColor
@@ -1648,12 +1654,6 @@ handlesMouseDown: aMouseButtonEvent
 handlesMouseOver: evt
 	"Do I want to receive mouseEnter: and mouseLeave: when the button is up and the hand is empty?" 
 	^true! !
-
-!CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 8/12/2024 18:41:50'!
-adoptWidgetsColor: paneColor
-	self color: (Theme current buttonColorFrom: paneColor).
-	self borderColor: color muchDarker.
-	self hoverColor: color! !
 
 !CheckButtonMorph methodsFor: 'accessing' stamp: 'hlsf 1/25/2022 20:46:23'!
 isSelected
@@ -1715,21 +1715,21 @@ hasVariableExtent
 requiresVectorCanvas
 	^ true! !
 
-!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:33:46'!
+!CheckButtonMorph methodsFor: 'drawing' stamp: 'hlsf 4/5/2025 09:56:56'!
 drawOn: aCanvas
 	| myBounds  |
-	myBounds := self localBounds.
+	myBounds := self localBounds insetBy: borderWidth.
 	aCanvas strokeWidth: borderWidth color: borderColor fillColor: color do: [
 		aCanvas 
 			roundRectangleMinX: myBounds left maxX: myBounds 
 			right minY: myBounds top maxY: myBounds bottom 
-			rx: myBounds width * 0.4 ry: myBounds height * 0.4						].
-	myBounds := self localBounds insetBy: borderWidth * 1.1.
+			rx: myBounds width * 0.4 ry: myBounds height * 0.4].
+	myBounds := myBounds insetBy: borderWidth * 1.1.
 	aCanvas fillColor: hoverColor do: [
 		aCanvas 
 		roundRectangleMinX: myBounds left maxX: myBounds 
 		right minY: myBounds top maxY: myBounds bottom 
-		rx: myBounds width * 0.4 ry: myBounds height * 0.4								]! !
+		rx: myBounds width * 0.4 ry: myBounds height * 0.4]! !
 
 !CheckButtonMorph methodsFor: 'private' stamp: 'hlsf 8/12/2024 19:03:41'!
 adjustHoverColor
@@ -1745,6 +1745,12 @@ hoverColor: aColor
 	self redrawNeeded
 	! !
 
+!CheckButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 4/5/2025 11:36:17'!
+adoptWidgetsColor: paneColor
+	color := paneColor whiter.
+	borderColor := paneColor muchDarker.
+	self adjustHoverColor ! !
+
 !CheckButtonMorph class methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 16:51:06'!
 defaultDiameter
 	^ FontFamily defaultPointSize + 6! !
@@ -1755,13 +1761,14 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!CheckButtonMorph class methodsFor: 'examples' stamp: 'hlsf 6/8/2024 13:13:16'!
+!CheckButtonMorph class methodsFor: 'examples' stamp: 'hlsf 4/5/2025 09:51:07'!
 example1
 "
-	self example1 openInWorld
+	self example1 morphPosition: 50@50; openInWorld
 "
 	| button |
-	 button := self new.
+	 button := self new color: Color white; borderColor: Color red.
+	button isSelected: true.
 	button when: #checkSelection send: #show: to: Transcript.
 	^ button ! !
 
@@ -1792,11 +1799,6 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 mouseEnter: event
 	"The mouse has entered the area of the receiver"
 	self isSelected ifFalse: [super mouseEnter: event]! !
-
-!RadioButtonMorph methodsFor: 'accessing' stamp: 'KenD 6/9/2024 15:17:19'!
-adoptWidgetsColor: paneColor
-
-	"ignore"! !
 
 !RadioButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 08:29:16'!
 isSelected: aBoolean
