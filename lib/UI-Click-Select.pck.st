@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 12:50:11 pm'!
+'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 3:17:11 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 80!
+!provides: 'UI-Click-Select' 1 81!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -711,13 +711,13 @@ example2
 	
 	^pallet! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 4/5/2025 12:49:01'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 4/5/2025 15:14:45'!
 toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
 			self world addMorphFront: dropDownList position: 
 				self positionInWorld + self morphBottomLeft - (dropDownList scroller gap @0).
-			dropDownList addAlarm: #delete after: 5000 ]
+			dropDownList addAlarm: #delete after: 3000 ]
 		ifNotNil: [dropDownList delete]! !
 
 !DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 10/27/2024 22:27:51'!
@@ -886,13 +886,13 @@ buttonWidth
 		ifNotEmpty: [:aList | aList max: [: aLabel |  dropDownList scroller widthToDisplayItem: aLabel] ])
 		+20! !
 
-!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/5/2025 12:47:45'!
+!DropDownListMorph methodsFor: 'action' stamp: 'hlsf 4/5/2025 15:14:50'!
 toggleDropDownList
 	dropDownList owner 
 		ifNil: [	
 			self world addMorphFront: dropDownList position: 
 				self positionInWorld + self morphBottomLeft.
-			dropDownList addAlarm: #delete after: 5000]
+			dropDownList addAlarm: #delete after: 3000]
 		ifNotNil: [dropDownList delete]! !
 
 !DropDownListMorph methodsFor: 'action' stamp: 'hlsf 9/28/2023 21:24:56'!
@@ -1526,6 +1526,10 @@ initialize
 layerNumber
 	^ 29! !
 
+!PluggableDropDownListMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 15:13:53'!
+mouseEnter: event
+	self removeAlarm: #delete! !
+
 !PluggableDropDownListMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 09:28:57'!
 mouseLeave: event
 	self delete! !
@@ -1595,6 +1599,10 @@ example1
 !PluggableDropDownListOfMorph methodsFor: 'accessing' stamp: 'hlsf 4/5/2025 12:43:38'!
 layerNumber
 	^ 29! !
+
+!PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 15:13:39'!
+mouseEnter: event
+	self removeAlarm: #delete! !
 
 !PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 09:27:53'!
 mouseLeave: event
