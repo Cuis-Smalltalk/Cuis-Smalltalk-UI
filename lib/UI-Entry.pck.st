@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 12:36:47 pm'!
+'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 8:53:13 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 55!
+!provides: 'UI-Entry' 1 56!
 !requires: 'Cuis-Base' 71 6809 nil!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -397,7 +397,7 @@ keyStroke: aKeyboardEvent
 	self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
 	self redrawNeeded.! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'hlsf 2/8/2025 11:46:38'!
+!TextEntryMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 08:06:05'!
 mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 	"Make this TextMorph be the keyboard input focus, if it isn't already,
 		and repond to the text selection gesture."
@@ -408,7 +408,7 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 		self editor mouseDown: aMouseButtonEvent index: (self characterIndexAtPoint: localEventPosition) ].
 
 	aMouseButtonEvent hand
-		waitForClicksOrSimulatedMouseButton2: self
+		waitForClicksOrDragOrSimulatedMouseButton2: self
 		event: aMouseButtonEvent
 		clkSel: nil
 		clkNHalf: #clickAndHalf:localPosition:
