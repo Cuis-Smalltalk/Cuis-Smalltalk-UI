@@ -1,13 +1,43 @@
-'From Cuis7.3 [latest update: #7095] on 6 April 2025 at 4:43:35 pm'!
+'From Cuis7.3 [latest update: #7095] on 6 April 2025 at 11:51:21 pm'!
 'Description Models and morphs for defining and displaying tables.'!
 !provides: 'UI-Table' 1 6!
 !requires: 'Cuis-Base' 73 7095 nil!
 SystemOrganization addCategory: #'UI-Table'!
 
 
+!classDefinition: #TableModel category: #'UI-Table'!
+ActiveModel subclass: #TableModel
+	instanceVariableNames: 'columns'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Table'!
+!classDefinition: 'TableModel class' category: #'UI-Table'!
+TableModel class
+	instanceVariableNames: ''!
+
+!classDefinition: #PluggableTable category: #'UI-Table'!
+TableModel subclass: #PluggableTable
+	instanceVariableNames: 'itemsProvider itemsSelector'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Table'!
+!classDefinition: 'PluggableTable class' category: #'UI-Table'!
+PluggableTable class
+	instanceVariableNames: ''!
+
+!classDefinition: #Table category: #'UI-Table'!
+TableModel subclass: #Table
+	instanceVariableNames: 'items'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Table'!
+!classDefinition: 'Table class' category: #'UI-Table'!
+Table class
+	instanceVariableNames: ''!
+
 !classDefinition: #TableMorph category: #'UI-Table'!
 LayoutMorph subclass: #TableMorph
-	instanceVariableNames: 'model style maximumRowsHeight'
+	instanceVariableNames: 'table style maximumRowsHeight'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Table'!
@@ -27,7 +57,7 @@ AlignedLabelMorph class
 
 !classDefinition: #Column category: #'UI-Table'!
 Object subclass: #Column
-	instanceVariableNames: 'table header cellValueBlock alignment'
+	instanceVariableNames: 'header cellValueBlock alignment'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Table'!
@@ -45,16 +75,6 @@ Column subclass: #NumberColumn
 NumberColumn class
 	instanceVariableNames: ''!
 
-!classDefinition: #Table category: #'UI-Table'!
-Object subclass: #Table
-	instanceVariableNames: 'columns items'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Table'!
-!classDefinition: 'Table class' category: #'UI-Table'!
-Table class
-	instanceVariableNames: ''!
-
 !classDefinition: #TableStyle category: #'UI-Table'!
 Object subclass: #TableStyle
 	instanceVariableNames: 'color rowBackgroundColors font headerFont padding gap rowPadding'
@@ -65,6 +85,77 @@ Object subclass: #TableStyle
 TableStyle class
 	instanceVariableNames: ''!
 
+
+!TableModel methodsFor: 'initialization' stamp: 'bp 4/6/2025 18:42:47'!
+initialize
+	columns := OrderedCollection new! !
+
+!TableModel methodsFor: 'accessing' stamp: 'bp 5/15/2022 15:40:53'!
+columns
+	 ^columns! !
+
+!TableModel methodsFor: 'columns' stamp: 'bp 4/5/2025 16:47:24'!
+addColumn: aBlock
+	self addColumn: aBlock header: nil! !
+
+!TableModel methodsFor: 'columns' stamp: 'bp 4/6/2025 20:23:10'!
+addColumn: aBlock header: aString
+	| column |
+	column := Column new
+		header: aString;
+		cellValueBlock: aBlock.
+	columns add: (column).
+	self changed: #columns! !
+
+!TableModel methodsFor: 'columns' stamp: 'bp 4/5/2025 16:48:07'!
+addNumberColumn: cellValueBlock
+	self addNumberColumn: cellValueBlock header: nil! !
+
+!TableModel methodsFor: 'columns' stamp: 'bp 4/6/2025 20:48:44'!
+addNumberColumn: cellValueBlock header: aString
+	| column |
+	column := NumberColumn new
+		header: aString;
+		cellValueBlock: cellValueBlock.
+	columns add: (column).
+	self changed: #columns! !
+
+!PluggableTable methodsFor: 'private' stamp: 'bp 4/6/2025 21:05:12'!
+setItemsProvider: anItemsProvider itemsSelector: aSelector
+	itemsProvider := anItemsProvider.
+	itemsSelector := aSelector! !
+
+!PluggableTable methodsFor: 'accessing' stamp: 'bp 4/6/2025 23:32:12'!
+items
+	^itemsProvider perform: itemsSelector ! !
+
+!PluggableTable class methodsFor: 'instance creation' stamp: 'bp 4/6/2025 18:49:18'!
+on: itemsProvider itemsSelector: aSelector
+	^self new setItemsProvider: itemsProvider itemsSelector: aSelector! !
+
+!Table methodsFor: 'accessing' stamp: 'bp 4/6/2025 18:40:07'!
+items
+	 ^items! !
+
+!Table methodsFor: 'accessing' stamp: 'bp 4/6/2025 18:40:14'!
+items: aCollection
+	items := aCollection asOrderedCollection.
+	self changed: #items! !
+
+!Table methodsFor: 'items' stamp: 'bp 4/6/2025 18:41:21'!
+addItem: anObject
+	items add: anObject.
+	self changed: #items! !
+
+!Table methodsFor: 'items' stamp: 'bp 4/6/2025 18:41:39'!
+addItems: aCollection
+	items addAll: aCollection.
+	self changed: #items! !
+
+!Table methodsFor: 'initialization' stamp: 'bp 4/6/2025 18:42:08'!
+initialize
+	super initialize.
+	items := OrderedCollection new! !
 
 !TableMorph methodsFor: 'accessing' stamp: 'bp 4/5/2025 19:16:50'!
 headerMorph
@@ -82,10 +173,6 @@ maximumRowsHeight: anObject
 
 	maximumRowsHeight := anObject.
 	self update: #maximumRowsHeight! !
-
-!TableMorph methodsFor: 'accessing' stamp: 'bp 8/29/2024 13:00:10'!
-model
-	^model! !
 
 !TableMorph methodsFor: 'accessing' stamp: 'bp 3/30/2025 12:38:42'!
 model: aTable
@@ -111,9 +198,8 @@ style: aTableStyle
 vScrollPane
 	^self submorphs first! !
 
-!TableMorph methodsFor: 'updating' stamp: 'bp 4/6/2025 12:04:31'!
+!TableMorph methodsFor: 'updating' stamp: 'bp 4/6/2025 20:26:04'!
 update: aSymbol
-	super update: aSymbol.
 	aSymbol caseOf: {
 		[#color] -> [self updateColor].
 		[#padding] -> [self updatePadding].
@@ -148,9 +234,9 @@ updatePadding
 	self rowsMorph submorphsDo: [:row | row padding: style rowPadding].
 	self adjustExtent! !
 
-!TableMorph methodsFor: 'updating' stamp: 'bp 4/6/2025 16:37:18'!
+!TableMorph methodsFor: 'updating' stamp: 'bp 4/6/2025 20:07:01'!
 updateRows
-	| columnWidths |
+	| items columnWidths |
 	self 
 		color: style color;
 		padding: style padding;
@@ -165,21 +251,22 @@ updateRows
 		gap: style yGap;
 		removeAllMorphs.
 	columnWidths := Dictionary new.
-	model columns withIndexDo: [:column :index |
+	items := table items.
+	table columns withIndexDo: [:column :index |
 		| desiredWidth |
-		desiredWidth := column desiredWidth: style.
+		desiredWidth := column desiredWidth: items style: style.
 		columnWidths at: column put: desiredWidth.
 		(self headerMorph
 			addMorph: (self headerMorphForColumn: column)
 			layoutSpec: ((LayoutSpec morphHeightFixedWidth: desiredWidth) 
 				offAxisEdgeWeight: 0.0))].
-	model items withIndexDo: [:item :index |
+	items withIndexDo: [:item :index |
 		| row |
 		row := LayoutMorph newRow
 			color: (style rowBackgroundColor: index);
 			padding: style rowPadding;
 			gap: style xGap.
-		model columns do: [:column |
+		table columns do: [:column |
 			row
 				addMorph: (self morphForColumn: column item: item)
 				layoutSpec: ((LayoutSpec
@@ -247,24 +334,24 @@ morphForColumn: column item: item
 		noBorder;
 		setHeightOnContent"! !
 
-!TableMorph methodsFor: 'private' stamp: 'bp 3/30/2025 12:37:20'!
-setModel: aTable
-	model ifNotNil: [model removeActionsWithReceiver: self].
-	aTable ifNotNil: [aTable addDependent: self].
-	model := aTable! !
-
-!TableMorph methodsFor: 'private' stamp: 'bp 3/30/2025 12:39:37'!
-setModel: aTable style: aTableStyle
-	self
-		setModel: aTable;
-		setStyle: aTableStyle;
-		update: #model! !
-
 !TableMorph methodsFor: 'private' stamp: 'bp 3/30/2025 12:37:05'!
 setStyle: aTableStyle
 	style ifNotNil: [style removeActionsWithReceiver: self].
 	aTableStyle ifNotNil: [aTableStyle addDependent: self].
 	style := aTableStyle! !
+
+!TableMorph methodsFor: 'private' stamp: 'bp 4/6/2025 18:30:21'!
+setTable: aTable
+	table ifNotNil: [table removeActionsWithReceiver: self].
+	aTable ifNotNil: [aTable addDependent: self].
+	table := aTable! !
+
+!TableMorph methodsFor: 'private' stamp: 'bp 4/6/2025 18:30:36'!
+setTable: aTable style: aTableStyle
+	self
+		setTable: aTable;
+		setStyle: aTableStyle;
+		update: #model! !
 
 !TableMorph methodsFor: 'debug and other' stamp: 'bp 4/6/2025 15:24:58'!
 morphsDict
@@ -279,7 +366,7 @@ morphsDict
 		result at: index put: row].
 	^result! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 14:32:11'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 18:38:29'!
 example
 	"
 	self example"
@@ -290,7 +377,7 @@ example
 		addColumn: [:item | item second] header: 'Last name';
 		items: #(('Alan' 'Kay') ('Adele' 'Goldberg')).
 
-	tableMorph := (TableMorph model: table) openInWorld.
+	tableMorph := (TableMorph table: table) openInWorld.
 	
 	table addItem: #('Dan' 'Ingalls').
 	table addColumn: [:item | item first , ' ' , item second] header: 'Full name'.
@@ -306,7 +393,7 @@ example
 	table addItem: #('Someone' 'Withaverylonglongname').
 	table addItems: #(('John' 'Maloney') ('Juan' 'Vuletich'))! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 12:08:02'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 18:38:41'!
 exampleAuthors
 	"
 	self exampleAuthors"
@@ -323,11 +410,11 @@ exampleAuthors
 		addNumberColumn: [:array | authors occurrencesOf: array first ] header: 'Count';
 		items: items.
 
-	(TableMorph model: table)
+	(TableMorph table: table)
 		maximumRowsHeight: 500;
 		openInWorld! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 12:02:43'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 18:38:45'!
 exampleFiles
 	"
 	self exampleFiles"
@@ -340,11 +427,11 @@ exampleFiles
 		items: ((DirectoryEntry cuisBaseDirectory / 'Packages' / 'Features') files 
 			asSortedCollection: [:a :b | a modificationTime > b modificationTime]).
 
-	(TableMorph model: table)
+	(TableMorph table: table)
 		maximumRowsHeight: 500;
 		openInWorld! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 12:14:24'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 18:38:49'!
 exampleLOC
 	"
 	self exampleLOC"
@@ -360,11 +447,11 @@ exampleLOC
 		addNumberColumn: [:cls | loc at: cls ] header: 'LOC';
 		items: items.
 
-	(TableMorph model: table)
+	(TableMorph table: table)
 		maximumRowsHeight: 700;
 		openInWorld! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 12:18:30'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 23:27:00'!
 examplePackages
 	"
 	self examplePackages"
@@ -377,9 +464,26 @@ examplePackages
 		addNumberColumn: [:cp | cp linesOfCode] header: 'LOC';
 		items: CodePackage installedPackages values.
 
-	(TableMorph model: table) openInWorld! !
+	(TableMorph table: table) openInWorld! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 12:26:33'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 23:50:36'!
+examplePackagesPluggable
+	"
+	self examplePackagesPluggable"
+	| codePackageList table |
+	codePackageList := CodePackageList new.
+	table := (PluggableTable on: codePackageList itemsSelector: #packages)
+		addColumn: [:cp | cp hasUnsavedChanges ifTrue: ['*'] ifFalse: ['']];
+		addColumn: [:cp | cp packageName] header: 'Package';
+		addColumn: [:cp | String streamContents: [:stream | cp provides printVersionRevisionOn: stream]] header: 'Version';
+		addColumn: [:cp | cp fullFileName] header: 'Package file';
+		addNumberColumn: [:cp | cp linesOfCode] header: 'LOC'.
+	
+	"codePackageList when: #changed: send: #updateItems:with: to: self with: table."
+	
+	(TableMorph table: table) openInWorld! !
+
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 18:38:59'!
 examplePreferences
 	"
 	self examplePreferences"
@@ -391,17 +495,21 @@ examplePreferences
 		addColumn: [:preference | preference value printString contractTo: 25] header: 'Value';
 		items: (Preferences allPreferences asSortedCollection: [:a :b | a name < b name]).
 
-	(TableMorph model: table)
+	(TableMorph table: table)
 		maximumRowsHeight: 700;
 		openInWorld! !
 
-!TableMorph class methodsFor: 'instance creation' stamp: 'bp 4/5/2025 19:19:33'!
-model: aTable
-	^self newColumn setModel: aTable style: TableStyle new! !
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 23:50:49'!
+updateItems: aSymbol with: aTable
+	#packageNames == aSymbol ifTrue: [aTable changed: #items]! !
 
-!TableMorph class methodsFor: 'instance creation' stamp: 'bp 4/5/2025 19:19:18'!
-model: aTable style: aTableStyle
-	^self newColumn setModel: aTable style: aTableStyle! !
+!TableMorph class methodsFor: 'instance creation' stamp: 'bp 4/6/2025 18:34:15'!
+table: aTable
+	^self table: aTable style: TableStyle new! !
+
+!TableMorph class methodsFor: 'instance creation' stamp: 'bp 4/6/2025 18:31:31'!
+table: aTable style: aTableStyle
+	^self newColumn setTable: aTable style: aTableStyle! !
 
 !AlignedLabelMorph methodsFor: 'initialization' stamp: 'bp 4/6/2025 09:21:55'!
 initialize
@@ -443,12 +551,6 @@ alignment
 alignment: aSelector
 	alignment := aSelector! !
 
-!Column methodsFor: 'accessing' stamp: 'bp 4/5/2025 15:43:12'!
-cellValueBlock
-	"Answer the value of cellValueBlock"
-
-	^ cellValueBlock! !
-
 !Column methodsFor: 'accessing' stamp: 'bp 4/5/2025 15:41:45'!
 cellValueBlock: aBlock
 	cellValueBlock := aBlock! !
@@ -465,38 +567,16 @@ header: anObject
 
 	header := anObject! !
 
-!Column methodsFor: 'accessing' stamp: 'bp 4/5/2025 15:43:12'!
-table
-	"Answer the value of table"
-
-	^ table! !
-
-!Column methodsFor: 'accessing' stamp: 'bp 4/5/2025 15:43:12'!
-table: anObject
-	"Set the value of table"
-
-	table := anObject! !
-
-!Column methodsFor: 'private' stamp: 'bp 8/30/2024 21:48:26'!
+!Column methodsFor: 'private' stamp: 'bp 4/6/2025 20:21:59'!
 cellValue: anItem
-	^cellValueBlock numArgs = 1
-		ifTrue: [cellValueBlock value: anItem]
-		ifFalse: [cellValueBlock value: anItem value: table]! !
+	^cellValueBlock value: anItem! !
 
-!Column methodsFor: 'private' stamp: 'bp 4/6/2025 12:35:02'!
-desiredWidth: style
+!Column methodsFor: 'private' stamp: 'bp 4/6/2025 20:06:16'!
+desiredWidth: items style: style
 	| headerWidth |
 	headerWidth := header ifNil: [0] ifNotNil: [style headerFont widthOfString: header].
-	table items ifEmpty: [^headerWidth].
-	^headerWidth max: (table items max: [:each | style font widthOfString: (self cellValue: each)])! !
-
-!Column methodsFor: 'private' stamp: 'bp 4/5/2025 15:40:19'!
-setTable: aTable
-	table := aTable! !
-
-!Column class methodsFor: 'instance creation' stamp: 'bp 5/15/2022 14:34:33'!
-table: aTable
-	^self new setTable: aTable! !
+	items ifEmpty: [^headerWidth].
+	^headerWidth max: (items max: [:each | style font widthOfString: (self cellValue: each)])! !
 
 !NumberColumn methodsFor: 'accessing' stamp: 'bp 8/30/2024 21:07:51'!
 fractionDigits: anInteger
@@ -514,60 +594,6 @@ initialize
 	super initialize.
 	alignment := #rightFlush.
 	fractionDigits := 0! !
-
-!Table methodsFor: 'initialization' stamp: 'bp 5/15/2022 14:31:37'!
-initialize
-	columns := OrderedCollection new.
-	items := OrderedCollection new! !
-
-!Table methodsFor: 'accessing' stamp: 'bp 5/15/2022 15:40:53'!
-columns
-	 ^columns! !
-
-!Table methodsFor: 'accessing' stamp: 'bp 5/15/2022 15:06:56'!
-items
-	 ^items! !
-
-!Table methodsFor: 'accessing' stamp: 'bp 8/30/2024 18:55:45'!
-items: aCollection
-	items := aCollection asOrderedCollection.
-	self changed: #items! !
-
-!Table methodsFor: 'columns' stamp: 'bp 4/5/2025 16:47:24'!
-addColumn: aBlock
-	self addColumn: aBlock header: nil! !
-
-!Table methodsFor: 'columns' stamp: 'bp 4/5/2025 15:45:15'!
-addColumn: aBlock header: aString
-	| column |
-	column := (Column table: self)
-		header: aString;
-		cellValueBlock: aBlock.
-	columns add: (column).
-	self changed: #columns! !
-
-!Table methodsFor: 'columns' stamp: 'bp 4/5/2025 16:48:07'!
-addNumberColumn: cellValueBlock
-	self addNumberColumn: cellValueBlock header: nil! !
-
-!Table methodsFor: 'columns' stamp: 'bp 4/5/2025 16:47:48'!
-addNumberColumn: cellValueBlock header: aString
-	| column |
-	column := (NumberColumn table: self)
-		header: aString;
-		cellValueBlock: cellValueBlock.
-	columns add: (column).
-	self changed: #columns! !
-
-!Table methodsFor: 'items' stamp: 'bp 8/29/2024 21:51:50'!
-addItem: anObject
-	items add: anObject.
-	self changed: #items! !
-
-!Table methodsFor: 'items' stamp: 'bp 8/31/2024 13:01:15'!
-addItems: aCollection
-	items addAll: aCollection.
-	self changed: #items! !
 
 !TableStyle methodsFor: 'accessing' stamp: 'bp 5/15/2022 16:53:33'!
 color
