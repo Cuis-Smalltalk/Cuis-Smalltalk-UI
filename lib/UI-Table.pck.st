@@ -1,4 +1,4 @@
-'From Cuis7.3 [latest update: #7095] on 7 April 2025 at 6:15:58 pm'!
+'From Cuis7.3 [latest update: #7095] on 7 April 2025 at 6:29:53 pm'!
 'Description Models and morphs for defining and displaying tables.'!
 !provides: 'UI-Table' 1 6!
 !requires: 'Cuis-Base' 73 7095 nil!
@@ -466,7 +466,7 @@ examplePackages
 
 	(TableMorph table: table) openInWorld! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/7/2025 18:15:03'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/7/2025 18:28:17'!
 examplePackagesPluggable
 	"
 	self examplePackagesPluggable.
@@ -477,8 +477,7 @@ examplePackagesPluggable
 		addColumn: [:cp | cp hasUnsavedChanges ifTrue: ['*'] ifFalse: ['']];
 		addColumn: [:cp | cp packageName] header: 'Package';
 		addColumn: [:cp | String streamContents: [:stream | cp provides printVersionRevisionOn: stream]] header: 'Version';
-		addColumn: [:cp | cp fullFileName] header: 'Package file';
-		addNumberColumn: [:cp | cp linesOfCode] header: 'LOC'.
+		addColumn: [:cp | cp fullFileName] header: 'Package file'.
 	
 	codePackageList when: #changed: evaluate: [:aspectSymbol | #packageNames == aspectSymbol ifTrue: [table changed: #items]].
 	
