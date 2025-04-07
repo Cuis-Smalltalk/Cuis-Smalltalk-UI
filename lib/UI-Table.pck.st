@@ -1,4 +1,4 @@
-'From Cuis7.3 [latest update: #7095] on 6 April 2025 at 11:51:21 pm'!
+'From Cuis7.3 [latest update: #7095] on 7 April 2025 at 6:15:58 pm'!
 'Description Models and morphs for defining and displaying tables.'!
 !provides: 'UI-Table' 1 6!
 !requires: 'Cuis-Base' 73 7095 nil!
@@ -466,10 +466,11 @@ examplePackages
 
 	(TableMorph table: table) openInWorld! !
 
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 23:50:36'!
+!TableMorph class methodsFor: 'examples' stamp: 'bp 4/7/2025 18:15:03'!
 examplePackagesPluggable
 	"
-	self examplePackagesPluggable"
+	self examplePackagesPluggable.
+	Feature require: 'JSON'"
 	| codePackageList table |
 	codePackageList := CodePackageList new.
 	table := (PluggableTable on: codePackageList itemsSelector: #packages)
@@ -479,7 +480,7 @@ examplePackagesPluggable
 		addColumn: [:cp | cp fullFileName] header: 'Package file';
 		addNumberColumn: [:cp | cp linesOfCode] header: 'LOC'.
 	
-	"codePackageList when: #changed: send: #updateItems:with: to: self with: table."
+	codePackageList when: #changed: evaluate: [:aspectSymbol | #packageNames == aspectSymbol ifTrue: [table changed: #items]].
 	
 	(TableMorph table: table) openInWorld! !
 
@@ -498,10 +499,6 @@ examplePreferences
 	(TableMorph table: table)
 		maximumRowsHeight: 700;
 		openInWorld! !
-
-!TableMorph class methodsFor: 'examples' stamp: 'bp 4/6/2025 23:50:49'!
-updateItems: aSymbol with: aTable
-	#packageNames == aSymbol ifTrue: [aTable changed: #items]! !
 
 !TableMorph class methodsFor: 'instance creation' stamp: 'bp 4/6/2025 18:34:15'!
 table: aTable
