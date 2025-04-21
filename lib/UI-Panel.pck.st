@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7099] on 21 April 2025 at 5:24:59 pm'!
+'From Cuis7.3 [latest update: #7099] on 22 April 2025 at 12:19:26 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 124!
+!provides: 'UI-Panel' 1 125!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -30,7 +30,7 @@ DecoratedPane class
 
 !classDefinition: #FlowLayoutMorph category: #'UI-Panel'!
 PluggableScrollPane subclass: #FlowLayoutMorph
-	instanceVariableNames: 'cells allowsSubmorphDrag'
+	instanceVariableNames: 'cells allowsSubmorphDrag alignment'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -564,16 +564,17 @@ defaultColor
 defaultExtent
 	^ `400@300`! !
 
-!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 4/21/2025 17:23:54'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 4/22/2025 00:13:33'!
 initialize
 	super initialize.
 	self alwaysHideHorizontalScrollbar.
 	allowsSubmorphDrag := false.
+	alignment := #center.
 	cells := #().
 	self layoutSpec: LayoutSpec useAll;
 		scroller: (LayoutMorph newColumn color: Color transparent)! !
 
-!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/8/2025 19:41:08'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 4/21/2025 23:55:29'!
 newRow
 	| row |
 	row := ​ LayoutMorph newRow :: 
@@ -582,6 +583,12 @@ newRow
 	allowsSubmorphDrag ifTrue: [row setProperty: #allowsSubmorphDrag toValue: true].
 	^ row
 	! !
+
+!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 4/22/2025 00:15:01'!
+align: symbol
+" how to align vertically the cells in each row.
+Possible value: #rowTop #center #rowBottom "
+	alignment := symbol ! !
 
 !FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 08:40:16'!
 allowsDrag
@@ -597,7 +604,7 @@ gap
 " Gap between two previews in a row "
 	^ 12	! !
 
-!FlowLayoutMorph methodsFor: 'layout' stamp: 'hlsf 2/6/2025 20:31:38'!
+!FlowLayoutMorph methodsFor: 'layout' stamp: 'hlsf 4/22/2025 00:15:17'!
 updateLayout
 	| tableWidth leftSpace row |
 	tableWidth := self viewableWidth.
@@ -610,7 +617,9 @@ updateLayout
 		w + self gap > leftSpace ifTrue: [ 
 			scroller addMorph: (row := self newRow).
 			leftSpace := tableWidth - self gap].
-		row addMorph: cell.
+		row 
+			addMorph: cell 
+			layoutSpec: (cell layoutSpec offAxisEdgeWeight: alignment).
 		leftSpace := leftSpace - w - self gap]! !
 
 !FlowLayoutMorph methodsFor: 'geometry' stamp: 'hlsf 2/6/2025 20:06:44'!
