@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 3:17:11 pm'!
+'From Cuis7.3 [latest update: #7099] on 25 April 2025 at 12:39:17 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 81!
+!provides: 'UI-Click-Select' 1 82!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -668,14 +668,14 @@ initializedInstance
 
 	^self example1! !
 
-!RadioGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 20:50:25'!
+!RadioGroup class methodsFor: 'examples' stamp: 'hlsf 4/25/2025 00:03:05'!
 example1
 "
 	self example1 openInWorld
 "
 	| group |
-	group _ self fromList: #('guess YES' 'guess NO').
-	group 	buttons do: [:each | 
+	group := self fromList: #('guess YES' 'guess NO').
+	group buttons do: [:each | 
 			each when: #radioSelection send: #show: to: Transcript].
 	^ group! !
 
@@ -1808,10 +1808,10 @@ mouseEnter: event
 	"The mouse has entered the area of the receiver"
 	self isSelected ifFalse: [super mouseEnter: event]! !
 
-!RadioButtonMorph methodsFor: 'accessing' stamp: 'hlsf 6/9/2024 08:29:16'!
+!RadioButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/24/2025 23:57:23'!
 isSelected: aBoolean
 	self selected: aBoolean.
-	isSelected ifTrue: [			self triggerEvent: #radioSelection with: self	]
+	isSelected ifTrue: [self triggerEvent: #radioSelection with: self	]
 ! !
 
 !RadioButtonMorph methodsFor: 'private' stamp: 'hlsf 8/12/2024 19:04:16'!
