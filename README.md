@@ -91,8 +91,8 @@ Model and helper classes.
 - Column
  - NumberColumn
 - Table
--TableMorph
--TableStyle
+- TableMorph
+- TableStyle
 
 ### UI-Widgets
 - ButtonMorph
