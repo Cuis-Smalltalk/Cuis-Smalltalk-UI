@@ -19,8 +19,11 @@ Feature require: 'UI-Components'.
 
 ### UI-Core
 Model and helper classes.
+- FrameMorph
+- LineMorph
 - ListModel
  - ListMultiModel
+- SignMorph
 - SqueezeLabelMorph
 - ValueHolder
 - WindowTitleMorph
@@ -33,6 +36,8 @@ Model and helper classes.
  - RadioGroup
 - DropDownButtonMorph
  - DropDownListMorph
+- Flap
+- FlapItem
 - InnerListOfMorph
 - MultiSelectMenu
 - PluggableDropDownListMorph
@@ -50,7 +55,6 @@ Model and helper classes.
 - ClickColorMorph
 - DropColorMorph
 - FontMorph
-- SignMorph
 
 ### UI-Entry
 - SimpleEditor
@@ -63,6 +67,7 @@ Model and helper classes.
 ### UI-Panel
 - BreadcrumbsPane
 - DecoratedPane
+- FlowLayoutMorph
 - Panel
  - DialogPanel
   - EditPanel
@@ -81,14 +86,23 @@ Model and helper classes.
 - PluggableScrollBar
 - WizardPage
 
+### UI-Table
+- AlignedLabelMorph
+- Column
+ - NumberColumn
+- Table
+-TableMorph
+-TableStyle
+
 ### UI-Widgets
 - ButtonMorph
 - ChevronMorph
  - DropDownChevronMorph
 - CircularToolbarMorph
  - CircularSubToolbarMorph
-- FilePreviewMorph
 - LabelGroup
+- PreviewMorph
+ - FilePreviewMorph
 - WaitSpinner
 - WheelMorph
 
@@ -218,9 +232,7 @@ Package whose initializer restores the saved composite Morph.
  - BezierCubicMorph
 - CircleShapeMorph 
 - EllipseMorph
-- FrameMorph
-- LineMorph
- - PointerLineMorph
+- PointerLineMorph
 LineShapeMorph
 RectangleShapeMorph
 
