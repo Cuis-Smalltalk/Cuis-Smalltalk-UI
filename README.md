@@ -22,7 +22,7 @@ Model and helper classes.
 - FrameMorph
 - LineMorph
 - ListModel
- - ListMultiModel
+  - ListMultiModel
 - SignMorph
 - SqueezeLabelMorph
 - ValueHolder
@@ -30,19 +30,19 @@ Model and helper classes.
 
 ### UI-Click-Select
 - CheckButtonMorph
- - RadioButtonMorph
+  - RadioButtonMorph
 - CheckGroup
- - PluggableCheckboxMorph
- - RadioGroup
+  - PluggableCheckboxMorph
+  - RadioGroup
 - DropDownButtonMorph
- - DropDownListMorph
+  - DropDownListMorph
 - Flap
 - FlapItem
 - InnerListOfMorph
 - MultiSelectMenu
 - PluggableDropDownListMorph
 - PluggableListOfMorph
- - PluggableDropDownList
+  - PluggableDropDownList
 
 ### UI-Color-Panel
 - ColorEditorModel
@@ -69,27 +69,27 @@ Model and helper classes.
 - DecoratedPane
 - FlowLayoutMorph
 - Panel
- - DialogPanel
-  - EditPanel
-  - PluggableDialogPanel
-   - PluggablePane
-  - ValueEntryPanel
-   - CharacterEntryPanel
-   - FloatEntryPanel
-   - PointEntryPanel
-   - PositiveIntegerEntryPanel
-   - PositiveFloatEntryPanel
-   - RangeFloatEntryPanel
-   - StringEntryPanel
-    - TextEntryPanel
- - WizardPanel
+   - DialogPanel
+    - EditPanel
+    - PluggableDialogPanel
+      - PluggablePane
+    - ValueEntryPanel
+      - CharacterEntryPanel
+      - FloatEntryPanel
+      - PointEntryPanel
+      - PositiveIntegerEntryPanel
+      - PositiveFloatEntryPanel
+      - RangeFloatEntryPanel
+      - StringEntryPanel
+        - TextEntryPanel
+  - WizardPanel
 - PluggableScrollBar
 - WizardPage
 
 ### UI-Table
 - AlignedLabelMorph
 - Column
- - NumberColumn
+  - NumberColumn
 - Table
 - TableMorph
 - TableStyle
@@ -97,12 +97,12 @@ Model and helper classes.
 ### UI-Widgets
 - ButtonMorph
 - ChevronMorph
- - DropDownChevronMorph
+  - DropDownChevronMorph
 - CircularToolbarMorph
- - CircularSubToolbarMorph
+  - CircularSubToolbarMorph
 - LabelGroup
 - PreviewMorph
- - FilePreviewMorph
+  - FilePreviewMorph
 - WaitSpinner
 - WheelMorph
 
@@ -112,16 +112,16 @@ A collection of packages related to GUI construction and editing.
 ### UI-Mold, UI-Mold-Test
 A helper tool to describe dialog panels for user input and validation.
 - Field
- - CheckBoxField
- - DateField
- - FloatField
-  - PercentageField
- - IntegerField
- - PasswordField
- - SelectField
-  - SelectMultipleField
- - TextField
- - TimeField
+  - CheckBoxField
+  - DateField
+  - FloatField
+    - PercentageField
+   - IntegerField
+   - PasswordField
+   - SelectField
+    - SelectMultipleField
+   - TextField
+   - TimeField
 - Mold
 - MoldExample
 
@@ -131,7 +131,7 @@ A dialog panel to edit system or application preferences.
 - PreferenceBrowser
 - PreferenceBrowserVisitor
 - PreferenceModel
- - PreferenceModelClosure
+  - PreferenceModelClosure
 - PreferenceType
 
 
@@ -180,9 +180,9 @@ and
 
 ### UI-MetaProperties
 - MetaProperty
- - MetaPropertyFrom
- - MetaPropertyOneOf
-  - MetaPropertyMultiSelect
+  - MetaPropertyFrom
+  - MetaPropertyOneOf
+    - MetaPropertyMultiSelect
 - MetaPropertyRange
 - MetaPropertyTransducer
 - MetaPropertyViaTest
@@ -218,10 +218,10 @@ Package whose initializer restores the saved composite Morph.
 
 ### UI-Palette
 - ImagePickerPanel
- - PickAColorPalette
- - PickALargerIconPalette
- - PickAnIconPalette
- - PaletteLayoutMorph
+  - PickAColorPalette
+  - PickALargerIconPalette
+  - PickAnIconPalette
+  - PaletteLayoutMorph
 - InnerPluggableImagePalette
 - PaletteLayoutMorph
 - PluggableImagePalette
@@ -229,11 +229,11 @@ Package whose initializer restores the saved composite Morph.
 ### UI-Shapes
 - ArrowMorph
 - BezierQuadraticMorph
- - BezierCubicMorph
+  - BezierCubicMorph
 - CircleShapeMorph 
 - EllipseMorph
 - PointerLineMorph
-LineShapeMorph
-RectangleShapeMorph
+- LineShapeMorph
+- RectangleShapeMorph
 
 
