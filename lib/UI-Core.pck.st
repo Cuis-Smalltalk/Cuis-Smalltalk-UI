@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 12:50:16 pm'!
+'From Cuis7.3 [latest update: #7115] on 1 May 2025 at 12:56:30 pm'!
 'Description '!
-!provides: 'UI-Core' 1 21!
+!provides: 'UI-Core' 1 22!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -781,6 +781,11 @@ initialize
 	super initialize.
 	self layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0).
 	centered := true.! !
+
+!SqueezeLabelMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 5/1/2025 12:55:29'!
+contents: newContents
+	super contents: newContents.
+	self setBalloonText: newContents asString! !
 
 !SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 05:52:29'!
 contents: aString font: aFont emphasis: emphasisCode minCharsToShow: numChars
