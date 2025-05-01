@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7099] on 22 April 2025 at 12:19:26 am'!
+'From Cuis7.3 [latest update: #7115] on 2 May 2025 at 12:04:09 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 125!
+!provides: 'UI-Panel' 1 126!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -232,13 +232,14 @@ If my height is too small to contain all the morphs, I add a vertical scrollbar.
 !PluggableScrollBar commentStamp: '<historical>' prior: 0!
 I am a ScrollBar which can get new values from my model.!
 
-!Panel commentStamp: 'hlsf 4/8/2022 12:19:51' prior: 0!
+!Panel commentStamp: 'hlsf 5/1/2025 23:53:42' prior: 0!
+I am an abstract Panel
 - I present morphs in a panel. (see buildMorphicWindow)
 - I am decorated with a window title with optional buttons
 !
 
 !DialogPanel commentStamp: '<historical>' prior: 0!
-I am a dialog panel with a button area at my bottom.!
+I am an abstract dialog panel with a button area at my bottom.!
 
 !EditPanel commentStamp: '<historical>' prior: 0!
 I abstract common edit methods for my concrete subclasses.
@@ -1204,26 +1205,23 @@ morphExtent: newExtent
 	super morphExtent: newExtent.
 	titleMorph ifNotNil: [titleMorph morphExtent: extent x @ (self labelHeight + borderWidth)]! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'hlsf 12/27/2021 11:09:02'!
+!Panel class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2025 23:49:22'!
 example1
 " 
 	Panel example1 openInWorld
 "
 | panel |
-	panel _ Panel new.
-	panel 	titleMorph showButtonsNamed: #(#close).
+	panel := Panel new.
+	panel showButtonsNamed: #(#close).
 	^ panel
 		! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'KenD 3/13/2022 07:30:33'!
+!Panel class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2025 23:45:10'!
 initializedInstance
 "
 	self initializedInstance openInHand.
-"
-	| panel |
-	panel _ Panel new.
-	panel 	titleMorph showButtonsNamed: #(#close).
-	^ panel
+"	
+	^ self example1 
 		! !
 
 !Panel class methodsFor: 'instance creation' stamp: 'KenD 12/9/2013 18:53'!

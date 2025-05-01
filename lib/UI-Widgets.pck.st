@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 2 March 2025 at 11:51:28 am'!
+'From Cuis7.3 [latest update: #7115] on 1 May 2025 at 11:26:41 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 48!
+!provides: 'UI-Widgets' 1 49!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -185,7 +185,7 @@ initialize
 	super initialize.
 	self gap: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'KenD 9/14/2024 15:13:20'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 5/1/2025 23:14:24'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
@@ -203,18 +203,18 @@ with: labelsAndControls
 			addMorph: label layoutSpec: ( LayoutSpec fixedWidth: labelWidth proportionalHeight: 0.5 offAxisEdgeWeight: #center).
 		control hasVariableExtent 
 			ifTrue: [row addMorphUseAll: control]  
-			ifFalse: [row addMorph: control	 layoutSpec: LayoutSpec keepMorphExtent]		.
+			ifFalse: [row addMorph: control layoutSpec: LayoutSpec keepMorphExtent]		.
 		self addMorph: row fixedHeight: height]! !
-
-!LabelGroup methodsFor: 'as yet unclassified' stamp: 'hlsf 7/21/2024 23:30:40'!
-controls
-	" search for the controls, those all widget not label or layoutmorph"
-	^ self submorphs collect: [:layout | 		layout submorphs first] ! !
 
 !LabelGroup methodsFor: 'accessing' stamp: 'hlsf 7/21/2024 23:30:05'!
 adoptWidgetsColor: paneColor
 	doAdoptWidgetsColor
 		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
+
+!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 5/1/2025 23:26:27'!
+controls
+	" search for the controls, those all widget not label or layoutmorph"
+	^ self submorphs reverse collect: [:layout | layout submorphs first] ! !
 
 !LabelGroup class methodsFor: 'instance creation' stamp: 'KenD 7/24/2024 12:12:45'!
 initializedInstance
@@ -227,7 +227,7 @@ with: labelsAndControls
 	
 	^ self newColumn with: labelsAndControls! !
 
-!LabelGroup class methodsFor: 'examples' stamp: 'KenD 7/24/2024 12:08:50'!
+!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 5/1/2025 23:14:56'!
 example1
 "
 	LabelGroup example1 openInWorld
@@ -235,8 +235,8 @@ example1
 	^ self with: {
 		'Name' -> (LabelMorph contents: 'send $25 for your name here').
 		'Description which is very long is truncated but a ballon help is set to know about this lenghty label!!' -> (TextModelMorph withText: '' ::
-			emptyTextDisplayMessage: 'Why Smalltalk?')	 .
-		'Smalltalk variants' ->   (PluggableListMorph 
+			emptyTextDisplayMessage: 'Why Smalltalk?').
+		'Smalltalk variants' -> (PluggableListMorph 
 			withModel: (ListModel with: #('Cuis-Smalltalk' 'Pharo' 'Squeak' 'Amber' 'Dolphin' 'GNU Smalltalk')) 
 			listGetter: #list 
 			indexGetter: #listIndex 
