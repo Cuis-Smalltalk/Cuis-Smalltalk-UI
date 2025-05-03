@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7099] on 25 April 2025 at 12:39:17 am'!
+'From Cuis7.3 [latest update: #7115] on 3 May 2025 at 9:46:19 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 82!
+!provides: 'UI-Click-Select' 1 83!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -454,15 +454,15 @@ unselectAll
 	self redrawNeeded 
 	! !
 
-!CheckGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 11:57:55'!
+!CheckGroup class methodsFor: 'examples' stamp: 'hlsf 5/2/2025 12:44:35'!
 example1
 "
 	self example1 openInWorld
 "
 	| group |
-	group _ self fromList: #('Cuis-Smalltalk' 'Pharo' 'Squeak').
-	group 	buttons do: [:each | 
-			each when: #checkSelection send: #show: to: Transcript].
+	group := self fromList: #('Cuis-Smalltalk' 'Pharo' 'Squeak').
+	group buttons do: [:each | 
+		each when: #checkSelection send: #show: to: Transcript].
 	^ group! !
 
 !CheckGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 13:29:37'!
@@ -812,7 +812,7 @@ delete
 hasVariableExtent
 	^ false! !
 
-!DropDownButtonMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 10/10/2023 23:02:06'!
+!DropDownButtonMorph methodsFor: 'layout in owner' stamp: 'hlsf 10/10/2023 23:02:06'!
 layoutSpec
 	"Layout specific. Return the layout spec describing where the
 	receiver should appear in a proportional layout"
@@ -937,9 +937,9 @@ highlightedRow: n
 			self invalidateLocalRect: (self drawBoundsForRow: highlightedRow) ].
 		].! !
 
-!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/20/2022 11:06:04'!
+!InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 5/2/2025 18:12:22'!
 listChanged
-	highlightedRow _ 	selectedRow _ nil.! !
+	highlightedRow := selectedRow := nil.! !
 
 !InnerListOfMorph methodsFor: 'list management' stamp: 'hlsf 1/19/2022 21:02:38'!
 rowAtLocation: aPoint 
@@ -1534,13 +1534,13 @@ mouseEnter: event
 mouseLeave: event
 	self delete! !
 
-!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 1/21/2022 11:25:23'!
+!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 5/2/2025 18:14:21'!
 getList
-	getListSelector 		ifNil: [^ #()].
-	list _ model perform: getListSelector.
+	getListSelector ifNil: [^ #()].
+	list := model perform: getListSelector.
 	list ifNil: [^ #()].	
 	scroller removeAllMorphs.
-	list do: [:aMorph | 	self addToScroller: aMorph].
+	list do: [:aMorph | self addToScroller: aMorph].
 	self suitedExtent.
 	^ list! !
 

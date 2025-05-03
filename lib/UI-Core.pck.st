@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7115] on 1 May 2025 at 12:56:30 pm'!
+'From Cuis7.3 [latest update: #7115] on 3 May 2025 at 9:46:22 am'!
 'Description '!
-!provides: 'UI-Core' 1 22!
+!provides: 'UI-Core' 1 23!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -1193,10 +1193,10 @@ example1
 list
 	^ collection! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/30/2023 18:26:48'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/2/2025 18:18:11'!
 list: aCollection
 	collection := aCollection.
-	aCollection 		ifNotEmpty: [selectedIndex := 1]! !
+	aCollection ifNotEmpty: [selectedIndex := 1]! !
 
 !ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:28:03'!
 listIndex
