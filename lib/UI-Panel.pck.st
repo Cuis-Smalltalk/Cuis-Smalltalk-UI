@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7115] on 2 May 2025 at 12:04:09 am'!
+'From Cuis7.3 [latest update: #7115] on 3 May 2025 at 9:46:24 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 126!
+!provides: 'UI-Panel' 1 127!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -496,7 +496,7 @@ morphExtent: newExtent
 	"Hack. This BoxMorph is drawing outside its bounds."
 	self redrawNeeded! !
 
-!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/29/2023 12:32:24'!
+!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/3/2025 09:15:32'!
 example1
 "
 	self example1 openInWorld
@@ -504,12 +504,12 @@ example1
 	| buttons |
 	buttons :=	 OrderedCollection new.
 	buttons add: (PluggableButtonMorph 
-		model: Switch newOff 			stateGetter: #isOn 		action: #switch ::
+		model: Switch newOff stateGetter: #isOn 	action: #switch ::
 		icon: Theme current globeIcon ;
 		setBalloonText: 'Use GMT time zone';
 		yourself).
 	buttons add: (PluggableButtonMorph 
-		model: Switch newOff 				action: #switch ::
+		model: Switch newOff action: #switch ::
 		icon: Theme current clockIcon ;
 		setBalloonText: 'Set the time';
 		yourself).
