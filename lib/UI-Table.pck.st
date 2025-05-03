@@ -1,6 +1,8 @@
-'From Cuis7.3 [latest update: #7095] on 7 April 2025 at 6:29:53 pm'!
-'Description Models and morphs for defining and displaying tables.'!
-!provides: 'UI-Table' 1 6!
+'From Cuis7.3 [latest update: #7115] on 3 May 2025 at 10:24:26 am'!
+'Description Models and morphs for defining and displaying tables.
+
+See class method category examples in TableMorph.'!
+!provides: 'UI-Table' 1 7!
 !requires: 'Cuis-Base' 73 7095 nil!
 SystemOrganization addCategory: #'UI-Table'!
 
@@ -85,6 +87,75 @@ Object subclass: #TableStyle
 TableStyle class
 	instanceVariableNames: ''!
 
+
+!TableModel commentStamp: 'bp 5/3/2025 09:35:56' prior: 0!
+A TableModel is a model for a TableMorph used for displaying objects in a tabular way.
+
+The main feature of this class is to manage the columns used for displaying the objects.
+
+This is an abstract superclass. Its subclasses are responsible for providing the items for the TableMorph, i.e. the objects to display.
+
+Related classes include Column and TableMorph.!
+
+!PluggableTable commentStamp: 'bp 5/3/2025 09:35:10' prior: 0!
+A PluggableTable is a model class for a TableMorph whose items are stored elsewhere.!
+
+!Table commentStamp: 'bp 5/3/2025 09:34:01' prior: 0!
+A Table is a model class which can hold a items for a TableMorph, i.e. the objects to display.!
+
+!TableMorph commentStamp: 'bp 5/3/2025 10:24:04' prior: 0!
+A TableMorph is a morph for displaying objects in a tabular way.
+
+It has a TableModel for providing the items to show and the columns to use. The column widths are sized automatically to hold the largest cell value of all items of a column.
+
+It has a TableStyle for customizing its look. When its TableStyle changes it updates its look accordingly.
+
+See class method category examples.
+
+The class TableMorph should be usable as it is now. However, it is still a work in progress. More features are planned:
+- different selections strategies
+- maxWidths for columns (right now the columns must make sure their cell values are not too wide)
+- column hiding and reordering
+- more styling parameters
+- filtering
+- performance optimization!
+
+!AlignedLabelMorph commentStamp: 'bp 5/3/2025 09:57:41' prior: 0!
+An AlignedLabelMorph is a kind of LabelMorph with an alignment.
+
+The alignment can be one of the symbols #leftFlush, #centered, or #rightFlush. #leftFlush is the default.
+
+It is used by NumberColumn.!
+
+!Column commentStamp: 'bp 5/3/2025 09:55:26' prior: 0!
+A Column is used by a TableModel to provide the value of a column for a given item.
+
+It has a cellValueBlock which is evaluated with the item to display as a parameter.
+
+It has an alignment which can be one of the symbols #leftFlush, #centered, or #rightFlush. #leftFlush is the default.
+
+It can have an optional header.
+
+Related classes include TableModel, TableMorph, and AlignedLabelMorph.!
+
+!NumberColumn commentStamp: 'bp 5/3/2025 09:54:42' prior: 0!
+A NumberColumn is a kind of Column for displaying numbers.
+
+It has a number of fraction digits to show.
+
+It alignment is #rightFlush by default.!
+
+!TableStyle commentStamp: 'bp 5/3/2025 10:06:58' prior: 0!
+A TableStyle holds parameters for customizing the look of TableMorphs. The same TableStyle can be used for multiple TableMorphs. When a parameter changes the TableMorphs are informed in order to update their look.
+
+Instance variables:
+color - the background color of the TableMorph itself
+rowBackgroundColors - an Array of colors used alternating for rows
+font - the font used for displaying the cells
+headerFont - the font used for displaying the header
+padding - the padding of the TableMorph itself
+gap - a number or a Point for the gap between the cells
+rowPadding - the padding of the row morphs!
 
 !TableModel methodsFor: 'initialization' stamp: 'bp 4/6/2025 18:42:47'!
 initialize
