@@ -1,14 +1,14 @@
-'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:31:08 pm'!
+'From Cuis7.3 [latest update: #7166] on 16 May 2025 at 3:38:14 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 27!
-!requires: 'Cuis-Base' 71 6722 nil!
-!requires: 'UI-DragAndDrop' 1 0 nil!
+!provides: 'UI-Color-Panel' 1 28!
+!requires: 'Cuis-Base' 73 7166 nil!
+!requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
-!requires: 'UI-Click-Select' 1 2 nil!
+!requires: 'UI-Click-Select' 1 84 nil!
 !requires: 'Color-Extras' 1 9 nil!
-!requires: 'UI-Panel' 1 51 nil!
-!requires: 'UI-Palette' 1 11 nil!
-!requires: 'Graphics-Files-Additional' 1 24 nil!
+!requires: 'UI-Panel' 1 127 nil!
+!requires: 'UI-Palette' 1 16 nil!
+!requires: 'Graphics-Files-Additional' 1 30 nil!
 SystemOrganization addCategory: #'UI-Color-Panel'!
 
 
@@ -1380,6 +1380,10 @@ refreshColorSwatch
 	
 	colorSwatch image: (model baseColor iconOrThumbnailOfSize: self colorSwatchExtent).
 	colorSwatch color: self model baseColor! !
+
+!ColorEditorPanel methodsFor: 'accessing' stamp: 'KenD 5/16/2025 15:36:52'!
+layerNumber
+	^ 100! !
 
 !ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 7/27/2024 18:56:29'!
 initializedInstance
