@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7115] on 1 May 2025 at 11:26:41 pm'!
+'From Cuis7.3 [latest update: #7158] on 18 May 2025 at 7:17:45 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 49!
+!provides: 'UI-Widgets' 1 50!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -850,24 +850,26 @@ initialize
 	mouseIsOver _ isPressed _ false.
 	self initializeMouseEvents ! !
 
-!ChevronMorph methodsFor: 'initialization' stamp: 'hlsf 10/10/2021 11:57:04'!
+!ChevronMorph methodsFor: 'initialization' stamp: 'hlsf 5/18/2025 19:17:35'!
 initializeMouseEvents
 	" Handle mouse down events "
 	self setProperty: #handlesMouseDown toValue: true.
 	self setProperty: #'mouseButton1Down:localPosition:'  toValue: [:event :localPosition |
-		isPressed _ true.
+		isPressed := true.
 		self redrawNeeded].
 	self setProperty: #mouseButton1Up:localPosition:  toValue: [:event :localPosition |
-		isPressed _ false.
-		(self coversPixel: event eventPosition) ifTrue: [self performAction].
+		isPressed := false.
+		(self coversPixel: event eventPosition) ifTrue: [
+			self performAction.
+			mouseIsOver := false].
 		self redrawNeeded ].
 	" Handle mouse over event "	
 	self setProperty: #handlesMouseOver: toValue: true.
 	self setProperty: #mouseEnter: toValue: [:event |
-		mouseIsOver _ true.
+		mouseIsOver := true.
 		self redrawNeeded].
 	self setProperty: #mouseLeave:  toValue: [:event |
-		mouseIsOver _ false.
+		mouseIsOver := false.
 		self redrawNeeded]! !
 
 !ChevronMorph methodsFor: 'geometry' stamp: 'hlsf 1/3/2021 13:00:29'!
