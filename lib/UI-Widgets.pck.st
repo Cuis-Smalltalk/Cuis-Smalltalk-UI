@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7158] on 18 May 2025 at 7:17:45 pm'!
+'From Cuis7.3 [latest update: #7248] on 27 May 2025 at 6:16:06 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 50!
+!provides: 'UI-Widgets' 1 51!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -430,16 +430,16 @@ selectedColor
 selectedColor: aColor
 	selectedColor _ aColor ! !
 
-!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:44:20'!
+!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 5/27/2025 18:05:37'!
 drawMyShapeOn: canvas with: background
 	| borderStyleSymbol |
 	borderStyleSymbol := self isPressed ifFalse: [ #raised ] ifTrue: [ #inset ].
-	self isRoundButton 
+	(roundButtonStyle ifNil: [Theme current roundButtons])
 		ifTrue:  [ | r rect |
 			r := Theme current roundedButtonRadius.
 			rect := self localBounds.
 			r := r min: (rect width min: rect height) * 0.5.
-			canvas roundRect: rect color: (self enableColorWith: background ) radius: r			]
+			canvas roundRect: rect color: (self enableColorWith: background ) radius: r ]
 		ifFalse: [
 			canvas
 				fillRectangle: self localBounds
