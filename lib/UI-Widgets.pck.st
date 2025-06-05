@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7248] on 27 May 2025 at 6:16:06 pm'!
+'From Cuis7.5 [latest update: #7262] on 5 June 2025 at 12:17:54 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 51!
-!requires: 'Cuis-Base' 71 6722 nil!
+!provides: 'UI-Widgets' 1 52!
+!requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Widgets'!
@@ -1077,6 +1077,10 @@ color: aColor
 	color _ aColor.
 	self submorphsDo: [:each | each color: aColor]! !
 
+!CircularToolbarMorph methodsFor: 'accessing' stamp: 'KenD 6/5/2025 12:13:26'!
+defaultLayerNumber
+	^ 30! !
+
 !CircularToolbarMorph methodsFor: 'accessing' stamp: 'hlsf 10/10/2021 12:27:24'!
 dropDownChevronsDo: aBlock
 	self submorphs 
@@ -1115,10 +1119,6 @@ gap
 !CircularToolbarMorph methodsFor: 'accessing' stamp: 'hlsf 12/31/2020 16:42:11'!
 innerRadius
 	^ innerRadius ifNil: [innerRadius _ extent // 2 - buttonSize]! !
-
-!CircularToolbarMorph methodsFor: 'accessing' stamp: 'hlsf 3/28/2022 11:19:16'!
-layerNumber
-	^ 30! !
 
 !CircularToolbarMorph methodsFor: 'accessing' stamp: 'hlsf 6/7/2020 18:15:42'!
 privateButtonSize: anInteger

@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7158] on 16 May 2025 at 10:38:44 pm'!
+'From Cuis7.5 [latest update: #7262] on 5 June 2025 at 12:16:11 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 84!
-!requires: 'Cuis-Base' 71 6722 nil!
+!provides: 'UI-Click-Select' 1 86!
 !requires: 'UI-Widgets' 1 48 nil!
+!requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Click-Select'!
 
@@ -1523,8 +1523,8 @@ initialize
 	super initialize.
 	extent := 150 @100! !
 
-!PluggableDropDownListMorph methodsFor: 'accessing' stamp: 'hlsf 4/5/2025 12:43:51'!
-layerNumber
+!PluggableDropDownListMorph methodsFor: 'accessing' stamp: 'KenD 6/5/2025 12:13:26'!
+defaultLayerNumber
 	^ 29! !
 
 !PluggableDropDownListMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 15:13:53'!
@@ -1597,8 +1597,8 @@ example1
 		indexGetter: #listIndex
 		indexSetter: #listIndex:! !
 
-!PluggableDropDownListOfMorph methodsFor: 'accessing' stamp: 'hlsf 4/5/2025 12:43:38'!
-layerNumber
+!PluggableDropDownListOfMorph methodsFor: 'accessing' stamp: 'KenD 6/5/2025 12:13:26'!
+defaultLayerNumber
 	^ 29! !
 
 !PluggableDropDownListOfMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 15:13:39'!

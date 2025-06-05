@@ -1,7 +1,7 @@
-'From Cuis7.3 [latest update: #7166] on 16 May 2025 at 4:20:30 pm'!
+'From Cuis7.5 [latest update: #7262] on 5 June 2025 at 12:50:42 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 29!
-!requires: 'Cuis-Base' 73 7166 nil!
+!provides: 'UI-Color-Panel' 1 31!
+!requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 84 nil!
@@ -1381,10 +1381,10 @@ refreshColorSwatch
 	colorSwatch image: (model baseColor iconOrThumbnailOfSize: self colorSwatchExtent).
 	colorSwatch color: self model baseColor! !
 
-!ColorEditorPanel methodsFor: 'accessing' stamp: 'KenD 5/16/2025 16:19:33'!
-layerNumber
+!ColorEditorPanel methodsFor: 'accessing' stamp: 'KenD 6/5/2025 12:44:32'!
+defaultLayerNumber
 	"Act like any other Morph with respect to Z-order"
-	^self valueOfProperty: #layerNumber ifAbsent: [100]! !
+	^100! !
 
 !ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 7/27/2024 18:56:29'!
 initializedInstance

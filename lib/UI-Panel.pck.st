@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7115] on 3 May 2025 at 9:46:24 am'!
+'From Cuis7.5 [latest update: #7262] on 5 June 2025 at 12:16:37 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 127!
-!requires: 'Cuis-Base' 71 6722 nil!
+!provides: 'UI-Panel' 1 128!
+!requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
 SystemOrganization addCategory: #'UI-Panel'!
@@ -1166,8 +1166,8 @@ update: aSymbol
 	aSymbol == #relabel
 		ifTrue: [ model ifNotNil: [ self setLabel: model labelString ]]! !
 
-!Panel methodsFor: 'accessing' stamp: 'hlsf 4/5/2025 09:01:00'!
-layerNumber
+!Panel methodsFor: 'accessing' stamp: 'KenD 6/5/2025 12:13:26'!
+defaultLayerNumber
 	^ 30! !
 
 !Panel methodsFor: 'accessing' stamp: 'KenD 4/24/2015 15:54'!
