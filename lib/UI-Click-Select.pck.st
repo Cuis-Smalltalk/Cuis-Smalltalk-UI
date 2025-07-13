@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7262] on 5 June 2025 at 12:16:11 pm'!
+'From Cuis7.5 [latest update: #7345] on 13 July 2025 at 11:52:22 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 86!
+!provides: 'UI-Click-Select' 1 87!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -996,11 +996,11 @@ minimumWidth
 		ifEmpty: [0]
 		ifNotEmpty: [submorphs max: [:morph | morph fullBoundsInOwner width + (padding x * 2)]]! !
 
-!InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 9/12/2024 10:28:39'!
+!InnerListOfMorph methodsFor: 'geometry' stamp: 'hlsf 7/13/2025 11:14:37'!
 totalHeight
 "The complete height of the list, when fully viewable"
 	^ submorphs 
-		inject: gap * 2 
+		inject: self gap * 2 
 		into: [:totalHeight :morph | totalHeight  + morph fullBoundsInOwner height]! !
 
 !InnerListOfMorph methodsFor: 'drawing' stamp: 'hlsf 12/7/2024 10:09:29'!
