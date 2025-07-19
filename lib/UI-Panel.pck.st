@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7262] on 5 June 2025 at 12:16:37 pm'!
+'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:03 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 128!
+!provides: 'UI-Panel' 1 129!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -360,7 +360,7 @@ replaceViewWith: anObject
 "Replace the main view in the pane with the viewer of the given object"
 	self replaceView: submorphs first byView: (anObject accept: viewer new)! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/3/2023 15:13:28'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/19/2025 12:59:38'!
 sliceButtonFor: anObject
 " A navigation button to browse anObject "
 	| navButton |
@@ -368,7 +368,7 @@ sliceButtonFor: anObject
 	anObject when: #browseTo send: #browseTo: to: self.
 	navButton := PluggableButtonMorph 
 		model: [self replaceViewWith: anObject.
-			self removeSliceButtonsAfter: navButton		] 
+			self removeSliceButtonsAfter: navButton] 
 		action: #value label: anObject printString.
 	anObject when: #edited send: #updateSliceButton:with: to: self withArguments: {navButton . anObject}.
 	navButton adoptWidgetsColor: self defaultBorderColor .

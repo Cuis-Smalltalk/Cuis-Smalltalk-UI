@@ -1,4 +1,4 @@
-'From Cuis7.5 [latest update: #7345] on 13 July 2025 at 11:52:22 am'!
+'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:00 pm'!
 'Description I supply simple click-select elements.'!
 !provides: 'UI-Click-Select' 1 87!
 !requires: 'UI-Widgets' 1 48 nil!
@@ -414,10 +414,9 @@ fontPreferenceChanged
 		]
 	].! !
 
-!CheckGroup methodsFor: 'events' stamp: 'hlsf 1/27/2022 13:28:47'!
+!CheckGroup methodsFor: 'events' stamp: 'hlsf 7/14/2025 12:13:17'!
 newSelection: radioButton
-
-	"Unselect other buttons"
+	" Inform we have a new selection "
 	self triggerEvent: #informCheckSelection with: (self symbolForButton: radioButton)
 	! !
 

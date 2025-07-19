@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7262] on 5 June 2025 at 12:17:54 pm'!
+'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:05 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 52!
+!provides: 'UI-Widgets' 1 53!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -185,14 +185,14 @@ initialize
 	super initialize.
 	self gap: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 5/1/2025 23:14:24'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 7/14/2025 09:51:45'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
 	labelMorphs := labelsAndControls collect: [:assoc | | label |
 		label := 	LabelMorph contents: (assoc key contractTo: 40).
 		assoc key size > 40 ifTrue: [label setBalloonText: assoc key].
-		label	].
+		label].
 	labelWidth := labelMorphs max: [:each | each morphWidth].
 	labelMorphs withIndexDo: [:label :i | | row height control | 
 		control := (labelsAndControls at: i) value.
@@ -211,10 +211,10 @@ adoptWidgetsColor: paneColor
 	doAdoptWidgetsColor
 		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
 
-!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 5/1/2025 23:26:27'!
+!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 7/14/2025 09:52:35'!
 controls
-	" search for the controls, those all widget not label or layoutmorph"
-	^ self submorphs reverse collect: [:layout | layout submorphs first] ! !
+	" search for the controls, those all widgets not label nor layoutmorph"
+	^ self submorphs reverse collect: [:aLayout | aLayout submorphs first] ! !
 
 !LabelGroup class methodsFor: 'instance creation' stamp: 'KenD 7/24/2024 12:12:45'!
 initializedInstance
@@ -227,7 +227,7 @@ with: labelsAndControls
 	
 	^ self newColumn with: labelsAndControls! !
 
-!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 5/1/2025 23:14:56'!
+!LabelGroup class methodsFor: 'examples' stamp: 'hlsf 7/13/2025 16:48:53'!
 example1
 "
 	LabelGroup example1 openInWorld
@@ -241,7 +241,7 @@ example1
 			listGetter: #list 
 			indexGetter: #listIndex 
 			indexSetter: #listIndex: ) }::
-		color: Color lightYellow ;
+		color: Color white paler ;
 		yourself! !
 
 !LabelGroup class methodsFor: 'new-morph participation' stamp: 'KenD 7/24/2024 12:11:40'!
@@ -268,6 +268,10 @@ fontToUse
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 17:56:55'!
 object
 	^ object! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 7/19/2025 12:20:38'!
+relabel: newLabel
+	submorphs first submorphs last contents: newLabel ! !
 
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/12/2024 11:29:53'!
 selected: aBoolean
@@ -319,7 +323,7 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 3/2/2025 10:54:22'!
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 7/19/2025 12:41:43'!
 object: anObject image: aForm buttons: buttons label: label
 	| row labelWidth |
 	doAdoptWidgetsColor := true.
@@ -333,15 +337,16 @@ object: anObject image: aForm buttons: buttons label: label
 
 	row := LayoutMorph newRow separation: 2@4 :: 
 		adoptWidgetsColor: self defaultColor;
-		layoutSpec: (LayoutSpec fixedHeight: 0).
+		layoutSpec: (LayoutSpec fixedHeight: 0);
+		axisEdgeWeight: 0.5.
 	label ifNotNil: [ | labelMorph |
 		labelMorph := LabelMorph contents: ''  font: self fontToUse :: setBalloonText: label.
-		labelWidth := 8 -4 + aForm width.
+		labelWidth := 8 - 4 + aForm width.
 		buttons ifNotNil: [buttons do: [:each | labelWidth := labelWidth - each morphWidth]].
 		labelMorph contents: label constrainedTo: labelWidth.
-		row addMorph: labelMorph ].
+		row addMorph: labelMorph].
 	buttons ifNotNil: [buttons do: [:quickButton | row addMorph: quickButton]].
-	self addMorph: row
+	self addMorph: row 
 	! !
 
 !PreviewMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 12/12/2024 11:27:52'!
@@ -371,7 +376,7 @@ object: aObject image: aForm buttons: buttons label: aString
 		buttons: buttons
 		label: aString! !
 
-!PreviewMorph class methodsFor: 'examples' stamp: 'hlsf 2/9/2025 11:14:29'!
+!PreviewMorph class methodsFor: 'examples' stamp: 'hlsf 7/19/2025 12:49:39'!
 example1
 "
 	self example1 openInWorld
@@ -380,7 +385,7 @@ example1
 	pallet := LayoutMorph newRow .
 	forms := (Theme content from: 'Theme' get: {'16x16'. 'places'}) asDictionary.
 	forms  keysAndValuesDo: [:aName :aForm | | preview |
-		buttons :=	 OrderedCollection new.
+		buttons := OrderedCollection new.
 		buttons add: (PluggableButtonMorph 
 			model: Switch newOff stateGetter: #isOn	action: #switch ::
 			icon: aForm ;
@@ -406,9 +411,9 @@ example1
 fileEntry
 	^ object! !
 
-!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2023 19:16:26'!
+!FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 7/15/2025 17:50:54'!
 file: aFileEntry image: aForm
-	^ self 	file: aFileEntry image: aForm buttons: nil! !
+	^ self file: aFileEntry image: aForm buttons: nil! !
 
 !FilePreviewMorph class methodsFor: 'instance creation' stamp: 'hlsf 12/12/2024 21:35:05'!
 file: aFileEntry image: aForm buttons: buttons
