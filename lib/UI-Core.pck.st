@@ -1,6 +1,6 @@
 'From Cuis7.3 [latest update: #7115] on 3 May 2025 at 9:46:22 am'!
 'Description '!
-!provides: 'UI-Core' 1 23!
+!provides: 'UI-Core' 1 24!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -16,7 +16,7 @@ SignMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #WindowTitleMorph category: #'UI-Core'!
-LayoutMorph subclass: #WindowTitleMorph
+LinearLayoutMorph subclass: #WindowTitleMorph
 	instanceVariableNames: 'titleMorph'
 	classVariableNames: ''
 	poolDictionaries: ''

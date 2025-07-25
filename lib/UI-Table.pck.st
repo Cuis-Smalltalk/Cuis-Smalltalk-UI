@@ -2,7 +2,7 @@
 'Description Models and morphs for defining and displaying tables.
 
 See class method category examples in TableMorph.'!
-!provides: 'UI-Table' 1 7!
+!provides: 'UI-Table' 1 8!
 !requires: 'Cuis-Base' 73 7095 nil!
 SystemOrganization addCategory: #'UI-Table'!
 
@@ -38,7 +38,7 @@ Table class
 	instanceVariableNames: ''!
 
 !classDefinition: #TableMorph category: #'UI-Table'!
-LayoutMorph subclass: #TableMorph
+LinearLayoutMorph subclass: #TableMorph
 	instanceVariableNames: 'table style maximumRowsHeight'
 	classVariableNames: ''
 	poolDictionaries: ''

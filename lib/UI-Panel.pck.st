@@ -1,7 +1,7 @@
 'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:03 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 129!
+!provides: 'UI-Panel' 1 130!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -9,7 +9,7 @@ SystemOrganization addCategory: #'UI-Panel'!
 
 
 !classDefinition: #BreadcrumbsPane category: #'UI-Panel'!
-LayoutMorph subclass: #BreadcrumbsPane
+LinearLayoutMorph subclass: #BreadcrumbsPane
 	instanceVariableNames: 'root navBar viewer'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -19,7 +19,7 @@ BreadcrumbsPane class
 	instanceVariableNames: ''!
 
 !classDefinition: #DecoratedPane category: #'UI-Panel'!
-LayoutMorph subclass: #DecoratedPane
+LinearLayoutMorph subclass: #DecoratedPane
 	instanceVariableNames: 'label quickButtons widgetsColor'
 	classVariableNames: ''
 	poolDictionaries: ''

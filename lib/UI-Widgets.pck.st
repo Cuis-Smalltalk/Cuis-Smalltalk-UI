@@ -1,6 +1,6 @@
 'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:05 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 53!
+!provides: 'UI-Widgets' 1 54!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -8,7 +8,7 @@ SystemOrganization addCategory: #'UI-Widgets'!
 
 
 !classDefinition: #LabelGroup category: #'UI-Widgets'!
-LayoutMorph subclass: #LabelGroup
+LinearLayoutMorph subclass: #LabelGroup
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -18,7 +18,7 @@ LabelGroup class
 	instanceVariableNames: ''!
 
 !classDefinition: #PreviewMorph category: #'UI-Widgets'!
-LayoutMorph subclass: #PreviewMorph
+LinearLayoutMorph subclass: #PreviewMorph
 	instanceVariableNames: 'object selected'
 	classVariableNames: ''
 	poolDictionaries: ''

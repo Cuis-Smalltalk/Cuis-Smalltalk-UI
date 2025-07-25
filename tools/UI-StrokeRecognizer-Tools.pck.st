@@ -1,13 +1,13 @@
 'From Cuis7.1 [latest update: #6792] on 22 October 2024 at 1:23:49 pm'!
 'Description Tools to create and investigate CompassRecognizer pattern exemplars.'!
-!provides: 'UI-StrokeRecognizer-Tools' 1 2!
+!provides: 'UI-StrokeRecognizer-Tools' 1 3!
 !requires: 'Cuis-Base' 71 6792 nil!
 !requires: 'UI-StrokeRecognizer' 1 28 nil!
 SystemOrganization addCategory: #'UI-StrokeRecognizer-Tools'!
 
 
 !classDefinition: #CompassSampleCompareMorph category: #'UI-StrokeRecognizer-Tools'!
-LayoutMorph subclass: #CompassSampleCompareMorph
+LinearLayoutMorph subclass: #CompassSampleCompareMorph
 	instanceVariableNames: 'samples comparisonIndices'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -17,7 +17,7 @@ CompassSampleCompareMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #CompassSampleSizeMorph category: #'UI-StrokeRecognizer-Tools'!
-LayoutMorph subclass: #CompassSampleSizeMorph
+LinearLayoutMorph subclass: #CompassSampleSizeMorph
 	instanceVariableNames: 'recognizer sample resultsArray'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -27,7 +27,7 @@ CompassSampleSizeMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #CompassTrainingMorph category: #'UI-StrokeRecognizer-Tools'!
-LayoutMorph subclass: #CompassTrainingMorph
+LinearLayoutMorph subclass: #CompassTrainingMorph
 	instanceVariableNames: 'recognizer inputMorph sample result resultLabel button pointDirections strokeDirections'
 	classVariableNames: ''
 	poolDictionaries: ''

@@ -1,7 +1,7 @@
 'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:32:43 pm'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 16!
+!provides: 'UI-Palette' 1 17!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
@@ -11,7 +11,7 @@ SystemOrganization addCategory: #'UI-Palette'!
 
 
 !classDefinition: #PaletteLayoutMorph category: #'UI-Palette'!
-LayoutMorph subclass: #PaletteLayoutMorph
+LinearLayoutMorph subclass: #PaletteLayoutMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''

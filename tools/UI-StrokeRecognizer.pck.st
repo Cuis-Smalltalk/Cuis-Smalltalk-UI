@@ -5,7 +5,7 @@ The recognizer is original.  The gestures were from PalmOS.
 
 https://en.wikipedia.org/wiki/Graffiti_(Palm_OS) states:
   "The original patent expired at the end of 2016"'!
-!provides: 'UI-StrokeRecognizer' 1 34!
+!provides: 'UI-StrokeRecognizer' 1 35!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'Cuis-Base' 71 6792 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -13,7 +13,7 @@ SystemOrganization addCategory: #'UI-StrokeRecognizer'!
 
 
 !classDefinition: #EditorStrokeInputMorph category: #'UI-StrokeRecognizer'!
-LayoutMorph subclass: #EditorStrokeInputMorph
+LinearLayoutMorph subclass: #EditorStrokeInputMorph
 	instanceVariableNames: 'recognizer inputMorph result resultLabel exemplarSelection nextIsCapitalized allCaps eventHandlerObject radioSelections'
 	classVariableNames: ''
 	poolDictionaries: ''

@@ -1,6 +1,6 @@
 'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:00 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 87!
+!provides: 'UI-Click-Select' 1 88!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -8,7 +8,7 @@ SystemOrganization addCategory: #'UI-Click-Select'!
 
 
 !classDefinition: #CheckGroup category: #'UI-Click-Select'!
-LayoutMorph subclass: #CheckGroup
+LinearLayoutMorph subclass: #CheckGroup
 	instanceVariableNames: 'list font buttonOnLeft buttons'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -38,7 +38,7 @@ RadioGroup class
 	instanceVariableNames: ''!
 
 !classDefinition: #DropDownButtonMorph category: #'UI-Click-Select'!
-LayoutMorph subclass: #DropDownButtonMorph
+LinearLayoutMorph subclass: #DropDownButtonMorph
 	instanceVariableNames: 'model dropDownList setMorphIndex button'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -58,7 +58,7 @@ DropDownListMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #InnerListOfMorph category: #'UI-Click-Select'!
-LayoutMorph subclass: #InnerListOfMorph
+LinearLayoutMorph subclass: #InnerListOfMorph
 	instanceVariableNames: 'highlightedRow selectedRow'
 	classVariableNames: ''
 	poolDictionaries: ''
