@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:05 pm'!
+'From Cuis7.5 [latest update: #7383] on 27 July 2025 at 6:09:56 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 54!
+!provides: 'UI-Widgets' 1 55!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -323,10 +323,10 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 7/19/2025 12:41:43'!
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 7/27/2025 17:42:04'!
 object: anObject image: aForm buttons: buttons label: label
 	| row labelWidth |
-	doAdoptWidgetsColor := true.
+	self doAdoptWidgetsColor.
 	object := anObject .
 	self setBalloonText: label;
 		padding: 4;
