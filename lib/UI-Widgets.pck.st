@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7383] on 27 July 2025 at 6:09:56 pm'!
+'From Cuis7.5 [latest update: #7387] on 28 July 2025 at 11:54:32 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 55!
+!provides: 'UI-Widgets' 1 56!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -497,10 +497,10 @@ angle
 angle: aNumber
 	angle _ aNumber! !
 
-!WheelMorph methodsFor: 'accessing' stamp: 'HilaireFernandes 11/5/2017 16:42:45'!
+!WheelMorph methodsFor: 'accessing' stamp: 'hlsf 7/28/2025 14:20:28'!
 color: aColor
 	super color: aColor.
-	self borderColor: aColor muchDarker! !
+	self borderColor: aColor darker! !
 
 !WheelMorph methodsFor: 'accessing'!
 factor
@@ -667,9 +667,9 @@ sendScrollEvent: cursorPoint
 
 ! !
 
-!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:44:27'!
+!WheelMorph methodsFor: 'drawing' stamp: 'hlsf 7/28/2025 14:32:08'!
 drawOn: aCanvas
-	| interval delta frame x0 x1 y0 y1 deltaX deltaY  |
+	| interval delta frame x0 x1 y0 y1 deltaX deltaY  max halfMax|
 	delta := borderColor .
 	borderColor := borderColor muchDarker alpha: 0.5.
 	super drawOn: aCanvas.		"border & background"
@@ -683,16 +683,20 @@ drawOn: aCanvas
 	y1 := frame corner y.
 	deltaX := (x1 - x0) / 2.
 	deltaY := (y1 - y0) / 2.
-	interval := 10.
+	interval := 8.
 	delta := self angle \\ interval.
-	1 to: (self maxAngle / (2 * interval)) rounded do: [ :i |
-		| x y |
+	max := self maxAngle / (2 * interval).
+	halfMax := max / 2.0.
+	1 to: max rounded do: [ :i |
+		| x y adjustedColor |
+		adjustedColor := borderColor  adjustBrightness:  ((i - halfMax ) abs / max ) negated.
+		"adjustedColor := color muchDarker." " Former behavior "
 		self isHorizontal ifTrue: [
 			x := x0 + deltaX - (((i * interval + delta) * (Float twoPi / 360.0)) cos * deltaX).
-			aCanvas fillRectangle: (Rectangle origin: (x-1)@y0 corner: x@y1) color: borderColor ]
+			aCanvas fillRectangle: (Rectangle origin: (x-1)@y0 corner: x@y1) color: adjustedColor ]
 		ifFalse: [
 			y := y0 + deltaY - (((i * interval + delta) * (Float twoPi / 360.0)) cos * deltaY).
-			aCanvas fillRectangle: (Rectangle origin: x0@(y-1) corner: x1@y) color: borderColor ].
+			aCanvas fillRectangle: (Rectangle origin: x0@(y-1) corner: x1@y) color: adjustedColor ].
 	]! !
 
 !WheelMorph methodsFor: 'initialization' stamp: 'KenD 4/26/2020 06:47:54'!
