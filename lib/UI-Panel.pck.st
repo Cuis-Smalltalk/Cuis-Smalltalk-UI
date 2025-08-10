@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:03 pm'!
+'From Cuis7.5 [latest update: #7398] on 10 August 2025 at 12:22:01 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 130!
+!provides: 'UI-Panel' 1 131!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1546,7 +1546,7 @@ valueWhenDropped
 		ifNotNil: [ :m | 	m propertyValue: entry value ] 
 		ifNil: [ entry value ]! !
 
-!ValueEntryPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:36'!
+!ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 8/10/2025 10:45:38'!
 newButtonArea
 	"Add ACCEPT and CANCEL buttons"
 	buttonArea := LayoutMorph newRow
@@ -1555,7 +1555,7 @@ newButtonArea
 				model: self 
 				action:  #accept
 				label: 'Accept' :: color: Theme current acceptButton)
-			layoutSpec: (LayoutSpec new ::
+			layoutSpec: (LayoutSizeSpec new ::
 							proportionalWidth: 0.4 minimum: 100;
 							proportionalHeight:  1;
 							offAxisEdgeWeight: #center);
@@ -1563,7 +1563,7 @@ newButtonArea
 				model: self 
 				action:  #cancel
 				label: 'Cancel' :: color: Theme current cancelButton )
-			layoutSpec: (LayoutSpec new ::
+			layoutSpec: (LayoutSizeSpec new ::
 							proportionalWidth: 0.4 minimum: 100;
 							proportionalHeight:  1;
 							offAxisEdgeWeight: #center);

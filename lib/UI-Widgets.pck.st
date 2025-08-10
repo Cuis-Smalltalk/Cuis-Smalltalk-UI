@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7387] on 28 July 2025 at 11:54:32 pm'!
+'From Cuis7.5 [latest update: #7398] on 10 August 2025 at 11:59:25 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 56!
+!provides: 'UI-Widgets' 1 58!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -206,9 +206,9 @@ with: labelsAndControls
 			ifFalse: [row addMorph: control layoutSpec: LayoutSpec keepMorphExtent]		.
 		self addMorph: row fixedHeight: height]! !
 
-!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 7/21/2024 23:30:05'!
+!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 8/10/2025 11:05:20'!
 adoptWidgetsColor: paneColor
-	doAdoptWidgetsColor
+	adoptsWidgetsColor 
 		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
 
 !LabelGroup methodsFor: 'accessing' stamp: 'hlsf 7/14/2025 09:52:35'!
@@ -435,11 +435,11 @@ selectedColor
 selectedColor: aColor
 	selectedColor _ aColor ! !
 
-!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 5/27/2025 18:05:37'!
+!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 8/10/2025 12:20:49'!
 drawMyShapeOn: canvas with: background
 	| borderStyleSymbol |
 	borderStyleSymbol := self isPressed ifFalse: [ #raised ] ifTrue: [ #inset ].
-	(roundButtonStyle ifNil: [Theme current roundButtons])
+	(roundButtonStyle isNil and: [Theme current roundButtons])
 		ifTrue:  [ | r rect |
 			r := Theme current roundedButtonRadius.
 			rect := self localBounds.
@@ -1155,19 +1155,19 @@ closeAllSubToolbars
 	self dropDownChevronsDo: [:dropDown | 
 		dropDown isActivated ifTrue: [dropDown closeSubToolbar ]]! !
 
-!CircularToolbarMorph methodsFor: 'initialization' stamp: 'hlsf 12/9/2021 15:15:20'!
+!CircularToolbarMorph methodsFor: 'initialization' stamp: 'hlsf 8/10/2025 22:50:12'!
 initialize
 	super initialize.
-	extent _ 350.
-	dropDownHeight _ 15.
-	dropDownGap _ 5.
+	extent := 350.
+	dropDownHeight := 15.
+	dropDownGap := 5.
 	self buttonSize: 30.
-	color _ Color green darker alpha: 0.8.
-	selectedColor _ Color red  alpha: 0.8.
+	color := Color green darker alpha: 0.8.
+	selectedColor := Color red  alpha: 0.8.
 	self isSubToolbar ifFalse: [ 
 		| closeButton |
-		closeButton _ PluggableButtonMorph model: self action: #delete.
-		closeButton icon: Theme current closeIcon..		
+		closeButton := PluggableButtonMorph model: self action: #delete.
+		closeButton icon: Theme current closeIcon; noButtonShape.
 		self addMorph: closeButton.
 		closeButton morphPosition: closeButton morphExtent // -2] 
 	! !
