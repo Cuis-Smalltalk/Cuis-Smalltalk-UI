@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7345] on 19 July 2025 at 1:39:00 pm'!
+'From Cuis7.5 [latest update: #7416] on 16 August 2025 at 7:56:33 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 88!
+!provides: 'UI-Click-Select' 1 89!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -769,7 +769,7 @@ defaultColor
 	"answer the default color/fill style for the receiver"
 	^ `Color lightGray muchLighter`! !
 
-!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 5/16/2025 22:29:53'!
+!DropDownButtonMorph methodsFor: 'initialization' stamp: 'hlsf 8/16/2025 15:26:25'!
 installButtons
 	|  arrowButton |
 	button := PluggableButtonMorph new ::
@@ -779,7 +779,7 @@ installButtons
 	self updateButton.
 	arrowButton := PluggableButtonMorph new ::
 		iconDrawSelector: #drawDownIcon;
-		roundButtonStyle: false;
+		buttonStyle: #rectangular;
 		model: self;
 		action: #toggleDropDownList;
 		morphExtent: Theme current scrollbarThickness asPoint.
