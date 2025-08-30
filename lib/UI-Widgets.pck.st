@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7398] on 10 August 2025 at 11:59:25 pm'!
+'From Cuis7.5 [latest update: #7452] on 30 August 2025 at 11:42:56 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 58!
+!provides: 'UI-Widgets' 1 59!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -323,7 +323,7 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 7/27/2025 17:42:04'!
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 8/30/2025 11:36:59'!
 object: anObject image: aForm buttons: buttons label: label
 	| row labelWidth |
 	self doAdoptWidgetsColor.
@@ -331,7 +331,7 @@ object: anObject image: aForm buttons: buttons label: label
 	self setBalloonText: label;
 		padding: 4;
 		layoutSpec: LayoutSpec keepMorphExtent;
-		addMorph: (ImageMorph new image: aForm).
+		addMorph: (ImageMorph newWith: aForm).
 	"Do we have label or buttons to add? "
 	(label isNil and: [buttons isNil]) ifTrue: [^self ]. 
 

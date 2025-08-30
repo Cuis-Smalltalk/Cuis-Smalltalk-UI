@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7452] on 28 August 2025 at 9:03:38 am'!
+'From Cuis7.5 [latest update: #7452] on 30 August 2025 at 11:42:42 am'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 93!
+!provides: 'UI-Click-Select' 1 94!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -464,7 +464,7 @@ example1
 		each when: #checkSelection send: #show: to: Transcript].
 	^ group! !
 
-!CheckGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 13:29:37'!
+!CheckGroup class methodsFor: 'examples' stamp: 'hlsf 8/30/2025 11:41:35'!
 example2
 	"Answer a CheckGroup of images"
 "
@@ -483,7 +483,7 @@ example2
 	formsDict keysAndValuesDo: [ :aName :aForm |
 		morphDict 
 			at: aName 
-			put: (ImageMorph new image: (aForm magnifyTo: 32@32))
+			put: (ImageMorph newWith: (aForm magnifyTo: 32@32))
 	].
 	checkSelection := CheckGroup fromMorphsDict: morphDict.
 	statusLabel contents: 'unselected'.
@@ -597,7 +597,7 @@ example1
 		setBalloonText: 'I am a check box illustrated with a text label.';
 		yourself! !
 
-!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 4/2/2022 14:40:24'!
+!PluggableCheckboxMorph class methodsFor: 'examples' stamp: 'hlsf 8/30/2025 11:41:26'!
 example2
 "
 	self example2 openInWorld
@@ -606,8 +606,8 @@ example2
 		model: (ValueHolder with: false)
 		getSelected:  #propertyValue
 		setSelected:  #propertyValue:
-		label: (ImageMorph new image: (Theme current globeIcon magnifyTo: 32@32)) ::
-		setBalloonText: 'I am a check box illustrated with a morph.';
+		label: (ImageMorph newWith: (Theme current globeIcon magnifyTo: 32@32)) ::
+			setBalloonText: 'I am a check box illustrated with a morph.';
 		yourself! !
 
 !PluggableCheckboxMorph class methodsFor: 'instance creation' stamp: 'hlsf 4/5/2025 10:12:09'!
@@ -678,7 +678,7 @@ example1
 			each when: #radioSelection send: #show: to: Transcript].
 	^ group! !
 
-!RadioGroup class methodsFor: 'examples' stamp: 'hlsf 1/27/2022 12:43:47'!
+!RadioGroup class methodsFor: 'examples' stamp: 'hlsf 8/30/2025 11:41:03'!
 example2
 	"Answer a RadioGroup of images"
 "
@@ -697,7 +697,7 @@ example2
 	formsDict keysAndValuesDo: [ :aName :aForm |
 		morphDict 
 			at: aName 
-			put: (ImageMorph new image: (aForm magnifyTo: 32@32))
+			put: (ImageMorph newWith: (aForm magnifyTo: 32@32))
 	].
 	radioSelection := RadioGroup fromMorphsDict: morphDict.
 	statusLabel contents: 'unselected'.
