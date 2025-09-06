@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7452] on 30 August 2025 at 11:42:42 am'!
+'From Cuis7.5 [latest update: #7526] on 6 September 2025 at 4:42:19 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 94!
+!provides: 'UI-Click-Select' 1 95!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -1447,6 +1447,14 @@ delete
 is: aSymbol
 	^ aSymbol == #Flap or: [super is: aSymbol ]! !
 
+!Flap methodsFor: 'submorphs-accessing' stamp: 'hlsf 9/6/2025 16:36:55'!
+noteNewOwner: newOwner
+" if any flaps already installed, ovoid flaps occlusion "
+	| flaps maxX|
+	flaps := newOwner submorphs select: [:aMorph | (aMorph is: #Flap) and: [aMorph ~= self] ].
+	maxX := flaps inject: 0 into: [:length :aFlap | length + aFlap morphWidth].
+	self morphPosition: maxX @ self morphPosition y! !
+
 !Flap class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
 includeInNewMorphMenu
 	^ false! !
@@ -1481,14 +1489,14 @@ example1
 		fold
 	! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 2/13/2025 09:05:18'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 9/6/2025 16:03:12'!
 example2
 "
 	self example2
 "
 	| flap cells |
 	cells := Array 
-		with: (Sample09Clock new :: setProperty: #morphName toValue: 'An analog clock with a second hand ticking every seconds'; yourself)
+		with: (Sample09Clock new :: name: 'An analog clock with a second hand ticking every seconds'; yourself)
 		with: Sample01Star new.
 	
 	flap := self label: ' Graphics Objects ' emphasis: 1 objects: cells.
