@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7452] on 30 August 2025 at 11:42:56 am'!
+'From Cuis7.5 [latest update: #7529] on 8 September 2025 at 11:51:08 am'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 59!
+!provides: 'UI-Widgets' 1 60!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -478,7 +478,7 @@ example
 		morphExtent: Theme current switchIcon extent * 1.5
 		! !
 
-!WheelMorph methodsFor: 'accessing'!
+!WheelMorph methodsFor: 'accessing' stamp: ''!
 actionSelector
 	^ actionSelector
 ! !
@@ -489,7 +489,7 @@ actionSelector: aSymbol
 
 ! !
 
-!WheelMorph methodsFor: 'accessing'!
+!WheelMorph methodsFor: 'accessing' stamp: ''!
 angle
 	^angle! !
 
@@ -502,7 +502,7 @@ color: aColor
 	super color: aColor.
 	self borderColor: aColor darker! !
 
-!WheelMorph methodsFor: 'accessing'!
+!WheelMorph methodsFor: 'accessing' stamp: ''!
 factor
 	^factor! !
 
@@ -514,7 +514,7 @@ factor: aFloat
 isHorizontal
 	^ isHorizontal ! !
 
-!WheelMorph methodsFor: 'accessing'!
+!WheelMorph methodsFor: 'accessing' stamp: ''!
 maxAngle
 	^maxAngle! !
 
@@ -522,7 +522,7 @@ maxAngle
 maxAngle: aNumber
 	maxAngle _ aNumber! !
 
-!WheelMorph methodsFor: 'accessing'!
+!WheelMorph methodsFor: 'accessing' stamp: ''!
 target
 	^target! !
 
@@ -574,15 +574,15 @@ defaultExtent
 
 	^100@23! !
 
-!WheelMorph methodsFor: 'properties'!
+!WheelMorph methodsFor: 'properties' stamp: ''!
 isCircular
 	^circular! !
 
-!WheelMorph methodsFor: 'properties'!
+!WheelMorph methodsFor: 'properties' stamp: ''!
 isLinear
 	^circular not! !
 
-!WheelMorph methodsFor: 'properties'!
+!WheelMorph methodsFor: 'properties' stamp: ''!
 isVertical
 	^self isHorizontal not! !
 
@@ -607,7 +607,7 @@ doTargetAction: cursorPoint
 	old _ new.
 ! !
 
-!WheelMorph methodsFor: 'event handling'!
+!WheelMorph methodsFor: 'event handling' stamp: ''!
 handlesMouseDown: evt
 	^true
 ! !
@@ -859,10 +859,10 @@ initialize
 	mouseIsOver _ isPressed _ false.
 	self initializeMouseEvents ! !
 
-!ChevronMorph methodsFor: 'initialization' stamp: 'hlsf 5/18/2025 19:17:35'!
+!ChevronMorph methodsFor: 'initialization' stamp: 'jmv 9/8/2025 11:48:49'!
 initializeMouseEvents
 	" Handle mouse down events "
-	self setProperty: #handlesMouseDown toValue: true.
+	self setProperty: #handlesMouseDown: toValue: true.
 	self setProperty: #'mouseButton1Down:localPosition:'  toValue: [:event :localPosition |
 		isPressed := true.
 		self redrawNeeded].
@@ -1357,7 +1357,7 @@ spinner9Contents
 spinnerQty
 	^ 12! !
 
-!WaitSpinner class methodsFor: 'class initialization'!
+!WaitSpinner class methodsFor: 'class initialization' stamp: ''!
 formFromPNG: anArray
 	^ PNGReadWriter formFromStream: anArray asByteArray readStream
 ! !
