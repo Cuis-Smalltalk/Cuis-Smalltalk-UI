@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7530] on 10 September 2025 at 2:57:43 pm'!
+'From Cuis7.5 [latest update: #7538] on 10 September 2025 at 4:50:05 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 133!
+!provides: 'UI-Panel' 1 134!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -646,10 +646,11 @@ defaultBorderWidth
 defaultPadding
 	^ `8@8`! !
 
-!Flap methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 21:36:50'!
+!Flap methodsFor: 'initialization' stamp: 'hlsf 9/10/2025 16:15:00'!
 initialize
 	super initialize.
-	self borderColor: self defaultBorderColor! !
+	self borderColor: self defaultBorderColor.
+	folded := true! !
 
 !Flap methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 00:12:02'!
 borderColor: aColor
@@ -735,7 +736,7 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	prevPosition ifNil: [self toggleFolded].
 	prevPosition := nil! !
 
-!Flap methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:29:05'!
+!Flap methodsFor: 'events' stamp: 'hlsf 9/10/2025 16:06:55'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
 	prevPosition ifNotNil: [self translateWith: aMouseMoveEvent eventPosition - prevPosition].
 	prevPosition := aMouseMoveEvent eventPosition! !
@@ -759,7 +760,7 @@ repositionning
 toggleFolded
 	folded ifTrue: [self unfold] ifFalse: [self fold]! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/17/2025 23:35:35'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 9/10/2025 16:12:03'!
 translateWith: aVector
 	| newPosition |
 	newPosition :=(folded 
@@ -769,7 +770,7 @@ translateWith: aVector
 	folded ifFalse: [
 		panel
 			morphPosition: 0@ (self morphPosition y + self morphHeight - borderWidth);
-			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight + (borderWidth / 2.0))	]! !
+			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight + (borderWidth / 2.0))]! !
 
 !Flap methodsFor: 'flap ops' stamp: 'hlsf 2/17/2025 23:27:28'!
 unfold
@@ -802,15 +803,14 @@ delete
 is: aSymbol
 	^ aSymbol == #Flap or: [super is: aSymbol ]! !
 
-!Flap methodsFor: 'submorphs-accessing' stamp: 'hlsf 9/10/2025 14:57:36'!
+!Flap methodsFor: 'submorphs-accessing' stamp: 'hlsf 9/10/2025 16:49:06'!
 noteNewOwner: newOwner
 " if any flaps already installed, ovoid flaps occlusion "
 	| flaps maxX|
 	flaps := newOwner submorphs select: [:aMorph | (aMorph is: #Flap) and: [aMorph ~= self] ].
-	"flaps print."
 	maxX := flaps inject: 0 into: [:length :aFlap | length + aFlap morphWidth].
-	"maxX print."
-	self morphPosition: maxX @ self morphPosition y! !
+	self morphPosition: maxX @ 0.
+	owner isWorldMorph ifTrue: [self repositionning]! !
 
 !Flap class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
 includeInNewMorphMenu
@@ -830,7 +830,7 @@ label: aString objects: placedMorphs
 	^ self label: aString emphasis: 0 objects: placedMorphs 
 ! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 9/10/2025 14:51:33'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 9/10/2025 16:08:52'!
 example1
 "
 	self example1
@@ -842,12 +842,11 @@ example1
 			color: Color random)].
 	flap := self contents: ' Hello World!! '.
 	flap objects: cells;
-		openInWorld;
-		fold.
+		openInWorld.
 	^ flap
 	! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 9/6/2025 16:03:12'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 9/10/2025 16:08:57'!
 example2
 "
 	self example2
@@ -858,8 +857,7 @@ example2
 		with: Sample01Star new.
 	
 	flap := self label: ' Graphics Objects ' emphasis: 1 objects: cells.
-	flap	openInWorld;
-		fold.
+	flap	openInWorld.
 	^flap
 	! !
 
