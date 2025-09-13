@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7538] on 10 September 2025 at 4:50:05 pm'!
+'From Cuis7.5 [latest update: #7538] on 13 September 2025 at 10:22:52 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 134!
+!provides: 'UI-Panel' 1 135!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -736,9 +736,14 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	prevPosition ifNil: [self toggleFolded].
 	prevPosition := nil! !
 
-!Flap methodsFor: 'events' stamp: 'hlsf 9/10/2025 16:06:55'!
+!Flap methodsFor: 'events' stamp: 'hlsf 9/13/2025 21:22:50'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
-	prevPosition ifNotNil: [self translateWith: aMouseMoveEvent eventPosition - prevPosition].
+	prevPosition ifNotNil: [
+		| delta |
+		delta := aMouseMoveEvent eventPosition - prevPosition.
+		(folded and: [delta y < -20 and: [delta y abs > delta x abs] ])
+			ifTrue:  [self unfold]
+			ifFalse: [self translateWith: delta] ].
 	prevPosition := aMouseMoveEvent eventPosition! !
 
 !Flap methodsFor: 'event handling testing' stamp: 'hlsf 2/7/2025 17:15:25'!
@@ -811,6 +816,10 @@ noteNewOwner: newOwner
 	maxX := flaps inject: 0 into: [:length :aFlap | length + aFlap morphWidth].
 	self morphPosition: maxX @ 0.
 	owner isWorldMorph ifTrue: [self repositionning]! !
+
+!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 9/13/2025 21:12:35'!
+aboutToBeGrabbedBy: aHand
+	^ nil! !
 
 !Flap class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
 includeInNewMorphMenu
