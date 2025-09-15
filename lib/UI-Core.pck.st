@@ -1,6 +1,6 @@
 'From Cuis7.3 [latest update: #7115] on 3 May 2025 at 9:46:22 am'!
 'Description '!
-!provides: 'UI-Core' 1 24!
+!provides: 'UI-Core' 1 25!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -76,7 +76,7 @@ ListMultiModel class
 	instanceVariableNames: ''!
 
 !classDefinition: #ValueHolder category: #'UI-Core'!
-Object subclass: #ValueHolder
+ActiveModel subclass: #ValueHolder
 	instanceVariableNames: 'action property'
 	classVariableNames: ''
 	poolDictionaries: ''
