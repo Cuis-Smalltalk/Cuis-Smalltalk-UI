@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7538] on 13 September 2025 at 10:22:52 pm'!
+'From Cuis7.5 [latest update: #7605] on 23 September 2025 at 6:13:43 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 135!
+!provides: 'UI-Panel' 1 136!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -736,8 +736,9 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	prevPosition ifNil: [self toggleFolded].
 	prevPosition := nil! !
 
-!Flap methodsFor: 'events' stamp: 'hlsf 9/13/2025 21:22:50'!
+!Flap methodsFor: 'events' stamp: 'hlsf 9/23/2025 18:00:50'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
+	aMouseMoveEvent anyButtonPressed ifFalse: [ ^ self ].
 	prevPosition ifNotNil: [
 		| delta |
 		delta := aMouseMoveEvent eventPosition - prevPosition.
