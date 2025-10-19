@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7605] on 23 September 2025 at 6:13:43 pm'!
+'From Cuis7.5 [latest update: #7663] on 19 October 2025 at 12:04:48 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 136!
+!provides: 'UI-Panel' 1 137!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1293,10 +1293,10 @@ minPaneHeightForReframe
 
 	^ self boxExtent y + 10! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 12/9/2013 17:06'!
+!Panel methodsFor: 'geometry' stamp: 'hlsf 10/19/2025 12:03:57'!
 minPaneWidthForReframe
 
-	^ ScrollBar scrollbarThickness * 3! !
+	^ Theme current scrollbarThickness * 3! !
 
 !Panel methodsFor: 'geometry' stamp: 'hlsf 5/28/2023 21:39:03'!
 minimumExtent

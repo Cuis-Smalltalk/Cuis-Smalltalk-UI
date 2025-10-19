@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7530] on 10 September 2025 at 2:57:14 pm'!
+'From Cuis7.5 [latest update: #7663] on 19 October 2025 at 12:04:44 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 96!
+!provides: 'UI-Click-Select' 1 97!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -1198,11 +1198,11 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 12/8/2024 19:52:28'!
+!PluggableDropDownListMorph methodsFor: 'updating' stamp: 'hlsf 10/19/2025 12:03:31'!
 updateList
 	super updateList.
 	extent := self defaultExtent.
-	self morphExtent: (scroller desiredWidth + ScrollBar scrollbarThickness + 10) @ extent y! !
+	self morphExtent: (scroller desiredWidth + Theme current scrollbarThickness + 10) @ extent y! !
 
 !PluggableDropDownListMorph methodsFor: 'access' stamp: 'hlsf 9/30/2023 17:24:52'!
 adoptWidgetsColor: paneColor
