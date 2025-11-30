@@ -1,7 +1,7 @@
-'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:32:43 pm'!
+'From Cuis7.5 [latest update: #7734] on 29 November 2025 at 3:54:44 pm'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 17!
+!provides: 'UI-Palette' 1 18!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
@@ -107,7 +107,7 @@ See my class side.!
 !InnerPluggableImagePalette commentStamp: '<historical>' prior: 0!
 I display pick/clone-able images in a PluggableImagePalette which is a PluggableScrollPane!
 
-!PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 5/11/2019 01:39:50'!
+!PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 11/May/2019 01:39:00'!
 aboutToGrab: aMorph
 	"submorph is being grabbed by a hand.
 	Perform necessary adjustments (if any) and return the actual morph
@@ -117,18 +117,18 @@ aboutToGrab: aMorph
 	^ aMorph copy   "Note PartsBinMorph>>aboutToGrab: "
 	! !
 
-!PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/14/2013 15:59'!
+!PaletteLayoutMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 14/Sep/2013 15:59:00'!
 allowsSubmorphDrag
 	"Answer whether our morphs can just be grabbed with the hand, instead of requiring the use of the halo. Redefined to answer true."
 
 	^ true! !
 
-!PaletteLayoutMorph methodsFor: 'layout' stamp: 'KenD 9/14/2024 15:07:39'!
+!PaletteLayoutMorph methodsFor: 'layout' stamp: 'KenD 29/Nov/2025 15:49:00'!
 shrinkWrap
 	"Resize self to minimally contain submorphs with specified separation"
 	
 	| width height sep |
-	((self direction) = #horizontal) "(a row)"
+	(self isRow)
 		ifTrue:  [
 			sep := self gap.
 			width := sep + 
@@ -167,17 +167,17 @@ shrinkWrap
 	self morphExtent: width @ height.
 	self layoutSubmorphs.! !
 
-!PaletteLayoutMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/15/2013 16:40'!
+!PaletteLayoutMorph class methodsFor: 'new-morph participation' stamp: 'KenD 15/Sep/2013 16:40:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!PluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/15/2021 08:31:54'!
+!PluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 15/Sep/2021 08:31:00'!
 innerMorphClass
 
 	^ InnerPluggableImagePalette! !
 
-!ImagePickerPanel methodsFor: 'initialization' stamp: 'KenD 9/15/2021 14:29:33'!
+!ImagePickerPanel methodsFor: 'initialization' stamp: 'KenD 15/Sep/2021 14:29:00'!
 initialize
 
 	super initialize.
@@ -189,7 +189,7 @@ initialize
 		layoutSpec: LayoutSpec useAll;
 		yourself! !
 
-!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 11/5/2021 13:44:04'!
+!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 5/Nov/2021 13:44:00'!
 clickSelectColorsFor: aMorph
 	"Click-Select from a ClickColorPalette"
 "Change Color Dictionary:
@@ -222,7 +222,7 @@ clickSelectColorsFor: aMorph
 		] 
 ! !
 
-!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 06:59:50'!
+!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 26/Oct/2021 06:59:00'!
 largerIcons
 "
 	ImagePickerPanel largerIcons openInHand.
@@ -247,7 +247,7 @@ largerIcons
 
 ! !
 
-!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 9/20/2021 07:09:04'!
+!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 20/Sep/2021 07:09:00'!
 namedColors
 "	'Pick a ColorPalette'
 	ImagePickerPanel useCSS3ColorDict.                  
@@ -282,7 +282,7 @@ namedColors
 		] 
 ! !
 
-!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 06:59:32'!
+!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 26/Oct/2021 06:59:00'!
 namedIcons
 "
 	ImagePickerPanel namedIcons openInHand.
@@ -304,7 +304,7 @@ namedIcons
 		transducer:  [:form | ImageMorph new image: form]
 ! !
 
-!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 9/20/2021 07:10:26'!
+!ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 20/Sep/2021 07:10:00'!
 systemFonts
 "
 	ImagePickerPanel systemFonts 	 openInHand.
@@ -337,12 +337,12 @@ systemFonts
 		transducer:  [:form | form]
 ! !
 
-!ImagePickerPanel class methodsFor: 'new-morph participation' stamp: 'KenD 9/16/2021 14:05:33'!
+!ImagePickerPanel class methodsFor: 'new-morph participation' stamp: 'KenD 16/Sep/2021 14:05:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!ImagePickerPanel class methodsFor: 'utility' stamp: 'KenD 9/16/2021 13:49:40'!
+!ImagePickerPanel class methodsFor: 'utility' stamp: 'KenD 16/Sep/2021 13:49:00'!
 useCSS3ColorDict
 "
 	ImagePickerPanel useCSS3ColorDict.
@@ -350,7 +350,7 @@ useCSS3ColorDict
 	Feature require: 'CSS3-NamedColors'.
 	Color setColorNamesDict: Color css3ColorDictionary.! !
 
-!ImagePickerPanel class methodsFor: 'utility' stamp: 'KenD 9/16/2021 13:48:35'!
+!ImagePickerPanel class methodsFor: 'utility' stamp: 'KenD 16/Sep/2021 13:48:00'!
 useCrayonColorDict
 "
 	ImagePickerPanel useCrayonColorDict.
@@ -358,7 +358,7 @@ useCrayonColorDict
 	Feature require: 'Crayon-NamedColors'.
 	Color setColorNamesDict: Color crayonColorDictionary.! !
 
-!ImagePickerPanel class methodsFor: 'utility' stamp: 'KenD 9/16/2021 13:51:38'!
+!ImagePickerPanel class methodsFor: 'utility' stamp: 'KenD 16/Sep/2021 13:51:00'!
 useNBSISCCColorDict
 "
 	self useNBSISCCColorDict.
@@ -366,7 +366,7 @@ useNBSISCCColorDict
 	Feature require: 'NBSISCC-NamedColors'.
 	Color setColorNamesDict: Color nbsisccColorDictionary.! !
 
-!ImagePickerPanel class methodsFor: 'utility' stamp: 'KenD 9/16/2021 13:51:54'!
+!ImagePickerPanel class methodsFor: 'utility' stamp: 'KenD 16/Sep/2021 13:51:00'!
 useXKCDColorDict
 "
 	self useXKCDColorDict.
@@ -375,7 +375,7 @@ useXKCDColorDict
 	Feature require: 'XKCD-NamedColors'.
 	Color setColorNamesDict: Color xkcdColorDictionary.! !
 
-!ImagePickerPanel class methodsFor: 'private' stamp: 'KenD 9/14/2024 15:24:11'!
+!ImagePickerPanel class methodsFor: 'private' stamp: 'KenD 14/Sep/2024 15:24:00'!
 privateBuildPanelLabel: aStringLabel 
 collection: sortedNameImageCollection
 transducer: imageProcessor
@@ -411,91 +411,91 @@ transducer: imageProcessor
 		yourself
 		! !
 
-!PickAColorPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:24:49'!
+!PickAColorPalette class methodsFor: 'instance creation' stamp: 'KenD 7/Dec/2016 08:24:00'!
 initializedInstance
 
 	^ super namedColors! !
 
-!PickAColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:17'!
+!PickAColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 15:04:00'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!PickAColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:28:49'!
+!PickAColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 7/Dec/2016 08:28:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!PickALargerIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:27'!
+!PickALargerIconPalette class methodsFor: 'instance creation' stamp: 'KenD 7/Dec/2016 08:27:00'!
 initializedInstance
 
 	^ super largerIcons ! !
 
-!PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:23'!
+!PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 15:04:00'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:12'!
+!PickALargerIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 7/Dec/2016 08:29:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!PickAnIconPalette class methodsFor: 'instance creation' stamp: 'KenD 12/7/2016 08:27:02'!
+!PickAnIconPalette class methodsFor: 'instance creation' stamp: 'KenD 7/Dec/2016 08:27:00'!
 initializedInstance
 
 	^ super namedIcons ! !
 
-!PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:30'!
+!PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 15:04:00'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/7/2016 08:29:03'!
+!PickAnIconPalette class methodsFor: 'new-morph participation' stamp: 'KenD 7/Dec/2016 08:29:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:42:54'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 15/Sep/2021 14:42:00'!
 adjustExtent
 	
 	"Nothing to do here"! !
 
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:10'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 15/Sep/2021 14:39:00'!
 imageExtent
 	"Answer extent of an image contained in me.
 	Assume all images of same extent"
 	^imageExtent ! !
 
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:38:18'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 15/Sep/2021 14:38:00'!
 imageExtent: aPointExtent
 
 	imageExtent := aPointExtent ! !
 
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:16'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 15/Sep/2021 14:39:00'!
 imageHeight
 
 	^ imageExtent y! !
 
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:21'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 15/Sep/2021 14:39:00'!
 imageWidth
 
 	^ imageExtent x! !
 
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:37:45'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 15/Sep/2021 14:37:00'!
 minimumExtent
 
 	^self calculatedExtent ! !
 
-!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 9/15/2021 14:39:40'!
+!InnerPluggableImagePalette methodsFor: 'accessing' stamp: 'KenD 15/Sep/2021 14:39:00'!
 nameImageCollection
 
 	^ nameImageCollection ! !
 
-!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/2/2024 19:50:00'!
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 2/Sep/2024 19:50:00'!
 collection: aNameImageCollection filter: imageTransducer
 
 	| numImages maxWidth numAcross numDown spacedExtent |
@@ -541,7 +541,7 @@ Transcript show: 'calculatedExtent: ', (self calculatedExtent asString)
 
 ! !
 
-!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/16/2021 13:18:54'!
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 16/Sep/2021 13:18:00'!
 initialize
 
 	super initialize.
@@ -550,7 +550,7 @@ initialize
 		layoutSpec: LayoutSpec useAll;
 		yourself! !
 
-!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 9/14/2024 15:17:21'!
+!InnerPluggableImagePalette methodsFor: 'initialization' stamp: 'KenD 14/Sep/2024 15:17:00'!
 layoutImages: numAcross extent: layoutExtent
 	"Lay out images in a LayoutMorph and return it."
 	
@@ -593,44 +593,44 @@ layoutImages: numAcross extent: layoutExtent
 	^ column
 ! !
 
-!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:02'!
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 15/Sep/2021 14:37:00'!
 calculatedExtent
 
 	^ calculatedExtent! !
 
-!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:36:55'!
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 15/Sep/2021 14:36:00'!
 calculatedExtent: aPointExtent
 
 	calculatedExtent := aPointExtent.
 	self morphExtent: calculatedExtent ! !
 
-!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:10'!
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 15/Sep/2021 14:37:00'!
 processImage: anImage
 
 	^ imageFilter value: anImage
 ! !
 
-!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 9/15/2021 14:37:16'!
+!InnerPluggableImagePalette methodsFor: 'private' stamp: 'KenD 15/Sep/2021 14:37:00'!
 spaceWidth
 	"Answer the space in pixels between images"
 	
 	^ 2! !
 
-!InnerPluggableImagePalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 11:58:06'!
+!InnerPluggableImagePalette class methodsFor: 'instance creation' stamp: 'KenD 16/Sep/2021 11:58:00'!
 fromCollection: sortedColors imageFilter: colorTransducer
 
 		^ self basicNew initialize 
 			collection: sortedColors 
 			filter: colorTransducer ! !
 
-!Morph methodsFor: '*ui-palette' stamp: 'KenD 11/5/2021 13:48:39'!
+!Morph methodsFor: '*ui-palette' stamp: 'KenD 5/Nov/2021 13:48:00'!
 changeColor
 	"Change the color of the receiver -- triggered, e.g. from a menu"
 
 	"Override default method"
 	(ImagePickerPanel clickSelectColorsFor: self) openInHand.! !
 
-!SystemWindow methodsFor: '*ui-palette' stamp: 'KenD 11/5/2021 14:06:04'!
+!SystemWindow methodsFor: '*ui-palette' stamp: 'KenD 5/Nov/2021 14:06:00'!
 changeColor
 	"Change the color of the receiver -- triggered, e.g. from a menu.  This variant allows the recolor triggered from the window's halo recolor handle to have the same result as choosing change-window-color from the window-title menu"
 
@@ -643,7 +643,7 @@ changeColor
 		putUpFor: self near: self morphFullBoundsInWorld"
 	(ImagePickerPanel clickSelectColorsFor: self) openInHand.! !
 
-!SystemWindow methodsFor: '*ui-palette' stamp: 'KenD 11/5/2021 14:02:02'!
+!SystemWindow methodsFor: '*ui-palette' stamp: 'KenD 5/Nov/2021 14:02:00'!
 setWindowColor
 
 	"Override to add click-color select"
