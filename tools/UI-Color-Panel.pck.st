@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7262] on 5 June 2025 at 12:50:42 pm'!
+'From Cuis7.5 [latest update: #7734] on 1 December 2025 at 2:37:01 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 31!
-!requires: 'Cuis-Base' 75 7262 nil!
+!provides: 'UI-Color-Panel' 1 32!
+!requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 84 nil!
@@ -112,7 +112,7 @@ Usage:
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorEditor.!
 
-!ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 11/30/2013 19:33'!
+!ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 30/Nov/2013 19:33:00'!
 aboutToGrab: aMorph
 	"submorph is being grabbed by a hand.
 	Perform necessary adjustments (if any) and return the actual morph
@@ -121,7 +121,7 @@ aboutToGrab: aMorph
 
 	^ DropColorMorph fromColor: self focusColor! !
 
-!ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 11/30/2013 19:35'!
+!ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 30/Nov/2013 19:35:00'!
 allowsSubmorphDrag
 	"Answer whether our morphs can just be grabbed with the hand, instead of requiring the use of the halo. Redefined to answer true."
 	
@@ -129,7 +129,7 @@ allowsSubmorphDrag
 
 	^ true! !
 
-!ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 13:43:07'!
+!ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 13:43:00'!
 processDropMorph: aDropEvent
 	"I have already expressed a desire for the drop. Just do it."
 	
@@ -142,7 +142,7 @@ processDropMorph: aDropEvent
 	 ]
 ! !
 
-!ColorPaneMorph methodsFor: 'private' stamp: 'KenD 12/5/2013 20:50'!
+!ColorPaneMorph methodsFor: 'private' stamp: 'KenD 5/Dec/2013 20:50:00'!
 colorConstructors
 	"Answer a closure which takes values from my (x,y,z) and answers a Color.
 	The radio button value is Z which determines the 'slider'.
@@ -161,12 +161,12 @@ colorConstructors
 		[ :x :y :z | Color h: x/255*360 s: y/255 v: z/100]. "Brightness"
 	}! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 11/27/2013 15:48'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 27/Nov/2013 15:48:00'!
 colorPoint
 
 	^ colorPoint ! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 12/7/2013 15:17'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 7/Dec/2013 15:17:00'!
 colorPoint: aPoint
 
 	(colorPoint = aPoint)
@@ -175,12 +175,12 @@ colorPoint: aPoint
 			self triggerEvent: #colorChanged with: self
 		]! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 11/27/2013 14:58'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 27/Nov/2013 14:58:00'!
 colorSelector
 
 	^ #(red green blue hue saturation brightness) at: self zIndex ! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 12/5/2013 20:20'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 5/Dec/2013 20:20:00'!
 focusColor
 	"Answer my focus color"
 	
@@ -188,12 +188,12 @@ focusColor
 
 ! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 11/26/2013 18:20'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 18:20:00'!
 focusMorph
 
 	^ focusMorph! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 11/28/2013 22:32'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 22:32:00'!
 pureColorForm
 	"Create form from current color"
 
@@ -201,7 +201,7 @@ pureColorForm
 
 ! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 11/28/2013 23:20'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 23:20:00'!
 rORgORbForm
 	"Answer a pureColorForm of my z component -- which must be Red, Green, or Blue"
 
@@ -219,18 +219,18 @@ rORgORbForm
 	
 ! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 11/26/2013 18:27'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 18:27:00'!
 zIndex
 
 	^ zIndex
 ! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 11/26/2013 13:29'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 13:29:00'!
 zValue
 
 	^ zValue ! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 12/7/2013 15:16'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 7/Dec/2013 15:16:00'!
 zValue: zeroTo255 "or ..100 or ..360"
 
 	(zValue = zeroTo255)
@@ -240,31 +240,31 @@ zValue: zeroTo255 "or ..100 or ..360"
 		]
 ! !
 
-!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 11/26/2013 17:48'!
+!ColorPaneMorph methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 17:48:00'!
 zeroPlaneForm
 
 	^ zeroPlaneForm! !
 
-!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 11/26/2013 17:04'!
+!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 26/Nov/2013 17:04:00'!
 focusMorphDiameter
 	
 	^ 10! !
 
-!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 11/29/2013 14:35'!
+!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 29/Nov/2013 14:35:00'!
 fromModel: model selector: aSelector
 
 	zIndex := self zIndexFromSelector: aSelector.
 	self updateColorFromModel: model
 ! !
 
-!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 11/26/2013 18:43'!
+!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 26/Nov/2013 18:43:00'!
 initialize
 
 	super initialize.
 	self image: (Form extent: 256@256 depth: 32).
 	self makeFocusMorph.! !
 
-!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 11/26/2013 18:43'!
+!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 26/Nov/2013 18:43:00'!
 makeFocusMorph
 
 	focusMorph := EllipseMorph new. 
@@ -277,7 +277,7 @@ makeFocusMorph
 		
 	self addMorph: self focusMorph.! !
 
-!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 12/8/2013 08:07'!
+!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 8/Dec/2013 08:07:00'!
 zIndex: oneTo6 zValue: anInteger colorPoint: aPoint
 
 	zIndex := oneTo6.
@@ -288,14 +288,14 @@ zIndex: oneTo6 zValue: anInteger colorPoint: aPoint
 		 triggerEvent: #colorChanged
 ! !
 
-!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 11/27/2013 09:21'!
+!ColorPaneMorph methodsFor: 'initialization' stamp: 'KenD 27/Nov/2013 09:21:00'!
 zIndexFromSelector: aSelector
 
 	^ #(red green blue hue saturation brightness) 
 			indexOf: aSelector asLowercase asSymbol
 			ifAbsent: [ self error: 'Invalid selector' , aSelector asString ]! !
 
-!ColorPaneMorph methodsFor: 'change processing' stamp: 'KenD 12/5/2013 17:13'!
+!ColorPaneMorph methodsFor: 'change processing' stamp: 'KenD 5/Dec/2013 17:13:00'!
 hackHSVform
 	"answer a base form for color plane over (x,y) with constant z.
 	This is turtle slow, but accurate"
@@ -312,7 +312,7 @@ hackHSVform
 
 	! !
 
-!ColorPaneMorph methodsFor: 'change processing' stamp: 'KenD 12/1/2013 18:15'!
+!ColorPaneMorph methodsFor: 'change processing' stamp: 'KenD 1/Dec/2013 18:15:00'!
 refreshForm
 	"Create color pane from x,y base blending in z"
 
@@ -368,7 +368,7 @@ refreshForm
 	(formMaker at: zIndex) value
 	! !
 
-!ColorPaneMorph methodsFor: 'change processing' stamp: 'KenD 12/5/2013 19:41'!
+!ColorPaneMorph methodsFor: 'change processing' stamp: 'KenD 5/Dec/2013 19:41:00'!
 resetFocus
 
 	self focusMorph morphPosition: (colorPoint - (self focusMorphDiameter / 2)).
@@ -376,19 +376,19 @@ resetFocus
 	self triggerEvent: #resetFocus.
 	! !
 
-!ColorPaneMorph methodsFor: 'events' stamp: 'KenD 12/4/2013 21:52'!
+!ColorPaneMorph methodsFor: 'events' stamp: 'KenD 4/Dec/2013 21:52:00'!
 handlesMouseDown: aMouseButtonEvent
 	"Do I want to receive mouseDown events (mouseDown:, mouseMove:, mouseUp:)?"
 
 	^ true! !
 
-!ColorPaneMorph methodsFor: 'events' stamp: 'KenD 12/4/2013 21:52'!
+!ColorPaneMorph methodsFor: 'events' stamp: 'KenD 4/Dec/2013 21:52:00'!
 handlesMouseOver: evt
 	"Do I want to receive mouseEnter: and mouseLeave: when the button is up and the hand is empty?" 
 	
 	^ true! !
 
-!ColorPaneMorph methodsFor: 'events-processing' stamp: 'KenD 9/28/2021 08:56:44'!
+!ColorPaneMorph methodsFor: 'events-processing' stamp: 'KenD 28/Sep/2021 08:56:00'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 
 	(self coversPixel: aMouseButtonEvent eventPosition)
@@ -400,17 +400,17 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 		]
 ! !
 
-!ColorPaneMorph methodsFor: 'events-processing' stamp: 'KenD 9/17/2019 06:35:23'!
+!ColorPaneMorph methodsFor: 'events-processing' stamp: 'KenD 17/Sep/2019 06:35:00'!
 mouseEnter: event
 
 	Cursor currentCursor: (Cursor cursorAt: #crossHairCursor)! !
 
-!ColorPaneMorph methodsFor: 'events-processing' stamp: 'KenD 9/17/2019 06:35:45'!
+!ColorPaneMorph methodsFor: 'events-processing' stamp: 'KenD 17/Sep/2019 06:35:00'!
 mouseLeave: event
 
 	Cursor currentCursor: (Cursor cursorAt: #normalCursor)! !
 
-!ColorPaneMorph methodsFor: 'events-processing' stamp: 'KenD 11/29/2013 00:08'!
+!ColorPaneMorph methodsFor: 'events-processing' stamp: 'KenD 29/Nov/2013 00:08:00'!
 updateColorFromModel: model
 	"No selector change, but color changed"
 	
@@ -435,82 +435,82 @@ updateColorFromModel: model
 	self resetFocus.
 ! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/26/2013 14:33'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 14:33:00'!
 blueIndex
 
 	^ BlueIndex ! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/28/2013 23:12'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 23:12:00'!
 brightnessForm
 
 	^ BrightnessForm! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/26/2013 14:34'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 14:34:00'!
 brightnessIndex
 
 	^ BrightnessIndex ! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/28/2013 23:13'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 23:13:00'!
 brightnessOverlay
 
 	^ BrightnessOverlay ! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/28/2013 22:59'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 22:59:00'!
 gbForm
 
 	^ GBForm! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/26/2013 14:33'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 14:33:00'!
 greenIndex
 
 	^ GreenIndex ! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/26/2013 14:33'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 14:33:00'!
 hueIndex
 
 	^ HueIndex ! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/28/2013 23:11'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 23:11:00'!
 hueOverlay
 
 	^ HueOverlay! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/28/2013 22:59'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 22:59:00'!
 rbForm
 
 	^ RBForm! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/26/2013 14:33'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 14:33:00'!
 redIndex
 
 	^ RedIndex ! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/28/2013 22:59'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 22:59:00'!
 rgForm
 
 	^ RGForm! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/28/2013 23:12'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 23:12:00'!
 saturationForm
 
 	^ SaturationForm! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/26/2013 14:34'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 26/Nov/2013 14:34:00'!
 saturationIndex
 
 	^ SaturationIndex ! !
 
-!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 11/28/2013 23:13'!
+!ColorPaneMorph class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2013 23:13:00'!
 saturationOverlay
 
 	^ SaturationOverlay! !
 
-!ColorPaneMorph class methodsFor: 'initialization' stamp: 'KenD 12/3/2013 21:28'!
+!ColorPaneMorph class methodsFor: 'initialization' stamp: 'KenD 3/Dec/2013 21:28:00'!
 defaultColor
 
 	^ Color transparent! !
 
-!ColorPaneMorph class methodsFor: 'examples' stamp: 'KenD 11/26/2013 18:22'!
+!ColorPaneMorph class methodsFor: 'examples' stamp: 'KenD 26/Nov/2013 18:22:00'!
 greenExample
 	"RGB with Color Teal: r=2,g=147,b=134"
 	"123"
@@ -522,13 +522,13 @@ greenExample
 		zValue: 147 
 		colorPoint: 2@134) openInWorld! !
 
-!ColorPaneMorph class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:05'!
+!ColorPaneMorph class methodsFor: 'new-morph participation' stamp: 'KenD 6/Dec/2013 19:05:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
 
-!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 12/1/2013 16:13'!
+!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Dec/2013 16:13:00'!
 initialize
 "	
 	self initialize.
@@ -551,7 +551,7 @@ initialize
 	HueOverlay := self makeHueOverlay.
 	! !
 
-!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 12/1/2013 16:12'!
+!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Dec/2013 16:12:00'!
 makeBrightnessForm
 	"Briightness is the slider; This is a background/base slice of hue and value"
 
@@ -567,7 +567,7 @@ makeBrightnessForm
 	^ briteForm
 ! !
 
-!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 12/1/2013 18:28'!
+!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Dec/2013 18:28:00'!
 makeGBForm
 	"(x,y)=(g,b), slider value adds z=red"
 "
@@ -584,7 +584,7 @@ makeGBForm
 	^ rbForm
 ! !
 
-!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 12/1/2013 18:29'!
+!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Dec/2013 18:29:00'!
 makeHueOverlay
 	"This is a combination of Saturation+Brightness which is mixed with a Hue"
 "
@@ -615,7 +615,7 @@ makeHueOverlay
 	^ hueForm
 ! !
 
-!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 12/1/2013 18:29'!
+!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Dec/2013 18:29:00'!
 makeRBForm
 	"(x,y)=(r,b), slider value adds z=green"
 "
@@ -632,7 +632,7 @@ makeRBForm
 	^ rbForm
 ! !
 
-!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 12/1/2013 18:29'!
+!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Dec/2013 18:29:00'!
 makeRGForm
 	"(x,y)=(r,g), slider value adds z=blue"
 "
@@ -649,7 +649,7 @@ makeRGForm
 	^ rbForm
 ! !
 
-!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 12/1/2013 18:29'!
+!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Dec/2013 18:29:00'!
 makeSaturationForm
 	"Saturation is the slider.  Hue is the base and Brightness/Value the overlay"
 "
@@ -667,7 +667,7 @@ makeSaturationForm
 	^ satForm
 ! !
 
-!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 12/1/2013 18:29'!
+!ColorPaneMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Dec/2013 18:29:00'!
 makeSaturationOverlay
 	"Overlay is Value/Brightness"
 "
@@ -684,12 +684,12 @@ makeSaturationOverlay
 	^ satOverlay
 ! !
 
-!ColorPaneMorph class methodsFor: 'geometry' stamp: 'KenD 9/16/2016 15:48:34'!
+!ColorPaneMorph class methodsFor: 'geometry' stamp: 'KenD 16/Sep/2016 15:48:00'!
 minimumExtent
 	"Also my maximum extent"
 	^ 256@256! !
 
-!ColorPaneMorph class methodsFor: 'instance creation' stamp: 'KenD 11/26/2013 18:14'!
+!ColorPaneMorph class methodsFor: 'instance creation' stamp: 'KenD 26/Nov/2013 18:14:00'!
 zSelector: aSymbol zValue: anInteger colorPoint: aPoint
 
 	^ self new 
@@ -699,35 +699,35 @@ zSelector: aSymbol zValue: anInteger colorPoint: aPoint
 			zValue: anInteger 
 			colorPoint: aPoint! !
 
-!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 12/4/2013 22:03'!
+!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 4/Dec/2013 22:03:00'!
 colorPane
 
 	^ colorPane ! !
 
-!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 12/26/2013 13:08'!
+!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2013 13:08:00'!
 deltaPoint
 	"Offset for slider to center on bar"
 	
 	^ -4  @ -5! !
 
-!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 12/5/2013 19:38'!
+!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 5/Dec/2013 19:38:00'!
 maxZValue
 
 	^ maxZValue "100, 256, or 360"! !
 
-!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 3/2/2015 15:23'!
+!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 2/Mar/2015 15:23:00'!
 scaledZPosition
 	"Answer color Z value scaled to 0..256 as Y position (zero low .. 256 high)"
 	"NB: must round result as coordinate cannot be a fraction"
 
 	^ (256 - ((self colorPane zValue / self maxZValue) * 256))! !
 
-!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 12/4/2013 22:03'!
+!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 4/Dec/2013 22:03:00'!
 sliderMorph
 
 	^ sliderMorph ! !
 
-!ColorSliderMorph methodsFor: 'initialization' stamp: 'KenD 12/5/2013 17:42'!
+!ColorSliderMorph methodsFor: 'initialization' stamp: 'KenD 5/Dec/2013 17:42:00'!
 colorPane: aColorPaneMorph
 
 	colorPane := aColorPaneMorph.
@@ -735,7 +735,7 @@ colorPane: aColorPaneMorph
 		refreshColorFromModel; 
 		redrawBackground.! !
 
-!ColorSliderMorph methodsFor: 'initialization' stamp: 'KenD 5/15/2024 15:13:46'!
+!ColorSliderMorph methodsFor: 'initialization' stamp: 'KenD 15/May/2024 15:13:00'!
 initialize
 
 	super initialize.
@@ -757,13 +757,13 @@ initialize
 							offAxisEdgeWeight: #center);
 		addMorph: sliderMorph.! !
 
-!ColorSliderMorph methodsFor: 'events' stamp: 'KenD 12/5/2013 17:52'!
+!ColorSliderMorph methodsFor: 'events' stamp: 'KenD 5/Dec/2013 17:52:00'!
 handlesMouseDown: aMouseButtonEvent
 	"Do I want to receive mouseDown events (mouseDown:, mouseMove:, mouseUp:)?"
 	
 	^ true! !
 
-!ColorSliderMorph methodsFor: 'events' stamp: 'KenD 12/5/2013 21:09'!
+!ColorSliderMorph methodsFor: 'events' stamp: 'KenD 5/Dec/2013 21:09:00'!
 mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 	"Update visual feedback"
 
@@ -771,13 +771,15 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 	self colorPane zValue: (self zValueFromY: localEventPosition y).
 	self resetSliderPosition.! !
 
-!ColorSliderMorph methodsFor: 'events' stamp: 'jmv 2/13/2014 14:20'!
+!ColorSliderMorph methodsFor: 'events' stamp: 'KenD 1/Dec/2025 14:28:00'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
 
-	self colorPane zValue: (self zValueFromY: localEventPosition y).
-	self resetSliderPosition.! !
+	aMouseMoveEvent anyButtonPressed ifTrue: [
+		self colorPane zValue: (self zValueFromY: localEventPosition y).
+		self resetSliderPosition.
+	]! !
 
-!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 5/15/2024 15:09:16'!
+!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 15/May/2024 15:09:00'!
 redrawBackground
 	"Draw the color scale as background and set maxZValue"
 	
@@ -805,20 +807,20 @@ redrawBackground
 	self resetSliderPosition.
 	self redrawNeeded.! !
 
-!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 12/5/2013 19:33'!
+!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 5/Dec/2013 19:33:00'!
 refreshColorFromModel
 
 	self resetSliderPosition.
 
 	! !
 
-!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 12/26/2013 13:06'!
+!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 26/Dec/2013 13:06:00'!
 resetSliderPosition
 	"Center me over selected Z position"
 	
 	self sliderMorph morphPosition: self deltaPoint + (0 @ (self scaledZPosition)).! !
 
-!ColorSliderMorph methodsFor: 'private' stamp: 'KenD 12/5/2013 21:17'!
+!ColorSliderMorph methodsFor: 'private' stamp: 'KenD 5/Dec/2013 21:17:00'!
 zValueFromY: zeroTo255
 
 	| newY |
@@ -826,34 +828,34 @@ zValueFromY: zeroTo255
 
 	^ ((255 - newY) / 255) * self maxZValue! !
 
-!ColorSliderMorph class methodsFor: 'instance creation' stamp: 'KenD 12/5/2013 17:31'!
+!ColorSliderMorph class methodsFor: 'instance creation' stamp: 'KenD 5/Dec/2013 17:31:00'!
 colorPane: aColorPaneMorph
 
 	^ self new colorPane: aColorPaneMorph! !
 
-!ColorSliderMorph class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:06'!
+!ColorSliderMorph class methodsFor: 'new-morph participation' stamp: 'KenD 6/Dec/2013 19:06:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
 
-!ColorPalette class methodsFor: 'instance creation' stamp: 'KenD 9/16/2021 14:15:59'!
+!ColorPalette class methodsFor: 'instance creation' stamp: 'KenD 16/Sep/2021 14:15:00'!
 initializedInstance
 
 	^ ImagePickerPanel namedColors! !
 
-!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:04:08'!
+!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 15:04:00'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 12/24/2013 17:55'!
+!ColorPalette class methodsFor: 'new-morph participation' stamp: 'KenD 24/Dec/2013 17:55:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 24/Dec/2013 19:57:00'!
 useCSS3ColorDict
 "
 	self useCSS3ColorDict.
@@ -861,7 +863,7 @@ useCSS3ColorDict
 	Feature require: 'CSS3-NamedColors'.
 	Color setColorNamesDict: Color css3ColorDictionary.! !
 
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 7/24/2015 11:33'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 24/Jul/2015 11:33:00'!
 useCrayonColorDict
 "
 	ColorPalette useCrayonColorDict.
@@ -870,7 +872,7 @@ useCrayonColorDict
 	Feature require: 'Crayon-NamedColors'.
 	Color setColorNamesDict: Color crayonColorDictionary.! !
 
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:57'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 24/Dec/2013 19:57:00'!
 useNBSISCCColorDict
 "
 	self useNBSISCCColorDict.
@@ -878,12 +880,12 @@ useNBSISCCColorDict
 	Feature require: 'NBSISCC-NamedColors'.
 	Color setColorNamesDict: Color nbsisccColorDictionary.! !
 
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 24/Dec/2013 19:56:00'!
 useSmallColorDict
 
 	Color setColorNamesDict: Color defaultColorNamesDictionary.! !
 
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:56'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 24/Dec/2013 19:56:00'!
 useXKCDColorDict
 "
 	self useXKCDColorDict.
@@ -892,7 +894,7 @@ useXKCDColorDict
 	Feature require: 'XKCD-NamedColors'.
 	Color setColorNamesDict: Color xkcdColorDictionary.! !
 
-!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 12/24/2013 19:59'!
+!ColorPalette class methodsFor: 'color dictionary' stamp: 'KenD 24/Dec/2013 19:59:00'!
 useXKCDFirst48ColorDict
 "
 	self useXKCDFirst48ColorDict.
@@ -900,53 +902,53 @@ useXKCDFirst48ColorDict
 
 	Color setColorNamesDict: Color xkcdFirst48ColorNamesDictionary.! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 11/26/2013 21:27'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 26/Nov/2013 21:27:00'!
 colorPane
 
 	^ colorPane ! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 10/29/2015 08:57'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 29/Oct/2015 08:57:00'!
 colorSelectionSymbol
 
 	^ radioSelection ! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 10/29/2015 08:57'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 29/Oct/2015 08:57:00'!
 colorSelectionSymbol: aSym
 
 	radioSelection := aSym! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 11/19/2013 21:15'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 19/Nov/2013 21:15:00'!
 colorSwatch
 
 	^ colorSwatch! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 11/19/2013 21:14'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 19/Nov/2013 21:14:00'!
 hsvRadio
 
 	^ hsvRadio! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 11/19/2013 21:14'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 19/Nov/2013 21:14:00'!
 rgbRadio
 
 	^ rgbRadio! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 11/24/2013 08:48'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 24/Nov/2013 08:48:00'!
 rgbString
 	"Answer my rgbString StringMorph"
 	^ rgbString! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 11/25/2013 19:12'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 25/Nov/2013 19:12:00'!
 sliderColumn
 
 	^ sliderColumn! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 2/9/2022 13:50:51'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 9/Feb/2022 13:50:00'!
 swatchBorderColor
 
 	"Match with Visual Menu Item text color"
 	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/11/2022 13:18:15'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 11/Feb/2022 13:18:00'!
 buildAlphaSwatch
 	"Display swatch of current color including alpha value."
 	
@@ -977,7 +979,7 @@ Color plus α' .
 	^alphaFrame
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:14:10'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 1/Dec/2025 14:19:00'!
 buildColorPaneColumn
 
 	| selector column hexDisplayLayout  |
@@ -1004,7 +1006,8 @@ buildColorPaneColumn
 		
 	alphaSlider := PluggableScrollBar new ::
 		model: self model setValueSelector: #alpha: refreshValueSelector: #alpha ; 
-		morphExtent: (256 @ ScrollBar scrollbarThickness) ;   "Horizontal"
+		interval: 0;
+		morphExtent: (256 @ Theme current scrollbarThickness) ;   "Horizontal"
 		setProperty: #balloonText toValue: 'set alpha transparency' ;
 		adoptWidgetsColor: Color orange darker darker ;
 		refreshValueFromModel . 
@@ -1021,7 +1024,7 @@ buildColorPaneColumn
 	
 	^ column! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:20:35'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:20:00'!
 buildMorphicWindow
 " Our layout is a bit different to a traditional dialog, so we override as 
 we don't need button area at the bottom and main panel is a row of morphs." 
@@ -1044,7 +1047,7 @@ we don't need button area at the bottom and main panel is a row of morphs."
 		yourself
 ! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:14:33'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:14:00'!
 buildRadioButtonColumn
 
 	| radioCol setupEntryMorph valueEntryMorph |
@@ -1102,7 +1105,7 @@ buildRadioButtonColumn
 		yourself
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 2/7/2022 11:24:08'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 7/Feb/2022 11:24:00'!
 buildSliderColumn
 
 	sliderColumn := LayoutMorph newColumn.
@@ -1115,7 +1118,7 @@ buildSliderColumn
 
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:14:40'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:14:00'!
 buildSwatchLayout
 	"Display swatch of current color and closest named color"
 
@@ -1179,12 +1182,12 @@ Color without α' .
 		yourself
 	! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 10/29/2015 09:01'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 29/Oct/2015 09:01:00'!
 resetSliderColumn
 
 	self resetSliderColumn: self colorSelectionSymbol! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:14:45'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:14:00'!
 resetSliderColumn: sliderSym
 	"Radio selector changed.."
 
@@ -1233,12 +1236,12 @@ resetSliderColumn: sliderSym
 		yourself
 ! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 11/23/2013 17:09'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 23/Nov/2013 17:09:00'!
 colorSwatchExtent
 
 	^ 64 @ 64! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 3/4/2022 13:32:24'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 4/Mar/2022 13:32:00'!
 colorSwatchesBeDroppable
 
 	{alphaSwatch. colorPane. colorSwatch.} do: [ :dropTarget | 
@@ -1254,16 +1257,16 @@ colorSwatchesBeDroppable
 	].
 ! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'hlsf 12/29/2021 10:17:42'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'hlsf 29/Dec/2021 10:17:00'!
 defaultAlignement
 	^ #rowLeft! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 11/24/2013 18:58'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 24/Nov/2013 18:58:00'!
 defaultRadioSelector
 
 	^ #Green! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 5/28/2022 12:02:46'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 28/May/2022 12:02:00'!
 initialize
 
 	super initialize.
@@ -1281,25 +1284,25 @@ initialize
 
 	! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 5/27/2022 15:00:21'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 27/May/2022 15:00:00'!
 model: aColorModel
 	
 	model := aColorModel ! !
 
-!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 5/28/2022 11:51:03'!
+!ColorEditorPanel methodsFor: 'initialization' stamp: 'KenD 28/May/2022 11:51:00'!
 setColor: aColor
 
 	self model setColor: aColor.
 	self refreshColor.
 ! !
 
-!ColorEditorPanel methodsFor: 'events-processing' stamp: 'KenD 10/29/2015 09:02'!
+!ColorEditorPanel methodsFor: 'events-processing' stamp: 'KenD 29/Oct/2015 09:02:00'!
 fontPreferenceChanged
 
 	super fontPreferenceChanged.
 	self resetSliderColumn.! !
 
-!ColorEditorPanel methodsFor: 'events-processing' stamp: 'KenD 10/29/2015 09:01'!
+!ColorEditorPanel methodsFor: 'events-processing' stamp: 'KenD 29/Oct/2015 09:01:00'!
 newRadioSelection: selectionSymbol
 
 	"Only one radio group can be selected at a time"
@@ -1316,7 +1319,7 @@ newRadioSelection: selectionSymbol
 	
 	! !
 
-!ColorEditorPanel methodsFor: 'events-processing' stamp: 'KenD 2/6/2022 15:53:06'!
+!ColorEditorPanel methodsFor: 'events-processing' stamp: 'KenD 6/Feb/2022 15:53:00'!
 updateColorFromPane
 	"Someone changed color in colorPane.  Update my model"
 	
@@ -1324,7 +1327,7 @@ updateColorFromPane
 		(self colorPane focusColor
 			alpha: self model alpha)! !
 
-!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 2/6/2022 16:23:20'!
+!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 6/Feb/2022 16:23:00'!
 refreshAlphaSwatch
 	"When color changes"
 	
@@ -1337,7 +1340,7 @@ refreshAlphaSwatch
 		alphaSwatch color: newColor
 	]! !
 
-!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 9/12/2021 15:41:40'!
+!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 12/Sep/2021 15:41:00'!
 refreshCloseColor
 	"model color has changed.  Refresh my views."
 	
@@ -1358,7 +1361,7 @@ refreshCloseColor
 	self morphExtent: self minimumExtent.
 ! !
 
-!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 2/6/2022 16:12:50'!
+!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 6/Feb/2022 16:12:00'!
 refreshColor
 	"model color has changed.  Refresh my views."
 	
@@ -1368,25 +1371,25 @@ refreshColor
 		refreshCloseColor;
 		refreshAlphaSwatch! !
 
-!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 11/27/2013 14:43'!
+!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 27/Nov/2013 14:43:00'!
 refreshColorPane
 	"When selector changes.."
 
 	self colorPane updateColorFromModel: self model.! !
 
-!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 2/6/2022 16:00:39'!
+!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 6/Feb/2022 16:00:00'!
 refreshColorSwatch
 	"When color changes"
 	
 	colorSwatch image: (model baseColor iconOrThumbnailOfSize: self colorSwatchExtent).
 	colorSwatch color: self model baseColor! !
 
-!ColorEditorPanel methodsFor: 'accessing' stamp: 'KenD 6/5/2025 12:44:32'!
+!ColorEditorPanel methodsFor: 'accessing' stamp: 'KenD 5/Jun/2025 12:44:00'!
 defaultLayerNumber
 	"Act like any other Morph with respect to Z-order"
 	^100! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 7/27/2024 18:56:29'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 27/Jul/2024 18:56:00'!
 initializedInstance
 "
 	self initializedInstance openInWorld.
@@ -1400,52 +1403,52 @@ initializedInstance
 		"widgetsColor: panel windowColor ;
 		yourself"! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 5/28/2022 11:40:41'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 28/May/2022 11:40:00'!
 open
 "
 	self open 
 "	
 	^ self open: (ColorEditorModel color: self defaultColor)! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 2/7/2022 12:25:02'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 7/Feb/2022 12:25:00'!
 open: model
 
 	^ self open: model label: 'Color Editor'! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 5/27/2022 14:58:16'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 27/May/2022 14:58:00'!
 openWithColor: aColor
 
 	^ self open: (ColorEditorModel color: aColor) label: 'Color Editor'! !
 
-!ColorEditorPanel class methodsFor: 'initialization' stamp: 'KenD 12/24/2013 09:26'!
+!ColorEditorPanel class methodsFor: 'initialization' stamp: 'KenD 24/Dec/2013 09:26:00'!
 defaultColor
 
 	^ Color  r: 16r40/255 g: 16rA5/255 b: 16rD0/255.! !
 
-!ColorEditorPanel class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:02:52'!
+!ColorEditorPanel class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 15:02:00'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!ColorEditorPanel class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:09'!
+!ColorEditorPanel class methodsFor: 'new-morph participation' stamp: 'KenD 6/Dec/2013 19:09:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 2/6/2022 14:25:45'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 6/Feb/2022 14:25:00'!
 baseColor
 	"Answer a color without alpha translucency"
 	
 	^ Color r: color red g: color green  b: color blue ! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/22/2013 20:53'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 20:53:00'!
 blue
 	"Answer my blue component 0..255"
 
 	^ (self color blue * 255) rounded! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:42'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:42:00'!
 blue: zeroTo255
 
 	self setColor: (Color 
@@ -1453,13 +1456,13 @@ blue: zeroTo255
 		g: self color green
 		b: (zeroTo255 / 255) asFloat)! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/25/2013 18:52'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 25/Nov/2013 18:52:00'!
 blueFactor
 	"Answer my blueness 0..1"
 
 	^ self color blue! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/24/2013 19:05'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 24/Nov/2013 19:05:00'!
 blueFactor: zeroToOne
 
 	self setColor: (Color 
@@ -1467,13 +1470,13 @@ blueFactor: zeroToOne
 		g: self color green
 		b: (zeroToOne * 255 / 255) asFloat)! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:44'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:44:00'!
 brightness
 	"Answer percent brightness"
 
 	^ (self color brightness * 100) rounded! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:43'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:43:00'!
 brightness: aPercent
 
 	self setColor: (Color
@@ -1481,13 +1484,13 @@ brightness: aPercent
 		s: self color saturation
 		v: (aPercent / 100) asFloat)! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/25/2013 18:53'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 25/Nov/2013 18:53:00'!
 brightnessFactor
 	"Answer my brightness 0..1"
 
 	^ self color brightness! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/24/2013 19:04'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 24/Nov/2013 19:04:00'!
 brightnessFactor: zeroToOne
 
 	self setColor: (Color
@@ -1495,18 +1498,18 @@ brightnessFactor: zeroToOne
 		s: self color saturation
 		v: zeroToOne asFloat)! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 15:54'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 15:54:00'!
 color
 
 	^ color! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/22/2013 20:53'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 20:53:00'!
 green
 	"Answer my green component 0..255"
 
 	^ (self color green * 255) rounded! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:41'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:41:00'!
 green: zeroTo255
 
 	self setColor: (Color 
@@ -1514,13 +1517,13 @@ green: zeroTo255
 		g: (zeroTo255 / 255) asFloat 
 		b: self color blue)! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/25/2013 18:51'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 25/Nov/2013 18:51:00'!
 greenFactor
 	"Answer my greenness 0..1"
 
 	^ self color green! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/27/2013 20:09'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 27/Nov/2013 20:09:00'!
 greenFactor: zeroToOne
 
 	self setColor: (Color 
@@ -1528,13 +1531,13 @@ greenFactor: zeroToOne
 		g: (zeroToOne * 255 / 255) asFloat 
 		b: self color blue)! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:44'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:44:00'!
 hue
 	"Answer my hue 0..360 (degrees)"
 
 	^ self color hue rounded! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:40'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:40:00'!
 hue: zeroTo360
 
 	self setColor: (Color 
@@ -1542,13 +1545,13 @@ hue: zeroTo360
 		s: (self color saturation) 
 		v: (self color brightness) )! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/25/2013 18:55'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 25/Nov/2013 18:55:00'!
 hueFactor
 	"Answer my hue 0..1"
 
 	^ (self color hue / 360) asFloat! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/24/2013 19:02'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 24/Nov/2013 19:02:00'!
 hueFactor: zeroToOne
 
 	self setColor: (Color 
@@ -1556,13 +1559,13 @@ hueFactor: zeroToOne
 		s: (self color saturation) 
 		v: (self color brightness) )! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/22/2013 20:53'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 20:53:00'!
 red
 	"Answer my red component 0..255"
 
 	^ (self color red * 255) rounded! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:42'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:42:00'!
 red: zeroTo255
 
 	self setColor: (Color 
@@ -1570,13 +1573,13 @@ red: zeroTo255
 		g: self color green 
 		b: self color blue)! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/25/2013 18:51'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 25/Nov/2013 18:51:00'!
 redFactor
 	"Answer my redness 0..1"
 
 	^ self color red! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/24/2013 19:06'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 24/Nov/2013 19:06:00'!
 redFactor: zeroToOne
 
 	self setColor: (Color 
@@ -1584,13 +1587,13 @@ redFactor: zeroToOne
 		g: self color green 
 		b: self color blue)! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:45'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:45:00'!
 saturation
 	"Answer my percent saturation"
 
 	^ (self color saturation * 100) rounded! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 16:42'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 16:42:00'!
 saturation: aPercent
 
 	self setColor: (Color 
@@ -1598,13 +1601,13 @@ saturation: aPercent
 		s: (aPercent / 100) asFloat
 		v: (self color brightness) )! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/25/2013 18:56'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 25/Nov/2013 18:56:00'!
 saturationFactor
 	"Answer my saturation 0..1"
 
 	^ self color saturation ! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/24/2013 19:01'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 24/Nov/2013 19:01:00'!
 saturationFactor: zeroToOne
 
 	self setColor: (Color 
@@ -1612,7 +1615,7 @@ saturationFactor: zeroToOne
 		s: zeroToOne asFloat
 		v: (self color brightness) )! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/23/2013 20:59'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 20:59:00'!
 setColor: aColor
 	"Set my color and trigger #colorChanged passing me (the model)"
 	
@@ -1623,7 +1626,7 @@ setColor: aColor
 
 ! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 12/2/2013 16:24'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 2/Dec/2013 16:24:00'!
 setRGBColorFromInteger: anInteger
 	"Set my color from integer interpreted as RGB value"
 	
@@ -1637,31 +1640,31 @@ setRGBColorFromInteger: anInteger
 
 ! !
 
-!ColorEditorModel methodsFor: 'initialization' stamp: 'KenD 11/19/2013 19:09'!
+!ColorEditorModel methodsFor: 'initialization' stamp: 'KenD 19/Nov/2013 19:09:00'!
 defaultColor
 
 	^ Color teal
 	! !
 
-!ColorEditorModel methodsFor: 'initialization' stamp: 'KenD 11/23/2013 15:55'!
+!ColorEditorModel methodsFor: 'initialization' stamp: 'KenD 23/Nov/2013 15:55:00'!
 initialize
 
 	super initialize.
 	self setColor: self defaultColor.
 	! !
 
-!ColorEditorModel methodsFor: 'alpha scrolling' stamp: 'KenD 2/6/2022 14:32:26'!
+!ColorEditorModel methodsFor: 'alpha scrolling' stamp: 'KenD 6/Feb/2022 14:32:00'!
 alpha
 
 	^ color alpha! !
 
-!ColorEditorModel methodsFor: 'alpha scrolling' stamp: 'KenD 2/6/2022 14:36:08'!
+!ColorEditorModel methodsFor: 'alpha scrolling' stamp: 'KenD 6/Feb/2022 14:36:00'!
 alpha: zeroToOne
 	"Note: 'color alpha: ..' may return a new Color instance."
 	
 	self setColor: (color alpha: zeroToOne)! !
 
-!ColorEditorModel methodsFor: 'printing' stamp: 'jmv 2/13/2014 13:42'!
+!ColorEditorModel methodsFor: 'printing' stamp: 'jmv 13/Feb/2014 13:42:00'!
 hexStringRGB
 	"Answer my RGB as hex but with no 16r prefix"
 
@@ -1671,18 +1674,18 @@ hexStringRGB
 	"
 	^ self color hexStringRGB! !
 
-!ColorEditorModel methodsFor: 'printing' stamp: 'jmv 2/13/2014 13:45'!
+!ColorEditorModel methodsFor: 'printing' stamp: 'jmv 13/Feb/2014 13:45:00'!
 rgbValue
 	"Answer my RGB as an integer"
 
 	^ ( '16r',  self color hexStringRGB) asNumber! !
 
-!ColorEditorModel class methodsFor: 'instance creation' stamp: 'KenD 11/23/2013 15:55'!
+!ColorEditorModel class methodsFor: 'instance creation' stamp: 'KenD 23/Nov/2013 15:55:00'!
 color: aColor
 
 	^ self new setColor: aColor! !
 
-!Color class methodsFor: '*ui-color-panel' stamp: 'hlsf 9/3/2024 10:20:50'!
+!Color class methodsFor: '*ui-color-panel' stamp: 'hlsf 3/Sep/2024 10:20:00'!
 colorSelectionMenu
 	"Open a popUp menu and let user select color selection option"
 "
@@ -1720,7 +1723,7 @@ colorSelectionMenu
 
 	! !
 
-!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 9/3/2024 10:20:43'!
+!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 3/Sep/2024 10:20:00'!
 colorSelectionMenu: aColor
 	"Open a popUp menu and let user select color selection option"
 "

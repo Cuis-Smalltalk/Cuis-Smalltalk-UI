@@ -1,8 +1,8 @@
-'From Cuis7.3 [latest update: #7095] on 5 April 2025 at 8:53:13 am'!
+'From Cuis7.5 [latest update: #7734] on 1 December 2025 at 2:36:03 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 56!
-!requires: 'Cuis-Base' 71 6809 nil!
+!provides: 'UI-Entry' 1 57!
 !requires: 'UI-Click-Select' 1 3 nil!
+!requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 0 nil!
 SystemOrganization addCategory: #'UI-Entry'!
 
@@ -52,40 +52,40 @@ iVars
 The validator is applied on return and if nil, the old value is redisplayed and the field flashed,
 else the new value is remembered and displayed.!
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:52'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 20/Mar/2022 11:31:00'!
 acceptCancelReceiver
 	"Answer nil or object implementing #accept and #cancel"
 	
 	^ acceptCancelReceiver! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 3/20/2022 11:31:59'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 20/Mar/2022 11:31:00'!
 acceptCancelReceiver: whoToNotify
 	"Answer set to nil or object implementing #accept and #cancel"
 	
 	acceptCancelReceiver := whoToNotify! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 7/10/2024 14:05:44'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 10/Jul/2024 14:05:00'!
 backgroundColor
 	
 	^backgroundColor ! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 11:50:50'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 15/Apr/2023 11:50:00'!
 backgroundColor: aColor
 	backgroundColor = aColor ifFalse: [
 		backgroundColor := aColor.
 		self redrawNeeded]! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 6/11/2020 16:50:03'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 11/Jun/2020 16:50:00'!
 baseFont
 
 	font ifNil: [ font _ FontFamily defaultFamilyAndPointSize ].
 	^font! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 3/16/2011 10:34'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 16/Mar/2011 10:34:00'!
 contents
 	^contents! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/16/2023 17:14:28'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 16/Apr/2023 17:14:00'!
 contents: newContents 
 	(newContents is: #Text)
 		ifTrue: [
@@ -98,64 +98,64 @@ contents: newContents
 	self fitContents.
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 1/5/2013 14:23'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 5/Jan/2013 14:23:00'!
 crAction
 	"Answer the optional Cr action"
 	^crAction! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 1/5/2013 14:24'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 5/Jan/2013 14:24:00'!
 crAction: aBlock
 	
 	crAction := aBlock! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 9/6/2017 10:02:09'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 6/Sep/2017 10:02:00'!
 disableEditing
 	self setProperty: #disablesEditing toValue: true.
 	self stopBlinking! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 12/4/2011 22:25'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 4/Dec/2011 22:25:00'!
 editor
 	"Return my current editor, or install a new one."
 	editor ifNil: [ self installEditor ].
 	^editor! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/1/2022 12:53:24'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 1/Apr/2022 12:53:00'!
 emphasis
 	
 	^ emphasis! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 7/17/2024 14:41:56'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 17/Jul/2024 14:41:00'!
 emphasis: emphasisCode
 	
 	emphasis := emphasisCode.
 	self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
 	self redrawNeeded.! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 1/1/2015 21:16'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 1/Jan/2015 21:16:00'!
 fitContents
 	"Measures contents later at #minimumExtent"
 	self morphExtent: 0@0! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/2/2022 08:26:08'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 2/Apr/2022 08:26:00'!
 font
 
 	^ font! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 7/16/2024 14:13:08'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 16/Jul/2024 14:13:00'!
 font: aFont
 
 	font := aFont.
 	self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
 	self redrawNeeded.! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 11/5/2008 13:18'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 5/Nov/2008 13:18:00'!
 fontToUse
 
 	^ (emphasis isNil or: [emphasis = 0]) 
 		ifTrue: [ self baseFont ]
 		ifFalse: [ self baseFont emphasized: emphasis ]! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 3/17/2011 07:58'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 17/Mar/2011 07:58:00'!
 keyboardFocusWatcher: aMorph
 	"We are usually used as a part of a bigger morph.
 	Usually, that morph would be interested in us changing keyboard focus.
@@ -164,24 +164,24 @@ keyboardFocusWatcher: aMorph
 		- There are too many evens already defined. It would be good to reduce that."
 	keyboardFocusWatcher _ aMorph! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:21:02'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 17/Mar/2022 23:21:00'!
 setValue: newContents
 "For compatibility"
 	^ self contents: newContents ! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 3/17/2022 23:19:38'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'hlsf 17/Mar/2022 23:19:00'!
 value
 "For compatibility"
 	^ self contents! !
 
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 18/Jul/2014 14:53:00'!
 onBlinkCursor
 	"Blink the cursor"
 	showTextCursor _ showTextCursor not | pauseBlinking.
 	pauseBlinking _ false.
 	textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r]! !
 
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 3/6/2015 08:59'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 6/Mar/2015 08:59:00'!
 pauseBlinking
 	"Show a solid cursor (non blinking) for a short while"
 	pauseBlinking _ true.
@@ -191,12 +191,12 @@ pauseBlinking
 			showTextCursor _ true.
 			textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r ]]]! !
 
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 9/6/2017 10:02:15'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 6/Sep/2017 10:02:00'!
 showsBlinkingCursor
 
 	^self handlesKeyboard and: [ self disablesEditing not ]! !
 
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 2/2/2014 22:20'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 2/Feb/2014 22:20:00'!
 startBlinking
 	"And show the cursor"
 	pauseBlinking _ true.
@@ -204,7 +204,7 @@ startBlinking
 	showTextCursor _ true.
 	self startStepping: #onBlinkCursor stepTime: 500! !
 
-!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 7/18/2014 14:53'!
+!TextEntryMorph methodsFor: 'blink cursor' stamp: 'jmv 18/Jul/2014 14:53:00'!
 stopBlinking
 	"And do not show cursor anymore."
 	self stopStepping: #onBlinkCursor.
@@ -213,7 +213,7 @@ stopBlinking
 		showTextCursor _ false.
 		textCursorRect ifNotNil: [ :r | self invalidateLocalRect: r ]]! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'hlsf 12/1/2023 11:14:17'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'hlsf 1/Dec/2023 11:14:00'!
 characterIndexAtPoint: aPoint
 
 	| line block f |
@@ -234,7 +234,7 @@ characterIndexAtPoint: aPoint
 
 	^ block stringIndex! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'jmv 10/16/2013 22:37'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'jmv 16/Oct/2013 22:37:00'!
 displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 	| textCursorColor x1 isBold isItalic x0 h w halfW r d |
 	isBold _ anEmphasis allMask: 1.
@@ -266,7 +266,7 @@ displayTextCursorAtX: x top: top bottom: bottom emphasis: anEmphasis on: aCanvas
 		line: x0+halfW@bottom to: x1+halfW@(top+w)
 		width: w color: textCursorColor! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 9/2/2024 19:33:50'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 2/Sep/2024 19:33:00'!
 drawOn: aCanvas
 
 	aCanvas
@@ -287,7 +287,7 @@ drawOn: aCanvas
 		color: color.
 ! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/16/2024 12:45:46'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 16/Jul/2024 12:45:00'!
 drawSelectionOn: aCanvas
 	| rightX leftX bottom |
 
@@ -301,7 +301,7 @@ drawSelectionOn: aCanvas
 		fillRectangle: ((leftX+1 @ self textOffset y) corner: (rightX + 2) @ bottom)
 		color: (Theme current textHighlightFocused: self hasKeyboardFocus)! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/16/2024 13:00:57'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 16/Jul/2024 13:00:00'!
 drawTextCursorOn: aCanvas
 	|  bottom x |
 
@@ -314,7 +314,7 @@ drawTextCursorOn: aCanvas
 			emphasis: emphasis 
 			on: aCanvas ]! !
 
-!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 7/16/2024 12:01:47'!
+!TextEntryMorph methodsFor: 'drawing' stamp: 'KenD 16/Jul/2024 12:01:00'!
 textOffsetdrawTextCursorOn: aCanvas
 	|  bottom x |
 
@@ -323,7 +323,7 @@ textOffsetdrawTextCursorOn: aCanvas
 		x := self fontToUse widthOfString: contents from: 1 to: editor startIndex-1.
 		self displayTextCursorAtX: (x + self textOffset x)  top: (self textOffset y) bottom: bottom emphasis: emphasis on: aCanvas ]! !
 
-!TextEntryMorph methodsFor: 'editing' stamp: 'jmv 10/16/2013 21:03'!
+!TextEntryMorph methodsFor: 'editing' stamp: 'jmv 16/Oct/2013 21:03:00'!
 handleInteraction: interactionBlock
 	"Perform the changes in interactionBlock, noting any change in selection
 	and possibly a change in the size of the composition"
@@ -339,30 +339,30 @@ handleInteraction: interactionBlock
 			editor _ oldEditor	"since it may have been changed while in block"].
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 9/6/2017 10:02:10'!
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 6/Sep/2017 10:02:00'!
 disablesEditing
 
 	^self hasProperty: #disablesEditing! !
 
-!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 20/Aug/2012 18:52:00'!
 handlesKeyboard
 
 	^self visible! !
 
-!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 20/Aug/2012 18:52:00'!
 handlesMouseDown: aMouseButtonEvent
 	^ true! !
 
-!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 8/20/2012 18:52'!
+!TextEntryMorph methodsFor: 'event handling testing' stamp: 'jmv 20/Aug/2012 18:52:00'!
 handlesMouseOver: evt
 	"implements #mouseEnter: and/or #mouseLeave:"
 	^true! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 08:43'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 21/Aug/2012 08:43:00'!
 clickAndHalf: aMouseButtonEvent localPosition: localEventPosition
 	self handleInteraction: [ self editor clickAndHalf ]! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/1/2024 16:03:46'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 1/Aug/2024 16:03:00'!
 keyStroke: aKeyboardEvent
 	"Handle a keystroke event."
 	super keyStroke: aKeyboardEvent.
@@ -397,7 +397,7 @@ keyStroke: aKeyboardEvent
 	self morphExtent: (self morphExtent max: self minimumExtent). "big enough to fit"
 	self redrawNeeded.! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'hlsf 4/5/2025 08:06:05'!
+!TextEntryMorph methodsFor: 'events' stamp: 'hlsf 5/Apr/2025 08:06:00'!
 mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 	"Make this TextMorph be the keyboard input focus, if it isn't already,
 		and repond to the text selection gesture."
@@ -416,27 +416,27 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 		dblClkNHalfSel: nil
 		tripleClkSel: nil! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'jmv 1/14/2013 23:16'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 14/Jan/2013 23:16:00'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 
 	super mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition.
 	self pauseBlinking
 ! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'hlsf 7/3/2022 13:07:48'!
+!TextEntryMorph methodsFor: 'events' stamp: 'hlsf 3/Jul/2022 13:07:00'!
 mouseEnter: event
 	super mouseEnter: event.
 	(Preferences at: #focusFollowsMouse)
 		ifTrue: [ event hand newKeyboardFocus: self ]! !
 
-!TextEntryMorph methodsFor: 'events' stamp: 'jmv 8/21/2012 13:20'!
+!TextEntryMorph methodsFor: 'events' stamp: 'jmv 21/Aug/2012 13:20:00'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
 
 	aMouseMoveEvent mouseButton1Pressed ifFalse: [ ^ self ].
 	self handleInteraction: [
 		self editor mouseMove: aMouseMoveEvent index: (self characterIndexAtPoint: localEventPosition) ]! !
 
-!TextEntryMorph methodsFor: 'events-processing' stamp: 'jmv 12/28/2011 22:45'!
+!TextEntryMorph methodsFor: 'events-processing' stamp: 'jmv 28/Dec/2011 22:45:00'!
 focusKeyboardFor: aKeyboardEvent
 	"If aKeyboardEvent tab or shift-tab use it to navigate keyboard focus.
 	ctrl key ignored."
@@ -448,13 +448,13 @@ focusKeyboardFor: aKeyboardEvent
 			^ true ].
 	^super focusKeyboardFor: aKeyboardEvent! !
 
-!TextEntryMorph methodsFor: 'events-processing' stamp: 'KenD 10/29/2015 20:43'!
+!TextEntryMorph methodsFor: 'events-processing' stamp: 'KenD 29/Oct/2015 20:43:00'!
 fontPreferenceChanged
 
 	font := nil.
 	self baseFont.! !
 
-!TextEntryMorph methodsFor: 'events-processing' stamp: 'jmv 3/6/2015 08:59'!
+!TextEntryMorph methodsFor: 'events-processing' stamp: 'jmv 6/Mar/2015 08:59:00'!
 keyboardFocusChange: aBoolean 
 	aBoolean
 		ifTrue: [
@@ -469,7 +469,7 @@ keyboardFocusChange: aBoolean
 				keyboardFocusWatcher lostFocus: self ]].
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 7/16/2024 12:14:34'!
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 16/Jul/2024 12:14:00'!
 measureContents
 	"Answer text extent"
 	
@@ -477,38 +477,38 @@ measureContents
 	myFont := self fontToUse.
 	^((myFont widthOfString: contents) max: 3)  @ myFont lineSpacing.! !
 
-!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 7/16/2024 12:39:09'!
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 16/Jul/2024 12:39:00'!
 minimumExtent
 
 	^ self textBox! !
 
-!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 7/17/2024 14:27:59'!
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 17/Jul/2024 14:27:00'!
 textBox
 	"Answer amount of interior space including text"
 	^ self measureContents + (2 * self textOffset)! !
 
-!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 7/16/2024 12:43:44'!
+!TextEntryMorph methodsFor: 'geometry' stamp: 'KenD 16/Jul/2024 12:43:00'!
 textOffset
 	"Answer offset to upper-left of text drawing origin"
 	| off |
 	off := (2 * self borderWidth) + self fontToUse ascent + self fontToUse descent / 4.  "NB: lineGap is frequently zero"
 	^ off @ off! !
 
-!TextEntryMorph methodsFor: 'initialization' stamp: 'KenD 4/2/2022 08:24:32'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'KenD 2/Apr/2022 08:24:00'!
 defaultBackgroundColor
 
 	^ Theme current textPane ! !
 
-!TextEntryMorph methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:08:33'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'hlsf 19/Mar/2022 10:08:00'!
 defaultBorderWidth
 	^ Theme current buttonBorderWidth! !
 
-!TextEntryMorph methodsFor: 'initialization' stamp: 'cbr 12/3/2010 23:29'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'cbr 3/Dec/2010 23:29:00'!
 defaultColor
 	"answer the default color/fill style for the receiver"
 	^ Theme current text! !
 
-!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 11/5/2008 12:15'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 5/Nov/2008 12:15:00'!
 initWithContents: aString font: aFont emphasis: emphasisCode 
 	self initialize.
 	
@@ -516,7 +516,7 @@ initWithContents: aString font: aFont emphasis: emphasisCode
 	emphasis _ emphasisCode.
 	self contents: aString! !
 
-!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 4/16/2023 17:06:38'!
+!TextEntryMorph methodsFor: 'initialization' stamp: 'jmv 16/Apr/2023 17:06:00'!
 initialize
 	super initialize.
 	contents := UnicodeString new.
@@ -525,22 +525,22 @@ initialize
 	showTextCursor := false. "Should never be nil"
 	backgroundColor := self defaultBackgroundColor.! !
 
-!TextEntryMorph methodsFor: 'testing' stamp: 'jmv 11/5/2008 12:41'!
+!TextEntryMorph methodsFor: 'testing' stamp: 'jmv 5/Nov/2008 12:41:00'!
 hasSelection
 
 	^editor notNil and: [editor hasSelection]! !
 
-!TextEntryMorph methodsFor: 'testing' stamp: 'jmv 10/16/2013 22:18'!
+!TextEntryMorph methodsFor: 'testing' stamp: 'jmv 16/Oct/2013 22:18:00'!
 hasTextCursor
 
 	^ self hasKeyboardFocus and: [editor notNil and: [editor hasSelection not]]! !
 
-!TextEntryMorph methodsFor: 'typing/selecting keys' stamp: 'jmv 3/16/2011 10:45'!
+!TextEntryMorph methodsFor: 'typing/selecting keys' stamp: 'jmv 16/Mar/2011 10:45:00'!
 selectAll
 	self editor selectAll.
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'unaccepted edits' stamp: 'jmv 3/14/2011 09:21'!
+!TextEntryMorph methodsFor: 'unaccepted edits' stamp: 'jmv 14/Mar/2011 09:21:00'!
 hasUnacceptedEdits: aBoolean
 	"Set the hasUnacceptedEdits flag to the given value. "
 	
@@ -548,7 +548,11 @@ hasUnacceptedEdits: aBoolean
 	"Not used in this morph, as it doesn't do accept / cancel"
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'private' stamp: 'jmv 12/4/2011 22:25'!
+!TextEntryMorph methodsFor: 'private' stamp: 'KenD 1/Dec/2025 11:08:00'!
+aboutToEdit
+	"NOP in this morph."! !
+
+!TextEntryMorph methodsFor: 'private' stamp: 'jmv 4/Dec/2011 22:25:00'!
 installEditor
 	"Install an editor for my contents.  This constitutes 'hasFocus'.
 	If priorEditor is not nil, then initialize the new editor from its state.
@@ -559,13 +563,13 @@ installEditor
 	self redrawNeeded.
 	^editor! !
 
-!TextEntryMorph methodsFor: 'private' stamp: 'jmv 4/16/2023 17:08:03'!
+!TextEntryMorph methodsFor: 'private' stamp: 'jmv 16/Apr/2023 17:08:00'!
 updateFromContents
 
 	contents := self editor string.
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'menu - shortcuts - ehhhh' stamp: 'jmv 8/1/2024 11:47:53'!
+!TextEntryMorph methodsFor: 'menu - shortcuts - ehhhh' stamp: 'jmv 1/Aug/2024 11:47:00'!
 menuNshortcutsSpecsDo: aBlock
 	"Subclasses may implement specific ways of providing menu items and
 	keyboard shortcuts for themselves.
@@ -583,31 +587,31 @@ menuNshortcutsSpecsDo: aBlock
 					(eachMessageSend valueWithPossibleArgument: self) do: aBlock ]]		].
 		]! !
 
-!TextEntryMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/20/2022 18:50:06'!
+!TextEntryMorph class methodsFor: 'new-morph participation' stamp: 'KenD 20/Mar/2022 18:50:00'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 3/16/2011 10:25'!
+!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 16/Mar/2011 10:25:00'!
 contents: aString
 	" 'StringMorph contents: str' is faster than 'StringMorph new contents: str' 
 	(TextEntryMorph contents: 'Some string') openInWorld
 	"
 	^ self contents: aString font: nil! !
 
-!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 11/4/2008 12:47'!
+!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 4/Nov/2008 12:47:00'!
 contents: aString font: aFont
 	^ self basicNew initWithContents: aString font: aFont emphasis: 0! !
 
-!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 11/4/2008 12:47'!
+!TextEntryMorph class methodsFor: 'instance creation' stamp: 'jmv 4/Nov/2008 12:47:00'!
 contents: aString font: aFont emphasis: emphasisCode
 	^ self basicNew initWithContents: aString font: aFont emphasis: emphasisCode! !
 
-!TextEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/1/2022 08:14:30'!
+!TextEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/Jan/2022 08:14:00'!
 new
 	^self contents: 'edit one line'! !
 
-!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 7/10/2024 13:44:25'!
+!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 10/Jul/2024 13:44:00'!
 example1
 "
 	TextEntryMorph example1 openInWorld 
@@ -617,7 +621,7 @@ example1
 		borderColor: Color blue;
 		yourself! !
 
-!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 7/10/2024 13:47:22'!
+!TextEntryMorph class methodsFor: 'examples' stamp: 'KenD 10/Jul/2024 13:47:00'!
 example2
 " 
 	TextEntryMorph example2 openInWorld 
@@ -634,27 +638,27 @@ example2
 		borderColor: Color red.
 	^ editor! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 2/28/2015 11:04'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 28/Feb/2015 11:04:00'!
 disablesEdition
 
 	^ self hasProperty: #disablesEdition! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/21/2013 15:07'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 21/Nov/2013 15:07:00'!
 entryChars
 
 	^ entryChars! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'hlsf 7/3/2022 13:07:53'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'hlsf 3/Jul/2022 13:07:00'!
 fontToUse
 
 	^ Preferences at: #standardListFont ! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/21/2013 15:06'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 21/Nov/2013 15:06:00'!
 numCharsToHold
 
 	^ numCharsToHold! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 12/2/2013 16:53'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 2/Dec/2013 16:53:00'!
 setValue: newValue
 
 	(theValue == newValue) ifTrue: [ ^self ].
@@ -663,42 +667,42 @@ setValue: newValue
 	self morphExtent: self measureContents + 4.
 	self valueUpdator ifNotNil: [ :update | update value: newValue]! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/21/2013 15:08'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 21/Nov/2013 15:08:00'!
 toString
 
 	^ toString! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/21/2013 15:08'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 21/Nov/2013 15:08:00'!
 validator
 
 	^ validator! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/21/2013 16:22'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 21/Nov/2013 16:22:00'!
 value
 
 	^ theValue ! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/22/2013 19:15'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 19:15:00'!
 valueAccessor
 	
 	^ valueAccessor! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/22/2013 19:16'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 19:16:00'!
 valueAccessor: aOneArgBlock
 	
 	valueAccessor := aOneArgBlock! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/22/2013 19:16'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 19:16:00'!
 valueUpdator
 	
 	^ valueUpdator! !
 
-!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 11/22/2013 19:16'!
+!SimpleNumberEntryMorph methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 19:16:00'!
 valueUpdator: aOneArgBlock
 	
 	valueUpdator := aOneArgBlock! !
 
-!SimpleNumberEntryMorph methodsFor: 'geometry' stamp: 'jmv 4/25/2019 10:08:07'!
+!SimpleNumberEntryMorph methodsFor: 'geometry' stamp: 'jmv 25/Apr/2019 10:08:00'!
 measureContents
 	| myFont |
 
@@ -708,7 +712,7 @@ measureContents
 	"Use a wide character as sample for the character width"
 	^ 4 + ((myFont widthOfString: 'A') * (self numCharsToHold max: 3)  @ myFont lineSpacing).! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 3/20/2022 15:56:48'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 20/Mar/2022 15:56:00'!
 keyStroke: aKeyboardEvent
 	"Check for legal char if in ASCII range, else let super so it"
 	
@@ -725,18 +729,18 @@ keyStroke: aKeyboardEvent
 	"else OK to add"
 	super keyStroke: aKeyboardEvent! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 12/19/2013 17:14'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 19/Dec/2013 17:14:00'!
 keyboardFocusChange: aBoolean 
 
 	super keyboardFocusChange: aBoolean.
 	aBoolean ifFalse: [ self crAction ifNotNil: [ :thunk | thunk value ]].! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 9/1/2016 15:26:39'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 1/Sep/2016 15:26:00'!
 mouseLeave: event
 	super mouseLeave: event.
 	self crAction ifNotNil: [ :thunk | thunk value ]! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 12/17/2013 14:03'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 17/Dec/2013 14:03:00'!
 refreshValueFrom: model
 	"Refresh my value from model"
 	
@@ -747,7 +751,7 @@ refreshValueFrom: model
 				self redrawNeeded
 	]! !
 
-!SimpleNumberEntryMorph methodsFor: 'initialization' stamp: 'KenD 3/20/2022 08:39:35'!
+!SimpleNumberEntryMorph methodsFor: 'initialization' stamp: 'KenD 20/Mar/2022 08:39:00'!
 legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue validator: aClosureToValidate toString: aClosureForString
 
 	". the character Backspace is always allowd to permit deletion "
@@ -780,7 +784,7 @@ legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue val
 	].
 ! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 3/19/2022 15:36:26'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 19/Mar/2022 15:36:00'!
 circleDegrees
 " SimpleNumberEntryMorph circleDegrees openInWorld "
 "Answer 0..360.0 or nil"
@@ -796,7 +800,7 @@ circleDegrees
 			]
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 12/2/2013 16:23'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 2/Dec/2013 16:23:00'!
 circleDegreesExact
 	"Answer 0..360 or nil"
 
@@ -812,7 +816,7 @@ circleDegreesExact
 			]
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 11:07:17'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 17/Dec/2021 11:07:00'!
 circleDegreesInteger
 " SimpleNumberEntryMorph circleInteger openInWorld "
 "Answer 0..360 or nil"
@@ -829,7 +833,7 @@ circleDegreesInteger
 			]
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 11:07:37'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 17/Dec/2021 11:07:00'!
 circleDegreesRounded
 " SimpleNumberEntryMorph circleDegreesRounded openInWorld "
 "Answer 0..360.0 or nil"
@@ -845,7 +849,7 @@ circleDegreesRounded
 			]
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 11:09:00'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 17/Dec/2021 11:09:00'!
 hexRGBEntry
 " SimpleNumberEntryMorph hexRGBEntry openInWorld "
 "Answer 0.FFFFFF or nil"
@@ -861,7 +865,7 @@ hexRGBEntry
 			toString: [ :n |
 				n printStringBase: 16 length: 6 padded: true ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'NM 1/21/2022 16:01:57'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'NM 21/Jan/2022 16:01:00'!
 ipV4Octect
 " Can be an integer number beweeen 0 and 255.
 ---- Example --- 
@@ -880,7 +884,7 @@ SimpleNumberEntryMorph ipV4Octect openInHand
 			]
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 11:09:43'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 17/Dec/2021 11:09:00'!
 percent
 " SimpleNumberEntryMorph percent openInWorld "
 "Answer 0..100.0 or nil"
@@ -894,7 +898,7 @@ percent
 			] 
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 11/23/2013 20:01'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 23/Nov/2013 20:01:00'!
 percentExact
 	"Answer 0..100 or nil"
 
@@ -908,7 +912,7 @@ percentExact
 			] 
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 11:10:06'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'hlsf 17/Dec/2021 11:10:00'!
 percentInteger
 " SimpleNumberEntryMorph percentInteger openInWorld "
 "Answer 0..100 or nil"
@@ -923,7 +927,7 @@ percentInteger
 			] 
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 3/19/2022 15:51:35'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 19/Mar/2022 15:51:00'!
 rgbOneOf
 " SimpleNumberEntryMorph rgbOneOf openInWorld "
 "Answer 0..255 or nil"
@@ -940,13 +944,13 @@ rgbOneOf
 			]
 			toString: [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:07'!
+!SimpleNumberEntryMorph class methodsFor: 'new-morph participation' stamp: 'KenD 6/Dec/2013 19:07:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/30/2022 15:46:25'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 30/Jan/2022 15:46:00'!
 floatDefault: aReal  maxNumChars: numChars
 	"Any real number"
 	
@@ -960,7 +964,7 @@ floatDefault: aReal  maxNumChars: numChars
 		validator: [ :str |  [ str asNumber ] on: Error do: [ aReal ] ] 
 		toString:  [ :n | n printStringFractionDigits: 4 ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'hlsf 3/17/2022 17:07:32'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'hlsf 17/Mar/2022 17:07:00'!
 floatRangeFrom: min to: max maxNumChars: numChars
 	"min..max"
 
@@ -973,7 +977,7 @@ floatRangeFrom: min to: max maxNumChars: numChars
 			(val between: min and: max) ifFalse: [ nil ] ifTrue: [ val] 		] 
 		toString: [ :n | n printStringFractionDigits: 4 ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 11/23/2013 20:01'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 23/Nov/2013 20:01:00'!
 hexEntryOfSize: numChars
 	"Answer 0.FF* or nil"
 	"E.g. size = 6 for  'FFFFFF' "
@@ -988,7 +992,7 @@ hexEntryOfSize: numChars
 				ifFalse: [ nil ]]
 			toString: [ :n | n printStringHex ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/30/2022 15:39:28'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 30/Jan/2022 15:39:00'!
 integerDefault: anInteger  maxNumChars: numChars
 	"Any Integer"
 	
@@ -1002,7 +1006,7 @@ integerDefault: anInteger  maxNumChars: numChars
 			validator: [ :str |  [ str asNumber ] on: Error do: [ -1 ] ] 
 			toString:  [ :n | n printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 6/1/2020 14:52:10'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/Jun/2020 14:52:00'!
 integerRangeFrom: min to: max maxNumChars: numChars
 	"min..max"
 
@@ -1016,12 +1020,12 @@ integerRangeFrom: min to: max maxNumChars: numChars
 			] 
 			toString: [ :n | n truncated printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 11/21/2013 14:35'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 21/Nov/2013 14:35:00'!
 legalChars: entryChars numCharsToHold: nilOrInteger value: initialValue validator: aClosureToValidate toString: aClosureForString
 
 	self new legalChars: entryChars numCharsToHold: nilOrInteger value: initialValue validator: aClosureToValidate toString: aClosureForString! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 12/15/2013 19:57'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 15/Dec/2013 19:57:00'!
 percentForFixedFactor: factorMax
 	"Entry and display as 0..100; internal value as 0.0..factorMax
 	where factorMax is an integer."
@@ -1041,7 +1045,7 @@ percentForFixedFactor: factorMax
 			] 
 			toString: [ :n | (n * ratio) rounded printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 12/15/2013 19:58'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 15/Dec/2013 19:58:00'!
 percentForRealFactor: factorMax
 	"Entry and display as 0..100; internal value as 0.0..factorMax
 	where factorMax is a float."
@@ -1061,7 +1065,7 @@ percentForRealFactor: factorMax
 			] 
 			toString: [ :n | (n * ratio) rounded printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:25:16'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 11/Jan/2022 14:25:00'!
 positiveFloatDefault: aReal  maxNumChars: numChars
 	"Any real number"
 	
@@ -1075,7 +1079,7 @@ positiveFloatDefault: aReal  maxNumChars: numChars
 		validator: [ :str |  [ str asNumber ] on: Error do: [ aReal ] ] 
 		toString:  [ :n | n printStringFractionDigits: 4 ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 12/16/2013 17:08'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 16/Dec/2013 17:08:00'!
 realFactor: factorMax
 	"0.0..factorMax
 	where factorMax is a float."
@@ -1090,7 +1094,7 @@ realFactor: factorMax
 			] 
 			toString: [ :n | n asFloat printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 12/16/2013 17:09'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 16/Dec/2013 17:09:00'!
 realFactor: factorMax maxNumChars: numChars
 	"0.0..factorMax
 	where factorMax is a float."
@@ -1105,7 +1109,7 @@ realFactor: factorMax maxNumChars: numChars
 			] 
 			toString: [ :n | n asFloat printString ]! !
 
-!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 3/20/2022 15:59:57'!
+!SimpleNumberEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 20/Mar/2022 15:59:00'!
 singleCharSelection: aChar
 	"Really a character editor"
 
@@ -1118,22 +1122,22 @@ singleCharSelection: aChar
 			validator: [ :str | str  ]
 			toString: [ :c | c asString ]! !
 
-!String methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:31:40'!
+!String methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:31:00'!
 asTextEmphasis
 
 	^ TextEmphasis fromChoiceString: self! !
 
-!String methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:31:50'!
+!String methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:31:00'!
 asTextEmphasisCode
 
 	^ TextEmphasis codeForChoice: self! !
 
-!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:38:38'!
+!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:38:00'!
 choices
 
 	^ #(leftFlush rightFlush centered justified)! !
 
-!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:38:43'!
+!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:38:00'!
 codeForChoice: aStringOrSymbol
 	"On error, answer 0 as the default value, else index - 1"
 "	
@@ -1141,12 +1145,12 @@ codeForChoice: aStringOrSymbol
 "
 	^ (self choices indexOf: aStringOrSymbol asSymbol ifAbsent: [ 1 ]) - 1! !
 
-!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:38:49'!
+!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:38:00'!
 fromChoiceString: aStringOrSymbol
 
 	^self new alignment: (self codeForChoice: aStringOrSymbol)! !
 
-!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:41:04'!
+!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:41:00'!
 fromUser
 "
    self fromUser inspect.
@@ -1154,7 +1158,7 @@ fromUser
 
 	^ self fromUser: 0! !
 
-!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:39:28'!
+!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:39:00'!
 fromUser: defaultChoiceCode
 	"Put up a menu and answer an instance of me"
 "
@@ -1176,31 +1180,31 @@ fromUser: defaultChoiceCode
 	^ self perform: (aMenu valueOfProperty: #resultValue
 									 ifAbsent: [ self stringForCode: defaultChoiceCode ])! !
 
-!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:39:23'!
+!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:39:00'!
 privateSetResult: aResult inMorph: aMenuMorph
 	"Used by self>>fromUser: to let a MenuMorph transmit the result"
 
 	aMenuMorph setProperty: #resultValue toValue: aResult ! !
 
-!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:39:13'!
+!TextAlignment class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:39:00'!
 stringForCode: alignmentCode
 "
 	self stringForCode: 3.
 "
 	^ self choices at: alignmentCode + 1 ifAbsent: [ self leftFlush ]! !
 
-!TextEmphasis methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:29:48'!
+!TextEmphasis methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:29:00'!
 asUIString
 	"Return a string for UI text display"
 	
 	^ self class stringForCode: self emphasisCode! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/9/2022 11:01:53'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 9/Dec/2022 11:01:00'!
 choices
 
 	^ #(normal bold italic underline struckThrough superscript subscript) "withST80Glyphs"! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:28:07'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:28:00'!
 codeForChoice: aStringOrSymbol
 	"Take emphasis choices and return a code.
 	e.g. 'bold+italic' -> 3"
@@ -1217,19 +1221,19 @@ codeForChoice: aStringOrSymbol
 				into: [:sum :choice | sum + (self privateCodeForChoice: choice) ]
 	! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:28:17'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:28:00'!
 fromChoiceString: aStringOrSymbol
 	"Answer an instance of me"
 	
 	^ self new emphasisCode: (self codeForChoice: aStringOrSymbol)! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:28:24'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:28:00'!
 fromUser
 
 	^ self fromUser: 0
 	! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:28:55'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:28:00'!
 fromUser: defaultChoiceCode
 	"Put up a menu and answer an instance of me"
 "
@@ -1242,7 +1246,7 @@ fromUser: defaultChoiceCode
 							title: 'Text Emphasis') invokeModal. 
 	^ self new emphasisCode: emphasisCode ! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/9/2022 13:35:58'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 9/Dec/2022 13:35:00'!
 privateCodeForChoice: aStringOrSymbol
 	"Take emphasis choice and return a code.  E.g. 'bold' -> 1
 	Here, a multi-choice, like  'bold+italic', is an error.
@@ -1258,7 +1262,7 @@ privateCodeForChoice: aStringOrSymbol
 		
 	! !
 
-!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 12/13/2021 15:28:43'!
+!TextEmphasis class methodsFor: '*ui-entry' stamp: 'KenD 13/Dec/2021 15:28:00'!
 stringForCode: emphasisCode
 	"Answer combined choices with $+.
 	E.g. 3 -> 'bold+italic' "

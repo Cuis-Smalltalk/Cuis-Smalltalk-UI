@@ -1,9 +1,9 @@
-'From Cuis7.5 [latest update: #7663] on 19 October 2025 at 12:04:48 pm'!
+'From Cuis7.5 [latest update: #7734] on 1 December 2025 at 2:34:30 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 137!
-!requires: 'Cuis-Base' 75 7262 nil!
-!requires: 'UI-Core' 1 18 nil!
+!provides: 'UI-Panel' 1 138!
+!requires: 'Cuis-Base' 75 7734 nil!
+!requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
 SystemOrganization addCategory: #'UI-Panel'!
 
@@ -349,7 +349,7 @@ It emits event when
 See WizardPanel.
 I am a model of page to add to a WizardPanel.!
 
-!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 9/30/2023 17:15:02'!
+!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 30/Sep/2023 17:15:00'!
 initialize
 	super initialize.
 	navBar := LayoutMorph newRow.
@@ -358,7 +358,7 @@ initialize
 	self adoptWidgetsColor: self defaultBorderColor 
 ! !
 
-!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 6/30/2023 21:42:58'!
+!BreadcrumbsPane methodsFor: 'initialization' stamp: 'hlsf 30/Jun/2023 21:42:00'!
 root: anObject
 	root := anObject.
 	navBar removeAllMorphs;
@@ -366,12 +366,12 @@ root: anObject
 	self addMorph: (anObject accept: viewer new).
 	! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/3/2023 11:59:21'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 3/Jul/2023 11:59:00'!
 browseTo: anObject
 	self replaceViewWith: anObject.
 	navBar addMorph: (self sliceButtonFor: anObject).! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/6/2023 21:45:26'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/Jun/2023 21:45:00'!
 removeSliceButtonsAfter: aNavButton
 " Search for the navButtons coming after aNavButton, then remove them from the navBar "
 	| toDelete |
@@ -379,7 +379,7 @@ removeSliceButtonsAfter: aNavButton
 	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
 	navBar removeAllMorphsIn: toDelete! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/13/2023 09:24:29'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 13/Jul/2023 09:24:00'!
 replaceView: aView byView: anotherView
 " Replace a view in the pane with another viewer and shrink the panel "
 	aView releaseActionMap.
@@ -387,12 +387,12 @@ replaceView: aView byView: anotherView
 	self morphExtent: self minimumExtent.
 	self adoptWidgetsColor: self defaultBorderColor ! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/2/2023 13:03:09'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 2/Jul/2023 13:03:00'!
 replaceViewWith: anObject
 "Replace the main view in the pane with the viewer of the given object"
 	self replaceView: submorphs first byView: (anObject accept: viewer new)! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 7/19/2025 12:59:38'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 19/Jul/2025 12:59:00'!
 sliceButtonFor: anObject
 " A navigation button to browse anObject "
 	| navButton |
@@ -406,80 +406,80 @@ sliceButtonFor: anObject
 	navButton adoptWidgetsColor: self defaultBorderColor .
 	^ navButton! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 6/28/2023 00:10:05'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 28/Jun/2023 00:10:00'!
 updateSliceButton: button with: anObject
 	button label: anObject printString.
 	navBar layoutSubmorphs ! !
 
-!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 15:10:07'!
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 3/Jul/2023 15:10:00'!
 adoptWidgetsColor: aColor 
 	super adoptWidgetsColor: aColor.
 	color := Theme current paneBackgroundFrom: aColor.! !
 
-!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 15:09:26'!
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 3/Jul/2023 15:09:00'!
 defaultBorderColor
 	^ Theme current transcript! !
 
-!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 15:09:08'!
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 3/Jul/2023 15:09:00'!
 defaultColor
 	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
-!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 6/26/2023 22:08:13'!
+!BreadcrumbsPane methodsFor: 'accessing' stamp: 'hlsf 26/Jun/2023 22:08:00'!
 viewer: aViewerVisitorClass
 	viewer := aViewerVisitorClass! !
 
-!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 6/30/2023 21:43:23'!
+!BreadcrumbsPane class methodsFor: 'instance creation' stamp: 'hlsf 30/Jun/2023 21:43:00'!
 on: anObject with: viewerVisitorClass
 	^ self newColumn 
 		viewer: viewerVisitorClass ;
 		root: anObject ;		
 		yourself! !
 
-!BreadcrumbsPane class methodsFor: 'new-morph participation' stamp: 'hlsf 1/9/2025 20:37:37'!
+!BreadcrumbsPane class methodsFor: 'new-morph participation' stamp: 'hlsf 9/Jan/2025 20:37:00'!
 includeInNewMorphMenu
 	^ false! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 7/3/2023 00:11:54'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 3/Jul/2023 00:11:00'!
 adoptWidgetsColor: aColor 
 	super adoptWidgetsColor: aColor.
 	color := Theme current paneBackgroundFrom: aColor.! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 7/1/2023 21:15:19'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 1/Jul/2023 21:15:00'!
 contents: aPane
 	self addMorphUseAll: aPane.
 	self adoptWidgetsColor: self defaultBorderColor ! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/6/2023 09:58:02'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 6/May/2023 09:58:00'!
 elasticMorph
 	"The elastic morph between the title and the quickbuttons "
 	^ self topRow submorphs second! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 11:53:49'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 29/May/2023 11:53:00'!
 label: aString
 	label contents: aString ! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/30/2023 19:09:46'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 30/May/2023 19:09:00'!
 quickButtons
 	^ quickButtons! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/29/2023 12:34:40'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 29/May/2023 12:34:00'!
 quickButtons: collection
 	quickButtons removeAllMorphs.
 	collection ifNotNil: [ collection do: [:aButton | quickButtons addMorph: aButton ] ]! !
 
-!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 21:47:33'!
+!DecoratedPane methodsFor: 'accessing' stamp: 'hlsf 4/May/2023 21:47:00'!
 topRow
 	^ submorphs last! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 15:45:05'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 29/May/2023 15:45:00'!
 defaultBorderColor
 	^ Theme current transcript! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 15:55:26'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 29/May/2023 15:55:00'!
 defaultColor
 	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 9/12/2024 11:25:43'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 12/Sep/2024 11:25:00'!
 initialize
 	| row |
 	super initialize.	
@@ -495,11 +495,11 @@ initialize
 		addMorph: quickButtons layoutSpec: (LayoutSpec proportionalWidth: 0 proportionalHeight: 0) .
 	self 	addMorph: row layoutSpec: (LayoutSpec proportionalHeight: 0)! !
 
-!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 5/29/2023 15:47:27'!
+!DecoratedPane methodsFor: 'initialization' stamp: 'hlsf 29/May/2023 15:47:00'!
 textBackgroundColor
 	^Theme current paneBackgroundFrom: borderColor ! !
 
-!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 9/12/2024 10:45:23'!
+!DecoratedPane methodsFor: 'drawing' stamp: 'hlsf 12/Sep/2024 10:45:00'!
 drawOn: canvas
 	|  startPosition endPosition |
 	endPosition := self topRow morphPosition + (0 @ self topRow morphExtent y / 2).
@@ -518,17 +518,17 @@ drawOn: canvas
 			lineToY: endPosition y + (padding y / 2);
 			rel_ArcTo: padding * (-1@1) / -2  radius: padding / 2  angleOfXAxis: 0 largeFlag: false sweepFlag: true]! !
 
-!DecoratedPane methodsFor: 'geometry testing' stamp: 'hlsf 5/4/2023 21:32:35'!
+!DecoratedPane methodsFor: 'geometry testing' stamp: 'hlsf 4/May/2023 21:32:00'!
 requiresVectorCanvas
 	^ true! !
 
-!DecoratedPane methodsFor: 'geometry' stamp: 'jmv 1/7/2025 11:53:33'!
+!DecoratedPane methodsFor: 'geometry' stamp: 'jmv 7/Jan/2025 11:53:00'!
 morphExtent: newExtent
 	super morphExtent: newExtent.
 	"Hack. This BoxMorph is drawing outside its bounds."
 	self redrawNeeded! !
 
-!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 5/3/2025 09:15:32'!
+!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 3/May/2025 09:15:00'!
 example1
 "
 	self example1 openInWorld
@@ -550,7 +550,7 @@ example1
 		label: 'A Label for the Pane'
 		quickButtons: buttons! !
 
-!DecoratedPane class methodsFor: 'examples' stamp: 'KenD 7/17/2024 15:01:27'!
+!DecoratedPane class methodsFor: 'examples' stamp: 'KenD 17/Jul/2024 15:01:00'!
 example2
 "
 	self example2 openInWorld
@@ -564,19 +564,19 @@ example2
 		borderColor: Color orange;
 		morphExtent: 265@275.! !
 
-!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 1/9/2025 20:40:42'!
+!DecoratedPane class methodsFor: 'examples' stamp: 'hlsf 9/Jan/2025 20:40:00'!
 initializedInstance
 	^ self example1! !
 
-!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/4/2023 19:42:24'!
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 4/May/2023 19:42:00'!
 new
 	^ self newColumn ! !
 
-!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 5/29/2023 14:38:05'!
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 29/May/2023 14:38:00'!
 open: aPane label: aString
 	^ self open: aPane label: aString quickButtons: nil! !
 
-!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 6/13/2023 20:46:28'!
+!DecoratedPane class methodsFor: 'instance creation' stamp: 'hlsf 13/Jun/2023 20:46:00'!
 open: aPane label: aString quickButtons: aCollection
 	| pane |
 	pane := self new
@@ -585,27 +585,27 @@ open: aPane label: aString quickButtons: aCollection
 		contents: aPane.
 	^ pane! !
 
-!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/13/2025 10:35:41'!
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 13/Feb/2025 10:35:00'!
 flap
 	^ flap! !
 
-!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/13/2025 10:35:07'!
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 13/Feb/2025 10:35:00'!
 flap: aFlap
 	flap := aFlap ! !
 
-!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 09:48:38'!
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 9/Feb/2025 09:48:00'!
 imageMorph
 	^ submorphs last! !
 
-!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 12:00:55'!
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 9/Feb/2025 12:00:00'!
 target
 	^ target! !
 
-!FlapItem methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 12:01:03'!
+!FlapItem methodsFor: 'accessing' stamp: 'hlsf 9/Feb/2025 12:01:00'!
 target: aMoprh
 	target := aMoprh ! !
 
-!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/13/2025 10:39:45'!
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 13/Feb/2025 10:39:00'!
 aboutToBeGrabbedBy: aMorph
 " I am still owned by my flap, request it the target I am destinated for "
 	^ FlapItem object: object image: self imageMorph form ::
@@ -615,58 +615,58 @@ aboutToBeGrabbedBy: aMorph
 			borderColor: borderColor;
 			borderWidth: 1! !
 
-!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 17:59:08'!
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 9/Feb/2025 17:59:00'!
 justDroppedInto: aTarget event: aDropEvent.
 	self delete! !
 
-!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 11:49:06'!
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 9/Feb/2025 11:49:00'!
 rejectDropMorphEvent: dropEvent
 	self hide; delete.
 	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
 ! !
 
-!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 2/9/2025 18:16:47'!
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 9/Feb/2025 18:16:00'!
 wantsToBeDroppedInto: aMorph
 " This is the siblling attached to the hand morph, use the target atttribute "
 	^ aMorph class = target! !
 
-!FlapItem methodsFor: 'testing' stamp: 'hlsf 2/9/2025 18:13:32'!
+!FlapItem methodsFor: 'testing' stamp: 'hlsf 9/Feb/2025 18:13:00'!
 is: aSymbol
 	^ aSymbol == #FlapItem or: [ super is: aSymbol ]! !
 
-!Flap methodsFor: 'initialization' stamp: 'hlsf 2/9/2025 09:05:25'!
+!Flap methodsFor: 'initialization' stamp: 'hlsf 9/Feb/2025 09:05:00'!
 defaultBorderColor
 	^ Color pink! !
 
-!Flap methodsFor: 'initialization' stamp: 'hlsf 2/7/2025 21:18:11'!
+!Flap methodsFor: 'initialization' stamp: 'hlsf 7/Feb/2025 21:18:00'!
 defaultBorderWidth
 	^ 2! !
 
-!Flap methodsFor: 'initialization' stamp: 'hlsf 2/5/2025 22:28:34'!
+!Flap methodsFor: 'initialization' stamp: 'hlsf 5/Feb/2025 22:28:00'!
 defaultPadding
 	^ `8@8`! !
 
-!Flap methodsFor: 'initialization' stamp: 'hlsf 9/10/2025 16:15:00'!
+!Flap methodsFor: 'initialization' stamp: 'hlsf 10/Sep/2025 16:15:00'!
 initialize
 	super initialize.
 	self borderColor: self defaultBorderColor.
 	folded := true! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 00:12:02'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 6/Feb/2025 00:12:00'!
 borderColor: aColor
 	color := aColor luminance > 0.5 ifTrue: [Color black] ifFalse: [Color white].
 	super borderColor: aColor ! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 11:16:15'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 6/Feb/2025 11:16:00'!
 color: aColor
 " Label color is automatically set. See #borderColor: "! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/7/2025 21:57:18'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 7/Feb/2025 21:57:00'!
 fillColor
 
 	^ borderColor twiceLighter! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/13/2025 10:35:33'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 13/Feb/2025 10:35:00'!
 objects: placedMorphs
 	objects := placedMorphs collect: [:each |
 		FlapItem 
@@ -679,15 +679,15 @@ objects: placedMorphs
 			adoptWidgetsColor: borderColor;
 			borderWidth: 1]! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 11:53:53'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 9/Feb/2025 11:53:00'!
 target
 	^ target! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 11:53:44'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 9/Feb/2025 11:53:00'!
 target: aMorph
 	target := aMorph ! !
 
-!Flap methodsFor: 'drawing' stamp: 'hlsf 2/7/2025 21:57:18'!
+!Flap methodsFor: 'drawing' stamp: 'hlsf 7/Feb/2025 21:57:00'!
 drawOn: aCanvas
 	| pen control inExtent halfBorder |
 	halfBorder := borderWidth / 2.0.
@@ -722,21 +722,21 @@ drawOn: aCanvas
 		color: color.
 ! !
 
-!Flap methodsFor: 'geometry testing' stamp: 'hlsf 2/5/2025 22:50:05'!
+!Flap methodsFor: 'geometry testing' stamp: 'hlsf 5/Feb/2025 22:50:00'!
 requiresVectorCanvas
 	^ true ! !
 
-!Flap methodsFor: 'events' stamp: 'hlsf 2/7/2025 22:13:28'!
+!Flap methodsFor: 'events' stamp: 'hlsf 7/Feb/2025 22:13:00'!
 mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 	self comeToFront.
 	panel ifNotNil: [panel comeToFront ]! !
 
-!Flap methodsFor: 'events' stamp: 'hlsf 2/7/2025 18:56:56'!
+!Flap methodsFor: 'events' stamp: 'hlsf 7/Feb/2025 18:56:00'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	prevPosition ifNil: [self toggleFolded].
 	prevPosition := nil! !
 
-!Flap methodsFor: 'events' stamp: 'hlsf 9/23/2025 18:00:50'!
+!Flap methodsFor: 'events' stamp: 'hlsf 23/Sep/2025 18:00:00'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
 	aMouseMoveEvent anyButtonPressed ifFalse: [ ^ self ].
 	prevPosition ifNotNil: [
@@ -747,26 +747,26 @@ mouseMove: aMouseMoveEvent localPosition: localEventPosition
 			ifFalse: [self translateWith: delta] ].
 	prevPosition := aMouseMoveEvent eventPosition! !
 
-!Flap methodsFor: 'event handling testing' stamp: 'hlsf 2/7/2025 17:15:25'!
+!Flap methodsFor: 'event handling testing' stamp: 'hlsf 7/Feb/2025 17:15:00'!
 handlesMouseDown: mouseButtonEvent
 	^ true! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/9/2025 17:40:34'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 9/Feb/2025 17:40:00'!
 fold
 	folded := true.
 	panel ifNotNil: [ panel delete].
 	panel := nil.
 	self repositionning ! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/17/2025 23:28:06'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 17/Feb/2025 23:28:00'!
 repositionning
 	self translateWith: 0@-200! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/7/2025 21:37:37'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 7/Feb/2025 21:37:00'!
 toggleFolded
 	folded ifTrue: [self unfold] ifFalse: [self fold]! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 9/10/2025 16:12:03'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 10/Sep/2025 16:12:00'!
 translateWith: aVector
 	| newPosition |
 	newPosition :=(folded 
@@ -778,7 +778,7 @@ translateWith: aVector
 			morphPosition: 0@ (self morphPosition y + self morphHeight - borderWidth);
 			morphExtent: owner morphWidth @ (owner morphHeight - self morphPosition y - self morphHeight + (borderWidth / 2.0))]! !
 
-!Flap methodsFor: 'flap ops' stamp: 'hlsf 2/17/2025 23:27:28'!
+!Flap methodsFor: 'flap ops' stamp: 'hlsf 17/Feb/2025 23:27:00'!
 unfold
 	folded := false.
 	panel := FlowLayoutMorph new.
@@ -794,22 +794,22 @@ unfold
 	self repositionning 
 	! !
 
-!Flap methodsFor: 'menu' stamp: 'hlsf 2/9/2025 08:59:30'!
+!Flap methodsFor: 'menu' stamp: 'hlsf 9/Feb/2025 08:59:00'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
 
 	super addCustomMenuItems: aCustomMenu hand: aHandMorph.
 	aCustomMenu add: 'close definitely' action: #delete! !
 
-!Flap methodsFor: 'submorphs-add/remove' stamp: 'hlsf 2/9/2025 09:00:52'!
+!Flap methodsFor: 'submorphs-add/remove' stamp: 'hlsf 9/Feb/2025 09:00:00'!
 delete
 	super delete.
 	panel ifNotNil: [panel delete]! !
 
-!Flap methodsFor: 'testing' stamp: 'hlsf 2/9/2025 17:36:25'!
+!Flap methodsFor: 'testing' stamp: 'hlsf 9/Feb/2025 17:36:00'!
 is: aSymbol
 	^ aSymbol == #Flap or: [super is: aSymbol ]! !
 
-!Flap methodsFor: 'submorphs-accessing' stamp: 'hlsf 9/10/2025 16:49:06'!
+!Flap methodsFor: 'submorphs-accessing' stamp: 'hlsf 10/Sep/2025 16:49:00'!
 noteNewOwner: newOwner
 " if any flaps already installed, ovoid flaps occlusion "
 	| flaps maxX|
@@ -818,15 +818,15 @@ noteNewOwner: newOwner
 	self morphPosition: maxX @ 0.
 	owner isWorldMorph ifTrue: [self repositionning]! !
 
-!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 9/13/2025 21:12:35'!
+!Flap methodsFor: 'as yet unclassified' stamp: 'hlsf 13/Sep/2025 21:12:00'!
 aboutToBeGrabbedBy: aHand
 	^ nil! !
 
-!Flap class methodsFor: 'new-morph participation' stamp: 'hlsf 2/6/2025 10:20:06'!
+!Flap class methodsFor: 'new-morph participation' stamp: 'hlsf 6/Feb/2025 10:20:00'!
 includeInNewMorphMenu
 	^ false! !
 
-!Flap class methodsFor: 'instance creation' stamp: 'hlsf 2/7/2025 19:07:25'!
+!Flap class methodsFor: 'instance creation' stamp: 'hlsf 7/Feb/2025 19:07:00'!
 label: aString emphasis: emphasis objects: placedMorphs
 	| flap |
 	flap := self contents: aString font: nil emphasis: emphasis.
@@ -835,12 +835,12 @@ label: aString emphasis: emphasis objects: placedMorphs
 	
 ! !
 
-!Flap class methodsFor: 'instance creation' stamp: 'hlsf 2/7/2025 19:07:57'!
+!Flap class methodsFor: 'instance creation' stamp: 'hlsf 7/Feb/2025 19:07:00'!
 label: aString objects: placedMorphs
 	^ self label: aString emphasis: 0 objects: placedMorphs 
 ! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 9/10/2025 16:08:52'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 10/Sep/2025 16:08:00'!
 example1
 "
 	self example1
@@ -856,7 +856,7 @@ example1
 	^ flap
 	! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 9/10/2025 16:08:57'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 10/Sep/2025 16:08:00'!
 example2
 "
 	self example2
@@ -871,7 +871,7 @@ example2
 	^flap
 	! !
 
-!Flap class methodsFor: 'examples' stamp: 'hlsf 9/10/2025 14:52:44'!
+!Flap class methodsFor: 'examples' stamp: 'hlsf 10/Sep/2025 14:52:00'!
 example3
 "
 	self example1 borderColor: Color blue. 
@@ -879,19 +879,19 @@ example3
 "
 " The two flaps are installed side by side and do not not overlap "! !
 
-!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:11:57'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 6/Feb/2025 11:11:00'!
 defaultBorderColor
 	^ Theme current transcript! !
 
-!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 11:11:46'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 6/Feb/2025 11:11:00'!
 defaultColor
 	^Theme current paneBackgroundFrom: self defaultBorderColor ! !
 
-!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 2/6/2025 12:01:07'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 6/Feb/2025 12:01:00'!
 defaultExtent
 	^ `400@300`! !
 
-!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 4/22/2025 00:13:33'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 22/Apr/2025 00:13:00'!
 initialize
 	super initialize.
 	self alwaysHideHorizontalScrollbar.
@@ -901,7 +901,7 @@ initialize
 	self layoutSpec: LayoutSpec useAll;
 		scroller: (LayoutMorph newColumn color: Color transparent)! !
 
-!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 4/21/2025 23:55:29'!
+!FlowLayoutMorph methodsFor: 'initialization' stamp: 'hlsf 21/Apr/2025 23:55:00'!
 newRow
 	| row |
 	row := ​ LayoutMorph newRow :: 
@@ -911,27 +911,27 @@ newRow
 	^ row
 	! !
 
-!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 4/22/2025 00:15:01'!
+!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 22/Apr/2025 00:15:00'!
 align: symbol
 " how to align vertically the cells in each row.
 Possible value: #rowTop #center #rowBottom "
 	alignment := symbol ! !
 
-!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 2/9/2025 08:40:16'!
+!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 9/Feb/2025 08:40:00'!
 allowsDrag
 	allowsSubmorphDrag := true! !
 
-!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:23:31'!
+!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 6/Feb/2025 20:23:00'!
 cells: morphs
 	cells := morphs.	
 	self updateLayout! !
 
-!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 2/6/2025 20:20:23'!
+!FlowLayoutMorph methodsFor: 'accessing' stamp: 'hlsf 6/Feb/2025 20:20:00'!
 gap
 " Gap between two previews in a row "
 	^ 12	! !
 
-!FlowLayoutMorph methodsFor: 'layout' stamp: 'hlsf 4/22/2025 00:15:17'!
+!FlowLayoutMorph methodsFor: 'layout' stamp: 'hlsf 22/Apr/2025 00:15:00'!
 updateLayout
 	| tableWidth leftSpace row |
 	tableWidth := self viewableWidth.
@@ -949,12 +949,12 @@ updateLayout
 			layoutSpec: (cell layoutSpec offAxisEdgeWeight: alignment).
 		leftSpace := leftSpace - w - self gap]! !
 
-!FlowLayoutMorph methodsFor: 'geometry' stamp: 'hlsf 2/6/2025 20:06:44'!
+!FlowLayoutMorph methodsFor: 'geometry' stamp: 'hlsf 6/Feb/2025 20:06:00'!
 extentChanged: oldExtent	
 	self updateLayout.
 	super extentChanged: oldExtent.! !
 
-!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 2/13/2025 20:16:55'!
+!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 13/Feb/2025 20:16:00'!
 example1
 "
 	self example1
@@ -967,7 +967,7 @@ example1
 			color: Color random)].
 	flow cells: cells! !
 
-!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 2/13/2025 20:18:38'!
+!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 13/Feb/2025 20:18:00'!
 example2
 " 	Non working example because the added moprhs are not kind of boxed morph, 
 	those need an intermediate morph to pack in
@@ -980,7 +980,7 @@ example2
 	10 timesRepeat: [ cells add: (Sample09Clock new scale:  Random next + 0.2)].
 	flow cells: cells! !
 
-!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 2/13/2025 20:18:53'!
+!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 13/Feb/2025 20:18:00'!
 example3
 "
     self example3
@@ -1002,36 +1002,39 @@ example3
 
     flow cells: cells! !
 
-!PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 8/26/2015 12:27'!
+!PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 1/Dec/2025 13:54:00'!
 fontPreferenceChanged
-
+	| buttonExtent |
+	
+	buttonExtent := Theme current scrollbarThickness - 2.
 	super fontPreferenceChanged.
-	slider morphExtent: self buttonExtent @ self buttonExtent.! !
+	slider morphExtent: (buttonExtent @ buttonExtent).! !
 
-!PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 11/26/2013 21:12'!
+!PluggableScrollBar methodsFor: 'initialization' stamp: 'KenD 1/Dec/2025 13:52:00'!
 initialize
-
+	| buttonExtent |
+	buttonExtent := Theme current scrollbarThickness - 2.
 	super initialize.
-	slider morphExtent: self buttonExtent @ self buttonExtent.! !
+	slider morphExtent:  (buttonExtent @ buttonExtent).! !
 
-!PluggableScrollBar methodsFor: 'accessing' stamp: 'KenD 11/25/2013 18:44'!
+!PluggableScrollBar methodsFor: 'accessing' stamp: 'KenD 25/Nov/2013 18:44:00'!
 model: thang setValueSelector: setValueSym refreshValueSelector: getValueSym
 
 	model := thang.
 	setValueSelector := setValueSym.
 	refreshValueSelector := getValueSym ! !
 
-!PluggableScrollBar methodsFor: 'accessing' stamp: 'KenD 2/8/2022 17:40:04'!
+!PluggableScrollBar methodsFor: 'accessing' stamp: 'KenD 8/Feb/2022 17:40:00'!
 value
 	
 	^value! !
 
-!PluggableScrollBar methodsFor: 'accessing' stamp: 'KenD 2/8/2022 17:38:53'!
+!PluggableScrollBar methodsFor: 'accessing' stamp: 'KenD 8/Feb/2022 17:38:00'!
 value: zeroToOne
 
 	value := zeroToOne min: 1.0 max: 0.0! !
 
-!PluggableScrollBar methodsFor: 'model access' stamp: 'KenD 2/8/2022 07:47:53'!
+!PluggableScrollBar methodsFor: 'model access' stamp: 'KenD 8/Feb/2022 07:47:00'!
 refreshValueFromModel
 	"Called externally to reset value from model"
 
@@ -1041,17 +1044,13 @@ refreshValueFromModel
 			computeSlider.
 	]! !
 
-!PluggableScrollBar methodsFor: 'as yet unclassified' stamp: 'hlsf 7/20/2024 22:15:02'!
-sliderSlack
-	^self buttonExtent // 15! !
-
-!PluggableScrollBar class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:06'!
+!PluggableScrollBar class methodsFor: 'new-morph participation' stamp: 'KenD 6/Dec/2013 19:06:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
 
-!Panel methodsFor: 'printing' stamp: 'KenD 4/24/2015 16:04'!
+!Panel methodsFor: 'printing' stamp: 'KenD 24/Apr/2015 16:04:00'!
 printOn: aStream 
 
 	super printOn: aStream.
@@ -1060,19 +1059,19 @@ printOn: aStream
 		print: self label;
 		nextPutAll: ')'! !
 
-!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 12/9/2013 16:44'!
+!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 9/Dec/2013 16:44:00'!
 addMorph: aMorph 
 	"Add a submorph to our client area."
 
 	layoutMorph addMorph: aMorph! !
 
-!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 12/9/2013 16:44'!
+!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 9/Dec/2013 16:44:00'!
 addMorph: aMorph layoutSpec: aLayoutSpec
 	"Add a submorph to our client area."
 
 	layoutMorph addMorph: aMorph layoutSpec: aLayoutSpec! !
 
-!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 12/18/2013 19:36'!
+!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 18/Dec/2013 19:36:00'!
 replaceArea: oldArea with: newArea
 	"Replace oldArea in its container with newArea and clean up any ActionMaps"
 	
@@ -1086,7 +1085,7 @@ replaceArea: oldArea with: newArea
 
 ! !
 
-!Panel methodsFor: 'drawing' stamp: 'KenD 9/5/2020 14:04:08'!
+!Panel methodsFor: 'drawing' stamp: 'KenD 5/Sep/2020 14:04:00'!
 addPossiblyUncoveredAreasIn: aRectangle to: aCollection
 	"Answer an array of rectangles encompassing those areas in aRectangle not completely
 	covered by self. These are the areas that might require further drawing (of morphs below us)
@@ -1111,7 +1110,7 @@ addPossiblyUncoveredAreasIn: aRectangle to: aCollection
 	r _ Theme current roundedWindowRadius.
 	aRectangle areasOutside: (self displayBounds insetBy: 0@r) do: [ :rr |  aCollection add: rr ]! !
 
-!Panel methodsFor: 'drawing' stamp: 'KenD 12/9/2013 17:08'!
+!Panel methodsFor: 'drawing' stamp: 'KenD 9/Dec/2013 17:08:00'!
 drawClassicFrameOn: aCanvas color: titleColor
 	"Window border encompasses title area. No round corners. No title gradient."
 
@@ -1121,7 +1120,7 @@ drawClassicFrameOn: aCanvas color: titleColor
 	The look is that the title area is inside the window"
 	aCanvas fillRectangle: (borderWidth@borderWidth extent: extent x - (2*borderWidth)@ self labelHeight) color: titleColor! !
 
-!Panel methodsFor: 'drawing' stamp: 'jmv 1/7/2025 11:48:37'!
+!Panel methodsFor: 'drawing' stamp: 'jmv 7/Jan/2025 11:48:00'!
 drawOn: aCanvas
 
 	| titleColor |
@@ -1135,7 +1134,7 @@ drawOn: aCanvas
 			"No round corners. No title gradient."
 			self drawClassicFrameOn: aCanvas color: titleColor ].! !
 
-!Panel methodsFor: 'drawing' stamp: 'hlsf 3/23/2023 10:40:08'!
+!Panel methodsFor: 'drawing' stamp: 'hlsf 23/Mar/2023 10:40:00'!
 drawRoundedFrameOn: aCanvas color: theUIsColor
 	"Title area is not inside window borders"
 	aCanvas
@@ -1146,7 +1145,7 @@ drawRoundedFrameOn: aCanvas color: theUIsColor
 		insideColor: color 
 		labelHeight: self labelHeight + borderWidth! !
 
-!Panel methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:39:01'!
+!Panel methodsFor: 'drawing' stamp: 'hlsf 2/Sep/2024 19:39:00'!
 makeMeFullyVisible 
 
 	self world morphExtent > (0@0) ifFalse: [^ self].
@@ -1156,7 +1155,7 @@ makeMeFullyVisible
 
 	self morphPosition: (RealEstateAgent initialFrameFor: self initialExtent: self extentInWorld world: self world) topLeft! !
 
-!Panel methodsFor: 'drawing' stamp: 'KenD 12/9/2013 17:08'!
+!Panel methodsFor: 'drawing' stamp: 'KenD 9/Dec/2013 17:08:00'!
 makeMeVisible 
 
 	self world morphExtent > (0@0) ifFalse: [^ self].
@@ -1167,7 +1166,7 @@ makeMeVisible
 	"window not on screen (probably due to reframe) -- move it now"
 	self morphPosition: (RealEstateAgent initialFrameFor: self initialExtent: extent world: self world) topLeft! !
 
-!Panel methodsFor: 'layout' stamp: 'KenD 12/9/2013 16:46'!
+!Panel methodsFor: 'layout' stamp: 'KenD 9/Dec/2013 16:46:00'!
 beColumn
 	layoutMorph
 		ifNotNil: [ layoutMorph beColumn ]
@@ -1175,7 +1174,7 @@ beColumn
 			layoutMorph _ LayoutMorph newColumn.
 			self addMorphFront: layoutMorph ]! !
 
-!Panel methodsFor: 'layout' stamp: 'KenD 12/9/2013 16:46'!
+!Panel methodsFor: 'layout' stamp: 'KenD 9/Dec/2013 16:46:00'!
 beRow
 	layoutMorph
 		ifNotNil: [ layoutMorph beRow ]
@@ -1183,7 +1182,7 @@ beRow
 			layoutMorph _ LayoutMorph newRow.
 			self addMorphFront: layoutMorph ]! !
 
-!Panel methodsFor: 'layout' stamp: 'jmv 8/23/2020 20:43:06'!
+!Panel methodsFor: 'layout' stamp: 'jmv 23/Aug/2020 20:43:00'!
 layoutSubmorphs
 	"Compute a new layout of submorphs based on the given layout bounds."
 
@@ -1198,7 +1197,7 @@ layoutSubmorphs
 	
 	self layoutNeeded: false! !
 
-!Panel methodsFor: 'layout' stamp: 'jmv 1/7/2025 11:03:01'!
+!Panel methodsFor: 'layout' stamp: 'jmv 7/Jan/2025 11:03:00'!
 layoutSubmorphsIfNeeded
 	"Return self. Recompute the layout if necessary."
 
@@ -1206,7 +1205,7 @@ layoutSubmorphsIfNeeded
 		self layoutSubmorphs ].
 ! !
 
-!Panel methodsFor: 'layout' stamp: 'jmv 1/7/2025 11:30:44'!
+!Panel methodsFor: 'layout' stamp: 'jmv 7/Jan/2025 11:30:00'!
 someSubmorphPositionOrExtentChanged
 	"Some submorph changed at any nested level.
 	Must layout submorphs again."
@@ -1214,7 +1213,7 @@ someSubmorphPositionOrExtentChanged
 	super someSubmorphPositionOrExtentChanged.
 	self layoutNeeded: true.! !
 
-!Panel methodsFor: 'geometry' stamp: 'hlsf 7/3/2022 13:07:02'!
+!Panel methodsFor: 'geometry' stamp: 'hlsf 3/Jul/2022 13:07:00'!
 boxExtent
 	"answer the extent to use in all the buttons. 
 	 
@@ -1223,13 +1222,13 @@ boxExtent
 	e _ (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
-!Panel methodsFor: 'geometry' stamp: 'jmv 1/7/2025 12:02:16'!
+!Panel methodsFor: 'geometry' stamp: 'jmv 7/Jan/2025 12:02:00'!
 extentChanged: oldExtent
 	"Our extent changed. Must layout submorphs again."
 
 	self layoutNeeded: true.! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 9/15/2024 08:05:15'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 15/Sep/2024 08:05:00'!
 fitInWorld
 
 	"Try to be contained in the world; return boundingBox"
@@ -1241,7 +1240,7 @@ fitInWorld
 	self runningWorld activeHand releaseMouseFocus .
 	^boundingBox! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 8/26/2015 12:31'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 26/Aug/2015 12:31:00'!
 fontPreferenceChanged
 	"My size will have changed. "
 	
@@ -1249,7 +1248,7 @@ fontPreferenceChanged
 	self morphExtent: self minimumExtent.
 ! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 4/18/2015 20:35'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 18/Apr/2015 20:35:00'!
 labelRectangle
 	"Actually the whole label area"
 
@@ -1265,7 +1264,7 @@ labelRectangle
 	
 ! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 12/9/2013 17:05'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 9/Dec/2013 17:05:00'!
 labelRectangleForEmbossed
 	"Actually the whole label area"
 
@@ -1281,24 +1280,24 @@ labelRectangleForEmbossed
 	
 ! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 9/2/2024 19:39:16'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 2/Sep/2024 19:39:00'!
 layoutBounds
 	"Return the bounds for laying out children of the receiver"
 	"Exclude the label area"
 
 	^  (0@0 extent: self extentInOwner) insetBy: (0 @ (self labelHeight) corner: 0 @ 0)! !
 
-!Panel methodsFor: 'geometry' stamp: 'KenD 4/10/2021 08:48:50'!
+!Panel methodsFor: 'geometry' stamp: 'KenD 10/Apr/2021 08:48:00'!
 minPaneHeightForReframe
 
 	^ self boxExtent y + 10! !
 
-!Panel methodsFor: 'geometry' stamp: 'hlsf 10/19/2025 12:03:57'!
+!Panel methodsFor: 'geometry' stamp: 'hlsf 19/Oct/2025 12:03:00'!
 minPaneWidthForReframe
 
 	^ Theme current scrollbarThickness * 3! !
 
-!Panel methodsFor: 'geometry' stamp: 'hlsf 5/28/2023 21:39:03'!
+!Panel methodsFor: 'geometry' stamp: 'hlsf 28/May/2023 21:39:00'!
 minimumExtent
 	"Subclasses may want to override me"
 	
@@ -1311,12 +1310,12 @@ minimumExtent
 		@ (minTitleExtent y + minLayoutExtent y))
 	! !
 
-!Panel methodsFor: 'GUI building' stamp: 'KenD 12/9/2013 18:55'!
+!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013 18:55:00'!
 buildMorphicWindow
 
 	self subclassResponsibility ! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:24:05'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 28/May/2023 21:24:00'!
 buildTitle
 	titleMorph := WindowTitleMorph title: 'Untitled'.
 	stayUp := false. "UI push pin to change"
@@ -1326,42 +1325,42 @@ buildTitle
 		layoutSubmorphs.
 	super addMorph: titleMorph.! !
 
-!Panel methodsFor: 'GUI building' stamp: 'KenD 12/9/2013 18:42'!
+!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013 18:42:00'!
 buttonColor
 
 	^ Theme current buttonColorFrom: self widgetsColor! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 7/3/2022 13:07:12'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/Jul/2022 13:07:00'!
 defaultButtonPaneHeight
 	"Answer the user's preferred default height for new button panes."
 
 	^ (Preferences at: #standardButtonFont) lineSpacing * 14 // 8! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:17:12'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 28/May/2023 21:17:00'!
 hideButtons
 
 	self titleMorph hideAllButtons ! !
 
-!Panel methodsFor: 'GUI building' stamp: 'KenD 4/25/2015 08:45'!
+!Panel methodsFor: 'GUI building' stamp: 'KenD 25/Apr/2015 08:45:00'!
 showButtonsNamed: aSymbolCollection
 
 	self titleMorph showButtonsNamed: aSymbolCollection ! !
 
-!Panel methodsFor: 'GUI building' stamp: 'KenD 12/9/2013 18:42'!
+!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013 18:42:00'!
 textBackgroundColor
 
 	^ Theme current paneBackgroundFrom: self widgetsColor! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 7/29/2024 10:35:53'!
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 29/Jul/2024 10:35:00'!
 widgetsColor
 	^ borderColor ! !
 
-!Panel methodsFor: 'dropping/grabbing' stamp: 'KenD 9/17/2019 13:26:55'!
+!Panel methodsFor: 'dropping/grabbing' stamp: 'KenD 17/Sep/2019 13:26:00'!
 valueWhenDropped
 
 	^nil! !
 
-!Panel methodsFor: 'events' stamp: 'hlsf 7/3/2022 13:07:05'!
+!Panel methodsFor: 'events' stamp: 'hlsf 3/Jul/2022 13:07:00'!
 closeButtonClicked
 	"The user clicked on the close-box control in the window title.  For Mac users only, the Mac convention of option-click-on-close-box is obeyed if the mac option key is down."
 
@@ -1371,63 +1370,63 @@ closeButtonClicked
 	self delete  "closeBox overrides stayUp"
 ! !
 
-!Panel methodsFor: 'events' stamp: 'KenD 4/24/2015 16:45'!
+!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015 16:45:00'!
 collapseButtonClicked
 	
 	self collapse
 ! !
 
-!Panel methodsFor: 'events' stamp: 'KenD 4/24/2015 16:45'!
+!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015 16:45:00'!
 expandButtonClicked
 	
 	self expand
 ! !
 
-!Panel methodsFor: 'events' stamp: 'KenD 4/24/2015 16:46'!
+!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015 16:46:00'!
 pinButtonClicked
 	"The user clicked on the push pin. Subclasses should add actions and invoke me"
 	
 	self stayUp: true
 	! !
 
-!Panel methodsFor: 'events' stamp: 'KenD 12/9/2013 17:07'!
+!Panel methodsFor: 'events' stamp: 'KenD 9/Dec/2013 17:07:00'!
 wantsToBeDroppedInto: aMorph
 	"Return true if it's okay to drop the receiver into aMorph"
 	
 	^ aMorph isWorldMorph! !
 
-!Panel methodsFor: 'events' stamp: 'KenD 4/28/2015 13:42'!
+!Panel methodsFor: 'events' stamp: 'KenD 28/Apr/2015 13:42:00'!
 windowMenuButtonClicked
 	
 	self subclassResponsibility 
 ! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 12/29/2021 10:17:01'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 29/Dec/2021 10:17:00'!
 defaultAlignement
 
 	^ #center! !
 
-!Panel methodsFor: 'initialization' stamp: 'KenD 10/26/2021 06:57:59'!
+!Panel methodsFor: 'initialization' stamp: 'KenD 26/Oct/2021 06:57:00'!
 defaultBorderColor
 
 	^self defaultColor! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 11:25:01'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 24/Mar/2024 11:25:00'!
 defaultBorderWidth
 	"answer the default border width for the receiver"
 
 	^ Theme current windowBorderWidth ! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 12:07:59'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 24/Mar/2024 12:07:00'!
 defaultColor
 	^ Theme current defaultWindowColor ! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 12/25/2021 16:55:34'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 25/Dec/2021 16:55:00'!
 defaultSeparation
 
 	^ 10 "Pixels between controls/layouts"! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 7/29/2024 10:34:10'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 29/Jul/2024 10:34:00'!
 initialize
 	"Initialize a system window. Add label, stripes, etc., if desired"
 
@@ -1440,7 +1439,7 @@ initialize
 	
 ! !
 
-!Panel methodsFor: 'initialization' stamp: 'KenD 7/16/2024 13:58:43'!
+!Panel methodsFor: 'initialization' stamp: 'KenD 16/Jul/2024 13:58:00'!
 openInWorld
 	self morphPosition: 
 			(RealEstateAgent 
@@ -1449,27 +1448,27 @@ openInWorld
 					world: self runningWorld ) topLeft.
 	super 	openInWorld! !
 
-!Panel methodsFor: 'testing' stamp: 'KenD 12/9/2013 16:45'!
+!Panel methodsFor: 'testing' stamp: 'KenD 9/Dec/2013 16:45:00'!
 is: aSymbol
 	^ aSymbol == #Panel or: [ super is: aSymbol ]! !
 
-!Panel methodsFor: 'testing' stamp: 'KenD 12/9/2013 16:45'!
+!Panel methodsFor: 'testing' stamp: 'KenD 9/Dec/2013 16:45:00'!
 isOpaqueMorph
 	"Not really used, as we also reimplement #addPossiblyUncoveredAreasIn:to:"
 	^ (Theme current roundWindowCorners or: [ color mightBeTranslucent ]) not! !
 
-!Panel methodsFor: 'label' stamp: 'KenD 4/24/2015 15:48'!
+!Panel methodsFor: 'label' stamp: 'KenD 24/Apr/2015 15:48:00'!
 label
 
 	^ self titleMorph titleString ! !
 
-!Panel methodsFor: 'label' stamp: 'hlsf 7/3/2022 13:07:15'!
+!Panel methodsFor: 'label' stamp: 'hlsf 3/Jul/2022 13:07:00'!
 labelHeight
 	"Answer the height for the window label."
 
 	^  (Preferences at: #windowTitleFont) lineSpacing+1! !
 
-!Panel methodsFor: 'label' stamp: 'jmv 9/12/2024 12:41:43'!
+!Panel methodsFor: 'label' stamp: 'jmv 12/Sep/2024 12:41:00'!
 relabel
 
 	| newLabel |
@@ -1479,40 +1478,40 @@ relabel
 	newLabel isEmpty ifTrue: [^self].
 	self setLabel: newLabel! !
 
-!Panel methodsFor: 'label' stamp: 'KenD 4/28/2015 18:34'!
+!Panel methodsFor: 'label' stamp: 'KenD 28/Apr/2015 18:34:00'!
 setLabel: aString
 
 	self titleMorph titleString: aString.
 ! !
 
-!Panel methodsFor: 'label' stamp: 'KenD 12/9/2013 17:02'!
+!Panel methodsFor: 'label' stamp: 'KenD 9/Dec/2013 17:02:00'!
 update: aSymbol
 
 	super update: aSymbol.
 	aSymbol == #relabel
 		ifTrue: [ model ifNotNil: [ self setLabel: model labelString ]]! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 6/5/2025 12:13:26'!
+!Panel methodsFor: 'accessing' stamp: 'KenD 5/Jun/2025 12:13:00'!
 defaultLayerNumber
 	^ 30! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 4/24/2015 15:54'!
+!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015 15:54:00'!
 layoutMorph
 
 	^ layoutMorph! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 4/24/2015 15:41'!
+!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015 15:41:00'!
 pinButton
 	"private"
 	
 	^ titleMorph pinButton ! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 4/19/2015 07:30'!
+!Panel methodsFor: 'accessing' stamp: 'KenD 19/Apr/2015 07:30:00'!
 stayUp
 
 	^ stayUp! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 4/19/2015 14:11'!
+!Panel methodsFor: 'accessing' stamp: 'KenD 19/Apr/2015 14:11:00'!
 stayUp: aBoolean
 
 	stayUp := aBoolean.
@@ -1520,18 +1519,18 @@ stayUp: aBoolean
 		ifTrue: [ self pinButton hide ] 
 		ifFalse: [ self pinButton show ] ! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 4/24/2015 15:44'!
+!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015 15:44:00'!
 titleMorph 
 
 	^ titleMorph! !
 
-!Panel methodsFor: 'change reporting' stamp: 'hlsf 5/28/2023 21:39:43'!
+!Panel methodsFor: 'change reporting' stamp: 'hlsf 28/May/2023 21:39:00'!
 morphExtent: newExtent
 
 	super morphExtent: newExtent.
 	titleMorph ifNotNil: [titleMorph morphExtent: extent x @ (self labelHeight + borderWidth)]! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2025 23:49:22'!
+!Panel class methodsFor: 'instance creation' stamp: 'hlsf 1/May/2025 23:49:00'!
 example1
 " 
 	Panel example1 openInWorld
@@ -1542,7 +1541,7 @@ example1
 	^ panel
 		! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'hlsf 5/1/2025 23:45:10'!
+!Panel class methodsFor: 'instance creation' stamp: 'hlsf 1/May/2025 23:45:00'!
 initializedInstance
 "
 	self initializedInstance openInHand.
@@ -1550,12 +1549,12 @@ initializedInstance
 	^ self example1 
 		! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'KenD 12/9/2013 18:53'!
+!Panel class methodsFor: 'instance creation' stamp: 'KenD 9/Dec/2013 18:53:00'!
 open: model
 
 	^self open: model label: nil! !
 
-!Panel class methodsFor: 'instance creation' stamp: 'hlsf 4/9/2022 10:11:28'!
+!Panel class methodsFor: 'instance creation' stamp: 'hlsf 9/Apr/2022 10:11:00'!
 open: model label: aString
 	|  window |
 	window _ self basicNew ::
@@ -1566,17 +1565,17 @@ open: model label: aString
 	window openInWorld.
 	^ window! !
 
-!Panel class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:02:35'!
+!Panel class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 15:02:00'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!Panel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:31:29'!
+!Panel class methodsFor: 'new-morph participation' stamp: 'KenD 13/Mar/2022 07:31:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 3/6/2025 20:17:40'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 6/Mar/2025 20:17:00'!
 buildMorphicWindow
 	layoutMorph removeAllMorphs.
 	self newPane ifNotNil: [:pane | layoutMorph addMorphUseAll: pane].
@@ -1586,22 +1585,22 @@ buildMorphicWindow
 		axisEdgeWeight: self defaultAlignement.
 	self morphExtent: self minimumExtent! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 12/30/2021 10:38:36'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 30/Dec/2021 10:38:00'!
 newButtonArea
 "Return the morph where the buttons are layed out"
 	self subclassResponsibility ! !
 
-!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 12/30/2021 10:39:08'!
+!DialogPanel methodsFor: 'GUI building' stamp: 'hlsf 30/Dec/2021 10:39:00'!
 newPane
 "Return the morph containing the controls of the dialog"
 	self subclassResponsibility ! !
 
-!DialogPanel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:31:41'!
+!DialogPanel class methodsFor: 'new-morph participation' stamp: 'KenD 13/Mar/2022 07:31:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!EditPanel methodsFor: 'accessing' stamp: 'KenD 7/4/2015 08:58'!
+!EditPanel methodsFor: 'accessing' stamp: 'KenD 4/Jul/2015 08:58:00'!
 editModel
 	"A subclass may wish to supply a custom editModel rather than model clone.
 	[Note Object>>copy and Morph>>copy]"
@@ -1610,7 +1609,7 @@ editModel
 	
 	^ editModel! !
 
-!EditPanel methodsFor: 'event handling' stamp: 'KenD 4/19/2015 15:22'!
+!EditPanel methodsFor: 'event handling' stamp: 'KenD 19/Apr/2015 15:22:00'!
 cancelAndForgetEverything
 
 	editModel := nil.
@@ -1618,12 +1617,12 @@ cancelAndForgetEverything
 		ifFalse: [ self delete ]
 		ifTrue: [ self refreshView ]! !
 
-!EditPanel methodsFor: 'event handling' stamp: 'hlsf 4/16/2023 12:48:33'!
+!EditPanel methodsFor: 'event handling' stamp: 'hlsf 16/Apr/2023 12:48:00'!
 refreshView
 
 	self subclassResponsibility ! !
 
-!EditPanel methodsFor: 'event handling' stamp: 'KenD 12/18/2013 19:38'!
+!EditPanel methodsFor: 'event handling' stamp: 'KenD 18/Dec/2013 19:38:00'!
 replaceArea: oldArea with: newArea
 	"Replace oldArea in its container with newArea and clean up any ActionMaps"
 	
@@ -1633,7 +1632,7 @@ replaceArea: oldArea with: newArea
 	].
 ! !
 
-!EditPanel methodsFor: 'event handling' stamp: 'KenD 7/27/2015 13:25'!
+!EditPanel methodsFor: 'event handling' stamp: 'KenD 27/Jul/2015 13:25:00'!
 showHalo
 
 	| aMorph |
@@ -1642,23 +1641,23 @@ showHalo
 	ifFalse: [ self subclassResponsibility ] "subclass must override if model not Morph"
 	ifTrue: [ aMorph isInWorld ifTrue: [ aMorph show; addHalo ] ]! !
 
-!EditPanel methodsFor: 'event handling' stamp: 'KenD 7/27/2015 16:32'!
+!EditPanel methodsFor: 'event handling' stamp: 'KenD 27/Jul/2015 16:32:00'!
 showHaloButtonClicked
 
 	self subclassResponsibility! !
 
-!EditPanel methodsFor: 'event handling' stamp: 'KenD 12/17/2013 19:01'!
+!EditPanel methodsFor: 'event handling' stamp: 'KenD 17/Dec/2013 19:01:00'!
 updateMasterFromCopy
 	"Update model from editModel"
 	
 	self subclassResponsibility ! !
 
-!EditPanel methodsFor: 'initialization' stamp: 'KenD 12/17/2013 19:02'!
+!EditPanel methodsFor: 'initialization' stamp: 'KenD 17/Dec/2013 19:02:00'!
 editModel: anObject
 
 	editModel := anObject! !
 
-!EditPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:15:23'!
+!EditPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:15:00'!
 newButtonArea
 	"Answer a LayoutMorph with Update and Cancel buttons"
 	
@@ -1698,13 +1697,13 @@ newButtonArea
 		color: self widgetsColor".
 	^ buttonArea! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'KenD 7/23/2024 18:20:10'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'KenD 23/Jul/2024 18:20:00'!
 buildMorphicWindow
 
 	super buildMorphicWindow.
 	layoutMorph adoptWidgetsColor: self widgetsColor.! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:23'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:16:00'!
 newButtonArea
 "Return the morph where the buttons are layed out"
 	buttonArea := LayoutMorph newRow ::
@@ -1721,50 +1720,50 @@ newButtonArea
 			label: altButtonLabel)].
 	^ buttonArea ! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 7/29/2024 10:31:16'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 29/Jul/2024 10:31:00'!
 newPane
 	^ (model perform: viewSelector)
 		adoptWidgetsColor: self widgetsColor;
 		yourself! !
 
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:34:57'!
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 27/Aug/2023 15:34:00'!
 actionOnAltButton: selectorOrBlock
 	actionOnAltButton := selectorOrBlock isSymbol 
 		ifTrue: [ [model perform: selectorOrBlock] ]
 		ifFalse: [selectorOrBlock]! !
 
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:34:39'!
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 27/Aug/2023 15:34:00'!
 actionOnButton: selectorOrBlock
 	actionOnButton := selectorOrBlock isSymbol 
 		ifTrue: [ [model perform: selectorOrBlock] ]
 		ifFalse: [selectorOrBlock]! !
 
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:33:27'!
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 27/Aug/2023 15:33:00'!
 altButtonLabel: aString
 	altButtonLabel := aString ! !
 
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 8/27/2023 15:33:16'!
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 27/Aug/2023 15:33:00'!
 buttonLabel: aString
 	buttonLabel := aString ! !
 
-!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 14:11:53'!
+!PluggableDialogPanel methodsFor: 'accessing' stamp: 'hlsf 16/Apr/2023 14:11:00'!
 viewGetter: selector
 	viewSelector := selector ! !
 
-!PluggableDialogPanel methodsFor: 'geometry' stamp: 'hlsf 4/18/2023 12:07:20'!
+!PluggableDialogPanel methodsFor: 'geometry' stamp: 'hlsf 18/Apr/2023 12:07:00'!
 minimumExtent
 	| mini |
 	mini := super minimumExtent.
 	^ (mini x max: 350) @ mini y! !
 
-!PluggableDialogPanel methodsFor: 'initialization' stamp: 'hlsf 8/27/2023 15:32:30'!
+!PluggableDialogPanel methodsFor: 'initialization' stamp: 'hlsf 27/Aug/2023 15:32:00'!
 initialize
 	super initialize.
 	buttonLabel := 'Accept'.
 	altButtonLabel := 'Cancel'.
 	actionOnAltButton := [self delete]! !
 
-!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:35:42'!
+!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 27/Aug/2023 15:35:00'!
 open: model label: aString view: viewSelector action: acceptSelectorOrAction
 	|  window |
 	window := self new 
@@ -1776,7 +1775,7 @@ open: model label: aString view: viewSelector action: acceptSelectorOrAction
 	window openInWorld.
 	^ window! !
 
-!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:36:04'!
+!PluggableDialogPanel class methodsFor: 'instance creation' stamp: 'hlsf 27/Aug/2023 15:36:00'!
 open: model label: aString view: viewSelector action: acceptSelectorOrAction altAction: cancelSelectorOrAction
 	|  window |
 	window := self new
@@ -1789,25 +1788,25 @@ open: model label: aString view: viewSelector action: acceptSelectorOrAction alt
 	window openInWorld.
 	^ window! !
 
-!PluggablePane methodsFor: 'GUI building' stamp: 'hlsf 5/28/2023 21:29:26'!
+!PluggablePane methodsFor: 'GUI building' stamp: 'hlsf 28/May/2023 21:29:00'!
 buildTitle
 " No title, no window "! !
 
-!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/28/2023 21:30:11'!
+!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 28/May/2023 21:30:00'!
 defaultBorderWidth
 	^ 0! !
 
-!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 5/12/2024 15:51:11'!
+!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 12/May/2024 15:51:00'!
 defaultSeparation
 	^ 0! !
 
-!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 7/29/2024 10:33:38'!
+!PluggablePane methodsFor: 'initialization' stamp: 'hlsf 29/Jul/2024 10:33:00'!
 initialize
 	super initialize.
 	actionOnAltButton := nil.
 	self color: (Theme current paneBackgroundFrom: self widgetsColor).! !
 
-!PluggablePane methodsFor: 'drawing' stamp: 'hlsf 9/2/2024 19:40:10'!
+!PluggablePane methodsFor: 'drawing' stamp: 'hlsf 2/Sep/2024 19:40:00'!
 drawOn: aCanvas
 	"A canvas is already set with a proper transformation from our coordinates to those of the Canvas target."
 
@@ -1818,23 +1817,23 @@ drawOn: aCanvas
 		borderStyleSymbol: #simple
 		baseColorForBorder: borderColor.! !
 
-!PluggablePane methodsFor: 'label' stamp: 'hlsf 5/28/2023 21:43:08'!
+!PluggablePane methodsFor: 'label' stamp: 'hlsf 28/May/2023 21:43:00'!
 label
 	^ 'a pane'
 	! !
 
-!PluggablePane methodsFor: 'geometry' stamp: 'hlsf 9/2/2024 19:39:20'!
+!PluggablePane methodsFor: 'geometry' stamp: 'hlsf 2/Sep/2024 19:39:00'!
 layoutBounds
 	"Return the bounds for laying out children of the receiver"
 	"Exclude the label area"
 
 	^  0@0 extent: self extentInOwner! !
 
-!PluggablePane methodsFor: 'as yet unclassified' stamp: 'hlsf 7/16/2024 10:54:35'!
+!PluggablePane methodsFor: 'as yet unclassified' stamp: 'hlsf 16/Jul/2024 10:54:00'!
 adjustExtent
 	self morphWidth: owner viewableWidth! !
 
-!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:37:31'!
+!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 27/Aug/2023 15:37:00'!
 open: model view: aSelector action: acceptSelectorOrAction
 	|  pane |
 	pane := self new
@@ -1844,7 +1843,7 @@ open: model view: aSelector action: acceptSelectorOrAction
 		buildMorphicWindow.
 	^ pane! !
 
-!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 8/27/2023 15:37:50'!
+!PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 27/Aug/2023 15:37:00'!
 open: model view: aSelector action: acceptSelectorOrAction altAction: cancelSelectorOrAction
 	|  pane |
 	pane := self new
@@ -1855,24 +1854,24 @@ open: model view: aSelector action: acceptSelectorOrAction altAction: cancelSele
 		buildMorphicWindow.
 	^ pane! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:20:51'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 9/Apr/2022 10:20:00'!
 accept
 	self delete.
 	model 	ifNotNil: [ :myModel | 			
 		myModel propertyValue: entry value 		].! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:22:36'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 19/Mar/2022 10:22:00'!
 cancel
 	self delete! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:21:04'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 9/Apr/2022 10:21:00'!
 valueWhenDropped
 	
 	^ model  
 		ifNotNil: [ :m | 	m propertyValue: entry value ] 
 		ifNil: [ entry value ]! !
 
-!ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 8/10/2025 10:45:38'!
+!ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 10/Aug/2025 10:45:00'!
 newButtonArea
 	"Add ACCEPT and CANCEL buttons"
 	buttonArea := LayoutMorph newRow
@@ -1898,7 +1897,7 @@ newButtonArea
 		
 	^ buttonArea ! !
 
-!ValueEntryPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:45'!
+!ValueEntryPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:16:00'!
 newPane
 	| entryLayout |
 	entryLayout := LayoutMorph newRow.
@@ -1909,26 +1908,26 @@ newPane
 		color: (Color transparent).
 	^ entryLayout ! !
 
-!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/19/2022 10:23:21'!
+!ValueEntryPanel methodsFor: 'initialization' stamp: 'hlsf 19/Mar/2022 10:23:00'!
 model: aModel
 	super model: aModel.
 	entry ifNotNil: [:anEntry | anEntry setValue: aModel propertyValue]! !
 
-!ValueEntryPanel methodsFor: 'event handling' stamp: 'hlsf 4/16/2023 12:48:33'!
+!ValueEntryPanel methodsFor: 'event handling' stamp: 'hlsf 16/Apr/2023 12:48:00'!
 refreshView
 
 	self subclassResponsibility ! !
 
-!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:25'!
+!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 25/Dec/2021 17:23:00'!
 checkValidity: aModel
 	self subclassResponsibility ! !
 
-!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 10:59:27'!
+!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 19/Mar/2022 10:59:00'!
 open: aModel label: stringName
 	self checkValidity: aModel propertyValue.
 	^ super open: aModel label: stringName.! !
 
-!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/26/2022 11:26:00'!
+!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 26/Mar/2022 11:26:00'!
 openWide: aModel label: stringName
 "My title is not shrinked, the dialog is extended as necessary to have the tile completely readable"
 	| panel |
@@ -1938,19 +1937,19 @@ openWide: aModel label: stringName
 	^panel
 	! !
 
-!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:14:42'!
+!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 9/Apr/2022 10:14:00'!
 accept
 	self delete.
 	model ifNotNil: [ :myModel | 
 		myModel propertyValue: (entry value at: 1) ]! !
 
-!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:24:16'!
+!CharacterEntryPanel methodsFor: 'events' stamp: 'hlsf 19/Mar/2022 10:24:00'!
 valueWhenDropped
 	self model 
 		ifNotNil: [ :m | m propertyValue: (entry value at: 1) ] 
 		ifNil: [ '_' ]! !
 
-!CharacterEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:15:29'!
+!CharacterEntryPanel methodsFor: 'initialization' stamp: 'hlsf 9/Apr/2022 10:15:00'!
 initialize
 	super initialize .
 	entry _ SimpleNumberEntryMorph singleCharSelection: $c ::
@@ -1959,13 +1958,13 @@ initialize
 		yourself
 ! !
 
-!CharacterEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:23:45'!
+!CharacterEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 25/Dec/2021 17:23:00'!
 checkValidity: aChar
 	(aChar isKindOf: Character) 
 		ifFalse: [ self error: 'I require a Character: ' , aChar printString ].
 ! !
 
-!CharacterEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/20/2022 15:58:16'!
+!CharacterEntryPanel class methodsFor: 'examples' stamp: 'KenD 20/Mar/2022 15:58:00'!
 example1
 " 
 	CharacterEntryPanel example1 
@@ -1975,7 +1974,7 @@ example1
 	model openInWorld.
 	^ self open: model label: 'Key in a character'! !
 
-!FloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:18:43'!
+!FloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 9/Apr/2022 10:18:00'!
 initialize
 	super initialize.
 	entry _ SimpleNumberEntryMorph floatDefault: 1.0 maxNumChars: 8 ::
@@ -1983,7 +1982,7 @@ initialize
 		acceptCancelReceiver: self;
 		yourself! !
 
-!FloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:34:50'!
+!FloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 9/Apr/2022 10:34:00'!
 example1
 " 
 	FloatEntryPanel example1 
@@ -1993,24 +1992,24 @@ example1
 	model openInWorld.
 	^ self open: model label: 'A better PI'! !
 
-!FloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 3/21/2022 15:32:16'!
+!FloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 21/Mar/2022 15:32:00'!
 checkValidity: aNumber
 
 	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Number ' , aNumber printString ].! !
 
-!PointEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:24:48'!
+!PointEntryPanel methodsFor: 'events' stamp: 'hlsf 19/Mar/2022 10:24:00'!
 accept	
 	self delete.
 	self model ifNotNil: [ :myModel | 
 		myModel propertyValue: (xEntryMorph value @ yEntryMorph value) ]! !
 
-!PointEntryPanel methodsFor: 'events' stamp: 'hlsf 3/19/2022 10:25:11'!
+!PointEntryPanel methodsFor: 'events' stamp: 'hlsf 19/Mar/2022 10:25:00'!
 valueWhenDropped
 	self model 
 		ifNotNil: [ :m | m propertyValue: 	(xEntryMorph value @ yEntryMorph value) ] 
 		ifNil: [ 0@0 ]! !
 
-!PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:17:10'!
+!PointEntryPanel methodsFor: 'initialization' stamp: 'hlsf 9/Apr/2022 10:17:00'!
 initialize
 	super initialize.
 	xEntryMorph _ SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8 ::
@@ -2022,7 +2021,7 @@ initialize
 		acceptCancelReceiver: self;
 		yourself! !
 
-!PointEntryPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:50'!
+!PointEntryPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:16:00'!
 newPane
 
 	| entryLayout |
@@ -2037,12 +2036,12 @@ newPane
 	
 	^ entryLayout ! !
 
-!PointEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:28:29'!
+!PointEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 25/Dec/2021 17:28:00'!
 checkValidity: aPoint
 	(aPoint isKindOf: Point) ifFalse: [ self error: 'I require a Point: ' , aPoint printString ].
 ! !
 
-!PointEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/17/2022 21:22:13'!
+!PointEntryPanel class methodsFor: 'examples' stamp: 'hlsf 17/Mar/2022 21:22:00'!
 example1
 " 
 	PointEntryPanel example1 
@@ -2054,7 +2053,7 @@ example1
 		open: model
 		label: 'Point Value' ! !
 
-!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:18:52'!
+!PositiveFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 9/Apr/2022 10:18:00'!
 initialize
 	super initialize.
 	entry _ SimpleNumberEntryMorph positiveFloatDefault: 1.0 maxNumChars: 8 ::
@@ -2063,12 +2062,12 @@ initialize
 		yourself
 ! !
 
-!PositiveFloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 1/11/2022 14:29:38'!
+!PositiveFloatEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 11/Jan/2022 14:29:00'!
 checkValidity: aNumber
 	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Positive Number ' , aNumber printString ].
 	(aNumber >= 0) ifFalse: [ self error: 'I require a Positive Number: ' , aNumber printString ]! !
 
-!PositiveFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 11:25:47'!
+!PositiveFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 19/Mar/2022 11:25:00'!
 example1
 "
 	PositiveFloatEntryPanel example1
@@ -2078,7 +2077,7 @@ example1
 	model openInWorld.
 	^ self open: model label: 'Edit a positive float'! !
 
-!PositiveFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 11:31:13'!
+!PositiveFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 19/Mar/2022 11:31:00'!
 example2
 "
 	PositiveFloatEntryPanel example2
@@ -2088,7 +2087,7 @@ example2
 	model openInWorld.
 	^ self open: model label: 'Edit a positive float'! !
 
-!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:19:00'!
+!PositiveIntegerEntryPanel methodsFor: 'initialization' stamp: 'hlsf 9/Apr/2022 10:19:00'!
 initialize
 	super initialize.
 	entry _ SimpleNumberEntryMorph integerDefault: 0 maxNumChars: 8 ::
@@ -2096,12 +2095,12 @@ initialize
 		setValue: model propertyValue;
 		yourself! !
 
-!PositiveIntegerEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 12/25/2021 17:53:21'!
+!PositiveIntegerEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 25/Dec/2021 17:53:00'!
 checkValidity: aNumber
 	(aNumber isKindOf: Integer) ifFalse: [ self error: 'I require a Positive Integer: ' , aNumber printString ].
 	(aNumber >= 0) ifFalse: [ self error: 'I require a Positive Integer: ' , aNumber printString ]! !
 
-!PositiveIntegerEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/17/2022 21:22:40'!
+!PositiveIntegerEntryPanel class methodsFor: 'examples' stamp: 'hlsf 17/Mar/2022 21:22:00'!
 example1
 "
 	PositiveIntegerEntryPanel example1
@@ -2111,7 +2110,7 @@ example1
 	model openInWorld.
 	^ self open: model label: 'Edit a positive integer'! !
 
-!PositiveIntegerEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/17/2022 21:22:44'!
+!PositiveIntegerEntryPanel class methodsFor: 'examples' stamp: 'hlsf 17/Mar/2022 21:22:00'!
 example2
 "
 	PositiveIntegerEntryPanel example2
@@ -2121,12 +2120,12 @@ example2
 	"Expect failed invariant"
 	^ self open: model label: 'Can''t negative integer'! !
 
-!RangeFloatEntryPanel methodsFor: 'accessing' stamp: 'hlsf 3/19/2022 10:55:50'!
+!RangeFloatEntryPanel methodsFor: 'accessing' stamp: 'hlsf 19/Mar/2022 10:55:00'!
 min: aMinFloat max: aMaxFloat
 	min _ aMinFloat.
 	max _ aMaxFloat ! !
 
-!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 4/9/2022 10:19:31'!
+!RangeFloatEntryPanel methodsFor: 'initialization' stamp: 'hlsf 9/Apr/2022 10:19:00'!
 initialize
 	super initialize .
 	entry _ SimpleNumberEntryMorph floatRangeFrom: min to: max maxNumChars: 10 ::
@@ -2134,14 +2133,14 @@ initialize
 		setValue: model propertyValue;
 		yourself! !
 
-!RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/19/2022 11:41:15'!
+!RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 19/Mar/2022 11:41:00'!
 checkValidity: aNumber between: min and: max
 	(aNumber isKindOf: Number) ifFalse: [ self error: 'I require a Number ' , aNumber printString ].
 	(aNumber between: min and: max) ifFalse: [
 		self error: aNumber printString, ' is not in [ ', min printString, ' ; ', max printString, ' ]']
 		! !
 
-!RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 4/9/2022 10:22:03'!
+!RangeFloatEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 9/Apr/2022 10:22:00'!
 open: aModel between: aMin and: aMax label: stringName
 | panel |
 	self checkValidity: aModel propertyValue between: aMin and: aMax.
@@ -2155,7 +2154,7 @@ open: aModel between: aMin and: aMax label: stringName
 	^ panel
 		! !
 
-!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 3/19/2022 11:41:38'!
+!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'hlsf 19/Mar/2022 11:41:00'!
 example1
 "
 	RangeFloatEntryPanel example1
@@ -2165,7 +2164,7 @@ example1
 	model openInWorld.
 	^ self open: model between: 0 and: 1 label: 'Edit a value in [0 ; 1]'! !
 
-!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/19/2022 16:04:46'!
+!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'KenD 19/Mar/2022 16:04:00'!
 example2
 "
 	RangeFloatEntryPanel example2
@@ -2175,7 +2174,7 @@ example2
 	model openInWorld.
 	^ self open: model between: 0 and: 5 label: 'Edit a value in [0 ; 5]'! !
 
-!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/21/2022 15:11:59'!
+!RangeFloatEntryPanel class methodsFor: 'examples' stamp: 'KenD 21/Mar/2022 15:11:00'!
 example3
 "
 	RangeFloatEntryPanel example3
@@ -2187,7 +2186,7 @@ example3
 	model action: [ panel openInWorld]. "Panel is usually closed when property edited in the model, open it again"
 	^ panel! !
 
-!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:25'!
+!StringEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/Jul/2022 13:07:00'!
 initialize
 	super initialize.
 	entry _ TextEntryMorph contents: model propertyValue ::
@@ -2199,7 +2198,7 @@ initialize
 			fixedHeight: (Preferences at: #windowTitleFont) lineSpacing )
 		! !
 
-!StringEntryPanel methodsFor: 'GUI building' stamp: 'KenD 9/14/2024 15:16:57'!
+!StringEntryPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:16:00'!
 newPane
 
 	| entryLayout |
@@ -2213,7 +2212,7 @@ newPane
 	
 	^ entryLayout ! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 3/20/2022 16:05:08'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'KenD 20/Mar/2022 16:05:00'!
 example1
 "
 	StringEntryPanel example1 
@@ -2224,7 +2223,7 @@ example1
 	"I use a SqueezeLabelMorph in my title"
 	^ self open: model  label: 'The Smalltalk I use'! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:32:32'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 9/Apr/2022 10:32:00'!
 example2
 "
 	StringEntryPanel example2
@@ -2234,7 +2233,7 @@ example2
 	model openInWorld.
 	^ self openWide: model  label: 'The Smalltalk I use is...' .! !
 
-!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:32:37'!
+!StringEntryPanel class methodsFor: 'examples' stamp: 'hlsf 9/Apr/2022 10:32:00'!
 example3
 "
 	StringEntryPanel example3
@@ -2244,11 +2243,11 @@ example3
 	model action: [:value | Transcript show: value].
 	^ self openWide: model  label: 'Name the sktech to keep, this is a long title'! !
 
-!StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 11/3/2022 17:44:16'!
+!StringEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 3/Nov/2022 17:44:00'!
 checkValidity: aString
 	(aString isKindOf: CharacterSequence ) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
 
-!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:07:28'!
+!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/Jul/2022 13:07:00'!
 initialize
 	super initialize.
 	entry _ TextModelMorph withText: model propertyValue.
@@ -2256,78 +2255,78 @@ initialize
 		proportionalWidth: 1 
 		fixedHeight: (Preferences at: #windowTitleFont) lineSpacing * 4 )! !
 
-!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:27:37'!
+!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 9/Apr/2022 10:27:00'!
 accept
 	self delete.
 	model 	ifNotNil: [ :myModel | 			
 		myModel propertyValue: entry scroller contents asString		].! !
 
-!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 4/9/2022 10:27:42'!
+!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 9/Apr/2022 10:27:00'!
 valueWhenDropped
 	
 	^ model  
 		ifNotNil: [ :m | 	m propertyValue: entry scroller contents asString ] 
 		ifNil: [ entry scroller contents asString]! !
 
-!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:29:43'!
+!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 9/Apr/2022 10:29:00'!
 example1
 "
 	super example1 openInWorld
 "! !
 
-!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:31:30'!
+!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 9/Apr/2022 10:31:00'!
 example2
 "
 	super example2 openInWorld
 "! !
 
-!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 4/9/2022 10:31:24'!
+!TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 9/Apr/2022 10:31:00'!
 example3
 "
 	super example3 openInWorld
 "! !
 
-!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 7/21/2024 23:02:44'!
+!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 21/Jul/2024 23:02:00'!
 buildMorphicWindow
 	super buildMorphicWindow .
 	layoutMorph adoptWidgetsColor: self widgetsColor! !
 
-!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 12/27/2021 10:25:18'!
+!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 27/Dec/2021 10:25:00'!
 newButtonArea
 "Ask the current page its buttons, if any"
 	^ buttonArea _  currentPageIndex ifNotNil: [ (pages at: currentPageIndex) buttons]! !
 
-!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 12/27/2021 10:20:21'!
+!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 27/Dec/2021 10:20:00'!
 newPane
 "Ask to the current page its pane, if any"
 	^ currentPageIndex ifNotNil: [	(pages at: currentPageIndex) panel]! !
 
-!WizardPanel methodsFor: 'accessing' stamp: 'hlsf 12/25/2021 16:51:55'!
+!WizardPanel methodsFor: 'accessing' stamp: 'hlsf 25/Dec/2021 16:51:00'!
 emptyPane
 	^ LayoutMorph newColumn 
 		doAdoptWidgetsColor;
 		adoptWidgetsColor: self widgetsColor.! !
 
-!WizardPanel methodsFor: 'actions' stamp: 'hlsf 11/3/2021 18:41:35'!
+!WizardPanel methodsFor: 'actions' stamp: 'hlsf 3/Nov/2021 18:41:00'!
 apply
 	self triggerEvent: #apply! !
 
-!WizardPanel methodsFor: 'actions' stamp: 'hlsf 11/3/2021 18:43:02'!
+!WizardPanel methodsFor: 'actions' stamp: 'hlsf 3/Nov/2021 18:43:00'!
 cancel
 	pages do: [:each | each delete].
 	self delete.
 	self triggerEvent: #cancel! !
 
-!WizardPanel methodsFor: 'actions' stamp: 'hlsf 10/31/2021 11:35:43'!
+!WizardPanel methodsFor: 'actions' stamp: 'hlsf 31/Oct/2021 11:35:00'!
 nextPage
 	self goPage: currentPageIndex + 1
 	! !
 
-!WizardPanel methodsFor: 'actions' stamp: 'hlsf 10/31/2021 11:35:43'!
+!WizardPanel methodsFor: 'actions' stamp: 'hlsf 31/Oct/2021 11:35:00'!
 previousPage
 	self goPage: currentPageIndex - 1! !
 
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 11/3/2021 16:20:50'!
+!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 3/Nov/2021 16:20:00'!
 addPage: wizardPage
 	pages add: wizardPage.
 	currentPageIndex ifNil: ["The first added page is the first one to show"
@@ -2335,17 +2334,17 @@ addPage: wizardPage
 		self setLabel: wizardPage title.
 		self buildMorphicWindow	]! !
 
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 12/27/2021 11:10:57'!
+!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 27/Dec/2021 11:10:00'!
 addPages
 " override to add the pages to your wizrard panel"
 	self shouldBeImplemented ! !
 
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 10/31/2021 10:08:07'!
+!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 31/Oct/2021 10:08:00'!
 initialize
 	super initialize.
 	pages _ OrderedCollection new.! !
 
-!WizardPanel methodsFor: 'navigation' stamp: 'hlsf 11/3/2021 18:40:47'!
+!WizardPanel methodsFor: 'navigation' stamp: 'hlsf 3/Nov/2021 18:40:00'!
 goPage: number
 	(number < 1 or: [number > pages size]) ifTrue: [^ self].
 	currentPageIndex _ number.
@@ -2353,30 +2352,30 @@ goPage: number
 	self buildMorphicWindow.
 	self triggerEvent: #page with: number.! !
 
-!WizardPanel methodsFor: 'open/close' stamp: 'hlsf 11/19/2021 11:04:46'!
+!WizardPanel methodsFor: 'open/close' stamp: 'hlsf 19/Nov/2021 11:04:00'!
 delete
 	super delete.
 	self releaseActionMap ! !
 
-!WizardPanel methodsFor: 'open/close' stamp: 'hlsf 4/7/2022 15:54:46'!
+!WizardPanel methodsFor: 'open/close' stamp: 'hlsf 7/Apr/2022 15:54:00'!
 minimumExtent
 	^ 550 @ (350 max: super minimumExtent y)! !
 
-!WizardPanel methodsFor: 'testing' stamp: 'hlsf 12/25/2021 16:53:33'!
+!WizardPanel methodsFor: 'testing' stamp: 'hlsf 25/Dec/2021 16:53:00'!
 isReadyToApply
 	^ false! !
 
-!WizardPanel methodsFor: 'event handling' stamp: 'hlsf 4/16/2023 12:48:33'!
+!WizardPanel methodsFor: 'event handling' stamp: 'hlsf 16/Apr/2023 12:48:00'!
 refreshView
 
 	self subclassResponsibility ! !
 
-!WizardPanel class methodsFor: 'new-morph participation' stamp: 'KenD 3/13/2022 07:32:09'!
+!WizardPanel class methodsFor: 'new-morph participation' stamp: 'KenD 13/Mar/2022 07:32:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!WizardPanel class methodsFor: 'examples' stamp: 'hlsf 12/27/2021 11:09:57'!
+!WizardPanel class methodsFor: 'examples' stamp: 'hlsf 27/Dec/2021 11:09:00'!
 example1
 "
 	self example1 openInWorld
@@ -2392,7 +2391,7 @@ example1
 			contents: 'Another description for apply page').
 	^ wizard! !
 
-!WizardPage methodsFor: 'accessing' stamp: 'KenD 9/14/2024 15:17:33'!
+!WizardPage methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024 15:17:00'!
 buttons
 	^ buttons ifNil: [
 		buttons := LayoutMorph newRow 
@@ -2400,7 +2399,7 @@ buttons
 		axisEdgeWeight: #rowRight;
 		yourself]! !
 
-!WizardPage methodsFor: 'accessing' stamp: 'hlsf 12/30/2021 10:11:12'!
+!WizardPage methodsFor: 'accessing' stamp: 'hlsf 30/Dec/2021 10:11:00'!
 contents: aStringOrMorph
 	aStringOrMorph isString 
 		ifTrue: [ "If string, just be our new panel"
@@ -2411,48 +2410,48 @@ contents: aStringOrMorph
 		ifFalse: [ "If Morph, the Wizard directly gave us the panel with contents already set"
 			panel _ aStringOrMorph]! !
 
-!WizardPage methodsFor: 'accessing' stamp: 'hlsf 10/31/2021 12:22:19'!
+!WizardPage methodsFor: 'accessing' stamp: 'hlsf 31/Oct/2021 12:22:00'!
 panel
 	^ panel! !
 
-!WizardPage methodsFor: 'accessing' stamp: 'hlsf 10/31/2021 20:12:16'!
+!WizardPage methodsFor: 'accessing' stamp: 'hlsf 31/Oct/2021 20:12:00'!
 title
 	^ title! !
 
-!WizardPage methodsFor: 'accessing' stamp: 'hlsf 10/31/2021 12:07:06'!
+!WizardPage methodsFor: 'accessing' stamp: 'hlsf 31/Oct/2021 12:07:00'!
 wizard: aWizard
 	wizard _ aWizard 
 	! !
 
-!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 3/1/2022 21:48:15'!
+!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 1/Mar/2022 21:48:00'!
 applyButton
 	^ (PluggableButtonMorph 
 		model: wizard
 		action: #apply
 		label: 'Apply') enableSelector: #isReadyToApply! !
 
-!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 3/1/2022 21:47:54'!
+!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 1/Mar/2022 21:47:00'!
 cancelButton
 	^ PluggableButtonMorph 
 		model: wizard
 		action: #cancel
 		label: 'Cancel'! !
 
-!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 3/1/2022 21:48:01'!
+!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 1/Mar/2022 21:48:00'!
 nextButton
 	^ PluggableButtonMorph 
 		model: wizard
 		action: #nextPage
 		label: 'Next'! !
 
-!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 3/1/2022 21:48:07'!
+!WizardPage methodsFor: 'GUI building' stamp: 'hlsf 1/Mar/2022 21:48:00'!
 previousButton
 	^ PluggableButtonMorph 
 		model: wizard
 		action: #previousPage
 		label: 'Previous'! !
 
-!WizardPage methodsFor: 'initialization' stamp: 'hlsf 11/3/2021 15:20:49'!
+!WizardPage methodsFor: 'initialization' stamp: 'hlsf 3/Nov/2021 15:20:00'!
 applyPage: string
 	title _ string.
 	self buttons
@@ -2460,18 +2459,18 @@ applyPage: string
 		addMorph: self previousButton;
 		addMorph: self applyButton! !
 
-!WizardPage methodsFor: 'initialization' stamp: 'hlsf 11/3/2021 15:08:57'!
+!WizardPage methodsFor: 'initialization' stamp: 'hlsf 3/Nov/2021 15:08:00'!
 delete
 "Clean up if necessary at Wizard close"! !
 
-!WizardPage methodsFor: 'initialization' stamp: 'hlsf 11/3/2021 15:16:13'!
+!WizardPage methodsFor: 'initialization' stamp: 'hlsf 3/Nov/2021 15:16:00'!
 firstPage: string
 	title _ string.
 	self buttons
 		addMorph: self cancelButton;
 		addMorph: self nextButton.! !
 
-!WizardPage methodsFor: 'initialization' stamp: 'hlsf 11/3/2021 15:18:56'!
+!WizardPage methodsFor: 'initialization' stamp: 'hlsf 3/Nov/2021 15:18:00'!
 standardPage: string
 	title _ string.
 	self buttons
@@ -2479,27 +2478,27 @@ standardPage: string
 		addMorph: self previousButton;
 		addMorph: self nextButton ! !
 
-!WizardPage class methodsFor: 'instance creation' stamp: 'hlsf 11/3/2021 15:04:52'!
+!WizardPage class methodsFor: 'instance creation' stamp: 'hlsf 3/Nov/2021 15:04:00'!
 applyPage: aString on: aWizard
 	^ self new 
 		wizard: aWizard ;
 		applyPage: aString;
 		yourself! !
 
-!WizardPage class methodsFor: 'instance creation' stamp: 'hlsf 11/3/2021 15:04:14'!
+!WizardPage class methodsFor: 'instance creation' stamp: 'hlsf 3/Nov/2021 15:04:00'!
 firstPage: aString on: aWizard
 	^ self new 
 		wizard: aWizard ;
 		firstPage: aString;
 		yourself! !
 
-!WizardPage class methodsFor: 'instance creation' stamp: 'hlsf 11/3/2021 15:04:38'!
+!WizardPage class methodsFor: 'instance creation' stamp: 'hlsf 3/Nov/2021 15:04:00'!
 standardPage: aString on: aWizard
 	^ self new 
 		wizard: aWizard ;
 		standardPage: aString;
 		yourself! !
 
-!InnerTextMorph methodsFor: '*UI-Panel' stamp: 'hlsf 3/25/2022 11:16:07'!
+!InnerTextMorph methodsFor: '*UI-Panel' stamp: 'hlsf 25/Mar/2022 11:16:00'!
 contents
 	^ model actualContents ! !
