@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7734] on 1 December 2025 at 2:36:03 pm'!
+'From Cuis7.7 [latest update: #7779] on 25 December 2025 at 1:42:50 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 57!
+!provides: 'UI-Entry' 1 58!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -740,13 +740,16 @@ mouseLeave: event
 	super mouseLeave: event.
 	self crAction ifNotNil: [ :thunk | thunk value ]! !
 
-!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 17/Dec/2013 14:03:00'!
+!SimpleNumberEntryMorph methodsFor: 'events' stamp: 'KenD 25/Dec/2025 13:40:55'!
 refreshValueFrom: model
 	"Refresh my value from model"
 	
-	self valueAccessor ifNotNil: [ :accessor | 
+	self valueAccessor ifNotNil: [ :accessor | | newString |
 				theValue := accessor value: model.
-				self contents: (self toString value: self value).
+				newString := (self toString value: self value).
+				self contents: ((newString size <= numCharsToHold)
+					ifTrue: [ newString]
+					ifFalse: [ newString copyFrom: 1 to: numCharsToHold ]).
 				self morphExtent: self measureContents + 4.
 				self redrawNeeded
 	]! !

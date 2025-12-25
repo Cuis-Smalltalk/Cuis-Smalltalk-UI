@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7764] on 15 December 2025 at 3:17:03 pm'!
+'From Cuis7.7 [latest update: #7779] on 23 December 2025 at 3:38:12 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 34!
+!provides: 'UI-Color-Panel' 1 35!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1024,7 +1024,7 @@ buildColorPaneColumn
 	
 	^ column! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:20:00'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 23/Dec/2025 14:15:10'!
 buildMorphicWindow
 " Our layout is a bit different to a traditional dialog, so we override as 
 we don't need button area at the bottom and main panel is a row of morphs." 
@@ -1035,7 +1035,7 @@ we don't need button area at the bottom and main panel is a row of morphs."
 		addMorph: self buildColorPaneColumn;
 		addMorph: self buildSliderColumn;
 		addMorph: self buildRadioButtonColumn;
-		color: Theme current textPane;
+		color: (Theme current paneBackgroundFrom: Color grey);
 		morphExtent: self minimumExtent.
 	self model 
 		when: #colorChanged 
@@ -1503,6 +1503,21 @@ color
 
 	^ color! !
 
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 14:39:39'!
+getOKChroma
+
+	^self color oklchChroma! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 14:39:33'!
+getOKHue
+
+	^self color oklchHue! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 14:39:27'!
+getOKLightness
+
+	^self color oklchLightness! !
+
 !ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 20:53:00'!
 green
 	"Answer my green component 0..255"
@@ -1624,6 +1639,30 @@ setColor: aColor
 	self triggerEvent: #colorChanged with: self.
 	^ self
 
+! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 15:03:15'!
+setOKChroma: newChroma
+
+	self color oklchDo: [:theLightness :oldChroma :theHue |
+		self setColor: (Color okl:  theLightness c:  newChroma h: theHue).
+	]
+! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 15:03:08'!
+setOKHue: newHue
+
+	self color oklchDo: [:theLightness :theChroma :oldHue |
+		self setColor: (Color okl:  theLightness c:  theChroma h: newHue).
+	]
+! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 15:01:01'!
+setOKLightness: newLightness
+
+	self color oklchDo: [:oldLightness :theChroma :theHue |
+		self setColor: (Color okl:  newLightness c:  theChroma h: theHue).
+	]
 ! !
 
 !ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 2/Dec/2013 16:24:00'!
