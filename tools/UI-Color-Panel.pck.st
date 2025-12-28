@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7780] on 27 December 2025 at 2:19:32 pm'!
+'From Cuis7.7 [latest update: #7780] on 27 December 2025 at 7:31:02 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 40!
+!provides: 'UI-Color-Panel' 1 41!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1578,6 +1578,16 @@ hueFactor: zeroToOne
 		h: (zeroToOne * 360) asFloat
 		s: (self color saturation) 
 		v: (self color brightness) )! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 27/Dec/2025 18:55:13'!
+maxOKChroma
+	"Answer max Chroma at this hue and lightness."
+
+	^(self color oklchDo: [:theLightness :oldChroma :theHue |
+			"Values beyond the max anserert the max"
+			(Color okl:  theLightness c:  0.9 h: theHue) oklchChroma 
+		])
+! !
 
 !ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 20:53:00'!
 red
