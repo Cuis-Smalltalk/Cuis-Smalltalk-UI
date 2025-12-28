@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7779] on 23 December 2025 at 3:38:12 pm'!
+'From Cuis7.7 [latest update: #7780] on 27 December 2025 at 2:19:32 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 35!
+!provides: 'UI-Color-Panel' 1 40!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1508,6 +1508,11 @@ getOKChroma
 
 	^self color oklchChroma! !
 
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 27/Dec/2025 14:18:01'!
+getOKDarkness
+
+	^(1 - self color oklchLightness)! !
+
 !ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 14:39:33'!
 getOKHue
 
@@ -1641,27 +1646,55 @@ setColor: aColor
 
 ! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 15:03:15'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 27/Dec/2025 14:08:34'!
 setOKChroma: newChroma
 
+	| newColor oldAlpha|
 	self color oklchDo: [:theLightness :oldChroma :theHue |
-		self setColor: (Color okl:  theLightness c:  newChroma h: theHue).
+		newColor := Color okl:  theLightness c:  newChroma h: theHue.
+		oldAlpha := self color alpha.
+		(oldAlpha = 1.0)
+			ifFalse: [ newColor := newColor alpha: oldAlpha ].
+		self setColor: newColor
 	]
 ! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 15:03:08'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 27/Dec/2025 14:16:28'!
+setOKDarkness: newDarkness
+
+	| newColor oldAlpha |
+	self color oklchDo: [:oldLightness :theChroma :theHue |
+		newColor :=  Color okl: (1 - newDarkness) c:  theChroma h: theHue.
+		oldAlpha := self color alpha.
+		(oldAlpha = 1.0)
+			ifFalse: [ newColor := newColor alpha: oldAlpha ].
+		self setColor: newColor		
+	]
+! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 27/Dec/2025 14:10:04'!
 setOKHue: newHue
 
+	| newColor oldAlpha|
 	self color oklchDo: [:theLightness :theChroma :oldHue |
-		self setColor: (Color okl:  theLightness c:  theChroma h: newHue).
+		newColor := Color okl:  theLightness c:  theChroma h: newHue.
+		oldAlpha := self color alpha.
+		(oldAlpha = 1.0)
+			ifFalse: [ newColor := newColor alpha: oldAlpha ].
+		self setColor: newColor	
 	]
 ! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 15:01:01'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 27/Dec/2025 14:10:50'!
 setOKLightness: newLightness
 
+	| newColor oldAlpha|
 	self color oklchDo: [:oldLightness :theChroma :theHue |
-		self setColor: (Color okl:  newLightness c:  theChroma h: theHue).
+		newColor :=  Color okl:  newLightness c:  theChroma h: theHue.
+		oldAlpha := self color alpha.
+		(oldAlpha = 1.0)
+			ifFalse: [ newColor := newColor alpha: oldAlpha ].
+		self setColor: newColor		
 	]
 ! !
 
@@ -1674,6 +1707,22 @@ setRGBColorFromInteger: anInteger
 					r: ((anInteger bitShift: -16) bitAnd: 255)	/ 255
 					g: ((anInteger bitShift: -8) bitAnd: 255) / 255
 					b: (anInteger bitAnd: 255) / 255.
+			
+	^ self setColor: aColor
+
+! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 27/Dec/2025 13:46:39'!
+setRGBColorFromInteger: anInteger alpha: alphaValue
+	"Set my color from integer interpreted as RGB value"
+	
+	| aColor |
+	aColor := Color 
+					r: ((anInteger bitShift: -16) bitAnd: 255)	/ 255
+					g: ((anInteger bitShift: -8) bitAnd: 255) / 255
+					b: (anInteger bitAnd: 255) / 255.
+	(alphaValue = 1.0)
+		ifFalse: [ aColor := aColor alpha: alphaValue ].
 			
 	^ self setColor: aColor
 

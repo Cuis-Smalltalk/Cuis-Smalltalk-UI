@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7734] on 1 December 2025 at 2:34:30 pm'!
+'From Cuis7.7 [latest update: #7780] on 27 December 2025 at 1:59:13 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 138!
+!provides: 'UI-Panel' 1 140!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1166,13 +1166,13 @@ makeMeVisible
 	"window not on screen (probably due to reframe) -- move it now"
 	self morphPosition: (RealEstateAgent initialFrameFor: self initialExtent: extent world: self world) topLeft! !
 
-!Panel methodsFor: 'layout' stamp: 'KenD 9/Dec/2013 16:46:00'!
+!Panel methodsFor: 'layout' stamp: 'KenD 26/Dec/2025 13:35:48'!
 beColumn
 	layoutMorph
 		ifNotNil: [ layoutMorph beColumn ]
 		ifNil: [
-			layoutMorph _ LayoutMorph newColumn.
-			self addMorphFront: layoutMorph ]! !
+			layoutMorph := LayoutMorph newColumn.
+			self addMorphBack: layoutMorph ]! !
 
 !Panel methodsFor: 'layout' stamp: 'KenD 9/Dec/2013 16:46:00'!
 beRow
@@ -1315,7 +1315,7 @@ buildMorphicWindow
 
 	self subclassResponsibility ! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 28/May/2023 21:24:00'!
+!Panel methodsFor: 'GUI building' stamp: 'KenD 26/Dec/2025 14:29:43'!
 buildTitle
 	titleMorph := WindowTitleMorph title: 'Untitled'.
 	stayUp := false. "UI push pin to change"
@@ -1323,7 +1323,7 @@ buildTitle
 		layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0);
 		morphExtent: extent x @ (self labelHeight + borderWidth);
 		layoutSubmorphs.
-	super addMorph: titleMorph.! !
+	super addMorphBack: titleMorph.! !
 
 !Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013 18:42:00'!
 buttonColor
