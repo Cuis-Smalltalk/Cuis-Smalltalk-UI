@@ -1,7 +1,7 @@
-'From Cuis7.5 [latest update: #7734] on 29 November 2025 at 3:54:44 pm'!
+'From Cuis7.7 [latest update: #7780] on 30 December 2025 at 11:09:06 am'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 18!
+!provides: 'UI-Palette' 1 19!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
@@ -189,6 +189,11 @@ initialize
 		layoutSpec: LayoutSpec useAll;
 		yourself! !
 
+!ImagePickerPanel methodsFor: 'events-processing' stamp: 'KenD 30/Dec/2025 08:01:00'!
+fontPreferenceChanged
+
+	"No action taken here"! !
+
 !ImagePickerPanel class methodsFor: 'instance creation' stamp: 'KenD 5/Nov/2021 13:44:00'!
 clickSelectColorsFor: aMorph
 	"Click-Select from a ClickColorPalette"
@@ -375,14 +380,14 @@ useXKCDColorDict
 	Feature require: 'XKCD-NamedColors'.
 	Color setColorNamesDict: Color xkcdColorDictionary.! !
 
-!ImagePickerPanel class methodsFor: 'private' stamp: 'KenD 14/Sep/2024 15:24:00'!
+!ImagePickerPanel class methodsFor: 'private' stamp: 'KenD 30/Dec/2025 11:03:11'!
 privateBuildPanelLabel: aStringLabel 
 collection: sortedNameImageCollection
 transducer: imageProcessor
 	"Common code for ImagePickerPanels"
 	
 	| picker scrollPane  |
-	picker := Panel new.
+	picker := super new.
 	picker 
 		color: picker defaultColor paler;
 		setLabel: aStringLabel;

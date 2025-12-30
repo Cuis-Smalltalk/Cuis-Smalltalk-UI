@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7780] on 27 December 2025 at 7:31:02 pm'!
+'From Cuis7.7 [latest update: #7780] on 28 December 2025 at 10:41:09 am'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 41!
+!provides: 'UI-Color-Panel' 1 42!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -62,6 +62,16 @@ Object subclass: #ColorEditorModel
 ColorEditorModel class
 	instanceVariableNames: ''!
 
+!classDefinition: #ColorSliderModel category: #'UI-Color-Panel'!
+Object subclass: #ColorSliderModel
+	instanceVariableNames: 'color setter getter'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Color-Panel'!
+!classDefinition: 'ColorSliderModel class' category: #'UI-Color-Panel'!
+ColorSliderModel class
+	instanceVariableNames: ''!
+
 
 !ColorPaneMorph commentStamp: '<historical>' prior: 0!
 I present a plane in a color cube.
@@ -111,6 +121,13 @@ Usage:
 
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorEditor.!
+
+!ColorSliderModel commentStamp: 'KenD 28/Dec/2025 10:06:24' prior: 0!
+I am the model (state holder) for a ColorSliderMorph.
+
+I am used in place of a ColorPaneMorph to interface with a ColorSliderMorph.
+
+My getter and setter are closuers used to update some other model from me.!
 
 !ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 30/Nov/2013 19:33:00'!
 aboutToGrab: aMorph
