@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7780] on 28 December 2025 at 10:41:09 am'!
+'From Cuis7.7 [latest update: #7780] on 30 December 2025 at 12:50:08 pm'!
 'Description I supply the ColorEditor Panel'!
-!provides: 'UI-Color-Panel' 1 42!
+!provides: 'UI-Color-Panel' 1 43!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1344,17 +1344,18 @@ updateColorFromPane
 		(self colorPane focusColor
 			alpha: self model alpha)! !
 
-!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 6/Feb/2022 16:23:00'!
+!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 30/Dec/2025 12:48:39'!
 refreshAlphaSwatch
 	"When color changes"
 	
 	(alphaSwatch color = self model color)
 	ifFalse: [ | newColor |
-		newColor := self model color alpha: alphaSlider value.
+		newColor := self model color. " alpha: alphaSlider value."
 		alphaSwatch image: 
 		(newColor 
 			iconOrThumbnailOfSize: 32@32).
-		alphaSwatch color: newColor
+		alphaSwatch color: newColor.
+		alphaSlider refreshValueFromModel.
 	]! !
 
 !ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 12/Sep/2021 15:41:00'!
