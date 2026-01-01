@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7780] on 30 December 2025 at 11:09:06 am'!
+'From Cuis7.7 [latest update: #7782] on 1 January 2026 at 10:26:48 am'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 19!
+!provides: 'UI-Palette' 1 20!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Panel' 1 17 nil!
 !requires: 'UI-Click-Select' 1 63 nil!
@@ -188,6 +188,11 @@ initialize
 	^ self 
 		layoutSpec: LayoutSpec useAll;
 		yourself! !
+
+!ImagePickerPanel methodsFor: 'user interface' stamp: 'KenD 1/Jan/2026 10:22:55'!
+defaultLayerNumber
+	"Act like any other Morph with respect to Z-order"
+	^100! !
 
 !ImagePickerPanel methodsFor: 'events-processing' stamp: 'KenD 30/Dec/2025 08:01:00'!
 fontPreferenceChanged
