@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7783] on 2 January 2026 at 12:25:50 pm'!
+'From Cuis7.7 [latest update: #7782] on 2 January 2026 at 1:17:04 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 45!
+!provides: 'UI-Color-Panel' 1 46!
 !requires: 'Cuis-Base' 77 7780 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -2775,19 +2775,21 @@ color: aColor
 
 	^ self new setColor: aColor! !
 
-!Color class methodsFor: '*ui-color-panel' stamp: 'hlsf 3/Sep/2024 10:20:00'!
+!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 2/Jan/2026 13:12:10'!
 colorSelectionMenu
 	"Open a popUp menu and let user select color selection option"
 "
 	Color colorSelectionMenu.
 "
 	| menu choices choicesSetter selectedIndex |
-	choices := #( 'CSS3 (Web) Colors'      "1"
-					'Crayon Colors'   "2"
-					'NBSISCC Colors' "3"
-					'XKCD Colors'     "4"
-					'ColorMix Editor'           "5"
-					'Cancel'                        "6"
+	choices := #( 'CSS3 (Web) Colors'   "1"
+					'Crayon Colors'     "2"
+					'NBSISCC Colors'  "3"
+					'XKCD Colors'       "4"
+					'RGB/HSV Edit'      "5"
+					'OK-LCH Edit'	 "6"
+					'Cancel'                "7"
+
 				   ).
 				
 	choicesSetter := #(
@@ -2800,7 +2802,9 @@ colorSelectionMenu
 	menu := PopUpMenu labelArray: choices.
 	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
 	(selectedIndex = 5)
-		ifTrue: [ ColorEditorPanel open].
+		ifTrue: [ (ColorEditorPanel open) openInWorld ].
+	(selectedIndex = 6)
+		ifTrue: [ (OKLCHEditPanel open) openInWorld ].
 	((selectedIndex > 0) and: [selectedIndex < 5])
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
@@ -2813,7 +2817,7 @@ colorSelectionMenu
 
 	! !
 
-!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 2/Jan/2026 12:22:04'!
+!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 2/Jan/2026 13:09:53'!
 colorSelectionMenu: aColor
 	"Open a popUp menu and let user select color selection option"
 "
@@ -2825,7 +2829,7 @@ colorSelectionMenu: aColor
 					'NBSISCC Colors'  "3"
 					'XKCD Colors'       "4"
 					'RGB/HSV Edit'      "5"
-					'OK-HCL Edit'	 "6"
+					'OK-LCH Edit'	 "6"
 					'Cancel'                "7"
 				   ).
 				
