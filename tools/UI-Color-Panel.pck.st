@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7780] on 1 January 2026 at 7:16:36 am'!
+'From Cuis7.7 [latest update: #7783] on 2 January 2026 at 12:25:50 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 44!
+!provides: 'UI-Color-Panel' 1 45!
 !requires: 'Cuis-Base' 77 7780 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1885,7 +1885,7 @@ open: model
 
 	^ self open: model label: 'Color Editor'! !
 
-!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 27/May/2022 14:58:00'!
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 2/Jan/2026 12:19:49'!
 openWithColor: aColor
 
 	^ self open: (ColorEditorModel color: aColor) label: 'Color Editor'! !
@@ -2037,7 +2037,7 @@ buildColorCircleColumn
 		yourself
 ! !
 
-!OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 31/Dec/2025 12:30:49'!
+!OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 2/Jan/2026 12:18:05'!
 buildLightnessSliderColumn
 
 	"Answer a verticle slider with dark at bottom and light at top"
@@ -2056,7 +2056,7 @@ buildLightnessSliderColumn
 						scrollDelta: 0.02 pageDelta: 0.1;  "2% & 10%"
 						color: Color grey;
 						morphExtent: (Theme current scrollbarThickness @ 300);
-						value: (self model getOKDarkness). "Black @ bottom"
+						value: (self model) getOKDarkness. "Black @ bottom"
 	
 	^lightSliderLayout 
 		addMorph: lightnessSlider;
@@ -2289,7 +2289,12 @@ submorphsMightProtrude
 
 	^true "ColorRingMorph, hueArmMorph"! !
 
-!OKLCHEditPanel class methodsFor: 'instance creation' stamp: 'KenD 26/Dec/2025 11:15:40'!
+!OKLCHEditPanel class methodsFor: 'instance creation' stamp: 'KenD 2/Jan/2026 12:13:34'!
+color: aColor
+
+	^ self new setColor: aColor! !
+
+!OKLCHEditPanel class methodsFor: 'instance creation' stamp: 'KenD 2/Jan/2026 12:20:09'!
 initializedInstance
 "
 	self initializedInstance openInWorld.
@@ -2307,7 +2312,7 @@ open
 "	
 	^ self openWithColor: self defaultColor! !
 
-!OKLCHEditPanel class methodsFor: 'instance creation' stamp: 'KenD 26/Dec/2025 14:33:10'!
+!OKLCHEditPanel class methodsFor: 'instance creation' stamp: 'KenD 2/Jan/2026 12:20:16'!
 openWithColor: aColor
 
 	^ self new
@@ -2808,19 +2813,20 @@ colorSelectionMenu
 
 	! !
 
-!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 3/Sep/2024 10:20:00'!
+!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 2/Jan/2026 12:22:04'!
 colorSelectionMenu: aColor
 	"Open a popUp menu and let user select color selection option"
 "
 	Color colorSelectionMenu.
 "
 	| menu choices choicesSetter selectedIndex |
-	choices := #( 'CSS3 (Web) Colors'      "1"
-					'Crayon Colors'   "2"
-					'NBSISCC Colors' "3"
-					'XKCD Colors'     "4"
-					'ColorMix Editor'           "5"
-					'Cancel'                        "6"
+	choices := #( 'CSS3 (Web) Colors'   "1"
+					'Crayon Colors'     "2"
+					'NBSISCC Colors'  "3"
+					'XKCD Colors'       "4"
+					'RGB/HSV Edit'      "5"
+					'OK-HCL Edit'	 "6"
+					'Cancel'                "7"
 				   ).
 				
 	choicesSetter := #(
@@ -2833,7 +2839,9 @@ colorSelectionMenu: aColor
 	menu := PopUpMenu labelArray: choices.
 	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
 	(selectedIndex = 5)
-		ifTrue: [ ColorEditorPanel openWithColor: aColor].
+		ifTrue: [ (ColorEditorPanel openWithColor: aColor) openInWorld ].
+	(selectedIndex = 6)
+		ifTrue: [ (OKLCHEditPanel openWithColor: aColor ) openInWorld ].
 	((selectedIndex > 0) and: [selectedIndex < 5])
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
