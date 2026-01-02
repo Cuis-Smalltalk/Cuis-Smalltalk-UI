@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7782] on 2 January 2026 at 1:43:54 pm'!
+'From Cuis7.7 [latest update: #7782] on 2 January 2026 at 3:20:04 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 48!
+!provides: 'UI-Color-Panel' 1 49!
 !requires: 'Cuis-Base' 77 7780 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -816,14 +816,14 @@ dotAt: circlePoint color: myColor
 	image := myForm.  
 	self redrawNeeded.! !
 
-!ColorRingMorph methodsFor: 'drawing' stamp: 'KenD 31/Dec/2025 11:16:29'!
+!ColorRingMorph methodsFor: 'drawing' stamp: 'KenD 2/Jan/2026 15:17:51'!
 drawDots
 	"Draw a circle of color-wheel dots at 10 degree increments"
 	| innerRadius |
 	innerRadius := radius - 20.
 	0 to: 350 by: 10 do: [ :degrees |
 		self dotAt: (Point r: innerRadius degrees: degrees) roundedHAFZ 
-			color: (Color h: degrees s: 0.95 v: 0.9).
+			color: ((Color okl: 0.58 c:  0.13 h:  degrees) adjustSaturation: 0.3 brightness: 0.2).
 	]. ! !
 
 !ColorRingMorph methodsFor: 'geometry' stamp: 'KenD 20/Dec/2025 13:17:23'!
