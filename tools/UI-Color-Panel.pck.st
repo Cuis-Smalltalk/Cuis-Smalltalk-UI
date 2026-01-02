@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7782] on 2 January 2026 at 1:17:04 pm'!
+'From Cuis7.7 [latest update: #7782] on 2 January 2026 at 1:36:50 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 46!
+!provides: 'UI-Color-Panel' 1 47!
 !requires: 'Cuis-Base' 77 7780 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -459,11 +459,17 @@ refreshForm
 	(formMaker at: zIndex) value
 	! !
 
-!ColorPaneMorph methodsFor: 'change processing' stamp: 'KenD 5/Dec/2013 19:41:00'!
+!ColorPaneMorph methodsFor: 'change processing' stamp: 'KenD 2/Jan/2026 13:32:46'!
 resetFocus
 
+	| contrastingColor |
 	self focusMorph morphPosition: (colorPoint - (self focusMorphDiameter / 2)).
-	self focusMorph borderColor: self focusColor negated. "Show up against background"
+	contrastingColor :=  self focusColor negated.
+	"Show up against background"
+	(contrastingColor oklchLightness > 0.8) 
+		ifTrue: [self focusMorph borderColor: contrastingColor muchDarker ]
+		ifFalse: [self focusMorph borderColor: contrastingColor muchLighter] .
+
 	self triggerEvent: #resetFocus.
 	! !
 
