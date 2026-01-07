@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7782] on 2 January 2026 at 3:20:04 pm'!
+'From Cuis7.7 [latest update: #7783] on 7 January 2026 at 12:31:44 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 49!
+!provides: 'UI-Color-Panel' 1 50!
 !requires: 'Cuis-Base' 77 7780 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1499,7 +1499,7 @@ buildColorPaneColumn
 	
 	^ column! !
 
-!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 23/Dec/2025 14:15:10'!
+!ColorEditorPanel methodsFor: 'GUI building' stamp: 'KenD 7/Jan/2026 12:30:55'!
 buildMorphicWindow
 " Our layout is a bit different to a traditional dialog, so we override as 
 we don't need button area at the bottom and main panel is a row of morphs." 
@@ -1510,8 +1510,8 @@ we don't need button area at the bottom and main panel is a row of morphs."
 		addMorph: self buildColorPaneColumn;
 		addMorph: self buildSliderColumn;
 		addMorph: self buildRadioButtonColumn;
-		color: (Theme current paneBackgroundFrom: Color grey);
 		morphExtent: self minimumExtent.
+	self titleMorph color: Color grey.
 	self model 
 		when: #colorChanged 
 		send: #refreshColor 
