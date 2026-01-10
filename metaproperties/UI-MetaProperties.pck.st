@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7734] on 1 December 2025 at 2:34:48 pm'!
+'From Cuis7.7 [latest update: #7791] on 10 January 2026 at 1:06:14 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 140!
+!provides: 'UI-MetaProperties' 1 141!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -855,12 +855,13 @@ allowsValue: aValue
 is: aSymbol
 	^ aSymbol == #VisualPropertyMenuItem or: [ super is: aSymbol ]! !
 
-!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 14/Apr/2019 16:19:00'!
+!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 10/Jan/2026 12:42:52'!
 displayStringForWidth: maxWidth
 	"Answer a string which fits in maxwidth"
 	|  myString count stringWidth  |
 	myString := self displayString.
 	(myString size <= 0) ifTrue: [ ^ '' ].
+	font ifNil: [ font := FontFamily defaultFamilyAndPointSize ].
 	stringWidth := font widthOfString: '..'.
 	count := 1.
 	1 to: myString size do: [ :index | 
