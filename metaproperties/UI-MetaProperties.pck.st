@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7791] on 10 January 2026 at 1:06:14 pm'!
+'From Cuis7.7 [latest update: #7797] on 13 January 2026 at 1:02:31 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 141!
+!provides: 'UI-MetaProperties' 1 142!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -1418,7 +1418,7 @@ initialize
 	"self initializeDictionaries." "invoked in VisualPropertyEditor class>>initialize"
 ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 2/Sep/2024 19:55:00'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 13/Jan/2026 11:58:33'!
 initializeDictionaries
 	"Add typical usages to dictionary for sharing."
 "
@@ -1471,7 +1471,10 @@ initializeDictionaries
 				editProc: [ :morph :metaProp :menuItem |
 					| origColor |
 					origColor := menuItem propertyValue.
-					Color colorSelectionMenu: origColor ] ).
+					Color colorSelectionMenu: origColor 
+						    updateProc: [: aColor |
+								menuItem propertyValue: aColor ].
+					] ).
 	props at: #acceptsPoint 
 		    put: (MetaProperty 
 				kind: Point

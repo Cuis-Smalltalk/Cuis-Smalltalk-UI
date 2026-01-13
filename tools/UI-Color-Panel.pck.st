@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7797] on 12 January 2026 at 4:07:22 pm'!
+'From Cuis7.7 [latest update: #7797] on 13 January 2026 at 1:14:35 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 52!
+!provides: 'UI-Color-Panel' 1 54!
 !requires: 'Cuis-Base' 77 7780 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -208,6 +208,9 @@ Simple panel with a Hue/BaseColor slider which allows to change
 the Hue of the associated Morph Property. 
 
 No change to Saturation, Brightness, or Alpha.
+
+I present myself as a ColorEditorPanel to my ColorSliderMorph.
+
 !
 
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
@@ -1926,6 +1929,11 @@ openWithColor: aColor
 
 	^ self open: (ColorEditorModel color: aColor) label: 'Color Editor'! !
 
+!ColorEditorPanel class methodsFor: 'instance creation' stamp: 'KenD 13/Jan/2026 09:55:25'!
+openWithColor: aColor updateProc: ignored
+
+	^ self openWithColor: aColor ! !
+
 !ColorEditorPanel class methodsFor: 'initialization' stamp: 'KenD 24/Dec/2013 09:26:00'!
 defaultColor
 
@@ -2356,6 +2364,11 @@ openWithColor: aColor
 		buildMorphicWindow;
 		setLabel: self titleString! !
 
+!OKLCHEditPanel class methodsFor: 'instance creation' stamp: 'KenD 13/Jan/2026 09:56:00'!
+openWithColor: aColor updateProc: ignored
+
+	^ self openWithColor: aColor ! !
+
 !OKLCHEditPanel class methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 14:25:49'!
 colorSwatchExtent
 
@@ -2421,12 +2434,13 @@ buildMorphicWindow
 	self addColorSwatch.
 	self morphExtent: self minimumExtent.! !
 
-!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 12/Jan/2026 15:13:10'!
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 13/Jan/2026 13:13:04'!
 accept
 	| oldColor newColor |
 	oldColor := model color.
-	newColor := (Color 
-					h: entry value 
+	newColor := (Color  
+		"slider value is 0..255 and opposite degree value: 0..359"
+					h: (359 - (entry value * (359/255)))
 					s: oldColor saturation 
 					v: oldColor brightness 
 					alpha: oldColor alpha).
@@ -2540,23 +2554,20 @@ defaultColor
 
 	^Color h: 186 s: 71 v: 69! !
 
-!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 11/Jan/2026 13:52:13'!
+!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 13/Jan/2026 09:20:23'!
 initializedInstance
 "
 	self initializedInstance openInWorld.
 "
- 	^ self newWithColor: self defaultColor ! !
+ 	^ self openWithColor: self defaultColor ! !
 
-!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 11/Jan/2026 14:40:12'!
-newWithColor: aColor
+!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 13/Jan/2026 09:22:56'!
+openWithColor: aColor
 
-	^(self new withColorModel: (ColorEditorModel color: aColor) ::
-		buildMorphicWindow;
-		setLabel: 'Hue/Color';
-		yourself)! !
+	^ self openWithColor: aColor updateProc: nil! !
 
-!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 12/Jan/2026 15:16:58'!
-newWithColor: aColor updateProc: oneArgClosure
+!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 13/Jan/2026 09:21:31'!
+openWithColor: aColor updateProc: oneArgClosure
 
 	^(self new withColorModel: (ColorEditorModel color: aColor) updateProc: oneArgClosure ::
 		buildMorphicWindow;
@@ -3052,7 +3063,7 @@ colorSelectionMenu
 
 	! !
 
-!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 2/Jan/2026 13:09:53'!
+!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 13/Jan/2026 09:23:47'!
 colorSelectionMenu: aColor
 	"Open a popUp menu and let user select color selection option"
 "
@@ -3065,7 +3076,8 @@ colorSelectionMenu: aColor
 					'XKCD Colors'       "4"
 					'RGB/HSV Edit'      "5"
 					'OK-LCH Edit'	 "6"
-					'Cancel'                "7"
+					'Select Hue'		 "7"
+					'Cancel'                "8"
 				   ).
 				
 	choicesSetter := #(
@@ -3081,6 +3093,52 @@ colorSelectionMenu: aColor
 		ifTrue: [ (ColorEditorPanel openWithColor: aColor) openInWorld ].
 	(selectedIndex = 6)
 		ifTrue: [ (OKLCHEditPanel openWithColor: aColor ) openInWorld ].
+	(selectedIndex = 7)
+		ifTrue: [ (HueSelectorPanel openWithColor: aColor ) openInWorld ].
+	((selectedIndex > 0) and: [selectedIndex < 5])
+		ifTrue: [ | pickerPanel savedExtent |
+			ColorPalette perform: ( choicesSetter at: selectedIndex ).
+			pickerPanel := ImagePickerPanel namedColors. 
+			savedExtent := pickerPanel extentInOwner. 
+			pickerPanel openInWorld. "#openInWorld resets morphExtent!!"
+			pickerPanel morphExtent: savedExtent. 
+		].
+	"else cancel -> no action"
+
+	! !
+
+!Color class methodsFor: '*ui-color-panel' stamp: 'KenD 13/Jan/2026 09:58:46'!
+colorSelectionMenu: aColor updateProc: oneArgClosure
+	"Open a popUp menu and let user select color selection option"
+"
+	Color colorSelectionMenu.
+"
+	| menu choices choicesSetter selectedIndex |
+	choices := #( 'CSS3 (Web) Colors'   "1"
+					'Crayon Colors'     "2"
+					'NBSISCC Colors'  "3"
+					'XKCD Colors'       "4"
+					'RGB/HSV Edit'      "5"
+					'OK-LCH Edit'	 "6"
+					'Select Hue'		 "7"
+					'Cancel'                "8"
+				   ).
+				
+	choicesSetter := #(
+				useCSS3ColorDict 
+				useCrayonColorDict
+				useNBSISCCColorDict
+				useXKCDColorDict
+				).
+	
+	menu := PopUpMenu labelArray: choices.
+	selectedIndex := menu startUpWithCaption: 'Choose named colors or editor'.
+	(selectedIndex = 5)
+		ifTrue: [ (ColorEditorPanel openWithColor: aColor updateProc: oneArgClosure) openInWorld ].
+	(selectedIndex = 6)
+		ifTrue: [ (OKLCHEditPanel openWithColor: aColor  updateProc: oneArgClosure) openInWorld ].
+	(selectedIndex = 7)
+		ifTrue: [ (HueSelectorPanel openWithColor: aColor  updateProc: oneArgClosure) openInWorld ].
 	((selectedIndex > 0) and: [selectedIndex < 5])
 		ifTrue: [ | pickerPanel savedExtent |
 			ColorPalette perform: ( choicesSetter at: selectedIndex ).
