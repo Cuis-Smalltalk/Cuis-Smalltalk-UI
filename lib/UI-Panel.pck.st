@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7791] on 10 January 2026 at 1:06:22 pm'!
+'From Cuis7.7 [latest update: #7791] on 11 January 2026 at 4:57:18 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 141!
+!provides: 'UI-Panel' 1 142!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1854,21 +1854,20 @@ open: model view: aSelector action: acceptSelectorOrAction altAction: cancelSele
 		buildMorphicWindow.
 	^ pane! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 9/Apr/2022 10:20:00'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'KenD 11/Jan/2026 12:54:44'!
 accept
 	self delete.
-	model 	ifNotNil: [ :myModel | 			
-		myModel propertyValue: entry value 		].! !
+	model ifNotNil: [ :myModel | myModel propertyValue: entry value ].! !
 
 !ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 19/Mar/2022 10:22:00'!
 cancel
 	self delete! !
 
-!ValueEntryPanel methodsFor: 'events' stamp: 'hlsf 9/Apr/2022 10:21:00'!
+!ValueEntryPanel methodsFor: 'events' stamp: 'KenD 11/Jan/2026 12:54:55'!
 valueWhenDropped
 	
 	^ model  
-		ifNotNil: [ :m | 	m propertyValue: entry value ] 
+		ifNotNil: [ :m | m propertyValue: entry value ] 
 		ifNil: [ entry value ]! !
 
 !ValueEntryPanel methodsFor: 'GUI building' stamp: 'hlsf 10/Aug/2025 10:45:00'!

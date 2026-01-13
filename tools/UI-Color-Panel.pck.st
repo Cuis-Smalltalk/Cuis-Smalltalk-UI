@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7783] on 7 January 2026 at 12:31:44 pm'!
+'From Cuis7.7 [latest update: #7797] on 12 January 2026 at 4:07:22 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 50!
+!provides: 'UI-Color-Panel' 1 52!
 !requires: 'Cuis-Base' 77 7780 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -90,6 +90,16 @@ DialogPanel subclass: #OKLCHEditPanel
 	category: 'UI-Color-Panel'!
 !classDefinition: 'OKLCHEditPanel class' category: #'UI-Color-Panel'!
 OKLCHEditPanel class
+	instanceVariableNames: ''!
+
+!classDefinition: #HueSelectorPanel category: #'UI-Color-Panel'!
+ValueEntryPanel subclass: #HueSelectorPanel
+	instanceVariableNames: 'updateProc colorSwatch'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Color-Panel'!
+!classDefinition: 'HueSelectorPanel class' category: #'UI-Color-Panel'!
+HueSelectorPanel class
 	instanceVariableNames: ''!
 
 !classDefinition: #HueArmMorph category: #'UI-Color-Panel'!
@@ -193,15 +203,22 @@ Color Palette goal [https://harmonizer.evilmartians.com]
 Why [https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl]
 !
 
+!HueSelectorPanel commentStamp: '<historical>' prior: 0!
+Simple panel with a Hue/BaseColor slider which allows to change
+the Hue of the associated Morph Property. 
+
+No change to Saturation, Brightness, or Alpha.
+!
+
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorEditor.!
 
-!ColorSliderModel commentStamp: 'KenD 28/Dec/2025 10:06:24' prior: 0!
+!ColorSliderModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorSliderMorph.
 
 I am used in place of a ColorPaneMorph to interface with a ColorSliderMorph.
 
-My getter and setter are closuers used to update some other model from me.!
+My getter and setter are closures used to update some other model from me.!
 
 !ColorPaneMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 30/Nov/2013 19:33:00'!
 aboutToGrab: aMorph
@@ -881,10 +898,22 @@ scaledZPosition
 
 	^ (255 - ((self colorPane zValue / self maxZValue) * 255))! !
 
+!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 11/Jan/2026 13:49:50'!
+setValue: newHue
+
+	"Hue is already known from pane model"
+	self resetSliderPosition 
+	! !
+
 !ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 4/Dec/2013 22:03:00'!
 sliderMorph
 
 	^ sliderMorph ! !
+
+!ColorSliderMorph methodsFor: 'accessing' stamp: 'KenD 11/Jan/2026 12:51:02'!
+value
+
+	^self scaledZPosition ! !
 
 !ColorSliderMorph methodsFor: 'initialization' stamp: 'KenD 5/Dec/2013 17:42:00'!
 colorPane: aColorPaneMorph
@@ -938,7 +967,7 @@ mouseMove: aMouseMoveEvent localPosition: localEventPosition
 		self resetSliderPosition.
 	]! !
 
-!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 15/Dec/2025 15:15:01'!
+!ColorSliderMorph methodsFor: 'event handling' stamp: 'KenD 11/Jan/2026 15:07:05'!
 redrawBackground
 	"Draw the color scale as background and set maxZValue"
 	
@@ -963,6 +992,7 @@ redrawBackground
 											value: (scaleZ value: 255-y))
 		]
 	].
+	self image: myForm.
 	self resetSliderPosition.
 	self redrawNeeded.! !
 
@@ -2359,6 +2389,185 @@ includeInNewMorphMenu
 	
 	^ true! !
 
+!HueSelectorPanel methodsFor: 'GUI building' stamp: 'KenD 12/Jan/2026 16:03:39'!
+addColorSwatch
+	
+	| entryLayout colorFrame |
+	entryLayout := layoutMorph submorphs last.
+	colorSwatch := DropColorMorph fromColor: model color.
+	self refreshColorSwatch.
+	colorFrame := FrameMorph new ::
+		morphExtent: colorSwatch morphExtent + 8;
+		borderColor: self swatchBorderColor; 
+		borderWidth: 4; 	
+		addMorph: colorSwatch;
+		"Make color swatch draggable"
+		setProperty: #allowsSubmorphDrag toValue: true;
+		"Flash when mouseover"
+		setProperty: #handlesMouseOver: 
+				toValue: true;
+		yourself.
+	colorSwatch morphPosition: 4@4;
+				setBalloonText: 'Drag this Color'.
+	colorFrame  setProperty: #mouseEnter:   
+				toValue: [ :ignoredEvent | colorFrame flash ].
+	entryLayout addMorph: colorFrame layoutSpec: (LayoutSpec keepMorphExtent).
+! !
+
+!HueSelectorPanel methodsFor: 'GUI building' stamp: 'KenD 12/Jan/2026 15:37:33'!
+buildMorphicWindow
+
+	super buildMorphicWindow.
+	self addColorSwatch.
+	self morphExtent: self minimumExtent.! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 12/Jan/2026 15:13:10'!
+accept
+	| oldColor newColor |
+	oldColor := model color.
+	newColor := (Color 
+					h: entry value 
+					s: oldColor saturation 
+					v: oldColor brightness 
+					alpha: oldColor alpha).
+	"A model may propogate an update event"
+	model ifNotNil: [ model propertyValue: newColor ].		
+	"We may have a registered closure to do a direct update."
+	updateProc ifNotNil: [ updateProc value: newColor ].
+	"My job is done here."
+	self delete. 
+! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 11/Jan/2026 13:04:40'!
+colorConstructors
+	"Answer a closure which takes values from my (x,y,z) and answers a Color.
+	The radio button value is Z which determines the 'slider'.
+	X and Y range from 0 to 256.
+	Z ranges 0 to 255 (rgb) 360 (hue) or 100 (sv).
+	
+	Hue scale is 0..360; all others are 0..1.0"
+
+	"self colorConstructors at: self zIndex"
+	^ {
+		[ :x :y :z | Color r: z/255 g: x/255 b: y/255  ] . "Red"
+		[ :x :y :z | Color r: x/255 g: z/255 b: y/255 ] . "Green"
+		[ :x :y :z | Color r: x/255 g: y/255 b: z/255 ] . "Blue"
+		[ :x :y :z | Color h: z s: x/255 v: y/255 ]. "Hue"
+		[ :x :y :z | Color h: x/255*360 s: z/100 v: y/255 ]. "Saturation"
+		[ :x :y :z | Color h: x/255*360 s: y/255 v: z/100]. "Brightness"
+	}! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 11/Jan/2026 15:46:36'!
+colorPoint
+
+	"Answer Saturation @ Brightness  from HSV"
+	| myCurrentColor |
+	myCurrentColor := model color.
+	^ (myCurrentColor saturation @ myCurrentColor brightness) * 255! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 12/Jan/2026 15:40:38'!
+colorSwatchExtent
+
+	^ 64 @ 64! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 12/Jan/2026 15:31:49'!
+swatchBorderColor
+
+	"Match with Visual Menu Item text color"
+	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 12/Jan/2026 15:14:47'!
+updateProc: oneArgClosure "Takes a color"
+
+	updateProc := oneArgClosure ! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 11/Jan/2026 12:18:12'!
+zIndex
+
+	^ 4  "ColorSliderMorph index for Hue"! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 11/Jan/2026 16:53:39'!
+zValue
+
+"Transcript log: 'zValue=hue ', model color hue printString."
+	^ model color hue! !
+
+!HueSelectorPanel methodsFor: 'access' stamp: 'KenD 12/Jan/2026 15:46:20'!
+zValue: sliderValue
+
+	| oldColor |
+	oldColor := model color.
+"Transcript log: 'zValue: ', sliderValue printString."
+	model color: (Color 
+					h: sliderValue 
+					s: oldColor saturation 
+					v: oldColor brightness 
+					alpha: oldColor alpha).
+	self refreshColorSwatch.! !
+
+!HueSelectorPanel methodsFor: 'event handling' stamp: 'KenD 12/Jan/2026 16:06:38'!
+refreshColorSwatch
+	"When color changes"
+	
+	| newColor |
+	newColor := model color.
+	colorSwatch image: (newColor iconOrThumbnailOfSize: self colorSwatchExtent);
+				color: newColor.  "DropColorMorph uses this"! !
+
+!HueSelectorPanel methodsFor: 'initialization' stamp: 'KenD 12/Jan/2026 15:21:16'!
+withColorModel: aColorEditorModel
+
+	^self withColorModel: aColorEditorModel updateProc: nil
+	
+	! !
+
+!HueSelectorPanel methodsFor: 'initialization' stamp: 'KenD 12/Jan/2026 15:15:55'!
+withColorModel: aColorEditorModel updateProc: oneArgClosure
+
+	super initialize.
+	model := aColorEditorModel.
+	updateProc := oneArgClosure.
+	entry := ColorSliderMorph colorPane: self.
+	entry redrawBackground;
+		  resetSliderPosition.
+	self addMorphFront: layoutMorph.
+	^self
+	
+	! !
+
+!HueSelectorPanel class methodsFor: 'accessing' stamp: 'KenD 11/Jan/2026 15:16:57'!
+defaultColor
+
+	^Color h: 186 s: 71 v: 69! !
+
+!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 11/Jan/2026 13:52:13'!
+initializedInstance
+"
+	self initializedInstance openInWorld.
+"
+ 	^ self newWithColor: self defaultColor ! !
+
+!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 11/Jan/2026 14:40:12'!
+newWithColor: aColor
+
+	^(self new withColorModel: (ColorEditorModel color: aColor) ::
+		buildMorphicWindow;
+		setLabel: 'Hue/Color';
+		yourself)! !
+
+!HueSelectorPanel class methodsFor: 'instance creation' stamp: 'KenD 12/Jan/2026 15:16:58'!
+newWithColor: aColor updateProc: oneArgClosure
+
+	^(self new withColorModel: (ColorEditorModel color: aColor) updateProc: oneArgClosure ::
+		buildMorphicWindow;
+		setLabel: 'Hue/Color';
+		yourself)! !
+
+!HueSelectorPanel class methodsFor: 'new-morph participation' stamp: 'KenD 11/Jan/2026 13:19:14'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	^ true! !
+
 !HueArmMorph methodsFor: 'events' stamp: 'KenD 27/Dec/2025 14:27:26'!
 handlesMouseDown: aMouseButtonEvent
 	"Do I want to receive mouseDown events (mouseDown:, mouseMove:, mouseUp:)?"
@@ -2501,6 +2710,14 @@ color
 
 	^ color! !
 
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/Jan/2026 13:11:17'!
+color: aColor
+	"Set my color [prim]"
+	
+	color := aColor
+
+! !
+
 !ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Dec/2025 14:39:39'!
 getOKChroma
 
@@ -2587,6 +2804,18 @@ maxOKChroma
 		])
 ! !
 
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/Jan/2026 12:46:01'!
+propertyValue
+
+	^color! !
+
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/Jan/2026 12:48:47'!
+propertyValue: aColor
+
+	(aColor is: #Color) 
+		ifFalse: [ self error: 'Expected a Color; got: ', aColor printString ].
+	color := aColor! !
+
 !ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 22/Nov/2013 20:53:00'!
 red
 	"Answer my red component 0..255"
@@ -2643,12 +2872,12 @@ saturationFactor: zeroToOne
 		s: zeroToOne asFloat
 		v: (self color brightness) )! !
 
-!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 23/Nov/2013 20:59:00'!
+!ColorEditorModel methodsFor: 'accessing' stamp: 'KenD 11/Jan/2026 13:11:39'!
 setColor: aColor
 	"Set my color and trigger #colorChanged passing me (the model)"
 	
 	(color == aColor) ifTrue: [ ^self ].
-	color := aColor.
+	self color: aColor.
 	self triggerEvent: #colorChanged with: self.
 	^ self
 
