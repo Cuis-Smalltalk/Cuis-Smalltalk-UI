@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7797] on 13 January 2026 at 1:14:35 pm'!
+'From Cuis7.7 [latest update: #7797] on 13 January 2026 at 1:25:45 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 54!
+!provides: 'UI-Color-Panel' 1 55!
 !requires: 'Cuis-Base' 77 7780 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -2535,10 +2535,11 @@ withColorModel: aColorEditorModel
 	
 	! !
 
-!HueSelectorPanel methodsFor: 'initialization' stamp: 'KenD 12/Jan/2026 15:15:55'!
+!HueSelectorPanel methodsFor: 'initialization' stamp: 'KenD 13/Jan/2026 13:25:10'!
 withColorModel: aColorEditorModel updateProc: oneArgClosure
 
 	super initialize.
+	self color: Color veryVeryLightGray.
 	model := aColorEditorModel.
 	updateProc := oneArgClosure.
 	entry := ColorSliderMorph colorPane: self.
