@@ -1,7 +1,7 @@
 'From Cuis7.7 [latest update: #7797] on 13 January 2026 at 1:25:45 pm'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
 !provides: 'UI-Color-Panel' 1 55!
-!requires: 'Cuis-Base' 77 7780 nil!
+!requires: 'Cuis-Base' 76 7760 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
 !requires: 'UI-Click-Select' 1 84 nil!
