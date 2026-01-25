@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7809] on 23 January 2026 at 2:53:28 pm'!
+'From Cuis7.7 [latest update: #7809] on 25 January 2026 at 12:53:05 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 98!
+!provides: 'UI-Click-Select' 1 99!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -695,15 +695,15 @@ update: action
 			self updateButton.
 			dropDownList delete]! !
 
-!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 28/Aug/2025 09:00:29'!
+!DropDownButtonMorph methodsFor: 'action' stamp: 'hlsf 25/Jan/2026 12:50:26'!
 updateButton
-	| form |
-	form := (dropDownList getListItem: dropDownList getCurrentSelectionIndex) imageForm.
-	button
-		icon: form;
-		morphExtent: form extent;
-		redrawNeeded 
-	! !
+	| form  |
+	(dropDownList getListItem: dropDownList getCurrentSelectionIndex) ifNotNil: [:widget |
+		form :=  widget imageForm.
+		button
+			icon: form;
+			morphExtent: form extent;
+			redrawNeeded ]! !
 
 !DropDownButtonMorph methodsFor: 'accessing' stamp: 'hlsf 22/Jan/2022 15:03:53'!
 adoptWidgetsColor: paneColor
