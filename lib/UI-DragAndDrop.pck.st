@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6722] on 14 September 2024 at 4:31:57 pm'!
+'From Cuis7.7 [latest update: #7809] on 25 January 2026 at 2:08:56 pm'!
 'Description '!
-!provides: 'UI-DragAndDrop' 1 4!
+!provides: 'UI-DragAndDrop' 1 5!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
@@ -61,7 +61,7 @@ I am used to display a font, e.g. in a FontPallet.
 
 ImagePallet systemFonts.!
 
-!ClickColorMorph methodsFor: 'closing' stamp: 'KenD 2/29/2020 13:43:18'!
+!ClickColorMorph methodsFor: 'closing' stamp: 'KenD 29/Feb/2020 13:43:18'!
 closeContainingPanel: nextOwner
 	"After user selection, I need to close my containing Panel; chain up to find it"
 
@@ -73,7 +73,7 @@ closeContainingPanel: nextOwner
 				ifNotNil: [ self closeContainingPanel: nextOwner owner]
 		]! !
 
-!ClickColorMorph methodsFor: 'initialization' stamp: 'KenD 2/29/2020 09:17:41'!
+!ClickColorMorph methodsFor: 'initialization' stamp: 'KenD 29/Feb/2020 09:17:41'!
 fromColor: aColor forTarget: aMorph
 
 	colorTargetMorph := aMorph. "immutable"
@@ -82,12 +82,12 @@ fromColor: aColor forTarget: aMorph
 		image: (self color icon magnifyTo: 32@32)
 	! !
 
-!ClickColorMorph methodsFor: 'event handling testing' stamp: 'KenD 2/29/2020 09:22:26'!
+!ClickColorMorph methodsFor: 'event handling testing' stamp: 'KenD 29/Feb/2020 09:22:26'!
 handlesMouseDown: aMouseButtonEvent
 	"Do I want to receive mouseDown events (mouseDown:, mouseMove:, mouseUp:)?"
 	^true! !
 
-!ClickColorMorph methodsFor: 'event handling' stamp: 'KenD 9/28/2021 08:44:22'!
+!ClickColorMorph methodsFor: 'event handling' stamp: 'KenD 28/Sep/2021 08:44:22'!
 mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 
 	| colorSetters choices |
@@ -124,7 +124,7 @@ mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	self closeContainingPanel: self owner.
 ! !
 
-!ClickColorMorph class methodsFor: 'instance creation' stamp: 'KenD 7/24/2024 12:34:42'!
+!ClickColorMorph class methodsFor: 'instance creation' stamp: 'KenD 24/Jul/2024 12:34:42'!
 fromColor: aColor forTarget: aMorph
 "
 	(DropColorMorph fromColor: Color green) openInHand.
@@ -132,13 +132,13 @@ fromColor: aColor forTarget: aMorph
 
 	^ self new fromColor: aColor forTarget: aMorph! !
 
-!ClickColorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 2/29/2020 12:58:24'!
+!ClickColorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 29/Feb/2020 12:58:24'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 11/30/2013 20:07'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 30/Nov/2013 20:07:00'!
 aboutToBeGrabbedBy: aHand
 	"The receiver is being grabbed by a hand.
 	Perform necessary adjustments (if any) and return the actual morph
@@ -149,7 +149,7 @@ aboutToBeGrabbedBy: aHand
 
 	^ self class fromColor: self color "Grab a new sibling of me"! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 11/30/2013 20:15'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 30/Nov/2013 20:15:00'!
 aboutToGrab: aMorph
 	"submorph is being grabbed by a hand.
 	Perform necessary adjustments (if any) and return the actual morph
@@ -158,7 +158,7 @@ aboutToGrab: aMorph
 
 	^ self class fromColor: aMorph color   "Pick up a copy of me"! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/23/2016 14:40:29'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 23/Dec/2016 14:40:29'!
 dropAction: aDropTargetMorph
 	"Set a color"
 
@@ -185,7 +185,7 @@ dropAction: aDropTargetMorph
 
 	aDropTargetMorph refreshSubmorphs.! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/4/2022 13:42:58'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 4/Mar/2022 13:42:58'!
 processDropMorph: aDropEvent
 	"I have already expressed a desire for the drop. Just do it."
 	
@@ -198,7 +198,7 @@ processDropMorph: aDropEvent
 	 ]
 ! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:58:08'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:58:08'!
 rejectDropMorphEvent: evt
 	"Rejected drop of me.  Remove me from the hand."
 	
@@ -206,12 +206,12 @@ rejectDropMorphEvent: evt
 	self world ifNotNil: [ :w | w activeHand removeMorph: self ]
 ! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/6/2016 18:55:26'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 6/Dec/2016 18:55:26'!
 valueWhenDropped
 
 	^ self color! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:30:30'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:30:30'!
 wantsToBeDroppedInto: aMorph
 	"Who do I wish to be dropped onto?"
 
@@ -228,7 +228,7 @@ wantsToBeDroppedInto: aMorph
 				
 	^ false ! !
 
-!DropColorMorph methodsFor: 'initialization' stamp: 'KenD 12/24/2013 17:03'!
+!DropColorMorph methodsFor: 'initialization' stamp: 'KenD 24/Dec/2013 17:03:00'!
 fromColor: aColor
 
 	self 
@@ -236,7 +236,7 @@ fromColor: aColor
 		image: (self color icon magnifyTo: 32@32)
 	! !
 
-!DropColorMorph methodsFor: 'initialization' stamp: 'KenD 5/17/2024 11:20:08'!
+!DropColorMorph methodsFor: 'initialization' stamp: 'KenD 17/May/2024 11:20:08'!
 initialize
 
 	super initialize.
@@ -247,19 +247,19 @@ initialize
 		borderWidth: 4;
 		borderColor: self class swatchBorderColor ! !
 
-!DropColorMorph class methodsFor: 'accessing' stamp: 'KenD 3/11/2022 15:27:33'!
+!DropColorMorph class methodsFor: 'accessing' stamp: 'KenD 11/Mar/2022 15:27:33'!
 swatchBorderColor
 	"Match with Visual Menu Item text color"
 	
 	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
 
-!DropColorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 12/6/2013 19:06'!
+!DropColorMorph class methodsFor: 'new-morph participation' stamp: 'KenD 6/Dec/2013 19:06:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
 
-!DropColorMorph class methodsFor: 'instance creation' stamp: 'KenD 7/24/2024 12:34:30'!
+!DropColorMorph class methodsFor: 'instance creation' stamp: 'KenD 24/Jul/2024 12:34:30'!
 fromColor: aColor
 "
 	(DropColorMorph fromColor: Color green) openInHand.
@@ -267,72 +267,72 @@ fromColor: aColor
 
 	^ self new fromColor: aColor ! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:53:07'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:53:07'!
 emphasis
 
 	^ self labelMorph emphasis ! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:53:02'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:53:02'!
 emphasis: emphasisCode
 
 	^ self labelMorph emphasis: emphasisCode ! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:52:57'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:52:57'!
 font
 
 	^ self labelMorph font! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:52:52'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:52:52'!
 font: aFont
 
 	self labelMorph font: aFont.
 	self adjustExtent! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:56:44'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:56:44'!
 label
 
 	^ self labelMorph contents! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:26:47'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:26:47'!
 labelMorph
 
 	^ labelMorph! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 5/11/2019 13:33:39'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/May/2019 13:33:39'!
 minimumExtent
 
 	^ (2 * self borderWidth) + self labelMorph minimumExtent + 18! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 09:59:09'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 09:59:09'!
 morphExtent: aPoint 
 	"Set the receiver's extent to value provided. Honor my minimumExtent."
 
 	super morphExtent: (aPoint max: self minimumExtent)! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:56:09'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:56:09'!
 string
 
 	^ self labelMorph contents! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 11/29/2016 10:56:17'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:56:17'!
 string: aString
 
 	self labelMorph contents: aString.
 	self adjustExtent ! !
 
-!FontMorph methodsFor: 'geometry' stamp: 'KenD 9/2/2024 19:46:02'!
+!FontMorph methodsFor: 'geometry' stamp: 'KenD 2/Sep/2024 19:46:02'!
 adjustExtent 
 	"Some aspect of my font has changed. Don't shrink beyond minimum"
 
 	self morphExtent: (self extentInOwner min: self minimumExtent)! !
 
-!FontMorph methodsFor: 'geometry' stamp: 'KenD 9/14/2024 15:28:02'!
+!FontMorph methodsFor: 'geometry' stamp: 'KenD 14/Sep/2024 15:28:02'!
 labelMorphOffset
 	"LabelMorph is offset by combinedBorder"
 	
 	^(2 * self interiorOrigin) + (self font pointSize / 2)! !
 
-!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 06:50:39'!
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2022 06:50:39'!
 dropAction: aDropTargetMorph
 	"Find accepting MetaProperties of target morph
 	 and allow user to choose action."
@@ -363,7 +363,7 @@ dropAction: aDropTargetMorph
 			triggerEvent: #propertyChanged.
 	].! !
 
-!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:57:37'!
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:57:37'!
 rejectDropMorphEvent: dropEvent
 	"The receiver has been rejected.  Disappear"
 
@@ -371,12 +371,12 @@ rejectDropMorphEvent: dropEvent
 	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
 ! !
 
-!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/6/2016 18:56:31'!
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 6/Dec/2016 18:56:31'!
 valueWhenDropped
 
 	^ self font! !
 
-!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:30:39'!
+!FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:30:39'!
 wantsToBeDroppedInto: aMorph
 	"Who do I wish to be dropped onto?"
 
@@ -393,11 +393,11 @@ wantsToBeDroppedInto: aMorph
 				
 	^ false! !
 
-!FontMorph methodsFor: 'initialization' stamp: 'KenD 11/29/2016 09:54:03'!
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 29/Nov/2016 09:54:03'!
 defaultColor
 	^ super defaultColor muchLighter ! !
 
-!FontMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:32:19'!
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 11/Mar/2022 15:32:19'!
 font: aFont emphasis: emphasisCode
 
 	self 
@@ -405,7 +405,7 @@ font: aFont emphasis: emphasisCode
 		borderWidth: 4;
 		borderColor: DropColorMorph swatchBorderColor ! !
 
-!FontMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:33:04'!
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 11/Mar/2022 15:33:04'!
 font: aFont emphasis: emphasisCode string: aString
 	"I am a UI Morph showing a LabelMorph.
 	Make it so."
@@ -422,39 +422,39 @@ font: aFont emphasis: emphasisCode string: aString
 		
 	labelMorph morphPosition: self labelMorphOffset.! !
 
-!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 10:08:53'!
+!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 29/Nov/2016 10:08:53'!
 font: aFont
 
 	^ self new font: aFont emphasis: self defaultEmphasis string: self defaultString! !
 
-!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 10:08:56'!
+!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 29/Nov/2016 10:08:56'!
 font: aFont emphasis: emphasisCode
 
 	^ self new font: aFont emphasis: emphasisCode string: self defaultString ! !
 
-!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 11/29/2016 09:21:59'!
+!FontMorph class methodsFor: 'instance creation' stamp: 'KenD 29/Nov/2016 09:21:59'!
 font: aFont emphasis: emphasisCode string: aString
 
 	^ self new font: aFont emphasis: emphasisCode string: aString! !
 
-!FontMorph class methodsFor: 'defaults' stamp: 'KenD 11/29/2016 09:25:45'!
+!FontMorph class methodsFor: 'defaults' stamp: 'KenD 29/Nov/2016 09:25:45'!
 defaultEmphasis
 	"Answer the emphasis code  to display in the typical case"
 
 	^  AbstractFont normalCode! !
 
-!FontMorph class methodsFor: 'defaults' stamp: 'KenD 11/29/2016 10:08:34'!
+!FontMorph class methodsFor: 'defaults' stamp: 'KenD 29/Nov/2016 10:08:34'!
 defaultString
 	"Answer a string to display in the typical case"
 
 	^  'AbBbCc $123'! !
 
-!FontMorph class methodsFor: 'defaults' stamp: 'jmv 6/11/2020 16:48:44'!
+!FontMorph class methodsFor: 'defaults' stamp: 'jmv 11/Jun/2020 16:48:44'!
 initializedInstance
 
 	^ self font: FontFamily defaultFamilyAndPointSize! !
 
-!FontMorph class methodsFor: 'examples' stamp: 'KenD 1/1/2022 08:06:28'!
+!FontMorph class methodsFor: 'examples' stamp: 'KenD 1/Jan/2022 08:06:28'!
 example1
 " 
 	FontMorph example1 openInWorld
@@ -462,7 +462,7 @@ example1
 	^ FontMorph font: FontFamily defaultFamilyAndPointSize
 ! !
 
-!FontMorph class methodsFor: 'examples' stamp: 'KenD 1/1/2022 08:07:20'!
+!FontMorph class methodsFor: 'examples' stamp: 'KenD 1/Jan/2022 08:07:20'!
 example2
 "
 	FontMorph example2 openInWorld 
@@ -476,7 +476,7 @@ example2
 		string: 'Bold, Italic and Underline'
 ! !
 
-!FontMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:56:21'!
+!FontMorph class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 14:56:21'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !

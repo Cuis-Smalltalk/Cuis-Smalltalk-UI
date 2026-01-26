@@ -1,9 +1,19 @@
-'From Cuis7.3 [latest update: #7115] on 3 May 2025 at 9:46:22 am'!
+'From Cuis7.7 [latest update: #7809] on 25 January 2026 at 2:08:53 pm'!
 'Description '!
-!provides: 'UI-Core' 1 25!
+!provides: 'UI-Core' 1 26!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
+
+!classDefinition: #ValueHolder category: #'UI-Core'!
+ActiveModel subclass: #ValueHolder
+	instanceVariableNames: 'action property'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Core'!
+!classDefinition: 'ValueHolder class' category: #'UI-Core'!
+ValueHolder class
+	instanceVariableNames: ''!
 
 !classDefinition: #SignMorph category: #'UI-Core'!
 HoverHelpMorph subclass: #SignMorph
@@ -75,16 +85,6 @@ ListModel subclass: #ListMultiModel
 ListMultiModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #ValueHolder category: #'UI-Core'!
-ActiveModel subclass: #ValueHolder
-	instanceVariableNames: 'action property'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Core'!
-!classDefinition: 'ValueHolder class' category: #'UI-Core'!
-ValueHolder class
-	instanceVariableNames: ''!
-
 
 !SignMorph commentStamp: '<historical>' prior: 0!
 My instances are visual proxy's for objects which do not have a visual representation.
@@ -137,52 +137,74 @@ I am used with PluggableListOfMorph or any other pluggable widget handling list.
 !ListMultiModel commentStamp: '<historical>' prior: 0!
 Several items from my collection can be selected.!
 
-!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/1/2022 14:31:22'!
+!ValueHolder methodsFor: 'accessing' stamp: 'KenD 21/Mar/2022 15:10:07'!
+action: aBlock
+	action _ aBlock! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'KenD 21/Mar/2022 15:10:28'!
+propertyValue
+
+	^ property! !
+
+!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 2/Apr/2022 14:38:35'!
+propertyValue: aValue
+
+	property _ aValue.
+	self changed: #propertyValue:. "Inform any interested view we have changed our state"
+	action ifNotNil: [action valueWithPossibleArgument: property]! !
+
+!ValueHolder class methodsFor: 'instance creation' stamp: 'KenD 21/Mar/2022 15:11:17'!
+with: aProperty
+
+	^ self new :: 
+		propertyValue: aProperty! !
+
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 1/Mar/2022 14:31:22'!
 contents: aString
 
 	self contents: aString wrappedTo: nil! !
 
-!SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 17:15'!
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 5/Oct/2013 17:15:00'!
 name
 
 	^ contents ! !
 
-!SignMorph methodsFor: 'accessing' stamp: 'KenD 10/5/2013 16:58'!
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 5/Oct/2013 16:58:00'!
 object
 
 	^ object! !
 
-!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/2/2022 07:22:44'!
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 2/Mar/2022 07:22:44'!
 propertyValue
 
 	^ self object! !
 
-!SignMorph methodsFor: 'accessing' stamp: 'KenD 3/2/2022 07:13:35'!
+!SignMorph methodsFor: 'accessing' stamp: 'KenD 2/Mar/2022 07:13:35'!
 propertyValue: newValue
 
 	object := newValue.
 	self contents: newValue printString! !
 
-!SignMorph methodsFor: 'delegation' stamp: 'KenD 10/5/2013 16:58'!
+!SignMorph methodsFor: 'delegation' stamp: 'KenD 5/Oct/2013 16:58:00'!
 doesNotUnderstand: aMessage
 	"Delegate operations to the object I represent and Answer the result."
 
 	^ aMessage sendTo: object.! !
 
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 7/24/2024 11:46:26'!
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 24/Jul/2024 11:46:26'!
 defaultBorderColor
 	"Match with Visual Menu Item text color: 'UI-DragAndDrop' "
 	
 	^ `Color r: 0.5 g: 0.07 b: 0.5`
 ! !
 
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:16'!
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 11/Mar/2022 15:52:16'!
 defaultBorderWidth
 
 	^ 4
 ! !
 
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:31'!
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 11/Mar/2022 15:52:31'!
 forObject: anObject
 
 	| nameString |
@@ -193,14 +215,14 @@ forObject: anObject
 	self contents: nameString
 ! !
 
-!SignMorph methodsFor: 'initialization' stamp: 'KenD 3/11/2022 15:52:41'!
+!SignMorph methodsFor: 'initialization' stamp: 'KenD 11/Mar/2022 15:52:41'!
 forObject: anObject withName: aString
 
 	super initialize.  "Initialize extent as required by #redrawNeeded"
 	object := anObject.
 	self contents: aString asString! !
 
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2022 14:50:43'!
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2022 14:50:43'!
 dropAction: aDropTargetMorph
 	"Find accepting MetaProperties of target morph
 	 and allow user to choose action."
@@ -233,13 +255,13 @@ dropAction: aDropTargetMorph
 			triggerEvent: #propertyChanged.
 	].! !
 
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:35:29'!
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:35:29'!
 justDroppedInto: newOwnerMorph event: anEvent 
 	"This message is sent to a dropped morph after it has been dropped on -- and been accepted by -- a drop-sensitive morph"
 
 	self showAcceptAndDeleteSelf ! !
 
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:57:57'!
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:57:57'!
 rejectDropMorphEvent: dropEvent
 	"The receiver has been rejected.  Disappear"
 	
@@ -248,12 +270,12 @@ rejectDropMorphEvent: dropEvent
 	self world ifNotNil: [ :w | w activeHand removeMorph: self ].
 ! !
 
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/6/2016 18:53:56'!
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 6/Dec/2016 18:53:56'!
 valueWhenDropped
 
 	^ self object ! !
 
-!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/3/2022 12:30:50'!
+!SignMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:30:50'!
 wantsToBeDroppedInto: aMorph
 	"Who do I wish to be dropped onto?"
 
@@ -270,7 +292,7 @@ wantsToBeDroppedInto: aMorph
 				
 	^ false! !
 
-!SignMorph methodsFor: 'drawing' stamp: 'hlsf 9/12/2024 10:52:59'!
+!SignMorph methodsFor: 'drawing' stamp: 'hlsf 12/Sep/2024 10:52:59'!
 drawOn: aCanvas
 	"Add border to inherited"
 	| r |
@@ -285,39 +307,39 @@ drawOn: aCanvas
 		selectionColor: (Theme current textHighlightFocused: false) avoidOverhang: true.
 ! !
 
-!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 5/Oct/2013 16:54:00'!
 contents: someString
 
 	Error signal: 'USE: ', self name asString, ' forObject: anObject'
 	! !
 
-!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:52'!
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 5/Oct/2013 16:52:00'!
 forObject: anObject
 
 	^ self basicNew forObject: anObject ! !
 
-!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 17:28'!
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 5/Oct/2013 17:28:00'!
 forObject: anObject withName: aString
 
 	^ self basicNew forObject: anObject withName: aString! !
 
-!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2013 16:54'!
+!SignMorph class methodsFor: 'instance creation' stamp: 'KenD 5/Oct/2013 16:54:00'!
 new
 
 	Error signal: 'USE: ', self name asString, ' forObject: anObject'
 	! !
 
-!SignMorph class methodsFor: 'examples' stamp: 'KenD 7/11/2024 13:29:15'!
+!SignMorph class methodsFor: 'examples' stamp: 'KenD 11/Jul/2024 13:29:15'!
 example1
 " self example1 openInWorld "
 	^ SignMorph forObject: (Preferences at: #standardListFont)! !
 
-!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:54:49'!
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 17/Dec/2021 09:54:49'!
 example2
 " self example2 openInWorld "
 	^ SignMorph forObject: #giveMeASign! !
 
-!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:55:49'!
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 17/Dec/2021 09:55:49'!
 example3
 " self example3 openInWorld "
 	| rect |
@@ -326,24 +348,24 @@ example3
 		forObject: rect 
 		withName: 'aRectangle(' , rect hash asString, ')' ! !
 
-!SignMorph class methodsFor: 'examples' stamp: 'hlsf 12/17/2021 09:56:22'!
+!SignMorph class methodsFor: 'examples' stamp: 'hlsf 17/Dec/2021 09:56:22'!
 example4
 " self example4 openInWorld "
 	| rect |
 	rect _ Rectangle origin: 1@2 corner: 2@3.
 	^ SignMorph forObject: rect! !
 
-!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:56:49'!
+!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 14:56:49'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/5/2013 16:55'!
+!SignMorph class methodsFor: 'new-morph participation' stamp: 'KenD 5/Oct/2013 16:55:00'!
 includeInNewMorphMenu 
 
 	^ false! !
 
-!WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 4/24/2015 08:01'!
+!WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 24/Apr/2015 08:01:00'!
 buttonNamesShown
 
 	| names |
@@ -357,21 +379,21 @@ buttonNamesShown
 
 	^ names! !
 
-!WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 10/26/2021 11:12:34'!
+!WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 26/Oct/2021 11:12:34'!
 hideAllButtons
 
 	self submorphsDo: [ :m | 
 		(m isKindOf: PluggableButtonMorph) ifTrue: [ m hide ]
 	]! !
 
-!WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 10/26/2021 11:13:04'!
+!WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 26/Oct/2021 11:13:04'!
 showAllButtons
 
 	self submorphsDo: [ :m | 
 		(m isKindOf: PluggableButtonMorph) ifTrue: [ m show ] 
 	]! !
 
-!WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 10/26/2021 11:13:43'!
+!WindowTitleMorph methodsFor: 'buttons' stamp: 'KenD 26/Oct/2021 11:13:43'!
 showButtonsNamed: aSymbolColleciton
 
 	aSymbolColleciton  do: [ :aName |
@@ -380,7 +402,7 @@ showButtonsNamed: aSymbolColleciton
 	]
 ! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 4/23/2015 17:01'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 23/Apr/2015 17:01:00'!
 buttonNamed: aSymbol
 
 	^ self submorphs  
@@ -390,13 +412,13 @@ buttonNamed: aSymbol
 		]
 		ifNone: [ ^ nil ]! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 4/23/2015 16:28'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 23/Apr/2015 16:28:00'!
 color
 	"I take on the color of my title bar"
 
 	^ Color transparent ! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 3/19/2022 16:31:22'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 19/Mar/2022 16:31:22'!
 dontShrinkTitle
 
 	| oldTitle |
@@ -411,52 +433,52 @@ dontShrinkTitle
 		redrawNeeded.
 		! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 9/2/2024 19:34:52'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 2/Sep/2024 19:34:52'!
 height
 
 	^ self extentInOwner y! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 4/23/2015 17:01'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 23/Apr/2015 17:01:00'!
 pinButton
 
 	^ self buttonNamed: #pin! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 12/12/2021 14:57:54'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 12/Dec/2021 14:57:54'!
 titleString
 
 	^ titleMorph contents ! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 10/26/2021 11:25:43'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 26/Oct/2021 11:25:43'!
 titleString: aString
 	"Remember titleString and display it"
 
 	titleMorph contents: aString
 	! !
 
-!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 9/2/2024 19:34:56'!
+!WindowTitleMorph methodsFor: 'accessing' stamp: 'KenD 2/Sep/2024 19:34:56'!
 width
 
 	^ self extentInOwner x! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 10/25/2021 15:10:36'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 25/Oct/2021 15:10:36'!
 buttonExtent
 	"answer the extent to use in all the buttons. "
 	 
 	^ Theme current titleBarButtonsExtent
 ! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 10/25/2021 15:28:13'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 25/Oct/2021 15:28:13'!
 buttonSeparation
 
 	^  (self buttonExtent x) * 4 // 10! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'hlsf 7/3/2022 13:06:22'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'hlsf 3/Jul/2022 13:06:22'!
 labelHeight
 	"Answer the height for the window label."
 
 	^  (Preferences at: #windowTitleFont) lineSpacing+1! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 10/25/2021 15:17:28'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 25/Oct/2021 15:17:28'!
 minimumButtonsExtent
 
 	| width height numButtons |
@@ -466,7 +488,7 @@ minimumButtonsExtent
 	width := (numButtons * self buttonExtent x) + (numButtons + 2 * self buttonSeparation).
 	^ width @ height! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 3/19/2022 16:35:47'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 19/Mar/2022 16:35:47'!
 minimumExtent
 
 	| minButtonExt minTitleExt |
@@ -475,34 +497,34 @@ minimumExtent
 	^ (minButtonExt x + minTitleExt x) 
      	   @ (minButtonExt y max: minTitleExt y)! !
 
-!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 3/19/2022 16:26:52'!
+!WindowTitleMorph methodsFor: 'geometry' stamp: 'KenD 19/Mar/2022 16:26:52'!
 minimumTitleExtent
 	"My titleMorph may be a LabelMorph or a SqueezeLabelMorph.
 	 It knows.."
 	
 	^ titleMorph ifNil: [ 100 @ 30 ] ifNotNil: [ :t | t 	minimumExtent ]! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 4/23/2015 16:21'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 23/Apr/2015 16:21:00'!
 closeButtonClicked
 	"Delegate action to owner"
 	
 	self owner closeButtonClicked
 ! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 4/23/2015 16:21'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 23/Apr/2015 16:21:00'!
 collapseButtonClicked	"Delegate action to owner"
 
 	self owner collapseButtonClicked
 ! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 4/23/2015 16:30'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 23/Apr/2015 16:30:00'!
 expandButtonClicked
 	"Delegate action to owner"
 	
 	self owner expandButtonClicked
 ! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 10/26/2021 16:07:19'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 26/Oct/2021 16:07:19'!
 fontPreferenceChanged
 
   super fontPreferenceChanged.
@@ -511,14 +533,14 @@ fontPreferenceChanged
 	resetTitleFont
 	! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 4/23/2015 16:21'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 23/Apr/2015 16:21:00'!
 pinButtonClicked
 	"Delegate action to owner"
 		
 	self owner pinButtonClicked 
 	! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 10/25/2021 15:14:56'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 25/Oct/2021 15:14:56'!
 rescaleButtons
 	"boxExtent changed.  Update my buttons."
 	| newExtent |
@@ -529,26 +551,26 @@ rescaleButtons
 	].
 ! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'hlsf 7/3/2022 13:06:27'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'hlsf 3/Jul/2022 13:06:27'!
 resetTitleFont
 	"Reset my title font"
 	titleMorph font: (Preferences at: #windowTitleFont)! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 7/4/2015 15:22'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 4/Jul/2015 15:22:00'!
 showHaloButtonClicked
 	"Delegate action to owner"
 		
 	self owner showHaloButtonClicked 
 	! !
 
-!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 4/23/2015 16:31'!
+!WindowTitleMorph methodsFor: 'event handling' stamp: 'KenD 23/Apr/2015 16:31:00'!
 windowMenuButtonClicked
 	"Delegate action to owner"
 	
 	self owner windowMenuButtonClicked
 ! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 11:57:35'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 24/Mar/2024 11:57:35'!
 addAllButtonsAndTitle
 	"Buttons first"
    #( ( close  closeButtonClicked 'close this window' closeIcon drawCloseIcon )
@@ -581,7 +603,7 @@ addAllButtonsAndTitle
 		drawAction: #drawPushPinIcon.
 		! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 10/25/2021 15:10:36'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 25/Oct/2021 15:10:36'!
 addButton: nameSym 
 action: actionSym 
 baloonText: toolHelpString 
@@ -601,7 +623,7 @@ drawAction: drawSelector
 	self addMorph: button
 	! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 7/3/2022 13:06:18'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'hlsf 3/Jul/2022 13:06:18'!
 dontShrinkTitle: aString buttonsNamed: aSymbolColleciton
 	"Set me up"
 	
@@ -613,7 +635,7 @@ dontShrinkTitle: aString buttonsNamed: aSymbolColleciton
 	].
 ! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 3/8/2025 14:22:01'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 8/Mar/2025 14:22:01'!
 initialize
 
 	super initialize.
@@ -627,7 +649,7 @@ initialize
 		addAllButtonsAndTitle.
 ! !
 
-!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 10/26/2021 11:12:34'!
+!WindowTitleMorph methodsFor: 'initialization' stamp: 'KenD 26/Oct/2021 11:12:34'!
 title: aString buttonsNamed: aSymbolColleciton
 	"Set me up"
 	
@@ -639,22 +661,22 @@ title: aString buttonsNamed: aSymbolColleciton
 	].
 ! !
 
-!WindowTitleMorph class methodsFor: 'accessing' stamp: 'KenD 7/4/2015 14:40'!
+!WindowTitleMorph class methodsFor: 'accessing' stamp: 'KenD 4/Jul/2015 14:40:00'!
 buttonNames
 
 	^ #( close collapse expand windowMenu pin showHalo )! !
 
-!WindowTitleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 15:01:10'!
+!WindowTitleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 15:01:10'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!WindowTitleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 4/28/2015 18:45'!
+!WindowTitleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 28/Apr/2015 18:45:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
 
-!WindowTitleMorph class methodsFor: 'instance creation' stamp: 'KenD 1/17/2022 08:18:02'!
+!WindowTitleMorph class methodsFor: 'instance creation' stamp: 'KenD 17/Jan/2022 08:18:02'!
 dontShrinkTitle: aString buttonsNamed: aSymbolCollection
 
 	((self buttonNames) includesAllOf: aSymbolCollection)
@@ -666,12 +688,12 @@ dontShrinkTitle: aString buttonsNamed: aSymbolCollection
 	^ (self newRow) dontShrinkTitle: aString buttonsNamed: aSymbolCollection
 ! !
 
-!WindowTitleMorph class methodsFor: 'instance creation' stamp: 'KenD 4/23/2015 17:05'!
+!WindowTitleMorph class methodsFor: 'instance creation' stamp: 'KenD 23/Apr/2015 17:05:00'!
 title: aString
 
 	^ self title: aString buttonsNamed: #()! !
 
-!WindowTitleMorph class methodsFor: 'instance creation' stamp: 'KenD 4/28/2019 18:57:20'!
+!WindowTitleMorph class methodsFor: 'instance creation' stamp: 'KenD 28/Apr/2019 18:57:20'!
 title: aString buttonsNamed: aSymbolCollection
 
 	((self buttonNames) includesAllOf: aSymbolCollection)
@@ -683,27 +705,27 @@ title: aString buttonsNamed: aSymbolCollection
 	^ (self newRow) title: aString buttonsNamed: aSymbolCollection
 ! !
 
-!WindowTitleMorph class methodsFor: 'examples' stamp: 'hlsf 12/16/2021 10:14:58'!
+!WindowTitleMorph class methodsFor: 'examples' stamp: 'hlsf 16/Dec/2021 10:14:58'!
 example1
 " WindowTitleMorph example1 openInWorld "
 	^ self title: 'I am title for a window or a panel' buttonsNamed: self buttonNames! !
 
-!SqueezeLabelMorph methodsFor: 'accessing' stamp: 'hlsf 5/4/2023 15:35:43'!
+!SqueezeLabelMorph methodsFor: 'accessing' stamp: 'hlsf 4/May/2023 15:35:43'!
 centered: boolean
 	centered := boolean ! !
 
-!SqueezeLabelMorph methodsFor: 'accessing' stamp: 'KenD 10/26/2021 05:45:41'!
+!SqueezeLabelMorph methodsFor: 'accessing' stamp: 'KenD 26/Oct/2021 05:45:41'!
 minCharsToShow
 
 	^minChars! !
 
-!SqueezeLabelMorph methodsFor: 'accessing' stamp: 'KenD 12/20/2021 13:56:26'!
+!SqueezeLabelMorph methodsFor: 'accessing' stamp: 'KenD 20/Dec/2021 13:56:26'!
 minCharsToShow: numChars
 	"I show at least 3 characters at minimum"
 	
 	minChars := numChars max: 3! !
 
-!SqueezeLabelMorph methodsFor: 'drawing' stamp: 'hlsf 4/5/2025 10:02:09'!
+!SqueezeLabelMorph methodsFor: 'drawing' stamp: 'hlsf 5/Apr/2025 10:02:09'!
 drawOn: aCanvas
 	"We draw a string within a border.
 	If not enough space, the string is squeezed.
@@ -738,7 +760,7 @@ drawOn: aCanvas
 	self drawOn: aCanvas theString: fitString position: (xOffset @ borderWidth)
 ! !
 
-!SqueezeLabelMorph methodsFor: 'drawing' stamp: 'KenD 12/20/2021 12:20:41'!
+!SqueezeLabelMorph methodsFor: 'drawing' stamp: 'KenD 20/Dec/2021 12:20:41'!
 drawOn: aCanvas theString: aString position: aPoint
 	aCanvas
 		drawString: (aString ifNil: [ '' ])
@@ -753,19 +775,19 @@ drawOn: aCanvas theString: aString position: aPoint
 			borderWidth: borderWidth
 			borderStyleSymbol: #simple ]! !
 
-!SqueezeLabelMorph methodsFor: 'geometry' stamp: 'KenD 10/26/2021 05:29:28'!
+!SqueezeLabelMorph methodsFor: 'geometry' stamp: 'KenD 26/Oct/2021 05:29:28'!
 measureMinimumContent
 
 	| f |
 	f _ self font.
 	^((f widthOfString: (contents squeezedTo: minChars)) max: 3)  @ f lineSpacing! !
 
-!SqueezeLabelMorph methodsFor: 'geometry' stamp: 'hlsf 9/12/2024 10:48:42'!
+!SqueezeLabelMorph methodsFor: 'geometry' stamp: 'hlsf 12/Sep/2024 10:48:42'!
 minimumExtent
 
 	^ self minimumStringExtent + self interiorOrigin ! !
 
-!SqueezeLabelMorph methodsFor: 'geometry' stamp: 'KenD 12/20/2021 14:53:14'!
+!SqueezeLabelMorph methodsFor: 'geometry' stamp: 'KenD 20/Dec/2021 14:53:14'!
 minimumStringExtent
 	"Answer enough space to contain capitalized minChars
 	where we hold a minimum of 3 characters"
@@ -774,7 +796,7 @@ minimumStringExtent
 	f _ self font.
 	^ (f widthOfString: (contents squeezedTo: minChars)) @ f lineSpacing! !
 
-!SqueezeLabelMorph methodsFor: 'initialization' stamp: 'hlsf 3/24/2024 12:02:05'!
+!SqueezeLabelMorph methodsFor: 'initialization' stamp: 'hlsf 24/Mar/2024 12:02:05'!
 initialize
 
 	self minCharsToShow: 3. "required for size calc by super"
@@ -782,27 +804,27 @@ initialize
 	self layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0).
 	centered := true.! !
 
-!SqueezeLabelMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 5/1/2025 12:55:29'!
+!SqueezeLabelMorph methodsFor: 'as yet unclassified' stamp: 'hlsf 1/May/2025 12:55:29'!
 contents: newContents
 	super contents: newContents.
 	self setBalloonText: newContents asString! !
 
-!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 05:52:29'!
+!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 26/Oct/2021 05:52:29'!
 contents: aString font: aFont emphasis: emphasisCode minCharsToShow: numChars
 
 	^ super contents: aString font: aFont emphasis: emphasisCode :: minCharsToShow: numChars! !
 
-!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 05:52:00'!
+!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 26/Oct/2021 05:52:00'!
 contents: aString font: aFont minCharsToShow: numChars
 
 	^ super contents: aString font: aFont :: minCharsToShow: numChars! !
 
-!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 05:50:59'!
+!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 26/Oct/2021 05:50:59'!
 contents: aString minCharsToShow: numChars
 
 	^ super contents: aString :: minCharsToShow: numChars! !
 
-!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 12/13/2021 13:28:42'!
+!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 13/Dec/2021 13:28:42'!
 initializedInstance
 
 	| newInstance |
@@ -811,12 +833,12 @@ initializedInstance
 		morphExtent: newInstance minimumExtent;
 		yourself! !
 
-!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 10/26/2021 05:53:29'!
+!SqueezeLabelMorph class methodsFor: 'instance creation' stamp: 'KenD 26/Oct/2021 05:53:29'!
 minCharsToShow: numChars
 
 	^ super new :: minCharsToShow: numChars! !
 
-!SqueezeLabelMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 14:56:36'!
+!SqueezeLabelMorph class methodsFor: 'examples' stamp: 'KenD 20/Dec/2021 14:56:36'!
 example1
 "
   SqueezeLabelMorph example1 openInWorld 
@@ -834,19 +856,19 @@ example1
 	^ label
 	! !
 
-!SqueezeLabelMorph class methodsFor: 'new-morph participation' stamp: 'KenD 3/14/2022 14:58:16'!
+!SqueezeLabelMorph class methodsFor: 'new-morph participation' stamp: 'KenD 14/Mar/2022 14:58:16'!
 categoryInNewMorphMenu
 
 	^ 'User Interface'! !
 
-!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:02:04'!
+!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 10/Jul/2024 14:02:04'!
 minimumExtent
 	"This returns the minimum extent that the morph may be shrunk to.
 	It is expressed in the morph own coordinates, like morphExtent."
 
 	^ `10@10`! !
 
-!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 9/2/2024 19:35:05'!
+!FrameMorph methodsFor: 'geometry testing' stamp: 'KenD 2/Sep/2024 19:35:05'!
 morphContainsPoint: aPoint
 	"Only the frame contains a point"
 	| outerExtent innerExtent |
@@ -855,12 +877,12 @@ morphContainsPoint: aPoint
 	^ (outerExtent containsPoint: aPoint)
 		and: [(innerExtent containsPoint: aPoint) not].! !
 
-!FrameMorph methodsFor: 'accessing' stamp: 'hlsf 12/16/2021 09:49:05'!
+!FrameMorph methodsFor: 'accessing' stamp: 'hlsf 16/Dec/2021 09:49:05'!
 borderStyle
 
 	^ borderStyle! !
 
-!FrameMorph methodsFor: 'accessing' stamp: 'hlsf 12/16/2021 09:49:05'!
+!FrameMorph methodsFor: 'accessing' stamp: 'hlsf 16/Dec/2021 09:49:05'!
 borderStyle: aSymbol
 
 	(#(simple inset raised) includes: aSymbol) ifFalse: [
@@ -868,40 +890,40 @@ borderStyle: aSymbol
 	].
 	borderStyle := aSymbol! !
 
-!FrameMorph methodsFor: 'accessing' stamp: 'KenD 9/16/2013 14:58'!
+!FrameMorph methodsFor: 'accessing' stamp: 'KenD 16/Sep/2013 14:58:00'!
 borderWidth
 
 	^ borderWidth ! !
 
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:45'!
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 12/Oct/2013 16:45:00'!
 defaultBorderColor
 	"answer the default border color/fill style for the receiver"
 	
 	^  self class colors first! !
 
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:41'!
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 12/Oct/2013 16:41:00'!
 defaultBorderWidth
 	"answer the default border width for the receiver"
 	
 	^ 8! !
 
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 9/17/2013 15:25'!
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 17/Sep/2013 15:25:00'!
 defaultColor
 
      ^ Color transparent! !
 
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:59'!
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 12/Oct/2013 16:59:00'!
 defaultExtent
 
 	^ 100 @ 60! !
 
-!FrameMorph methodsFor: 'initialization' stamp: 'KenD 10/12/2013 16:41'!
+!FrameMorph methodsFor: 'initialization' stamp: 'KenD 12/Oct/2013 16:41:00'!
 defaultFrameSelector
 	"answer the default frame selector for the receiver"
 	
 	^ #simple! !
 
-!FrameMorph methodsFor: 'initialization' stamp: 'hlsf 12/16/2021 09:47:37'!
+!FrameMorph methodsFor: 'initialization' stamp: 'hlsf 16/Dec/2021 09:47:37'!
 initialize
 
 	super initialize.
@@ -913,7 +935,7 @@ initialize
 		 morphExtent:    self defaultExtent.
 ! !
 
-!FrameMorph methodsFor: 'events-processing' stamp: 'KenD 9/15/2013 21:15'!
+!FrameMorph methodsFor: 'events-processing' stamp: 'KenD 15/Sep/2013 21:15:00'!
 cycleBorderColor
 	"Change border color to next in Colors"
 
@@ -925,12 +947,12 @@ cycleBorderColor
 
 	^ self borderColor! !
 
-!FrameMorph methodsFor: 'events-processing' stamp: 'jmv 2/13/2014 14:24'!
+!FrameMorph methodsFor: 'events-processing' stamp: 'jmv 13/Feb/2014 14:24:00'!
 stepAt: millisecondClockValue
 
 	self cycleBorderColor ! !
 
-!FrameMorph methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 09:49:05'!
+!FrameMorph methodsFor: 'drawing' stamp: 'hlsf 16/Dec/2021 09:49:05'!
 drawOn: aCanvas
 	"A canvas is already set with a proper transformation from our coordinates to those of the Canvas target."
 
@@ -941,17 +963,17 @@ drawOn: aCanvas
 		borderStyleSymbol: borderStyle
 ! !
 
-!FrameMorph methodsFor: 'events' stamp: 'KenD 9/15/2013 21:35'!
+!FrameMorph methodsFor: 'events' stamp: 'KenD 15/Sep/2013 21:35:00'!
 stopStepping
 
 	self world stopStepping: self.! !
 
-!FrameMorph class methodsFor: 'accessing' stamp: 'KenD 9/15/2013 21:05'!
+!FrameMorph class methodsFor: 'accessing' stamp: 'KenD 15/Sep/2013 21:05:00'!
 colors
 
 	^ Colors ! !
 
-!FrameMorph class methodsFor: 'accessing' stamp: 'KenD 9/15/2016 15:55:19'!
+!FrameMorph class methodsFor: 'accessing' stamp: 'KenD 15/Sep/2016 15:55:19'!
 setColors: colorArray
 "
 	self setColors: (Color orange mix: Color purple shades: 8).
@@ -960,7 +982,7 @@ setColors: colorArray
 
 	Colors := colorArray! !
 
-!FrameMorph class methodsFor: 'examples' stamp: 'hlsf 12/16/2021 09:47:37'!
+!FrameMorph class methodsFor: 'examples' stamp: 'hlsf 16/Dec/2021 09:47:37'!
 example1
 "
 	self example1 openInWorld.
@@ -979,24 +1001,24 @@ example1
 	fm stopStepping.
 "! !
 
-!FrameMorph class methodsFor: 'class initialization' stamp: 'KenD 12/12/2021 15:52:52'!
+!FrameMorph class methodsFor: 'class initialization' stamp: 'KenD 12/Dec/2021 15:52:52'!
 initialize
 "
 	self initialize.
 "
 	Colors := { Color red. Color yellow. Color green. }.! !
 
-!LineMorph methodsFor: 'private' stamp: 'KenD 9/27/2013 15:36'!
+!LineMorph methodsFor: 'private' stamp: 'KenD 27/Sep/2013 15:36:00'!
 basicExtent: aPoint
 
 	extent := aPoint! !
 
-!LineMorph methodsFor: 'private' stamp: 'KenD 9/27/2013 15:45'!
+!LineMorph methodsFor: 'private' stamp: 'KenD 27/Sep/2013 15:45:00'!
 rect
 
 	^ Rectangle origin: 0@0 corner: extent! !
 
-!LineMorph methodsFor: 'private' stamp: 'hlsf 9/12/2024 10:20:32'!
+!LineMorph methodsFor: 'private' stamp: 'hlsf 12/Sep/2024 10:20:32'!
 setPointSelectorsFromStartPoint: startPoint endPoint: endPoint
 	"Reset both my start and end points -- points in owner coordinates"
 
@@ -1023,12 +1045,12 @@ setPointSelectorsFromStartPoint: startPoint endPoint: endPoint
 	('Result:    startPoint: ', self startPoint asString, ' endPoint: ', self endPoint asString) print.
 "! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/27/2013 15:32'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 27/Sep/2013 15:32:00'!
 color
 
 	^ color! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/27/2013 16:35'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 27/Sep/2013 16:35:00'!
 color: aColor
 
 	(aColor class = Color) ifFalse: [ Error signal: 'Not a color: ', aColor printString ].
@@ -1036,13 +1058,13 @@ color: aColor
 	color := aColor.
 	self redrawNeeded ! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 19:11'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 26/Sep/2013 19:11:00'!
 endPoint
 	"Answer my endPoint in owner's coordinates"
 
 	^ (self rect perform: endPointSelector) + (self morphPosition) truncated ! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'jmv 9/29/2013 22:47'!
+!LineMorph methodsFor: 'accessing' stamp: 'jmv 29/Sep/2013 22:47:00'!
 endPoint: aPoint
 	"aPoint is in owner coordinates.  Set my startPoint in own coordinates"
 	
@@ -1053,30 +1075,30 @@ endPoint: aPoint
 		  endPoint: aPoint.
 	self redrawNeeded.! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 18:55'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 26/Sep/2013 18:55:00'!
 length
 
 	^ self startPoint dist: self endPoint! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 16:23'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 26/Sep/2013 16:23:00'!
 lineWidth
 
 	^ lineWidth ! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 30/Sep/2013 14:36:00'!
 lineWidth: newWidthInPixels
 
 	self redrawNeeded.
 	lineWidth := newWidthInPixels.
 	self redrawNeeded ! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/26/2013 19:11'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 26/Sep/2013 19:11:00'!
 startPoint
 	"Answer my startPoint in owner's coordinates"
 	
 	^ (self rect perform: startPointSelector) + (self morphPosition) truncated! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 30/Sep/2013 14:36:00'!
 startPoint: aPoint
 	"aPoint is in owner coordinates.  Set my startPoint in own coordinates"
 	
@@ -1087,7 +1109,7 @@ startPoint: aPoint
 		 endPoint: self endPoint.
 	self redrawNeeded.! !
 
-!LineMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2013 14:36'!
+!LineMorph methodsFor: 'accessing' stamp: 'KenD 30/Sep/2013 14:36:00'!
 startPoint: newStart endPoint: newEnd
 	"Reset my start and end points (Nota Bene: points in owner coordinates)"
 
@@ -1100,7 +1122,7 @@ startPoint: newStart endPoint: newEnd
 	self setPointSelectorsFromStartPoint: newStart endPoint: newEnd.
 	self redrawNeeded.! !
 
-!LineMorph methodsFor: 'drawing' stamp: 'hlsf 9/12/2024 10:21:55'!
+!LineMorph methodsFor: 'drawing' stamp: 'hlsf 12/Sep/2024 10:21:55'!
 drawOn: aCanvas
 	"Draw self in own coordinates"
 	
@@ -1113,7 +1135,7 @@ drawOn: aCanvas
 		width: lineWidth
 		color: color! !
 
-!LineMorph methodsFor: 'initialization' stamp: 'KenD 9/27/2013 15:54'!
+!LineMorph methodsFor: 'initialization' stamp: 'KenD 27/Sep/2013 15:54:00'!
 initialize
 
 	super initialize.
@@ -1124,7 +1146,7 @@ initialize
 	color := Color cyan.
 	! !
 
-!LineMorph methodsFor: 'initialization' stamp: 'KenD 9/30/2013 15:25'!
+!LineMorph methodsFor: 'initialization' stamp: 'KenD 30/Sep/2013 15:25:00'!
 startPoint: startPoint endPoint: endPoint width: numPixels color: aColor
 
 	lineWidth := numPixels.
@@ -1132,25 +1154,25 @@ startPoint: startPoint endPoint: endPoint width: numPixels color: aColor
 	self setPointSelectorsFromStartPoint: startPoint endPoint: endPoint.
 	! !
 
-!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 9/26/2013 15:39'!
+!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 26/Sep/2013 15:39:00'!
 isOrthoRectangularMorph
 
 	^ false! !
 
-!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:02:40'!
+!LineMorph methodsFor: 'geometry testing' stamp: 'KenD 10/Jul/2024 14:02:40'!
 minimumExtent
 	"This returns the minimum extent that the morph may be shrunk to.
 	It is expressed in the morph own coordinates, like morphExtent."
 
 	^ `10@10`! !
 
-!LineMorph methodsFor: 'geometry' stamp: 'KenD 9/27/2013 16:29'!
+!LineMorph methodsFor: 'geometry' stamp: 'KenD 27/Sep/2013 16:29:00'!
 morphExtent
 	"Answer an extent which includes me, taking into account my lineWidth"
 
 	^ extent + lineWidth + lineWidth! !
 
-!LineMorph methodsFor: 'geometry' stamp: 'KenD 9/27/2013 16:28'!
+!LineMorph methodsFor: 'geometry' stamp: 'KenD 27/Sep/2013 16:28:00'!
 morphExtent: aPoint 
 	"Set the receiver's extent to value provided. Honor my minimumExtent."
 
@@ -1161,24 +1183,24 @@ morphExtent: aPoint
 	extent _ (innerExtent max: self minimumExtent).
 	self redrawNeeded! !
 
-!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 16:21'!
+!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 26/Sep/2013 16:21:00'!
 initializedInstance
 	"Hand out a sample line"
 
 	^ self new startPoint: 20@30 endPoint: 120@160 width: 6 color: Color cyan
 ! !
 
-!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 18:51'!
+!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 26/Sep/2013 18:51:00'!
 startPoint: start endPoint: end
 
 	^ self new startPoint: start endPoint: end! !
 
-!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/26/2013 16:21'!
+!LineMorph class methodsFor: 'instance creation' stamp: 'KenD 26/Sep/2013 16:21:00'!
 startPoint: start endPoint: end width: numPixels color: aColor
 
 	^ self new startPoint: start endPoint: end width: numPixels color: aColor! !
 
-!LineMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 11:41:49'!
+!LineMorph class methodsFor: 'examples' stamp: 'KenD 20/Dec/2021 11:41:49'!
 example1
 "
   LineMorph example1 openInWorld 
@@ -1189,20 +1211,20 @@ example1
 		width: 8 
 		color: (Color lightGreen alpha: 0.8)! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:30:19'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 2/Apr/2022 14:30:19'!
 list
 	^ collection! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/2/2025 18:18:11'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 2/May/2025 18:18:11'!
 list: aCollection
 	collection := aCollection.
 	aCollection ifNotEmpty: [selectedIndex := 1]! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:28:03'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 2/Apr/2022 14:28:03'!
 listIndex
 	^ selectedIndex! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 5/18/2022 16:22:58'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 18/May/2022 16:22:58'!
 listIndex: index
 	selectedIndex _ index.
 	"Inform the model we changed"
@@ -1210,43 +1232,43 @@ listIndex: index
 	"Inform any interested view we changed the selected item"
 	self triggerEvent: #listSelectionChanged with: self! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 7/26/2023 13:24:32'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 26/Jul/2023 13:24:32'!
 removeSelectedItem
 	collection remove: self selectedItem.
 	selectedIndex := 0.! !
 
-!ListModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:14:52'!
+!ListModel methodsFor: 'accessing' stamp: 'hlsf 21/Apr/2023 14:14:52'!
 selectedItem
 	^ selectedIndex isZero
 		ifTrue: [nil ] 
 		ifFalse: [collection at: selectedIndex]! !
 
-!ListModel methodsFor: 'initialization' stamp: 'hlsf 5/30/2023 18:23:41'!
+!ListModel methodsFor: 'initialization' stamp: 'hlsf 30/May/2023 18:23:41'!
 initialize
 	super initialize.
 	selectedIndex := 0! !
 
-!ListModel class methodsFor: 'instance creation' stamp: 'hlsf 4/2/2022 14:28:53'!
+!ListModel class methodsFor: 'instance creation' stamp: 'hlsf 2/Apr/2022 14:28:53'!
 with: aCollection
 	^ self new ::
 		list: aCollection ;
 		yourself! !
 
-!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:58:57'!
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 21/Apr/2023 14:58:57'!
 list: aCollection
 	super list: aCollection.
 	self clearSelections ! !
 
-!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 12:13:54'!
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 21/Apr/2023 12:13:54'!
 listSelectionAt: index
 	^ listSelections at: index! !
 
-!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/23/2023 15:41:29'!
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 23/Apr/2023 15:41:29'!
 listSelectionAt: index put: value
 	listSelections at: index put: value.
 	self changed: #allSelections! !
 
-!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/23/2023 15:51:28'!
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 23/Apr/2023 15:51:28'!
 selectedIndexes
 	| indexes |
 	indexes := OrderedCollection new.
@@ -1254,13 +1276,13 @@ selectedIndexes
 	^ indexes
 	! !
 
-!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/23/2023 15:41:45'!
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 23/Apr/2023 15:41:45'!
 selectedIndexes: indexes
 	self clearSelections.
 	indexes do: [:i | 		listSelections at: i put: true].
 	self changed: #allSelections! !
 
-!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:54:33'!
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 21/Apr/2023 14:54:33'!
 selectedItems
 	| items |
 	items := OrderedCollection new.
@@ -1268,43 +1290,21 @@ selectedItems
 		(listSelections at: i) ifTrue: [items add: (collection at: i)] ].
 	^ items! !
 
-!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 9/28/2023 11:50:44'!
+!ListMultiModel methodsFor: 'accessing' stamp: 'hlsf 28/Sep/2023 11:50:44'!
 selectedItems: items
 	self selectedIndexes: (items collect: [:anItem | collection indexOf: anItem])! !
 
-!ListMultiModel methodsFor: 'private' stamp: 'hlsf 4/23/2023 15:35:24'!
+!ListMultiModel methodsFor: 'private' stamp: 'hlsf 23/Apr/2023 15:35:24'!
 clearSelections
 	listSelections := Array new: collection size withAll: false.
 	self listIndex: 0.
 	self changed: #allSelections! !
 
-!ListMultiModel methodsFor: 'copying' stamp: 'hlsf 4/21/2023 15:27:36'!
+!ListMultiModel methodsFor: 'copying' stamp: 'hlsf 21/Apr/2023 15:27:36'!
 postCopy
 	listSelections := listSelections copy! !
 
-!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:07'!
-action: aBlock
-	action _ aBlock! !
-
-!ValueHolder methodsFor: 'accessing' stamp: 'KenD 3/21/2022 15:10:28'!
-propertyValue
-
-	^ property! !
-
-!ValueHolder methodsFor: 'accessing' stamp: 'hlsf 4/2/2022 14:38:35'!
-propertyValue: aValue
-
-	property _ aValue.
-	self changed: #propertyValue:. "Inform any interested view we have changed our state"
-	action ifNotNil: [action valueWithPossibleArgument: property]! !
-
-!ValueHolder class methodsFor: 'instance creation' stamp: 'KenD 3/21/2022 15:11:17'!
-with: aProperty
-
-	^ self new :: 
-		propertyValue: aProperty! !
-
-!Morph methodsFor: '*ui-core' stamp: 'KenD 9/2/2024 20:24:18'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 2/Sep/2024 20:24:18'!
 showAccept
 	"I have just been dropped.
 	Draw and erase a green box ."
@@ -1321,7 +1321,7 @@ showAccept
 
 	hilightMorph addAlarm: #delete after: 400.! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 9/2/2024 20:24:21'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 2/Sep/2024 20:24:21'!
 showAcceptAndDeleteSelf
 	"I have just been dropped.
 	Draw and erase a green box and delete self."
@@ -1339,7 +1339,7 @@ showAcceptAndDeleteSelf
 	self               addAlarm: #delete after: 200.
 	hilightMorph addAlarm: #delete after: 400.! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 9/2/2024 20:24:28'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 2/Sep/2024 20:24:28'!
 showReject
 	"Draw and erase a red X"
 
@@ -1365,12 +1365,12 @@ showReject
 	rightStroke addAlarm: #delete after: 400.
 	! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:48:05'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 24/Jul/2024 11:48:05'!
 signMorphForMe
 
 	^ SignMorph forObject: self! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 7/24/2024 11:47:57'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 24/Jul/2024 11:47:57'!
 wantsDroppedMorph: aMorph event: evt
 	"Return true if the receiver wishes to accept the given morph, 
 	 which is being dropped by a hand in response to the given event. 

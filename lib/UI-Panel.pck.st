@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7791] on 11 January 2026 at 4:57:18 pm'!
+'From Cuis7.6 [latest update: #7777] on 26 January 2026 at 12:00:04 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 142!
+!provides: 'UI-Panel' 1 145!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1921,9 +1921,14 @@ refreshView
 checkValidity: aModel
 	self subclassResponsibility ! !
 
-!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 19/Mar/2022 10:59:00'!
+!ValueEntryPanel class methodsFor: 'instance creation' stamp: 'KenD 26/Jan/2026 11:58:21'!
 open: aModel label: stringName
-	self checkValidity: aModel propertyValue.
+	| oldString propValue |
+	oldString := stringName.
+	propValue := aModel propertyValue.
+	oldString ifNil: [oldString := ''].
+	propValue  ifNil: [propValue := '']
+			    ifNotNil: [ self checkValidity: propValue ].
 	^ super open: aModel label: stringName.! !
 
 !ValueEntryPanel class methodsFor: 'instance creation' stamp: 'hlsf 26/Mar/2022 11:26:00'!

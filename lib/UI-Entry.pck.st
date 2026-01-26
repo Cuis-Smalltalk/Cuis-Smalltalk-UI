@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7779] on 25 December 2025 at 1:42:50 pm'!
+'From Cuis7.6 [latest update: #7777] on 26 January 2026 at 9:24:55 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 58!
+!provides: 'UI-Entry' 1 60!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -85,15 +85,20 @@ baseFont
 contents
 	^contents! !
 
-!TextEntryMorph methodsFor: 'accessing' stamp: 'jmv 16/Apr/2023 17:14:00'!
+!TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 26/Jan/2026 09:08:18'!
 contents: newContents 
-	(newContents is: #Text)
-		ifTrue: [
-			emphasis := newContents emphasisAt: 1.
-			 contents := newContents string asUnicodeString]
-		ifFalse: [
-			contents = newContents ifTrue: [^self].	"no substantive change"
-			contents := newContents asUnicodeString ].
+	newContents 
+		ifNil: [ emphasis := AbstractFont normalCode.
+			   contents := UnicodeString new] "empty string"
+		ifNotNil: [
+			(newContents is: #Text)
+			ifTrue: [
+				emphasis := newContents emphasisAt: 1.
+				 contents := newContents string asUnicodeString]
+			ifFalse: [
+				contents = newContents ifTrue: [^self].	"no substantive change"
+				contents := newContents asUnicodeString ].
+		].
 	editor := nil.
 	self fitContents.
 	self redrawNeeded! !

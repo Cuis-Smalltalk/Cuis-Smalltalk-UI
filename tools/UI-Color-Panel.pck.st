@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7797] on 13 January 2026 at 1:25:45 pm'!
+'From Cuis7.6 [latest update: #7777] on 26 January 2026 at 9:45:33 am'!
 'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 55!
+!provides: 'UI-Color-Panel' 1 56!
 !requires: 'Cuis-Base' 76 7760 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1325,6 +1325,11 @@ entryModel: aSimpeNumberEntryMorph delta: aNumber
 	myDelta := aNumber.
 ! !
 
+!SimpleEntryButton methodsFor: 'accessing' stamp: 'KenD 26/Jan/2026 09:43:20'!
+defaultBorderWidth
+
+	^8! !
+
 !SimpleEntryButton class methodsFor: 'instance creation' stamp: 'KenD 31/Dec/2025 12:21:04'!
 newDown: aSimpeNumberEntryMorph delta: aNumber
 	
@@ -1346,6 +1351,11 @@ newUp: aSimpeNumberEntryMorph delta: aNumber
 			borderColor: Color black;
 			entryModel:  aSimpeNumberEntryMorph delta: aNumber;
 			yourself! !
+
+!SimpleEntryButton class methodsFor: 'new-morph participation' stamp: 'KenD 26/Jan/2026 09:45:10'!
+includeInNewMorphMenu
+	"Return true for all classes that can be instantiated from the menu"
+	^ false! !
 
 !ColorPalette class methodsFor: 'instance creation' stamp: 'KenD 16/Sep/2021 14:15:00'!
 initializedInstance

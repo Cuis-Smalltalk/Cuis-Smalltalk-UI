@@ -1,19 +1,9 @@
-'From Cuis7.1 [latest update: #6669] on 2 September 2024 at 7:59:21 pm'!
+'From Cuis7.7 [latest update: #7809] on 25 January 2026 at 3:38:07 pm'!
 'Description '!
-!provides: 'UI-Shapes' 1 45!
+!provides: 'UI-Shapes' 1 48!
 !requires: 'UI-Core' 1 11 nil!
 SystemOrganization addCategory: #'UI-Shapes'!
 
-
-!classDefinition: #PointerLineMorph category: #'UI-Shapes'!
-LineMorph subclass: #PointerLineMorph
-	instanceVariableNames: 'endPointMorph'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Shapes'!
-!classDefinition: 'PointerLineMorph class' category: #'UI-Shapes'!
-PointerLineMorph class
-	instanceVariableNames: ''!
 
 !classDefinition: #EllipseMorph category: #'UI-Shapes'!
 BorderedBoxMorph subclass: #EllipseMorph
@@ -23,6 +13,16 @@ BorderedBoxMorph subclass: #EllipseMorph
 	category: 'UI-Shapes'!
 !classDefinition: 'EllipseMorph class' category: #'UI-Shapes'!
 EllipseMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #PointerLineMorph category: #'UI-Shapes'!
+LineMorph subclass: #PointerLineMorph
+	instanceVariableNames: 'endPointMorph'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Shapes'!
+!classDefinition: 'PointerLineMorph class' category: #'UI-Shapes'!
+PointerLineMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #ArrowMorph category: #'UI-Shapes'!
@@ -86,14 +86,14 @@ RectangleShapeMorph class
 	instanceVariableNames: ''!
 
 
-!PointerLineMorph commentStamp: '<historical>' prior: 0!
-I am a LineMorph which has a "pointer" morph which I maintain in position at my endpoint.!
-
 !EllipseMorph commentStamp: '<historical>' prior: 0!
 A round bordered Morph. Supports borderWidth and borderColor. 
 
 EllipseMorph new borderWidth:10; borderColor: Color green; openInWorld.
 !
+
+!PointerLineMorph commentStamp: '<historical>' prior: 0!
+I am a LineMorph which has a "pointer" morph which I maintain in position at my endpoint.!
 
 !ArrowMorph commentStamp: '<historical>' prior: 0!
 I am a vector graphic arrow. Rotate and scale me.
@@ -133,81 +133,12 @@ To move my sides:
   Control point one is rightCenter
   Control point two is bottomCenter!
 
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 9/15/2016 16:28:43'!
-morphExtent: newExtent
-
-	super morphExtent: newExtent.
-	self updateEndPoint.! !
-
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 12/12/2016 15:21:19'!
-setPointSelectorsFromStartPoint: startPoint endPoint: endPoint
-
-	super setPointSelectorsFromStartPoint: startPoint endPoint: endPoint.
-	self updateEndPoint ! !
-
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 12/19/2021 08:17:41'!
-submorphsMightProtrude
-	"My pointer morph sticks out"
-	
-	^ true! !
-
-!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 9/2/2024 19:45:01'!
-updateEndPoint
-	"Place my pointer morph at my endpoint, centered"
-	
-	| pointMorphCenter endPointOffset |
-	pointMorphCenter := (self endPointMorph extentInOwner) / 2.
-	endPointOffset := (self rect perform: endPointSelector) + (self lineWidth / 2).
-	self endPointMorph morphPosition: endPointOffset - pointMorphCenter.! !
-
-!PointerLineMorph methodsFor: 'initialization' stamp: 'KenD 9/15/2016 16:40:58'!
-initialize
-
-	super initialize.
-	self endPointMorph:
-		(BorderedBoxMorph new 
-			:: color: Color yellow; 
-			borderColor: Color red; 
-			borderWidth: 3; 
-			morphExtent: 16@16; 
-			yourself).
-	self updateEndPoint.! !
-
-!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 9/15/2016 16:25:30'!
-endPointMorph
-	
-	^ endPointMorph! !
-
-!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 12/12/2016 15:15:59'!
-endPointMorph: aMorph
-	
-	self endPointMorph ifNotNil: [ :pointer | self removeMorph: pointer ].
-	endPointMorph := aMorph.
-	self addMorphFront: aMorph.
-	self updateEndPoint.
-! !
-
-!PointerLineMorph class methodsFor: 'instance creation' stamp: 'KenD 9/15/2016 17:37:25'!
-initializedInstance
-
-	| newInst |
-	newInst  := super initializedInstance.
-	newInst updateEndPoint.
-	^newInst! !
-
-!PointerLineMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 11:40:31'!
-example1
-"
-  PointerLineMorph example1 openInWorld 
-"
-	^ super example1! !
-
-!EllipseMorph methodsFor: 'visual properties' stamp: 'KenD 12/31/2021 13:07:32'!
+!EllipseMorph methodsFor: 'visual properties' stamp: 'KenD 31/Dec/2021 13:07:32'!
 borderStyle
 
 	^ borderStyle! !
 
-!EllipseMorph methodsFor: 'visual properties' stamp: 'KenD 12/31/2021 13:08:14'!
+!EllipseMorph methodsFor: 'visual properties' stamp: 'KenD 31/Dec/2021 13:08:14'!
 borderStyle: aSymbol
 
 	( #(simple raised inset) includes: aSymbol )
@@ -215,32 +146,32 @@ borderStyle: aSymbol
 		
 	borderStyle := aSymbol! !
 
-!EllipseMorph methodsFor: 'visual properties' stamp: 'jmv 3/10/2018 22:24:29'!
+!EllipseMorph methodsFor: 'visual properties' stamp: 'jmv 10/Mar/2018 22:24:29'!
 defaultColor
 	"Return the default fill style for the receiver"
 	^ `Color yellow`! !
 
-!EllipseMorph methodsFor: 'drawing' stamp: 'hlsf 12/16/2021 09:38:39'!
+!EllipseMorph methodsFor: 'drawing' stamp: 'hlsf 16/Dec/2021 09:38:39'!
 drawOn: aCanvas 
 	| radius |
 	radius _ extent // 2.
 	aCanvas ellipseCenter: radius radius: radius borderWidth: borderWidth borderColor: borderColor fillColor: color! !
 
-!EllipseMorph methodsFor: 'drawing' stamp: 'KenD 7/19/2023 11:18:40'!
+!EllipseMorph methodsFor: 'drawing' stamp: 'KenD 19/Jul/2023 11:18:40'!
 requiresVectorCanvas
 
 	^true! !
 
-!EllipseMorph methodsFor: 'geometry testing' stamp: 'jmv 10/7/2009 23:21'!
+!EllipseMorph methodsFor: 'geometry testing' stamp: 'jmv 7/Oct/2009 23:21:00'!
 isOrthoRectangularMorph
 	^false! !
 
-!EllipseMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:32:49'!
+!EllipseMorph methodsFor: 'geometry testing' stamp: 'KenD 8/Feb/2022 17:32:49'!
 knowsOwnLocalBounds
 
 	^false! !
 
-!EllipseMorph methodsFor: 'geometry testing' stamp: 'pb 9/2/2024 19:44:24'!
+!EllipseMorph methodsFor: 'geometry testing' stamp: 'pb 2/Sep/2024 19:44:24'!
 morphContainsPoint: aLocalPoint
 
 	| radius other delta xOverY |
@@ -254,23 +185,23 @@ morphContainsPoint: aLocalPoint
 	xOverY := extent x asFloat / extent y asFloat.
 	^ (delta x asFloat / xOverY) squared + delta y squared <= radius squared! !
 
-!EllipseMorph methodsFor: 'initialization' stamp: 'dgd 2/14/2003 22:37'!
+!EllipseMorph methodsFor: 'initialization' stamp: 'dgd 14/Feb/2003 22:37:00'!
 defaultBorderWidth
 	"answer the default border width for the receiver"
 	^ 1! !
 
-!EllipseMorph class methodsFor: 'new-morph participation' stamp: 'pb 6/8/2017 23:50:14'!
+!EllipseMorph class methodsFor: 'new-morph participation' stamp: 'pb 8/Jun/2017 23:50:14'!
 categoryInNewMorphMenu
 	^ 'Basic'! !
 
-!EllipseMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 10:57:45'!
+!EllipseMorph class methodsFor: 'examples' stamp: 'KenD 20/Dec/2021 10:57:45'!
 example1
 "
   EllipseMorph example1 openInWorld 
 "
 	^ self new morphExtent: 50@20! !
 
-!EllipseMorph class methodsFor: 'examples' stamp: 'KenD 12/20/2021 10:58:03'!
+!EllipseMorph class methodsFor: 'examples' stamp: 'KenD 20/Dec/2021 10:58:03'!
 example2
 "
   EllipseMorph example2 openInWorld 
@@ -281,75 +212,148 @@ example2
 		color: Color red;
 		morphPosition: 0@0! !
 
-!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:47:47'!
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 15/Sep/2016 16:28:43'!
+morphExtent: newExtent
+
+	super morphExtent: newExtent.
+	self updateEndPoint.! !
+
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 12/Dec/2016 15:21:19'!
+setPointSelectorsFromStartPoint: startPoint endPoint: endPoint
+
+	super setPointSelectorsFromStartPoint: startPoint endPoint: endPoint.
+	self updateEndPoint ! !
+
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 19/Dec/2021 08:17:41'!
+submorphsMightProtrude
+	"My pointer morph sticks out"
+	
+	^ true! !
+
+!PointerLineMorph methodsFor: 'geometry' stamp: 'KenD 2/Sep/2024 19:45:01'!
+updateEndPoint
+	"Place my pointer morph at my endpoint, centered"
+	
+	| pointMorphCenter endPointOffset |
+	pointMorphCenter := (self endPointMorph extentInOwner) / 2.
+	endPointOffset := (self rect perform: endPointSelector) + (self lineWidth / 2).
+	self endPointMorph morphPosition: endPointOffset - pointMorphCenter.! !
+
+!PointerLineMorph methodsFor: 'initialization' stamp: 'KenD 15/Sep/2016 16:40:58'!
+initialize
+
+	super initialize.
+	self endPointMorph:
+		(BorderedBoxMorph new 
+			:: color: Color yellow; 
+			borderColor: Color red; 
+			borderWidth: 3; 
+			morphExtent: 16@16; 
+			yourself).
+	self updateEndPoint.! !
+
+!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 15/Sep/2016 16:25:30'!
+endPointMorph
+	
+	^ endPointMorph! !
+
+!PointerLineMorph methodsFor: 'accessing' stamp: 'KenD 25/Jan/2026 15:24:41'!
+endPointMorph: aMorph
+	
+	| newMorph |
+	(aMorph is: #Form)
+		ifTrue: [newMorph := ImageMorph newWith: aMorph ]
+		ifFalse: [newMorph :=  aMorph ].
+	self endPointMorph ifNotNil: [ :pointer | self removeMorph: pointer ].
+	endPointMorph := newMorph.
+	self addMorphFront: newMorph.
+	self updateEndPoint.
+! !
+
+!PointerLineMorph class methodsFor: 'instance creation' stamp: 'KenD 15/Sep/2016 17:37:25'!
+initializedInstance
+
+	| newInst |
+	newInst  := super initializedInstance.
+	newInst updateEndPoint.
+	^newInst! !
+
+!PointerLineMorph class methodsFor: 'examples' stamp: 'KenD 20/Dec/2021 11:40:31'!
+example1
+"
+  PointerLineMorph example1 openInWorld 
+"
+	^ super example1! !
+
+!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 10/Jun/2024 13:47:47'!
 minimumExtent
 	"This returns the minimum extent that the morph may be shrunk to.
 	It is expressed in the morph own coordinates, like morphExtent."
 
 	^ `20@20`! !
 
-!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 5/16/2023 20:36:29'!
+!ArrowMorph methodsFor: 'geometry testing' stamp: 'KenD 16/May/2023 20:36:29'!
 yAxisPointsUp
 
 	^ true! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:03:17'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 15:03:17'!
 defaultBorderColor
 
 	^ Color yellow! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:03:37'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 15:03:37'!
 defaultBorderWidth
 
 	^ 2! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:47:39'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 14:47:39'!
 defaultColor
 
 	^ Color yellow! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 16:06:15'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 16:06:15'!
 defaultFillColor
 
 	^ Color green! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:49:03'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 14:49:03'!
 defaultHeadHeight
 
 	^ 2 + self defaultTailHeight! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:50:47'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 14:50:47'!
 defaultHeadLength
 
 	^ 3! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:57:53'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 14:57:53'!
 defaultHeadSholder
 
 	^ 2 ! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 15:02:20'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 15:02:20'!
 defaultHeadWingLength
 	"Answer how far the arrow head extends from the tail height"
 	^ 2 ! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:48:30'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 14:48:30'!
 defaultTailHeight
 
 	^ 2! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 14:48:13'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 14:48:13'!
 defaultTailLength
 
 	^ 5! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/17/2023 07:24:51'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 17/May/2023 07:24:51'!
 defaultTipPoint
 	"Arrow points to the right, so tip is at right end"
 	
 	^ 0@0! !
 
-!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 5/16/2023 16:06:15'!
+!ArrowMorph methodsFor: 'initialization' stamp: 'KenD 16/May/2023 16:06:15'!
 initialize
 
 	| patternScale |
@@ -364,113 +368,113 @@ initialize
 	borderWidth := self defaultBorderWidth.
 	fillColor := self defaultFillColor.! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:27:45'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 16:27:45'!
 borderColor
 
 	^ borderColor! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:33:42'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 20:33:42'!
 borderColor: newColor
 
 	borderColor := newColor.
 	self redrawNeeded! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/17/2023 07:41:56'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 17/May/2023 07:41:56'!
 borderWidth
 
 	^ borderWidth! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/17/2023 07:41:47'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 17/May/2023 07:41:47'!
 borderWidth: newWidth
 
 	borderWidth := newWidth.
 	self redrawNeeded! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:28:37'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 16:28:37'!
 fillColor
 
 	^ fillColor! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:33:53'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 20:33:53'!
 fillColor: newColor
 
 	fillColor := newColor.
 	self redrawNeeded! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 15:00:53'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 15:00:53'!
 headHeight
 
 	^ (2 * headWingLength) + tailHeight! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:24:41'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 16:24:41'!
 headLength
 
 	^ headLength! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:32:26'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 20:32:26'!
 headLength: newLength
 
 	headLength := newLength.
 	self redrawNeeded! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:27:12'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 16:27:12'!
 headWingLength
 	"The arrow head extends from the tail height by this amount in either direction"
 	
 	^ headWingLength! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:32:14'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 20:32:14'!
 headWingLength: newLength
 
 	"The arrow head extends from the tail height by this amount in either direction"
 	headWingLength := newLength.
 	self redrawNeeded! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 15:05:48'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 15:05:48'!
 height
 
 	^ tailHeight + (2 * headWingLength)! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 15:05:11'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 15:05:11'!
 length
 
 	^ headLength + tailLength! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/17/2023 07:42:31'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 17/May/2023 07:42:31'!
 tailHeight
 
 	^ tailHeight! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/17/2023 07:42:54'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 17/May/2023 07:42:54'!
 tailHeight: newHeight
 
 	tailHeight := newHeight.
 	self redrawNeeded! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 16:25:37'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 16:25:37'!
 tailLength
 
 	^ tailLength! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:32:01'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 20:32:01'!
 tailLength: newLength
 
 	tailLength := newLength.
 	self redrawNeeded! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 14:47:09'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 14:47:09'!
 tipPoint
 	"Answer point at the tip of me".
 	
 	^ tipPoint ! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 5/16/2023 20:34:32'!
+!ArrowMorph methodsFor: 'accessing' stamp: 'KenD 16/May/2023 20:34:32'!
 tipPoint:  aPoint
 
 	tipPoint := aPoint.
 	self redrawNeeded ! !
 
-!ArrowMorph methodsFor: 'drawing' stamp: 'KenD 5/16/2023 16:18:14'!
+!ArrowMorph methodsFor: 'drawing' stamp: 'KenD 16/May/2023 16:18:14'!
 drawOn: aCanvas
 	"Draw me an Arrow"
 	| p1 p2 p3 p4 p5 p6 |
@@ -495,12 +499,12 @@ drawOn: aCanvas
 				} asFloat32Array .
 		].! !
 
-!ArrowMorph methodsFor: 'geometry' stamp: 'KenD 5/16/2023 15:11:07'!
+!ArrowMorph methodsFor: 'geometry' stamp: 'KenD 16/May/2023 15:11:07'!
 rotationCenter
 
 	^ tipPoint! !
 
-!ArrowMorph methodsFor: 'private' stamp: 'KenD 5/17/2023 10:09:43'!
+!ArrowMorph methodsFor: 'private' stamp: 'KenD 17/May/2023 10:09:43'!
 boxExtent
 	"Answer the extent to offset a label. See ArrowMorph>>labelMorph: " 
 	 
@@ -508,7 +512,7 @@ boxExtent
 	e := (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
-!ArrowMorph class methodsFor: 'instance creation' stamp: 'KenD 5/17/2023 10:34:15'!
+!ArrowMorph class methodsFor: 'instance creation' stamp: 'KenD 17/May/2023 10:34:15'!
 label: aString
 	| newSelf embeddedLabel desiredLabelExtent |
 	newSelf := self new.
@@ -524,7 +528,7 @@ label: aString
 	
 	! !
 
-!ArrowMorph class methodsFor: 'examples' stamp: 'KenD 5/17/2023 10:31:25'!
+!ArrowMorph class methodsFor: 'examples' stamp: 'KenD 17/May/2023 10:31:25'!
 exampleClickMe
 "      Create and show an ArrowMorph which reacts to a mouse click.
 
@@ -542,68 +546,24 @@ exampleClickMe
 	newSelf openInWorld.
 	^ newSelf! !
 
-!ArrowMorph class methodsFor: 'class initialization' stamp: 'KenD 5/17/2023 07:32:08'!
-initialize
-"	
-	ArrowMorph initialize
-"
-	(Smalltalk includesKey: #MetaProperty )
-		ifTrue: [ self initializeMetaProperties ].
-	! !
-
-!ArrowMorph class methodsFor: 'class initialization' stamp: 'KenD 5/17/2023 07:38:04'!
-initializeMetaProperties
-"
-	ArrowMorph initializeMetaProperties.
-"
-	| classDict propsDict |
-	"Ensure named MetaProperties exist"
-	MetaProperty initializeDictionaries.
-
-	"Seed MetaProperties for known Morphs"
-	propsDict := MetaProperty preDefinedPropsDict.
-	
-	classDict := MetaProperty 
-		metaPropsDictForClass: ArrowMorph.
-		
-	classDict at: #tipPoint 
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #headLength
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #tailLength
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #headWingLength
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #tailHeight
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #borderWidth 
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #borderColor 
-		put: (propsDict at: #acceptsColor). 
-	classDict at: #fillColor
-		put: (propsDict at: #acceptsColor). 
-
-
-	! !
-
-!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:33:40'!
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 8/Feb/2022 17:33:40'!
 knowsOwnLocalBounds
 
 	^false! !
 
-!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 7/10/2024 14:01:25'!
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 10/Jul/2024 14:01:25'!
 minimumExtent
 	"This returns the minimum extent that the morph may be shrunk to.
 	It is expressed in the morph own coordinates, like morphExtent."
 
 	^ `20@20`! !
 
-!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 1/30/2022 13:01:45'!
+!BezierQuadraticMorph methodsFor: 'geometry testing' stamp: 'KenD 30/Jan/2022 13:01:45'!
 yAxisPointsUp
 
 	^true! !
 
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:44:11'!
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 14:44:11'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -624,75 +584,75 @@ addOptionalHandlesTo: aHalo box: box
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doEndPoint:with: .! !
 
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:52:41'!
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 31/Jan/2022 14:52:41'!
 controlPointOneInWorld
 	"Answer control point one in World coordinates."
 
 	^ self externalizeToWorld: oneControlPoint ! !
 
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:53:48'!
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 31/Jan/2022 14:53:48'!
 endPointInWorld
 	"Answer end point in World coordinates."
 
 	^ self externalizeToWorld: endPoint! !
 
-!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:54:09'!
+!BezierQuadraticMorph methodsFor: 'control points' stamp: 'KenD 31/Jan/2022 14:54:09'!
 startPointInWorld
 	"Answer start point in World coordinates."
 
 	^ self externalizeToWorld: startPoint! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:29:45'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:29:45'!
 endPoint
 
 	^ endPoint! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:28:07'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:28:07'!
 endPoint: aPoint
 
 	endPoint := aPoint! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:30:25'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:30:25'!
 lineColor 
 
 	^ lineColor ! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:30:43'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:30:43'!
 lineColor: aColor
 
 	lineColor := aColor! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:31:02'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:31:02'!
 lineWidth
 
 	^ lineWidth! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:31:29'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:31:29'!
 lineWidth: positiveNumber
 
 	lineWidth := positiveNumber ! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:29:32'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:29:32'!
 oneControlPoint
 
 	^ oneControlPoint! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:29:15'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:29:15'!
 oneControlPoint: aPoint
 
 	oneControlPoint := aPoint! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:30:03'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:30:03'!
 startPoint 
 
 	^ startPoint ! !
 
-!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 1/28/2022 13:27:58'!
+!BezierQuadraticMorph methodsFor: 'accessing' stamp: 'KenD 28/Jan/2022 13:27:58'!
 startPoint: aPoint
 
 	startPoint := aPoint! !
 
-!BezierQuadraticMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 13:00:46'!
+!BezierQuadraticMorph methodsFor: 'drawing' stamp: 'KenD 30/Jan/2022 13:00:46'!
 drawOn: aCanvas
 
 	aCanvas strokeWidth: lineWidth color: lineColor do: [
@@ -701,7 +661,7 @@ drawOn: aCanvas
 			quadraticBezierTo: endPoint control: oneControlPoint 
 	]! !
 
-!BezierQuadraticMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:08:52'!
+!BezierQuadraticMorph methodsFor: 'initialization' stamp: 'KenD 5/Feb/2022 14:08:52'!
 initialize
 
 	"Harmless Values"
@@ -713,50 +673,14 @@ initialize
 		endPoint:     50 @ -120;
 		oneControlPoint: 15 @ 200! !
 
-!BezierQuadraticMorph class methodsFor: 'class initialization' stamp: 'KenD 1/28/2022 13:47:38'!
-initialize
-	
-	(Smalltalk includesKey: #MetaProperty )
-		ifTrue: [ self initializeMetaProperties ].
-	! !
-
-!BezierQuadraticMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:39:58'!
-initializeMetaProperties
-"
-	Bezier1Morph initializeMetaProperties.
-"
-	| classDict propsDict |
-	"Ensure named MetaProperties exist"
-	MetaProperty initializeDictionaries.
-
-	"Seed MetaProperties for known Morphs"
-	propsDict := MetaProperty preDefinedPropsDict.
-	
-	classDict := MetaProperty 
-		metaPropsDictForClass: BezierQuadraticMorph.
-	
-	classDict at: #startPoint 
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #endPoint 
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #oneControlPoint 
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #lineWidth 
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #lineColor 
-		put: (propsDict at: #acceptsColor). 
-
-
-	! !
-
-!BezierQuadraticMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:30:56'!
+!BezierQuadraticMorph class methodsFor: 'examples' stamp: 'hlsf 6/Feb/2022 15:30:56'!
 example1
 "
 	self example1 openInWorld
 "
 	^ self new! !
 
-!BezierQuadraticMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:36:54'!
+!BezierQuadraticMorph class methodsFor: 'examples' stamp: 'hlsf 6/Feb/2022 15:36:54'!
 example2
 "
 	self example2 openInWorld
@@ -768,17 +692,17 @@ example2
 		endPoint:     100 @ 100;
 		oneControlPoint: 100 @ 0! !
 
-!BezierCubicMorph methodsFor: 'accessing' stamp: 'KenD 1/30/2022 14:41:44'!
+!BezierCubicMorph methodsFor: 'accessing' stamp: 'KenD 30/Jan/2022 14:41:44'!
 twoControlPoint
 
 	^ twoControlPoint ! !
 
-!BezierCubicMorph methodsFor: 'accessing' stamp: 'KenD 1/30/2022 14:41:38'!
+!BezierCubicMorph methodsFor: 'accessing' stamp: 'KenD 30/Jan/2022 14:41:38'!
 twoControlPoint: aPoint
 
 	twoControlPoint := aPoint ! !
 
-!BezierCubicMorph methodsFor: 'initialization' stamp: 'KenD 1/30/2022 14:59:51'!
+!BezierCubicMorph methodsFor: 'initialization' stamp: 'KenD 30/Jan/2022 14:59:51'!
 initialize
 
 	super initialize.
@@ -787,7 +711,7 @@ initialize
 		oneControlPoint: 228@75 ;
 		twoControlPoint: 25 @ 160.! !
 
-!BezierCubicMorph methodsFor: 'drawing' stamp: 'KenD 1/30/2022 14:55:18'!
+!BezierCubicMorph methodsFor: 'drawing' stamp: 'KenD 30/Jan/2022 14:55:18'!
 drawOn: aCanvas
 
 	aCanvas strokeWidth: lineWidth color: lineColor do: [
@@ -798,7 +722,7 @@ drawOn: aCanvas
 				control2: twoControlPoint 
 	]! !
 
-!BezierCubicMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:44:28'!
+!BezierCubicMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 14:44:28'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -812,48 +736,20 @@ addOptionalHandlesTo: aHalo box: box
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doControlTwo:with: .! !
 
-!BezierCubicMorph methodsFor: 'control points' stamp: 'KenD 1/31/2022 14:55:49'!
+!BezierCubicMorph methodsFor: 'control points' stamp: 'KenD 31/Jan/2022 14:55:49'!
 controlPointTwoInWorld
 	"Answer control point one in World coordinates"
 
 	^self externalizeToWorld: twoControlPoint ! !
 
-!BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 1/30/2022 14:55:53'!
-initialize
-	
-	(Smalltalk includesKey: #MetaProperty )
-		ifTrue: [ self initializeMetaProperties ].
-	! !
-
-!BezierCubicMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:39:25'!
-initializeMetaProperties
-"
-	Bezier2Morph initializeMetaProperties.
-"
-	| classDict propsDict |
-	"Ensure named MetaProperties exist"
-	MetaProperty initializeDictionaries.
-
-	"Seed MetaProperties for known Morphs"
-	propsDict := MetaProperty preDefinedPropsDict.
-	
-	classDict := MetaProperty metaPropsDictForClass: BezierCubicMorph. 
-	
-	"Note that MetaProperties are inherited.."
-	classDict at: #twoControlPoint 
-		put: (propsDict at: #acceptsPoint).  
-
-
-	! !
-
-!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:35:51'!
+!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 6/Feb/2022 15:35:51'!
 example1
 "
 	self example1 openInWorld
 "
 	^ self new! !
 
-!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:37:48'!
+!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 6/Feb/2022 15:37:48'!
 example2
 "
 	self example2 openInWorld
@@ -866,7 +762,7 @@ example2
 		oneControlPoint: 50 @ 0;
 		twoControlPoint: 100 @ 50! !
 
-!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:38:34'!
+!BezierCubicMorph class methodsFor: 'examples' stamp: 'hlsf 6/Feb/2022 15:38:34'!
 example3
 "
 	self example3 openInWorld
@@ -879,19 +775,19 @@ example3
 		oneControlPoint: 100 @ 0;
 		twoControlPoint: 100 @ 0! !
 
-!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 2/8/2022 17:34:53'!
+!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 8/Feb/2022 17:34:53'!
 knowsOwnLocalBounds
 
 	^false! !
 
-!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:46:10'!
+!CircleShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 10/Jun/2024 13:46:10'!
 minimumExtent
 	"This returns the minimum extent that the morph may be shrunk to.
 	It is expressed in the morph own coordinates, like morphExtent."
 
 	^ `20@20`! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 7/19/2023 12:35:26'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 19/Jul/2023 12:35:26'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -911,91 +807,91 @@ addOptionalHandlesTo: aHalo box: box
 		
 ! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:50:49'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 13:50:49'!
 controlPointOneInWorld
 	"Answer radius control point in World coordinates."
 
 	^ self externalizeToWorld: self oneControlPoint ! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:47:54'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 13:47:54'!
 oneControlPoint
 	"Answer radius control at 90 drgrees."
 
 	^ (center x + radius) @ (center y) ! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:47:22'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 13:47:22'!
 oneControlPoint: aPoint
 	"Set radius from x"
 
 	radius := aPoint x - center x! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:48:41'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 13:48:41'!
 startPoint
 
 	^ center! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:48:57'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 13:48:57'!
 startPoint: aPoint
 
 	center := aPoint! !
 
-!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 13:44:23'!
+!CircleShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 13:44:23'!
 startPointInWorld
 	"Answer start point in World coordinates."
 
 	^ self externalizeToWorld: center! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:06'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:41:06'!
 center
 
 	^center! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:22'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:41:22'!
 center: aPoint
 
 	center := aPoint! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:51'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:42:51'!
 fillColor
 
 	^ fillColor! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:57'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:42:57'!
 fillColor: aColor
 
 	fillColor := aColor! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:03'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:43:03'!
 lineColor
 
 	^ lineColor ! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:09'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:43:09'!
 lineColor: aColor
 
 	lineColor := aColor! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:15'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:43:15'!
 lineWidth
 
 	^ lineWidth ! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:43:22'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:43:22'!
 lineWidth: posiriveNumber
 
 	lineWidth := posiriveNumber! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:41:42'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:41:42'!
 radius
 
 	^radius ! !
 
-!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:42:24'!
+!CircleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:42:24'!
 radius: aPositiveDistance
 
 	radius := aPositiveDistance! !
 
-!CircleShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 13:59:25'!
+!CircleShapeMorph methodsFor: 'drawing' stamp: 'KenD 5/Feb/2022 13:59:25'!
 drawOn: aCanvas
  
 	aCanvas 
@@ -1005,7 +901,7 @@ drawOn: aCanvas
 			aCanvas circleCenter: center radius: radius
 	]! !
 
-!CircleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:10:25'!
+!CircleShapeMorph methodsFor: 'initialization' stamp: 'KenD 5/Feb/2022 14:10:25'!
 initialize
 
 	super initialize.
@@ -1015,55 +911,19 @@ initialize
 	center := 0@0.
 	radius := 80.! !
 
-!CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 13:12:13'!
+!CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 8/Feb/2022 13:12:13'!
 rotationCenter
 	"Smooth rotation around the origin."
 
 	^ 0@0! !
 
-!CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:31:30'!
+!CircleShapeMorph methodsFor: 'geometry' stamp: 'KenD 5/Feb/2022 14:31:30'!
 yAxisPointsUp
 	"Math coordiated rather than graphics."
 
 	^ true! !
 
-!CircleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:34:58'!
-initialize
-	
-	(Smalltalk includesKey: #MetaProperty )
-		ifTrue: [ self initializeMetaProperties ].
-	! !
-
-!CircleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 15:19:02'!
-initializeMetaProperties
-"
-	CircleShapeMorph initializeMetaProperties.
-"
-	| classDict propsDict |
-	"Ensure named MetaProperties exist"
-	MetaProperty initializeDictionaries.
-
-	"Seed MetaProperties for known Morphs"
-	propsDict := MetaProperty preDefinedPropsDict.
-	
-	classDict := MetaProperty
-		metaPropsDictForClass: CircleShapeMorph.
-		
-	classDict at: #center 
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #radius 
-		put: (propsDict at: #acceptsPositiveNumber ). 
-	classDict at: #lineWidth 
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #lineColor 
-		put: (propsDict at: #acceptsColor). 
-	classDict at: #fillColor 
-		put: (propsDict at: #acceptsColor). 
-
-
-	! !
-
-!CircleShapeMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:45:16'!
+!CircleShapeMorph class methodsFor: 'examples' stamp: 'hlsf 6/Feb/2022 15:45:16'!
 example1
 "
 	self example1 openInWorld
@@ -1076,14 +936,14 @@ example1
 		fillColor: (Color black muchLighter alpha: 0.6)
 		! !
 
-!LineShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 6/10/2024 13:50:16'!
+!LineShapeMorph methodsFor: 'geometry testing' stamp: 'KenD 10/Jun/2024 13:50:16'!
 minimumExtent
 	"This returns the minimum extent that the morph may be shrunk to.
 	It is expressed in the morph own coordinates, like morphExtent."
 
 	^ `10@10`! !
 
-!LineShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 14:29:28'!
+!LineShapeMorph methodsFor: 'drawing' stamp: 'KenD 5/Feb/2022 14:29:28'!
 drawOn: aCanvas
 
 	aCanvas strokeWidth: lineWidth color: lineColor do: [
@@ -1092,7 +952,7 @@ drawOn: aCanvas
 				lineTo: endPoint
 	]! !
 
-!LineShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 14:34:46'!
+!LineShapeMorph methodsFor: 'initialization' stamp: 'KenD 5/Feb/2022 14:34:46'!
 initialize
 
 	super initialize.
@@ -1101,47 +961,47 @@ initialize
 	endPoint := 84@175.
 	lineWidth := 6.! !
 
-!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:17'!
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 14:22:17'!
 endPoint
 
 	^ endPoint! !
 
-!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:23'!
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 14:22:23'!
 endPoint: aPoint
 
 	endPoint := aPoint! !
 
-!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:31'!
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 14:22:31'!
 lineColor 
 
 	^ lineColor ! !
 
-!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:36'!
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 14:22:36'!
 lineColor: aColor
 
 	lineColor := aColor! !
 
-!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:42'!
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 14:22:42'!
 lineWidth
 
 	^ lineWidth! !
 
-!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:48'!
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 14:22:48'!
 lineWidth: positiveNumber
 
 	lineWidth := positiveNumber ! !
 
-!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:22:58'!
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 14:22:58'!
 startPoint 
 
 	^ startPoint ! !
 
-!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 14:23:04'!
+!LineShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 14:23:04'!
 startPoint: aPoint
 
 	startPoint := aPoint! !
 
-!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:43:21'!
+!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 14:43:21'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -1158,71 +1018,37 @@ addOptionalHandlesTo: aHalo box: box
 		mouseDownSelector: #startControlPoint:with: ;
 		mouseMoveSelector: #doEndPoint:with: .! !
 
-!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:24:58'!
+!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 14:24:58'!
 endPointInWorld
 	"Answer end point in World coordinates."
 
 	^ self externalizeToWorld: endPoint! !
 
-!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 2/5/2022 14:25:04'!
+!LineShapeMorph methodsFor: 'control points' stamp: 'KenD 5/Feb/2022 14:25:04'!
 startPointInWorld
 	"Answer start point in World coordinates."
 
 	^ self externalizeToWorld: startPoint! !
 
-!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 17:35:06'!
+!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 8/Feb/2022 17:35:06'!
 knowsOwnLocalBounds
 
 	^false! !
 
-!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:30:10'!
+!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 5/Feb/2022 14:30:10'!
 rotationCenter
 	"Smooth rotation around the origin.
 	(Optional. See what happens if you delete this method)"
 
 	^ startPoint! !
 
-!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/5/2022 14:31:07'!
+!LineShapeMorph methodsFor: 'geometry' stamp: 'KenD 5/Feb/2022 14:31:07'!
 yAxisPointsUp
 	"Math coordiated rather than graphics."
 
 	^ true! !
 
-!LineShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 14:23:24'!
-initialize
-	
-	(Smalltalk includesKey: #MetaProperty )
-		ifTrue: [ self initializeMetaProperties ].
-	! !
-
-!LineShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 14:24:04'!
-initializeMetaProperties
-"
-	LineShapeMorph initializeMetaProperties.
-"
-	| classDict propsDict |
-	"Ensure named MetaProperties exist"
-	MetaProperty initializeDictionaries.
-
-	"Seed MetaProperties for known Morphs"
-	propsDict := MetaProperty preDefinedPropsDict.
-	
-	classDict := MetaProperty 
-		metaPropsDictForClass: LineShapeMorph.
-	
-	classDict at: #startPoint 
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #endPoint 
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #lineWidth 
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #lineColor 
-		put: (propsDict at: #acceptsColor). 
-
-
-	! !
-
-!LineShapeMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:47:45'!
+!LineShapeMorph class methodsFor: 'examples' stamp: 'hlsf 6/Feb/2022 15:47:45'!
 example1
 "
 	self example1 openInWorld
@@ -1233,14 +1059,14 @@ example1
 		lineWidth: 10;
 		lineColor: Color black! !
 
-!RectangleShapeMorph methodsFor: 'as yet unclassified' stamp: 'KenD 6/10/2024 13:50:29'!
+!RectangleShapeMorph methodsFor: 'as yet unclassified' stamp: 'KenD 10/Jun/2024 13:50:29'!
 minimumExtent
 	"This returns the minimum extent that the morph may be shrunk to.
 	It is expressed in the morph own coordinates, like morphExtent."
 
 	^ `20@20`! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 7/19/2023 12:37:29'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 19/Jul/2023 12:37:29'!
 addOptionalHandlesTo: aHalo box: box
 	"Control point is relative to my center.
 	 Translate relative to aHalo"
@@ -1268,147 +1094,147 @@ addOptionalHandlesTo: aHalo box: box
 		
 ! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:46:12'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 11:46:12'!
 controlPointOneInWorld
 	"Answer control point one in World coordinates."
 
 	^ self externalizeToWorld: self rightCenter ! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:51:08'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 11:51:08'!
 controlPointTwoInWorld
 	"Answer control point one in World coordinates"
 
 	^self externalizeToWorld: self bottomCenter ! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:53:43'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 11:53:43'!
 endPointInWorld
 	"Answer end point in World coordinates."
 
 	^ self externalizeToWorld: corner! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 13:42:20'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 13:42:20'!
 oneControlPoint
 	"Answer control point one line grab right."
 
 	^ self rightCenter ! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 13:45:12'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 13:45:12'!
 oneControlPoint: aPoint
 	"Reset my right line"
 
 	corner := aPoint x @ corner y! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:35:13'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 11:35:13'!
 startPoint
 
 	^ origin! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:35:05'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 11:35:05'!
 startPoint: aPoint
 
 	origin := aPoint! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 11:53:55'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 11:53:55'!
 startPointInWorld
 	"Answer start point in World coordinates."
 
 	^ self externalizeToWorld: origin! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 13:42:58'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 13:42:58'!
 twoControlPoint
 	"Answer control point one line grab botton."
 
 	^ self bottomCenter ! !
 
-!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 2/4/2022 13:44:21'!
+!RectangleShapeMorph methodsFor: 'control points' stamp: 'KenD 4/Feb/2022 13:44:21'!
 twoControlPoint: aPoint
 	"Reset my bottom line"
 
 	corner := corner x @ aPoint y! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:37:06'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 4/Feb/2022 13:37:06'!
 bottomCenter
 
 	^(origin x + ((corner x - origin x) // 2) @ corner y)! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:04'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:08:04'!
 corner
 
 	^ corner! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:19'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:08:19'!
 corner: aPoint
 
 	corner := aPoint! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:00'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 4/Feb/2022 11:36:00'!
 endPoint
 
 	^ corner! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:36:16'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 4/Feb/2022 11:36:16'!
 endPoint: aPoint
 
 	corner := aPoint! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:29:34'!
 fillColor
 
 	^ fillColor! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:29:34'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:29:34'!
 fillColor: aColor
 
 	fillColor := aColor! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:38:03'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 4/Feb/2022 11:38:03'!
 lineColor
 
 	^ lineColor ! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:14'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 4/Feb/2022 11:40:14'!
 lineColor: aColor
 
 	lineColor := aColor! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:37:49'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 4/Feb/2022 11:37:49'!
 lineWidth
 
 	^ lineWidth ! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 11:40:43'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 4/Feb/2022 11:40:43'!
 lineWidth: posiriveNumber
 
 	lineWidth := posiriveNumber! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:28'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:08:28'!
 origin
 
 	^ origin! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/5/2022 13:08:37'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2022 13:08:37'!
 origin: aPoint
 
 	origin := aPoint! !
 
-!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 2/4/2022 13:32:53'!
+!RectangleShapeMorph methodsFor: 'accessing' stamp: 'KenD 4/Feb/2022 13:32:53'!
 rightCenter
 
 	^(corner x @ (corner y - ((corner y - origin y) // 2)))! !
 
-!RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/8/2022 17:35:18'!
+!RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 8/Feb/2022 17:35:18'!
 knowsOwnLocalBounds
 
 	^false! !
 
-!RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/4/2022 12:19:24'!
+!RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 4/Feb/2022 12:19:24'!
 rotationCenter
 	"Smooth rotation around the origin.
 	(Optional. See what happens if you delete this method)"
 
 	^ origin! !
 
-!RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 2/4/2022 12:39:05'!
+!RectangleShapeMorph methodsFor: 'geometry' stamp: 'KenD 4/Feb/2022 12:39:05'!
 yAxisPointsUp
 	"By default, most morphs assume the usual convention in 2d computer graphics:
 	- x points to the right (i.e. increasing x values move from left to right)
@@ -1418,7 +1244,7 @@ yAxisPointsUp
 
 	^ true! !
 
-!RectangleShapeMorph methodsFor: 'drawing' stamp: 'KenD 2/5/2022 13:29:34'!
+!RectangleShapeMorph methodsFor: 'drawing' stamp: 'KenD 5/Feb/2022 13:29:34'!
 drawOn: aCanvas
 
 	aCanvas 
@@ -1428,7 +1254,7 @@ drawOn: aCanvas
 		borderWidth: lineWidth 
 		borderColor: lineColor! !
 
-!RectangleShapeMorph methodsFor: 'initialization' stamp: 'KenD 2/5/2022 15:35:49'!
+!RectangleShapeMorph methodsFor: 'initialization' stamp: 'KenD 5/Feb/2022 15:35:49'!
 initialize
 
 	super initialize.
@@ -1438,43 +1264,7 @@ initialize
 	lineWidth := 6.
 	fillColor := lineColor alpha: 0.4. ! !
 
-!RectangleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:07:11'!
-initialize
-	
-	(Smalltalk includesKey: #MetaProperty )
-		ifTrue: [ self initializeMetaProperties ].
-	! !
-
-!RectangleShapeMorph class methodsFor: 'class initialization' stamp: 'KenD 2/5/2022 13:39:12'!
-initializeMetaProperties
-"
-	RectangleShapeMorph initializeMetaProperties.
-"
-	| classDict propsDict |
-	"Ensure named MetaProperties exist"
-	MetaProperty initializeDictionaries.
-
-	"Seed MetaProperties for known Morphs"
-	propsDict := MetaProperty preDefinedPropsDict.
-	
-	classDict := MetaProperty 
-		metaPropsDictForClass: RectangleShapeMorph.
-		
-	classDict at: #origin 
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #corner
-		put: (propsDict at: #acceptsPoint). 
-	classDict at: #lineWidth 
-		put: (propsDict at: #acceptsPositiveNumber). 
-	classDict at: #lineColor 
-		put: (propsDict at: #acceptsColor). 
-	classDict at: #fillColor
-		put: (propsDict at: #acceptsColor). 
-
-
-	! !
-
-!RectangleShapeMorph class methodsFor: 'examples' stamp: 'hlsf 2/6/2022 15:51:32'!
+!RectangleShapeMorph class methodsFor: 'examples' stamp: 'hlsf 6/Feb/2022 15:51:32'!
 example1
 "
 	self example1 openInWorld
@@ -1486,27 +1276,27 @@ example1
 		lineColor: Color orange;
 		fillColor: (Color orange muchLighter alpha: 0.6)! !
 
-!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 11:57:54'!
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 19/Jul/2023 11:57:54'!
 endPointIcon
 	"Answer a `sun`"
 	^ self fetch: #( '16x16' 'status' 'weather-clear'  )! !
 
-!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:05:19'!
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 19/Jul/2023 12:05:19'!
 moveHorizIcon
 	"Answer horizontal move"
 	^ self fetch: #( '16x16' 'actions' 'go-last'  )! !
 
-!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:05:46'!
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 19/Jul/2023 12:05:46'!
 moveVertIcon
 	"Answer vertical move"
 	^ self fetch: #( '16x16' 'actions' 'go-bottom'  )! !
 
-!Theme methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:27:26'!
+!Theme methodsFor: '*ui-shapes' stamp: 'KenD 19/Jul/2023 12:27:26'!
 targetIcon
 	"Answer concentric circles"
 	^ self fetch: #( '16x16' 'emblems' 'emblem-important'  )! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 9/2/2024 19:57:45'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/Sep/2024 19:57:45'!
 addControlHandle: aPoint
 	"Add a handle for the control point and return the handle."
 
@@ -1534,7 +1324,7 @@ addControlHandle: aPoint
 		yourself
 ! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 9/2/2024 19:57:48'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/Sep/2024 19:57:48'!
 addHorizLineHandle: aPoint
 	"Add a handle for the control point and return the handle."
 
@@ -1562,7 +1352,7 @@ addHorizLineHandle: aPoint
 		yourself
 ! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 9/2/2024 19:57:52'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/Sep/2024 19:57:52'!
 addPointHandle: aPoint
 	"Add a handle for the control point and return the handle."
 
@@ -1590,7 +1380,7 @@ addPointHandle: aPoint
 		yourself
 ! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 9/2/2024 19:57:57'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/Sep/2024 19:57:57'!
 addVertLineHandle: aPoint
 	"Add a handle for the control point and return the handle."
 
@@ -1618,7 +1408,7 @@ addVertLineHandle: aPoint
 		yourself
 ! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/5/2022 13:18:51'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 5/Feb/2022 13:18:51'!
 doControlOne: evt with: controlPointHandle
 	"Enable Target Morph to follow control point one."
 
@@ -1634,7 +1424,7 @@ doControlOne: evt with: controlPointHandle
 
 	self redrawNeeded.! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/5/2022 13:19:48'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 5/Feb/2022 13:19:48'!
 doControlTwo: evt with: controlPointHandle
 	"Enable Target Morph to follow control point two."
 
@@ -1650,7 +1440,7 @@ doControlTwo: evt with: controlPointHandle
 
 	self redrawNeeded.! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/5/2022 13:24:23'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 5/Feb/2022 13:24:23'!
 doEndPoint: evt with: controlPointHandle
 	"Enable Target Morph to follow endPoint control point."
 
@@ -1666,7 +1456,7 @@ doEndPoint: evt with: controlPointHandle
 
 	self redrawNeeded.! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/5/2022 13:24:04'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 5/Feb/2022 13:24:04'!
 doStartPoint: evt with: controlPointHandle
 	"Enable Target Morph to follow startPoint control point."
 
@@ -1682,7 +1472,7 @@ doStartPoint: evt with: controlPointHandle
 
 	self redrawNeeded.! !
 
-!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 2/5/2022 13:24:45'!
+!HaloMorph methodsFor: '*ui-shapes' stamp: 'KenD 5/Feb/2022 13:24:45'!
 startControlPoint: evt with: controlPointHandle
 	"Initialize control point target."
 
@@ -1694,36 +1484,30 @@ startControlPoint: evt with: controlPointHandle
 
 ! !
 
-!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:08:28'!
+!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 19/Jul/2023 12:08:28'!
 haloGrabLineHorizIcon
 
 	^ self icons
 		at: #haloGrabLineHorizIcon
 		ifAbsentPut: [ Theme current  moveHorizIcon ]! !
 
-!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:08:51'!
+!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 19/Jul/2023 12:08:51'!
 haloGrabLineVertIcon
 
 	^ self icons
 		at: #haloGrabLineVertIcon
 		ifAbsentPut: [ Theme current moveVertIcon ]! !
 
-!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:09:15'!
+!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 19/Jul/2023 12:09:15'!
 haloPointIcon
 
 	^ self icons
 		at: #haloPointIcon
 		ifAbsentPut: [ Theme current endPointIcon ]! !
 
-!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 7/19/2023 12:09:37'!
+!HaloMorph class methodsFor: '*ui-shapes' stamp: 'KenD 19/Jul/2023 12:09:37'!
 haloTargetIcon
 
 	^ self icons
 		at: #haloTargetIcon
 		ifAbsentPut: [ Theme current targetIcon ]! !
-ArrowMorph initialize!
-BezierQuadraticMorph initialize!
-BezierCubicMorph initialize!
-CircleShapeMorph initialize!
-LineShapeMorph initialize!
-RectangleShapeMorph initialize!
