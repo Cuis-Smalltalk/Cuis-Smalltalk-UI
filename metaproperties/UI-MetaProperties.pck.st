@@ -1,6 +1,6 @@
-'From Cuis7.6 [latest update: #7777] on 26 January 2026 at 12:06:32 pm'!
+'From Cuis7.7 [latest update: #7816] on 27 January 2026 at 1:38:48 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 148!
+!provides: 'UI-MetaProperties' 1 149!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -2137,6 +2137,26 @@ addLocalMetaPropsTo: aDict
 icon
 
 	^ VisualPropertyMenuItem layoutIcon ! !
+
+!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026 13:31:40'!
+privateFixedHeight
+
+	^ fixedHeight! !
+
+!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026 13:31:48'!
+privateFixedWidth
+
+	^ fixedWidth! !
+
+!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026 13:32:07'!
+privateProportionalHeight
+
+	^ proportionalHeight! !
+
+!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026 13:32:14'!
+privateProportionalWidth
+
+	^ proportionalWidth ! !
 
 !FileIOAccessor methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:46:00'!
 icon

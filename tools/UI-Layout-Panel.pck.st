@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7734] on 1 December 2025 at 2:35:39 pm'!
+'From Cuis7.7 [latest update: #7816] on 27 January 2026 at 1:38:52 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 25!
+!provides: 'UI-Layout-Panel' 1 26!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'Cuis-Base' 75 7734 nil!
@@ -1215,23 +1215,3 @@ editMe
 morph
 	"For #showHalo"
 	^ morph! !
-
-!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 24/Dec/2013 15:14:00'!
-privateFixedHeight
-
-	^ fixedHeight! !
-
-!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 24/Dec/2013 15:15:00'!
-privateFixedWidth
-
-	^ fixedWidth! !
-
-!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 24/Dec/2013 15:15:00'!
-privateProportionalHeight
-
-	^ proportionalHeight! !
-
-!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 24/Dec/2013 15:15:00'!
-privateProportionalWidth
-
-	^ proportionalWidth ! !
