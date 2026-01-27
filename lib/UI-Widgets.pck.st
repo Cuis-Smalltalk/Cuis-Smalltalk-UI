@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7813] on 26 January 2026 at 2:01:18 pm'!
+'From Cuis7.7 [latest update: #7816] on 27 January 2026 at 5:42:19 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 64!
+!provides: 'UI-Widgets' 1 63!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -435,11 +435,11 @@ selectedColor
 selectedColor: aColor
 	selectedColor _ aColor ! !
 
-!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 10/Aug/2025 12:20:49'!
+!ButtonMorph methodsFor: 'drawing' stamp: 'hlsf 27/Jan/2026 17:41:22'!
 drawMyShapeOn: canvas with: background
 	| borderStyleSymbol |
 	borderStyleSymbol := self isPressed ifFalse: [ #raised ] ifTrue: [ #inset ].
-	(roundButtonStyle isNil and: [Theme current roundButtons])
+	self isRound
 		ifTrue:  [ | r rect |
 			r := Theme current roundedButtonRadius.
 			rect := self localBounds.
@@ -627,20 +627,20 @@ mouseMove: evt localPosition: position
 				ifFalse: [	self doTargetAction: position] ]
 			! !
 
-!WheelMorph methodsFor: 'event handling' stamp: 'KenD 26/Jan/2026 13:54:05'!
+!WheelMorph methodsFor: 'event handling' stamp: 'hlsf 10/Feb/2022 17:28:13'!
 sendScrollEvent: cursorPoint
 	| new delta mouseScrollDirection |
 	self isHorizontal
 		ifTrue: [ "left lower, right higher"
-				new := cursorPoint x. 
-				delta := new - old.
+				new _ cursorPoint x. 
+				delta _ new - old.
 				(delta < 0)
 					ifTrue:   [ mouseScrollDirection := #left ] 
 					ifFalse:  [ mouseScrollDirection := #right ] 
 		]
 		ifFalse: [ "down lower, up higher"
-				new := cursorPoint y. 
-				delta := old - new.
+				new _ cursorPoint y. 
+				delta _ old - new.
 				(delta < 0)
 					ifTrue:   [ mouseScrollDirection := #down ] 
 					ifFalse:  [ mouseScrollDirection := #up ] 
@@ -648,13 +648,13 @@ sendScrollEvent: cursorPoint
 	
 	delta isZero ifTrue: [^self].
 	self addAngle: delta.
-	old := new.
+	old _ new.
 		
 	(target ~~ nil) ifTrue: [ | scrollEvent wheelPosition |
 		wheelPosition := self morphPosition + (self morphExtent // 2). "wheel center"
 		scrollEvent := MouseScrollEvent new
-						"setType: #mouseScroll"
-						setPosition: wheelPosition
+						setType: #mouseScroll
+						position: wheelPosition
 						direction: mouseScrollDirection
 						buttons: InputSensor mouseButton1
 						hand: self activeHand
@@ -738,7 +738,7 @@ example1
 	w target: Transcript; actionSelector: #print:.
 	^ w! !
 
-!WheelMorph class methodsFor: 'examples' stamp: 'KenD 26/Jan/2026 14:01:16'!
+!WheelMorph class methodsFor: 'examples' stamp: 'hlsf 11/Feb/2024 11:55:08'!
 example2
 "
 	self example2 openInWorld
@@ -746,19 +746,7 @@ example2
 	| ed model wheel |
 	ed := TextEditor open.
 	"paste a bunch of text to get scrollbar"
-	ed morphExtent: 400@150.
 	model := ed layoutMorph submorphs first. "TextModelMorph"
-	model model actualContents: 
-'Some text goes here
-to make it clear
-that what we fear
-is just what we hear
-not what we hold dear.
-We need more text
-To see whats next
-when wheel is spun
-we have some fun!!
-	'.
 	wheel := WheelMorph target: model.
 	wheel beVertical.
 	^ wheel! !
