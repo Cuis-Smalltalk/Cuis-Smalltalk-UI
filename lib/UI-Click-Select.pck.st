@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7809] on 25 January 2026 at 12:53:05 pm'!
+'From Cuis7.7 [latest update: #7813] on 27 January 2026 at 5:36:18 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 99!
+!provides: 'UI-Click-Select' 1 100!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -1249,6 +1249,11 @@ getList
 	list do: [:aMorph | self addToScroller: aMorph].
 	self suitedExtent.
 	^ list! !
+
+!PluggableListOfMorph methodsFor: 'access' stamp: 'hlsf 27/Jan/2026 17:34:10'!
+getListItem: index
+	"get the index-th item in the displayed list"
+	^ list at: index ifAbsent: [nil]! !
 
 !PluggableListOfMorph methodsFor: 'initialization' stamp: 'hlsf 22/Jan/2022 12:39:41'!
 initialize
