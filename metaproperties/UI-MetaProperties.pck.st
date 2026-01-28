@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7816] on 27 January 2026 at 1:38:48 pm'!
-'Description MetaProperties describe and define public visual properties of Morphs.  They are used by a PropertyEditor and in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 149!
+'From Cuis7.7 [latest update: #7819] on 28 January 2026 at 1:52:22 pm'!
+'Description MetaProperties describe and define public visual properties of Morphs.  They are used in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
+!provides: 'UI-MetaProperties' 1 150!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -53,7 +53,7 @@ MetaPropertyTests class
 !classDefinition: #MetaProperty category: #'UI-MetaProperties'!
 Object subclass: #MetaProperty
 	instanceVariableNames: 'kind editProc'
-	classVariableNames: 'MetaPropDict PreDefinedPropsDict'
+	classVariableNames: 'PreDefinedPropsDict'
 	poolDictionaries: ''
 	category: 'UI-MetaProperties'!
 !classDefinition: 'MetaProperty class' category: #'UI-MetaProperties'!
@@ -150,9 +150,7 @@ I am the parent class for Morph meta-properties.
 
 My instances are immutable and may be shared.  See class side for common MetaProperties.
 
-I maintain MetaPropDict, a dictionary of Class->Dict(name->metaProp).  See #MetaProperty class>>MetapropDictForClass:
-
-Also, there is PreDefinedPropsDict, which contains metaPropName->metaProp for sharing.  These pre-defined MetaProperties are typically added in my class and subclass #initialize methods.
+I maintain PreDefinedPropsDict, which contains metaPropName->metaProp for sharing.  These pre-defined MetaProperties are typically added in my class and subclass #initialize methods.
 e.g.
    MetaProperty metaPropNamed: #acceptsColor.
 
@@ -904,23 +902,23 @@ kind: aClass editProc: aClosure
 							  aClosure printString ].
 	editProc := aClosure ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 14/Dec/2016 14:02:00'!
-addToInitialDictionaries
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+addPredefinedMetaProperties
 
 	"Does nothing -- method inherited by subclasses which do not override it"! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 25/Jan/2026 14:13:26'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:09:28'!
 initialize
 	"Add typical usages to dictionary for sharing."
 "
 	MetaProperty initialize.
 "
 	
-	self initializeDictionaries
+	self initializePreDefinedPropsDict
 ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 25/Jan/2026 14:12:46'!
-initializeDictionaries
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+initializePreDefinedPropsDict
 	"Add typical usages to dictionary for sharing."
 "
 	PreDefinedPropsDict := nil.
@@ -1015,7 +1013,7 @@ initializeDictionaries
 								 morph editMyLayoutSpec ] ).
 	props at: #acceptsLabelMorph put: (MetaProperty kind: LabelMorph).
 
-	self allSubclassesDo: [ :subclass | subclass addToInitialDictionaries ].
+	self allSubclassesDo: [ :subclass | subclass addPredefinedMetaProperties ].
 	
 	! !
 
@@ -1055,18 +1053,19 @@ preDefinedPropsDict
 
 	^ PreDefinedPropsDict ! !
 
-!MetaProperty class methodsFor: 'documentation' stamp: 'KenD 25/Jan/2026 14:17:53'!
+!MetaProperty class methodsFor: 'documentation' stamp: 'KenD 28/Jan/2026 13:07:33'!
 whyMe
 
 ^
 '
 The basic idea here is to allow authors of Morph classes to attach MetaProperties so that a Morph''s visual instance variables and properties show up in a Morph''s Menu.  
 
-To remove walls, a morph''s visual properties  can be updated by Click: fill-in/select or DragNDrop for example from a Color, Font or some other Palette or selected from a menu select list.
+To remove walls, a morph''s visual properties  can be updated by Click (fill-in/select/edit) 
+or DragNDrop for example from a Color, Font or some other Palette or selected from a menu select list.
 
 Note that these visual properties may be virtual.  The idea being that changing a property value may store a value into an instance variable, a #property, or invoke a bit of code that does the right thing and maintains some invariant.
 
-MetaProperties are considered immutable and may be shared.  They are associated with Morph classes and are inherited by Morph subclasses.
+MetaProperties are immutable and may be shared.  They are associated with Morph classes and are inherited by Morph subclasses.
 '! !
 
 !MetaProperty class methodsFor: 'testing' stamp: 'KenD 14/Aug/2022 13:33:00'!
@@ -1103,8 +1102,8 @@ minValue: aValue
 
 	minValue := aValue ! !
 
-!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 2/Sep/2024 19:55:00'!
-addToInitialDictionaries
+!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
 	MetaPropertyFrom addToInitialDictionaries.
@@ -1147,11 +1146,11 @@ addToInitialDictionaries
 								fitInWorld ]).
 	! !
 
-!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 2/Apr/2017 14:43:00'!
+!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
 initialize
 
 	self preDefinedPropsDict ifNil: [ PreDefinedPropsDict := IdentityDictionary new].
-	self addToInitialDictionaries.! !
+	self addPredefinedMetaProperties.! !
 
 !MetaPropertyFrom class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:59:00'!
 kind: aClass minValue: min
@@ -1217,8 +1216,8 @@ accepts: newValue
 	
 	"test decodeProc"! !
 
-!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 25/Jan/2026 12:00:27'!
-addToInitialDictionaries
+!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
 	MetaPropertyOneOf addToInitialDictionaries.
@@ -1236,10 +1235,10 @@ addToInitialDictionaries
 									choices: #(none theme round  rectangular)).
 ! !
 
-!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 14/Dec/2016 14:14:00'!
+!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
 initialize
 
-	self addToInitialDictionaries.! !
+	self addPredefinedMetaProperties.! !
 
 !MetaPropertyOneOf class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:40:00'!
 choices: aCollection
@@ -1322,8 +1321,8 @@ multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decode
 
 ! !
 
-!MetaPropertyMultiSelect class methodsFor: 'class initialization' stamp: 'KenD 9/Dec/2022 12:42:00'!
-addToInitialDictionaries
+!MetaPropertyMultiSelect class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
 	MetaPropertyMultiSelect addToInitialDictionaries.
@@ -1434,8 +1433,8 @@ kinds: classCollection transformProc: aClosure
 	transformProc := aClosure.
 	kinds := classCollection.! !
 
-!MetaPropertyTransducer class methodsFor: 'class initialization' stamp: 'KenD 23/Dec/2016 15:27:00'!
-addToInitialDictionaries
+!MetaPropertyTransducer class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
 	MetaPropertyTransducer addToInitialDictionaries.
@@ -1495,11 +1494,11 @@ testClosure
 
 	^ testClosure! !
 
-!MetaPropertyViaTest class methodsFor: 'class initialization' stamp: 'KenD 23/Dec/2016 15:30:00'!
-addToInitialDictionaries
+!MetaPropertyViaTest class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:11:33'!
+addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
-	MetaPropertyViaTest addToInitialDictionaries.
+	MetaPropertyViaTest addPredefinedMetaProperties.
 "
 "
 	| props |
