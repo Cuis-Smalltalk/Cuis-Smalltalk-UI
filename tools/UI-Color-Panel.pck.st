@@ -1,6 +1,6 @@
-'From Cuis7.6 [latest update: #7777] on 26 January 2026 at 9:45:33 am'!
-'Description I supply the RGB/HSV and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 56!
+'From Cuis7.7 [latest update: #7823] on 31 January 2026 at 1:33:39 pm'!
+'Description I supply the RGB/HSB and OK-LCH ColorEditor Panels'!
+!provides: 'UI-Color-Panel' 1 58!
 !requires: 'Cuis-Base' 76 7760 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -176,7 +176,7 @@ Cylindrical model: ligtness slice over degreees=hue, radius=chroma.
 
 For a given lightness value, colorwheel is Hue by degree (0..360) 
 and radial distabce/magnitude by chroma/saturation (gray..maxSat).
-Color is absent where not supported by OKLCH.
+Color is absent (Color cyan lighter) where not supported by OKLCH.
 
 !
 
@@ -212,6 +212,20 @@ No change to Saturation, Brightness, or Alpha.
 I present myself as a ColorEditorPanel to my ColorSliderMorph.
 
 !
+
+!HueArmMorph commentStamp: '<historical>' prior: 0!
+I am like a clock hour arm but can be pivoted to any point in 0..360.
+Degree is Hue in OKLCH Color Model.
+Rrotation is traditional with 1st quadrant upper right.
+                              90
+                                |
+                                |
+                                |
+   180 --------+-------- 0
+                                |
+                                |
+                                |
+                              270!
 
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorEditor.!
@@ -852,6 +866,16 @@ circle2morph: circlePoint
 	
 	^ (circlePoint x + center x) @ (circlePoint y - center y) negated.! !
 
+!ColorRingMorph methodsFor: 'accessing' stamp: 'KenD 31/Jan/2026 10:57:55'!
+center 
+
+	^ center! !
+
+!ColorRingMorph methodsFor: 'accessing' stamp: 'KenD 31/Jan/2026 10:58:08'!
+radius 
+
+	^ radius ! !
+
 !ColorRingMorph methodsFor: 'initialization' stamp: 'KenD 20/Dec/2025 13:34:16'!
 radius: r
 
@@ -1079,11 +1103,11 @@ chromaFrame: aFraneMorph
 
 	chromaFrame := aFraneMorph! !
 
-!OKLCHCircleMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2025 11:16:53'!
+!OKLCHCircleMorph methodsFor: 'accessing' stamp: 'KenD 31/Jan/2026 12:57:35'!
 colorAbsenceColor
 
 	"Answer this when no OKLCH color is present"
-	^Color cyan lighter! !
+	^ `Color cyan lighter`! !
 
 !OKLCHCircleMorph methodsFor: 'accessing' stamp: 'KenD 21/Dec/2025 15:11:55'!
 colorDrawingScale
@@ -1100,16 +1124,20 @@ hueArm
 
 	^hueArm! !
 
-!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 29/Dec/2025 15:16:26'!
+!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 31/Jan/2026 13:02:47'!
 addColorRing
-
-	| radius colorRingOffset |
+	"The ColorRingMorph is like the numbers on a clock:
+	a hue->degree position indicator."
+	
+	| radius colorRingOffset  centerDelta|
 	radius := centerPoint x.
 	colorRingOffset := (radius // 5) + 4. 
 	colorRing := ColorRingMorph radius: radius + colorRingOffset.
-	self addMorphFront: colorRing.
+	 "To simplify drawing, we are a submorph of the ColorRingMorph."
+	colorRing addMorphFront: self.
 	"Make colorRIng Center to be our Center"
-	colorRing morphPosition: (colorRingOffset @ colorRingOffset) negated.! !
+	centerDelta := (colorRing morphExtent - self morphExtent) / 2.
+	self morphPosition: centerDelta.! !
 
 !OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 31/Dec/2025 13:56:18'!
 addCromaFrame: chroma0To1
@@ -1142,7 +1170,7 @@ addCromaFrame: chroma0To1
 					].
 				  ].! !
 
-!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 31/Dec/2025 11:23:40'!
+!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 31/Jan/2026 13:14:37'!
 addHueArm: hueInDegrees
 
 	"My Hue arm is like a clock arm, rotated to show the hue in degrees."
@@ -1155,13 +1183,13 @@ addHueArm: hueInDegrees
 			morphExtent: (self radius - self hueArmOffset x) @ (ringOffset // 2) .
 	"Want hueArm to pivot about cernerPoint "
 	hueArm morphPosition: centerPoint + self hueArmOffset.
+	hueArm hide. "My color will be reset; do not display me at original position"
 	self addMorphFront: hueArm.
-	hueArm hide.
-	^hueArm
+	
 
 	! !
 
-!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 25/Dec/2025 15:18:36'!
+!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 31/Jan/2026 11:11:20'!
 sideLength: numPixels l: llightness0to1 c: chroma0to1 h: hueIndegrees
 
 	| center  |
@@ -1197,7 +1225,7 @@ dotAt: circlePoint
 	myForm colorAt: morphPoint + (0@-3) put: Color black.
 	image := myForm.! !
 
-!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 26/Dec/2025 11:17:08'!
+!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 31/Jan/2026 13:16:21'!
 beColorful: lightness0To1
  	"Chroma and Hue are constant for a given lightness.
 	Map between Morpj (x,y) from (0,0) to Circle with centerPoint."
@@ -1215,10 +1243,11 @@ beColorful: lightness0To1
 				myForm colorAt: morphPoint
 						put: (pixelColor ifNotNil: [pixelColor] ifNil: [self colorAbsenceColor ])
 				]
-				ifFalse: [myForm colorAt: morphPoint put: Color transparent].
-			
-			(circlePoint magnitude roundedHAFZ = myRadius)
-				ifTrue: [ myForm colorAt: morphPoint put: Color purple ].
+				ifFalse: [
+					(circlePoint magnitude between: myRadius and: myRadius + 2.1)
+						ifTrue: [ myForm colorAt: morphPoint put: Color purple ]
+						ifFalse: [myForm colorAt: morphPoint put: Color transparent]
+				].
 		]
 	].
 	image := myForm.
@@ -1227,7 +1256,7 @@ beColorful: lightness0To1
 	^self
   ! !
 
-!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 31/Dec/2025 13:57:59'!
+!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 31/Jan/2026 13:07:44'!
 newChromaAt: chroma0To1
 
 	|  chromaFrameCenter |
@@ -1235,10 +1264,11 @@ newChromaAt: chroma0To1
 	"Center on Chroma.  Cap Chroma to radius."
 	chromaFrame morphPosition: 
 			((colorDrawingScale * chroma0To1) min: self radius)
-			@ ((chromaFrameCenter y negated) + (hueArm morphExtent y // 2));
-			redrawNeeded! !
+			@ ((chromaFrameCenter y negated) + (hueArm morphExtent y // 2)).
+	self someSubmorphPositionOrExtentChanged;
+		redrawNeeded ! !
 
-!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 31/Dec/2025 12:57:01'!
+!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 31/Jan/2026 13:24:29'!
 setColor:  aColor
 	"Invoked by contaier on color change"
 	aColor oklchDo: [ :lightness0To1 :chroma0to1 :hueInDegrees |
@@ -2002,7 +2032,7 @@ swatchBorderColor
 	"Match with Visual Menu Item text color"
 	^ (Color r: 0.5 g: 0.07 b: 0.5) ! !
 
-!OKLCHEditPanel methodsFor: 'initialization' stamp: 'KenD 30/Dec/2025 12:27:26'!
+!OKLCHEditPanel methodsFor: 'initialization' stamp: 'KenD 31/Jan/2026 12:52:00'!
 initialize
 
 	super initialize.
@@ -2046,7 +2076,7 @@ refreshCircleMorph
 
 	circleMorph setColor: self model color! !
 
-!OKLCHEditPanel methodsFor: 'color updating' stamp: 'KenD 27/Dec/2025 13:49:29'!
+!OKLCHEditPanel methodsFor: 'color updating' stamp: 'KenD 31/Jan/2026 13:29:06'!
 refreshColor
 	"model color has changed.  Refresh my views."
 	
@@ -2061,6 +2091,7 @@ refreshColor
 	].
 
 	self refreshCircleMorph;
+		someSubmorphPositionOrExtentChanged;
 		redrawNeeded;
 		yourself
 ! !
@@ -2072,12 +2103,11 @@ refreshColorSwatch
 	colorSwatch image: (model baseColor iconOrThumbnailOfSize: self class colorSwatchExtent).
 	colorSwatch color: self model baseColor "NB: No alpha here. Alpha=1"! !
 
-!OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 30/Dec/2025 12:30:02'!
+!OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 31/Jan/2026 12:54:55'!
 buildColorCircleColumn
 
 	| circleLayout |
 	circleLayout := LayoutMorph newColumn :: 
-		separation: 20;
 		axisEdgeWeight: #center;
 		color: Color transparent.
 						
@@ -2087,7 +2117,7 @@ buildColorCircleColumn
 	circleMorph chromaFrame setProperty: #model toValue: self model.
 	
 	^circleLayout 
-		addMorph: circleMorph;
+		addMorph: circleMorph colorRing; "Ring contains circleMorph"
 		yourself
 ! !
 
@@ -2117,7 +2147,7 @@ buildLightnessSliderColumn
 		yourself
 ! !
 
-!OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 26/Dec/2025 13:42:27'!
+!OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 31/Jan/2026 12:55:43'!
 buildMorphicWindow
 " Our layout is a bit different to a traditional dialog, so we override as 
   we don't need button area at the bottom and main panel is a row of morphs." 
@@ -2137,10 +2167,13 @@ buildMorphicWindow
 		when: #colorChanged 
 		send: #refreshColor 
 		to: self.
-	^self
+	self
 		colorSwatchesBeDroppable;
 		refreshColor;
-		yourself
+		redrawNeeded.
+	circleMorph hueArm show.
+
+	^self
 ! !
 
 !OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 31/Dec/2025 12:48:21'!
@@ -2262,7 +2295,7 @@ deltaAdjust: delta
 		yourself
 	! !
 
-!OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 31/Dec/2025 12:50:59'!
+!OKLCHEditPanel methodsFor: 'GUI building' stamp: 'KenD 31/Jan/2026 12:00:58'!
 buildValuesColumn
 
 	| valuesLayout |
@@ -2289,7 +2322,8 @@ buildValuesColumn
 						self model "Angle goes through 0 degrees in both directions"
 							setOKHue: ((newDeg > 0)
 								ifTrue: [ newDeg ] 
-								ifFalse: [ newDeg + 360 ])];
+								ifFalse: [ newDeg + 360 ]).
+					];
 					refreshValueFrom: self model;
 					yourself.
 	valuesLayout addMorph: (self
@@ -2626,20 +2660,18 @@ currentDegrees
 	^location degrees negated
 	! !
 
-!HueArmMorph methodsFor: 'geometry' stamp: 'KenD 31/Dec/2025 12:55:43'!
+!HueArmMorph methodsFor: 'geometry' stamp: 'KenD 31/Jan/2026 13:25:26'!
 rotateToDegrees: newDegrees
 	"Like rotateBy: but to absolute degrees."
-	
+
 	"reset to 0 because #rotateBy: is from current position"
-	self hide; redrawNeeded;
-		rotateBy: location radians negated.
+	self rotateBy: location radians negated.
 	
       "Rotation is Clockwise, but Hue rotates CounterClockwise.
 	 #rotateBy: from zero."
-	self	rotateBy: newDegrees degreesToRadians negated;
-		show;
-		redrawNeeded;
-		yourself
+	self	rotateBy: newDegrees degreesToRadians negated.
+	
+	
 ! !
 
 !HueArmMorph methodsFor: 'geometry' stamp: 'KenD 21/Dec/2025 09:39:03'!
