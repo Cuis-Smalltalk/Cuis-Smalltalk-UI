@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7823] on 31 January 2026 at 1:33:39 pm'!
+'From Cuis7.7 [latest update: #7824] on 1 February 2026 at 3:33:39 pm'!
 'Description I supply the RGB/HSB and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 58!
+!provides: 'UI-Color-Panel' 1 62!
 !requires: 'Cuis-Base' 76 7760 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -216,16 +216,12 @@ I present myself as a ColorEditorPanel to my ColorSliderMorph.
 !HueArmMorph commentStamp: '<historical>' prior: 0!
 I am like a clock hour arm but can be pivoted to any point in 0..360.
 Degree is Hue in OKLCH Color Model.
-Rrotation is traditional with 1st quadrant upper right.
-                              90
-                                |
-                                |
-                                |
-   180 --------+-------- 0
-                                |
-                                |
-                                |
-                              270!
+Rotation is traditional with 1st quadrant upper right.
+               90
+                |
+   180 --+-- 0
+                |
+              270!
 
 !ColorEditorModel commentStamp: '<historical>' prior: 0!
 I am the model (state holder) for a ColorEditor.!
@@ -1139,7 +1135,7 @@ addColorRing
 	centerDelta := (colorRing morphExtent - self morphExtent) / 2.
 	self morphPosition: centerDelta.! !
 
-!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 31/Dec/2025 13:56:18'!
+!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 1/Feb/2026 15:32:58'!
 addCromaFrame: chroma0To1
 
 	|  side chromaFrameCenter |
@@ -1166,7 +1162,6 @@ addCromaFrame: chroma0To1
 								min: (model maxOKChroma * colorDrawingScale - chromaFrameCenter x)).
 						chromaFrame morphPosition: (newX @  chromaFrame morphPosition y).
 						model setOKChroma: (chromaFrame morphPosition x) / colorDrawingScale.
-						"self newChromaAt: model color oklchChroma "
 					].
 				  ].! !
 
@@ -1256,7 +1251,7 @@ beColorful: lightness0To1
 	^self
   ! !
 
-!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 31/Jan/2026 13:07:44'!
+!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 1/Feb/2026 14:24:21'!
 newChromaAt: chroma0To1
 
 	|  chromaFrameCenter |
@@ -1265,10 +1260,9 @@ newChromaAt: chroma0To1
 	chromaFrame morphPosition: 
 			((colorDrawingScale * chroma0To1) min: self radius)
 			@ ((chromaFrameCenter y negated) + (hueArm morphExtent y // 2)).
-	self someSubmorphPositionOrExtentChanged;
-		redrawNeeded ! !
+	self redrawNeeded ! !
 
-!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 31/Jan/2026 13:24:29'!
+!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 1/Feb/2026 14:48:52'!
 setColor:  aColor
 	"Invoked by contaier on color change"
 	aColor oklchDo: [ :lightness0To1 :chroma0to1 :hueInDegrees |
@@ -1277,11 +1271,6 @@ setColor:  aColor
 		self hueArm rotateToDegrees: hueInDegrees.
 	].
 	self redrawNeeded ! !
-
-!OKLCHCircleMorph methodsFor: 'geometry testing' stamp: 'KenD 20/Dec/2025 13:45:01'!
-submorphsMightProtrude
-
-	^true "ColorRingMorph"! !
 
 !OKLCHCircleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 23/Dec/2025 09:02:20'!
 includeInNewMorphMenu
@@ -2076,7 +2065,7 @@ refreshCircleMorph
 
 	circleMorph setColor: self model color! !
 
-!OKLCHEditPanel methodsFor: 'color updating' stamp: 'KenD 31/Jan/2026 13:29:06'!
+!OKLCHEditPanel methodsFor: 'color updating' stamp: 'KenD 1/Feb/2026 14:22:37'!
 refreshColor
 	"model color has changed.  Refresh my views."
 	
@@ -2091,7 +2080,6 @@ refreshColor
 	].
 
 	self refreshCircleMorph;
-		someSubmorphPositionOrExtentChanged;
 		redrawNeeded;
 		yourself
 ! !
@@ -2645,12 +2633,12 @@ mouseLeave: igniredMouseEvent
 
 	self borderColor: Color black! !
 
-!HueArmMorph methodsFor: 'events' stamp: 'KenD 31/Dec/2025 12:53:42'!
+!HueArmMorph methodsFor: 'events' stamp: 'KenD 1/Feb/2026 14:30:53'!
 mouseMove: aMouseMoveEvent localPosition: localEventPosition
 
 	aMouseMoveEvent anyButtonPressed ifTrue: [
-		self rotateToDegrees:  self currentDegrees - localEventPosition degrees.
-		self model setOKHue: self currentDegrees.
+		self model setOKHue: self currentDegrees - localEventPosition degrees.
+		"Model update event causes redraw"
 	]! !
 
 !HueArmMorph methodsFor: 'geometry' stamp: 'KenD 31/Dec/2025 08:42:44'!
@@ -2690,6 +2678,11 @@ model
 model: aColorEditorModel
 
 	model := aColorEditorModel! !
+
+!HueArmMorph methodsFor: 'testing' stamp: 'KenD 1/Feb/2026 14:18:40'!
+submorphsMightProtrude
+
+	^ true  "chromaFrame"! !
 
 !HueArmMorph class methodsFor: 'new-morph participation' stamp: 'KenD 23/Dec/2025 09:02:34'!
 includeInNewMorphMenu
