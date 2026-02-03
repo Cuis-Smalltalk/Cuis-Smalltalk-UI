@@ -1,6 +1,6 @@
-'From Cuis7.6 [latest update: #7777] on 26 January 2026 at 9:24:55 am'!
+'From Cuis7.7 [latest update: #7824] on 3 February 2026 at 3:54:38 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 60!
+!provides: 'UI-Entry' 1 61!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -792,7 +792,7 @@ legalChars: legalEntryChars numCharsToHold: nilOrInteger value: initialValue val
 	].
 ! !
 
-!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 19/Mar/2022 15:36:00'!
+!SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'jmv 3/Feb/2026 14:01:32'!
 circleDegrees
 " SimpleNumberEntryMorph circleDegrees openInWorld "
 "Answer 0..360.0 or nil"
@@ -806,7 +806,7 @@ circleDegrees
 					ifTrue: [ degrees ]
 					ifFalse: [ nil ]
 			]
-			toString: [ :n | n printString ]! !
+			toString: [ :n | n printStringFractionDigits: 5 ]! !
 
 !SimpleNumberEntryMorph class methodsFor: 'examples' stamp: 'KenD 2/Dec/2013 16:23:00'!
 circleDegreesExact

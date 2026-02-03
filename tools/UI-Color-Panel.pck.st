@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7824] on 1 February 2026 at 3:33:39 pm'!
+'From Cuis7.7 [latest update: #7824] on 3 February 2026 at 3:57:22 pm'!
 'Description I supply the RGB/HSB and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 62!
+!provides: 'UI-Color-Panel' 1 63!
 !requires: 'Cuis-Base' 76 7760 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -826,12 +826,12 @@ zSelector: aSymbol zValue: anInteger colorPoint: aPoint
 			zValue: anInteger 
 			colorPoint: aPoint! !
 
-!ColorRingMorph methodsFor: 'drawing' stamp: 'KenD 21/Dec/2025 09:37:01'!
+!ColorRingMorph methodsFor: 'drawing' stamp: 'jmv 3/Feb/2026 13:01:52'!
 dotAt: circlePoint color: myColor
 	"Draw a black dot relative to center at circlePoint"
 	| myForm morphPoint |
 	morphPoint := self circle2morph: circlePoint.
-	myForm := self imageForm.
+	myForm := image.
 	-4 to: 4 do: [ :deltaX |
 		-4 to: 4 do: [ :deltaY |
 			myForm colorAt: morphPoint + (deltaX@deltaY) put: myColor.
@@ -843,7 +843,6 @@ dotAt: circlePoint color: myColor
 		myForm colorAt: morphPoint + (-5@pos) put: myColor.
 		myForm colorAt: morphPoint + (pos@-5) put: myColor.
 	].
-	image := myForm.  
 	self redrawNeeded.! !
 
 !ColorRingMorph methodsFor: 'drawing' stamp: 'KenD 2/Jan/2026 15:17:51'!
@@ -1184,11 +1183,10 @@ addHueArm: hueInDegrees
 
 	! !
 
-!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 31/Jan/2026 11:11:20'!
+!OKLCHCircleMorph methodsFor: 'initialization' stamp: 'KenD 3/Feb/2026 15:56:51'!
 sideLength: numPixels l: llightness0to1 c: chroma0to1 h: hueIndegrees
 
 	| center  |
-	super initialize.
 	color := Color transparent.
 	center := numPixels // 2.
 	centerPoint := (center @ center).
@@ -1203,12 +1201,12 @@ sideLength: numPixels l: llightness0to1 c: chroma0to1 h: hueIndegrees
 
 		! !
 
-!OKLCHCircleMorph methodsFor: 'drawing' stamp: 'KenD 18/Dec/2025 20:00:10'!
+!OKLCHCircleMorph methodsFor: 'drawing' stamp: 'jmv 3/Feb/2026 13:02:34'!
 dotAt: circlePoint
 	"Draw a black dot relative to center at circlePoint"
 	| myForm morphPoint |
 	morphPoint := (self circle2morph: circlePoint) roundedHAFZ.
-	myForm := self imageForm.
+	myForm := image.
 	-2 to: 2 do: [ :deltaX |
 		-2 to: 2 do: [ :deltaY |
 			myForm colorAt: morphPoint + (deltaX@deltaY) put: Color black.
@@ -1217,15 +1215,14 @@ dotAt: circlePoint
 	myForm colorAt: morphPoint + (3@0) put: Color black.
 	myForm colorAt: morphPoint + (0@3) put: Color black.
 	myForm colorAt: morphPoint + (-3@0) put: Color black.
-	myForm colorAt: morphPoint + (0@-3) put: Color black.
-	image := myForm.! !
+	myForm colorAt: morphPoint + (0@-3) put: Color black.! !
 
-!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 31/Jan/2026 13:16:21'!
+!OKLCHCircleMorph methodsFor: 'color updating' stamp: 'jmv 3/Feb/2026 13:03:38'!
 beColorful: lightness0To1
  	"Chroma and Hue are constant for a given lightness.
 	Map between Morpj (x,y) from (0,0) to Circle with centerPoint."
 	| morphPoint circlePoint pixelColor myForm myRadius |
-	myForm := self imageForm.
+	myForm := image.
 	myRadius :=  self radius.
 	0 to: (myRadius * 2) - 1 do: [ :theY |
 		0 to: (myRadius * 2) - 1 do: [ :theX |
@@ -1245,11 +1242,8 @@ beColorful: lightness0To1
 				].
 		]
 	].
-	image := myForm.
 	self dotAt: 0@0.  "Circle center"
-	
-	^self
-  ! !
+	^self! !
 
 !OKLCHCircleMorph methodsFor: 'color updating' stamp: 'KenD 1/Feb/2026 14:24:21'!
 newChromaAt: chroma0To1
