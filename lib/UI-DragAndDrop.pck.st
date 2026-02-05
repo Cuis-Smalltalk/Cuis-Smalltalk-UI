@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7809] on 25 January 2026 at 2:08:56 pm'!
+'From Cuis7.7 [latest update: #7827] on 5 February 2026 at 1:08:20 pm'!
 'Description '!
-!provides: 'UI-DragAndDrop' 1 5!
+!provides: 'UI-DragAndDrop' 1 6!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
@@ -272,10 +272,11 @@ emphasis
 
 	^ self labelMorph emphasis ! !
 
-!FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:53:02'!
+!FontMorph methodsFor: 'accessing' stamp: 'KenD 5/Feb/2026 12:23:50'!
 emphasis: emphasisCode
 
-	^ self labelMorph emphasis: emphasisCode ! !
+	self labelMorph emphasis: emphasisCode.
+	self adjustExtent! !
 
 !FontMorph methodsFor: 'accessing' stamp: 'KenD 29/Nov/2016 10:52:57'!
 font
@@ -320,17 +321,17 @@ string: aString
 	self labelMorph contents: aString.
 	self adjustExtent ! !
 
-!FontMorph methodsFor: 'geometry' stamp: 'KenD 2/Sep/2024 19:46:02'!
+!FontMorph methodsFor: 'geometry' stamp: 'KenD 5/Feb/2026 12:32:02'!
 adjustExtent 
 	"Some aspect of my font has changed. Don't shrink beyond minimum"
 
-	self morphExtent: (self extentInOwner min: self minimumExtent)! !
+	self morphExtent: (self extentInOwner max: self minimumExtent)! !
 
-!FontMorph methodsFor: 'geometry' stamp: 'KenD 14/Sep/2024 15:28:02'!
+!FontMorph methodsFor: 'geometry' stamp: 'KenD 5/Feb/2026 12:37:01'!
 labelMorphOffset
 	"LabelMorph is offset by combinedBorder"
 	
-	^(2 * self interiorOrigin) + (self font pointSize / 2)! !
+	^(2 + self interiorOrigin)! !
 
 !FontMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2022 06:50:39'!
 dropAction: aDropTargetMorph
@@ -421,6 +422,12 @@ font: aFont emphasis: emphasisCode string: aString
 		borderColor: DropColorMorph swatchBorderColor.
 		
 	labelMorph morphPosition: self labelMorphOffset.! !
+
+!FontMorph methodsFor: 'initialization' stamp: 'KenD 5/Feb/2026 12:18:12'!
+initialize
+
+	super initialize.
+	padding := `6@6`! !
 
 !FontMorph class methodsFor: 'instance creation' stamp: 'KenD 29/Nov/2016 10:08:53'!
 font: aFont
