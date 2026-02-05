@@ -1,7 +1,7 @@
-'From Cuis7.6 [latest update: #7777] on 26 January 2026 at 12:00:04 pm'!
+'From Cuis7.7 [latest update: #7827] on 5 February 2026 at 12:07:07 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 145!
+!provides: 'UI-Panel' 1 146!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -2251,11 +2251,11 @@ example3
 checkValidity: aString
 	(aString isKindOf: CharacterSequence ) ifFalse: [ self error: 'I require a String: ' , aString printString ]! !
 
-!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 3/Jul/2022 13:07:00'!
+!TextEntryPanel methodsFor: 'initialization' stamp: 'hlsf 5/Feb/2026 10:58:05'!
 initialize
 	super initialize.
-	entry _ TextModelMorph withText: model propertyValue.
-	entry 	layoutSpec: (LayoutSpec 
+	entry := TextModelMorph withText: model propertyValue.
+	entry layoutSpec: (LayoutSpec 
 		proportionalWidth: 1 
 		fixedHeight: (Preferences at: #windowTitleFont) lineSpacing * 4 )! !
 
@@ -2265,11 +2265,11 @@ accept
 	model 	ifNotNil: [ :myModel | 			
 		myModel propertyValue: entry scroller contents asString		].! !
 
-!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 9/Apr/2022 10:27:00'!
+!TextEntryPanel methodsFor: 'events' stamp: 'hlsf 5/Feb/2026 10:57:45'!
 valueWhenDropped
 	
 	^ model  
-		ifNotNil: [ :m | 	m propertyValue: entry scroller contents asString ] 
+		ifNotNil: [ :m | m propertyValue: entry scroller contents asString ] 
 		ifNil: [ entry scroller contents asString]! !
 
 !TextEntryPanel class methodsFor: 'examples' stamp: 'hlsf 9/Apr/2022 10:29:00'!
