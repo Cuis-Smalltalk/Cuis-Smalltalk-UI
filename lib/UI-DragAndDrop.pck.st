@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7827] on 5 February 2026 at 1:08:20 pm'!
+'From Cuis7.7 [latest update: #7834] on 7 February 2026 at 12:40:38 pm'!
 'Description '!
-!provides: 'UI-DragAndDrop' 1 6!
+!provides: 'UI-DragAndDrop' 1 7!
 !requires: 'Cuis-Base' 71 6722 nil!
 !requires: 'UI-Core' 1 18 nil!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
@@ -158,7 +158,7 @@ aboutToGrab: aMorph
 
 	^ self class fromColor: aMorph color   "Pick up a copy of me"! !
 
-!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 23/Dec/2016 14:40:29'!
+!DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 7/Feb/2026 09:05:16'!
 dropAction: aDropTargetMorph
 	"Set a color"
 
@@ -183,7 +183,7 @@ dropAction: aDropTargetMorph
 			]
 		].
 
-	aDropTargetMorph refreshSubmorphs.! !
+	aDropTargetMorph redrawNeeded.! !
 
 !DropColorMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 4/Mar/2022 13:42:58'!
 processDropMorph: aDropEvent
