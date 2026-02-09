@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7819] on 28 January 2026 at 1:52:22 pm'!
+'From Cuis7.7 [latest update: #7835] on 9 February 2026 at 12:49:12 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 150!
+!provides: 'UI-MetaProperties' 1 151!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -679,7 +679,7 @@ processMouseDown: evt localPosition: localEventPosition
 
 ! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 2/Sep/2024 19:55:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2026 09:24:48'!
 showReject: aMorph
 	"Draw and erase a red X"
 
@@ -696,6 +696,8 @@ showReject: aMorph
 						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
 						width: 6
 						color: Color red.
+	leftStroke   setProperty:  #layerNumber toValue: 1.
+	rightStroke setProperty:  #layerNumber toValue: 1.
 	leftStroke   openInWorld.
 	rightStroke openInWorld.
 	

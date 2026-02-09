@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7809] on 25 January 2026 at 2:08:53 pm'!
-'Description '!
-!provides: 'UI-Core' 1 26!
+'From Cuis7.7 [latest update: #7835] on 9 February 2026 at 12:50:14 pm'!
+'Description Generally useful methods for UI'!
+!provides: 'UI-Core' 1 27!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -1304,7 +1304,7 @@ clearSelections
 postCopy
 	listSelections := listSelections copy! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 2/Sep/2024 20:24:18'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 9/Feb/2026 09:25:47'!
 showAccept
 	"I have just been dropped.
 	Draw and erase a green box ."
@@ -1313,6 +1313,8 @@ showAccept
 	mPos     := self positionInWorld.
 	mExtent := self extentInOwner.
 	hilightMorph := FrameMorph new.
+	hilightMorph   setProperty:  #layerNumber toValue: 1.
+
 	hilightMorph   borderWidth: 6;
 					borderColor: Color green;
 					morphExtent: mExtent + 6;
@@ -1321,25 +1323,15 @@ showAccept
 
 	hilightMorph addAlarm: #delete after: 400.! !
 
-!Morph methodsFor: '*ui-core' stamp: 'KenD 2/Sep/2024 20:24:21'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 9/Feb/2026 09:40:16'!
 showAcceptAndDeleteSelf
 	"I have just been dropped.
 	Draw and erase a green box and delete self."
 
-	| hilightMorph mPos mExtent |
-	mPos     := self positionInWorld.
-	mExtent := self extentInOwner.
-	hilightMorph := FrameMorph new.
-	hilightMorph   borderWidth: 6;
-					borderColor: Color green;
-					morphExtent: mExtent + 6;
-					openInWorld;
-					morphPosition: mPos - (6@6). "surround aMorph"
+	self addAlarm: #delete after: 200.
+	self showAccept.! !
 
-	self               addAlarm: #delete after: 200.
-	hilightMorph addAlarm: #delete after: 400.! !
-
-!Morph methodsFor: '*ui-core' stamp: 'KenD 2/Sep/2024 20:24:28'!
+!Morph methodsFor: '*ui-core' stamp: 'KenD 9/Feb/2026 09:24:14'!
 showReject
 	"Draw and erase a red X"
 
@@ -1357,6 +1349,8 @@ showReject
 						endPoint: (mPos + ((10 + mExtent x) @ -10)) 
 						width: 6
 						color: Color red.
+	leftStroke   setProperty:  #layerNumber toValue: 1.
+	rightStroke setProperty:  #layerNumber toValue: 1.
 	leftStroke   openInWorld.
 	rightStroke openInWorld.
 	
