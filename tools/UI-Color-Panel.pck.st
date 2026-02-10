@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7838] on 10 February 2026 at 1:55:48 pm'!
+'From Cuis7.7 [latest update: #7838] on 10 February 2026 at 2:41:55 pm'!
 'Description I supply the RGB/HSB and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 64!
+!provides: 'UI-Color-Panel' 1 65!
 !requires: 'Cuis-Base' 76 7760 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1458,9 +1458,11 @@ hsvRadio
 
 	^ hsvRadio! !
 
-!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 10/Feb/2026 13:53:14'!
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 10/Feb/2026 14:41:50'!
 resetExtent
 
+	"Refreshing color name can resize.  Be minimal."
+	self layoutMorph submorphs do: [ :s | s morphExtent: s minimumExtent ].
 	self morphExtent: self minimumExtent! !
 
 !ColorEditorPanel methodsFor: 'private' stamp: 'KenD 19/Nov/2013 21:14:00'!
