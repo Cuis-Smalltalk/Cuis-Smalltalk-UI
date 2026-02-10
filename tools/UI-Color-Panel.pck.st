@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7824] on 3 February 2026 at 3:57:22 pm'!
+'From Cuis7.7 [latest update: #7838] on 10 February 2026 at 1:55:48 pm'!
 'Description I supply the RGB/HSB and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 63!
+!provides: 'UI-Color-Panel' 1 64!
 !requires: 'Cuis-Base' 76 7760 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'CSS3-NamedColors' 1 1 nil!
@@ -1458,6 +1458,11 @@ hsvRadio
 
 	^ hsvRadio! !
 
+!ColorEditorPanel methodsFor: 'private' stamp: 'KenD 10/Feb/2026 13:53:14'!
+resetExtent
+
+	self morphExtent: self minimumExtent! !
+
 !ColorEditorPanel methodsFor: 'private' stamp: 'KenD 19/Nov/2013 21:14:00'!
 rgbRadio
 
@@ -1893,7 +1898,7 @@ refreshCloseColor
 	self morphExtent: self minimumExtent.
 ! !
 
-!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 6/Feb/2022 16:12:00'!
+!ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 10/Feb/2026 13:53:37'!
 refreshColor
 	"model color has changed.  Refresh my views."
 	
@@ -1901,7 +1906,8 @@ refreshColor
 		refreshColorSwatch;
 		refreshColorPane;
 		refreshCloseColor;
-		refreshAlphaSwatch! !
+		refreshAlphaSwatch;
+		resetExtent ! !
 
 !ColorEditorPanel methodsFor: 'color updating' stamp: 'KenD 27/Nov/2013 14:43:00'!
 refreshColorPane
