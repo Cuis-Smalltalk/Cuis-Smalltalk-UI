@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6764] on 13 October 2024 at 5:28:04 pm'!
+'From Cuis7.7 [latest update: #7839] on 12 February 2026 at 9:41:01 am'!
 'Description Utility code to fetch grapics from file system.'!
-!provides: 'UI-Graphic-Import' 1 5!
+!provides: 'UI-Graphic-Import' 1 6!
 !requires: 'SVG' 1 21 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Graphic-Import'!
@@ -24,7 +24,7 @@ I am simple, but useful.  I can manage different size of the same icon.
 
 When asked for an icon with the message get: #blank32, I will search in the path for blank.svg, fallback to blank.png, then scale at squared size 32.!
 
-!IconImporter methodsFor: 'accessing' stamp: 'hlsf 9/17/2024 18:08:59'!
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 17/Sep/2024 18:08:59'!
 getForm: iconSymbolWithSize
 " icons get: #blank32 "
 	| size |
@@ -34,12 +34,12 @@ getForm: iconSymbolWithSize
 		getForm: (iconSymbolWithSize select: [:c | c isLetter ])
 		ofSize: size asNumber! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'hlsf 10/13/2024 12:34:10'!
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 13/Oct/2024 12:34:10'!
 getForm: icon ofSize: rectWidthPixels
 " Search first for SVG icon, then PNG one "
 	^ self getForm: icon ofSize: rectWidthPixels fill: nil! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'hlsf 10/13/2024 16:33:58'!
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 12/Feb/2026 09:36:48'!
 getForm: icon ofSize: rectWidthPixels fill: aColor
 " Search first for SVG icon, then PNG one "
 	| iconKey |
@@ -53,7 +53,7 @@ getForm: icon ofSize: rectWidthPixels fill: aColor
 						on: SVGWarning 
 						do: [:warning | warning resume].
 					aColor ifNotNil: [svg submorphsDo: [:each | each fillColor: aColor] ].
-					(svg imageForm: 512 asPoint depth: 32) magnifyTo: rectWidthPixels asPoint										]									
+					svg imageForm: rectWidthPixels asPoint depth: 32]
 				ifFalse: [(file := path // (icon , '.png')) exists
 					ifTrue: [| form |
 						form := PNGReadWriter formFromFileEntry: file.
@@ -63,25 +63,25 @@ getForm: icon ofSize: rectWidthPixels fill: aColor
 					ifFalse: [self error: 'Missing icon file ', icon ] ]
 			]! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'KenD 9/15/2024 12:31:42'!
+!IconImporter methodsFor: 'accessing' stamp: 'KenD 15/Sep/2024 12:31:42'!
 getMorph: iconSymbolWithSize
 
 	^ ImageMorph newWith: (self getForm:  iconSymbolWithSize)! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'hlsf 9/17/2024 18:09:23'!
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 17/Sep/2024 18:09:23'!
 getMorph: iconSymbol ofSize: rectWidthPixels
 
 	^ ImageMorph newWith: (self getForm:  iconSymbol ofSize: rectWidthPixels)! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'KenD 9/15/2024 12:26:47'!
+!IconImporter methodsFor: 'accessing' stamp: 'KenD 15/Sep/2024 12:26:47'!
 path: iconsDirectoryEntry
 	path := iconsDirectoryEntry asDirectoryEntry! !
 
-!IconImporter methodsFor: 'initialization' stamp: 'hlsf 8/13/2023 16:29:00'!
+!IconImporter methodsFor: 'initialization' stamp: 'hlsf 13/Aug/2023 16:29:00'!
 initialize
 	forms := Dictionary new.! !
 
-!IconImporter class methodsFor: 'instance creation' stamp: 'hlsf 8/13/2023 15:37:01'!
+!IconImporter class methodsFor: 'instance creation' stamp: 'hlsf 13/Aug/2023 15:37:01'!
 path: aDriectoryEntry
 	^ self new ::
 		path: aDriectoryEntry;
