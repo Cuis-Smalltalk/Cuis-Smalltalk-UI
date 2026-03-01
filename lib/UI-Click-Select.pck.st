@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7813] on 27 January 2026 at 5:36:18 pm'!
+'From Cuis7.7 [latest update: #7840] on 1 March 2026 at 6:35:34 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 100!
+!provides: 'UI-Click-Select' 1 101!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -393,19 +393,19 @@ registerEvents
 
 	^ self buttons do: [ :b | b when: #checkSelection send: #newSelection: to: self ]! !
 
-!CheckGroup methodsFor: 'events' stamp: 'hlsf 27/Jan/2022 13:34:39'!
+!CheckGroup methodsFor: 'events' stamp: 'hlsf 1/Mar/2026 17:28:54'!
 registerEventsFor: aMorph with: aButton
 "Make button react to a Morph"
 
 	aMorph 
 		setProperty: #'handlesMouseDown:' 		
-		toValue: [ :ignored | true ];
+		toValue: true;
 		
 		setProperty: #'mouseButton1Up:localPosition:'
 		toValue: [ :event :position |  aButton toggleSelection ];
 		
 		setProperty: #'handlesMouseOver:' 		
-		toValue: [ :ignored | true ];
+		toValue: true;
 		
 		setProperty: #'mouseEnter:' 
 		toValue: [ :event | aButton mouseEnter: event ];
