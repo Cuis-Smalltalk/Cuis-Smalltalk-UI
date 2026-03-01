@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7839] on 12 February 2026 at 2:20:12 pm'!
+'From Cuis7.7 [latest update: #7840] on 1 March 2026 at 10:11:18 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 147!
+!provides: 'UI-Panel' 1 148!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1594,6 +1594,10 @@ newButtonArea
 newPane
 "Return the morph containing the controls of the dialog"
 	self subclassResponsibility ! !
+
+!DialogPanel methodsFor: 'accessing' stamp: 'hlsf 1/Mar/2026 22:10:07'!
+pane
+	^ layoutMorph submorphs last! !
 
 !DialogPanel class methodsFor: 'new-morph participation' stamp: 'KenD 13/Mar/2022 07:31:00'!
 includeInNewMorphMenu
