@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7816] on 27 January 2026 at 5:42:19 pm'!
+'From Cuis7.7 [latest update: #7840] on 10 March 2026 at 7:10:53 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 63!
+!provides: 'UI-Widgets' 1 64!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -710,6 +710,10 @@ initialize
 	self beCircular.
 	self color: Color lightGray.
 	lastRedraw := 0.! !
+
+!WheelMorph methodsFor: 'testing' stamp: 'hlsf 10/Mar/2026 19:06:54'!
+is: aSymbol
+	^ aSymbol == #WheelMorph or: [super is: aSymbol]! !
 
 !WheelMorph methodsFor: 'testing' stamp: 'hlsf 5/Jan/2022 12:34:26'!
 isSendingScrollEvent
