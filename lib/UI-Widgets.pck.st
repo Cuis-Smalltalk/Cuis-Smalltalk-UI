@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7840] on 10 March 2026 at 7:10:53 pm'!
+'From Cuis7.7 [latest update: #7875] on 13 April 2026 at 5:25:03 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 64!
+!provides: 'UI-Widgets' 1 65!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -323,14 +323,14 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 12/Oct/2025 13:08:49'!
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 13/Apr/2026 17:23:00'!
 object: anObject image: aForm buttons: buttons label: label
 	| row labelWidth |
 	self doAdoptWidgetsColor.
 	object := anObject .
 	self setBalloonText: label;
 		padding: 4;
-		layoutSpec: LayoutSpec keepMorphExtent;
+		layoutSpec: (LayoutSpec fixedWidth: aForm width);
 		addMorph: (ImageMorph newWith: aForm).
 	"Do we have label or buttons to add? "
 	(label isNil and: [buttons isNil]) ifTrue: [^self ]. 
@@ -341,10 +341,11 @@ object: anObject image: aForm buttons: buttons label: label
 		axisEdgeWeight: 0.5.
 	label ifNotNil: [ | labelMorph |
 		labelMorph := LabelMorph contents: ''  font: self fontToUse :: setBalloonText: label.
-		labelWidth := 40 + aForm width.
-		buttons ifNotNil: [buttons do: [:each | labelWidth := labelWidth - each morphWidth]].
+		labelWidth := aForm width - 0.
+		buttons ifNotNil: [buttons do: [:each | labelWidth := labelWidth - each morphWidth - 2]].
 		labelMorph contents: label constrainedTo: labelWidth.
 		row addMorph: labelMorph].
+	row addMorphUseAll: (ColoredBoxMorph new color: Color transparent; yourself).
 	buttons ifNotNil: [buttons do: [:quickButton | row addMorph: quickButton]].
 	self addMorph: row 
 	! !
