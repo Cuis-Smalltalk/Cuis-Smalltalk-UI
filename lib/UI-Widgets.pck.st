@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7875] on 14 April 2026 at 12:42:14 pm'!
+'From Cuis7.7 [latest update: #7875] on 14 April 2026 at 3:22:50 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 67!
+!provides: 'UI-Widgets' 1 68!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -342,15 +342,14 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 14/Apr/2026 11:55:51'!
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 14/Apr/2026 15:11:25'!
 object: anObject image: aForm buttons: buttons label: aText
 	| row labelWidth |
 	self doAdoptWidgetsColor.
 	object := anObject .
-	self setBalloonText: aText;
-		padding: 4;
+	self 	padding: 4;
 		layoutSpec: (LayoutSpec fixedWidth: aForm width);
-		addMorph: (ImageMorph newWith: aForm :: setBalloonText: aText).
+		addMorph: (ImageMorph newWith: aForm).
 	"Do we have label or buttons to add? "
 	(aText isNil and: [buttons isNil]) ifTrue: [^self ]. 
 
@@ -366,8 +365,13 @@ object: anObject image: aForm buttons: buttons label: aText
 		row addMorph: labelMorph].
 	row addMorphUseAll: (ColoredBoxMorph new color: Color transparent; yourself).
 	buttons ifNotNil: [buttons do: [:quickButton | row addMorph: quickButton]].
-	self addMorph: row 
-	! !
+	self addMorph: row.
+	self setBalloonText: aText! !
+
+!PreviewMorph methodsFor: 'halos and balloon help' stamp: 'hlsf 14/Apr/2026 15:10:25'!
+setBalloonText: aText
+	super setBalloonText: aText.
+	self imageMorph setBalloonText: aText! !
 
 !PreviewMorph class methodsFor: 'new-morph participation' stamp: 'hlsf 12/Dec/2024 11:27:52'!
 includeInNewMorphMenu
