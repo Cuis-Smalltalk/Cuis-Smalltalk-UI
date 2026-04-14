@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7875] on 13 April 2026 at 5:30:16 pm'!
+'From Cuis7.7 [latest update: #7875] on 14 April 2026 at 12:42:14 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 66!
+!provides: 'UI-Widgets' 1 67!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -265,18 +265,37 @@ fontToUse
 		familyName: FontFamily defaultFamilyName 
 		pointSize: ((Preferences at: #defaultFontSize) - 4 max: 6)! !
 
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 14/Apr/2026 11:54:28'!
+imageMorph
+
+	^ submorphs last! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 14/Apr/2026 11:40:04'!
+labelMorph
+
+	^ submorphs first submorphs last! !
+
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 9/Feb/2025 17:56:55'!
 object
 	^ object! !
 
-!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 19/Jul/2025 12:20:38'!
-relabel: newLabel
-	submorphs first submorphs last contents: newLabel ! !
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 14/Apr/2026 11:55:23'!
+relabel: aText
+	self labelMorph 
+		contents: aText asString
+		constrainedTo: self labelMorph morphWidth + self spacer morphWidth;
+		setBalloonText: aText.
+	self imageMorph setBalloonText: aText! !
 
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/Dec/2024 11:29:53'!
 selected: aBoolean
 	selected := aBoolean.
 	self redrawNeeded ! !
+
+!PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 14/Apr/2026 11:50:12'!
+spacer
+" Access to the spacer morph between the label and the buttons, to format the the label at the left"
+	^ submorphs first submorphs atLast: 2! !
 
 !PreviewMorph methodsFor: 'accessing' stamp: 'hlsf 12/Dec/2024 11:29:59'!
 toggleSelection
@@ -323,27 +342,27 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 isSelected
 	^ selected ifNil: [selected _ false]! !
 
-!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 13/Apr/2026 17:29:15'!
-object: anObject image: aForm buttons: buttons label: label
+!PreviewMorph methodsFor: 'initialization' stamp: 'hlsf 14/Apr/2026 11:55:51'!
+object: anObject image: aForm buttons: buttons label: aText
 	| row labelWidth |
 	self doAdoptWidgetsColor.
 	object := anObject .
-	self setBalloonText: label;
+	self setBalloonText: aText;
 		padding: 4;
 		layoutSpec: (LayoutSpec fixedWidth: aForm width);
-		addMorph: (ImageMorph newWith: aForm :: setBalloonText: label).
+		addMorph: (ImageMorph newWith: aForm :: setBalloonText: aText).
 	"Do we have label or buttons to add? "
-	(label isNil and: [buttons isNil]) ifTrue: [^self ]. 
+	(aText isNil and: [buttons isNil]) ifTrue: [^self ]. 
 
 	row := LayoutMorph newRow separation: 2@4 :: 
 		adoptWidgetsColor: self defaultColor;
 		layoutSpec: (LayoutSpec fixedHeight: 0);
 		axisEdgeWeight: 0.5.
-	label ifNotNil: [ | labelMorph |
-		labelMorph := LabelMorph contents: ''  font: self fontToUse :: setBalloonText: label.
+	aText ifNotNil: [ | labelMorph |
+		labelMorph := LabelMorph contents: ''  font: self fontToUse :: setBalloonText: aText.
 		labelWidth := aForm width - 0.
 		buttons ifNotNil: [buttons do: [:each | labelWidth := labelWidth - each morphWidth - 2]].
-		labelMorph contents: label constrainedTo: labelWidth.
+		labelMorph contents: aText asString constrainedTo: labelWidth.
 		row addMorph: labelMorph].
 	row addMorphUseAll: (ColoredBoxMorph new color: Color transparent; yourself).
 	buttons ifNotNil: [buttons do: [:quickButton | row addMorph: quickButton]].
