@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6451] on 5 June 2024 at 9:23:41 pm'!
+'From Cuis7.7 [latest update: #7879] on 19 April 2026 at 12:25:36 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 17!
+!provides: 'UI-Mold' 1 18!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: #'UI-Mold'!
@@ -273,13 +273,13 @@ To use a Mold, you typically create and store it in an instance variable of your
 
 !
 
-!CheckboxFieldTest methodsFor: 'setUp/tearDown' stamp: 'hlsf 4/23/2023 12:27:50'!
+!CheckboxFieldTest methodsFor: 'setUp/tearDown' stamp: 'hlsf 23/Apr/2023 12:27:50'!
 setUp
 	model := ValueHolder with: true.
 	field := CheckboxField new
 		on: #propertyValue of: model.! !
 
-!CheckboxFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 12:57:50'!
+!CheckboxFieldTest methodsFor: 'tests' stamp: 'hlsf 23/Apr/2023 12:57:50'!
 testCondition
 	"Without condition, always valid"
 	field validateInput.	
@@ -296,7 +296,7 @@ testCondition
 	self deny: field isValid.
 	! !
 
-!CheckboxFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 12:54:53'!
+!CheckboxFieldTest methodsFor: 'tests' stamp: 'hlsf 23/Apr/2023 12:54:53'!
 testState
 	self assert: field value.
 	field inputMorphContents: false;
@@ -309,15 +309,15 @@ testState
 	self deny: model propertyValue.
 	! !
 
-!DateFieldTest methodsFor: 'running' stamp: 'KenTreis 8/9/2010 18:50'!
+!DateFieldTest methodsFor: 'running' stamp: 'KenTreis 9/Aug/2010 18:50:00'!
 setUp
 	field := DateField new! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 4/18/2023 17:25:41'!
+!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 18/Apr/2023 17:25:41'!
 testDefaultFormat
 	self assert: field formatString = 'DD/MM/YYYY'! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 8/25/2010 10:05'!
+!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 25/Aug/2010 10:05:00'!
 testDisinfectISO
 	field formatString: 'YYYY-MM-DD'.
 	self assert: (field disinfect: '2010-08-06') = (Date year: 2010 month: 8 day: 6).
@@ -328,34 +328,34 @@ testDisinfectISO
 	self assert: (field disinfect: '1-1') isNil.
 	self assert: (field disinfect: 'blah') isNil! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 8/25/2010 10:05'!
+!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 25/Aug/2010 10:05:00'!
 testDisinfectUK
 	field formatString: 'DD/MM/YYYY'.
 	self assert: (field disinfect: '09/08/2010') = (Date year: 2010 month: 8 day: 9).
 	self shouldnt: [ field disinfect: '09/13/2010' ] raise: Error "invalid, but some implementations just jump to the next month"! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 8/9/2010 22:03'!
+!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 9/Aug/2010 22:03:00'!
 testDisinfectUS
 	field formatString: 'MM/DD/YYYY'.
 	self assert: (field disinfect: '08/09/2010') = (Date year: 2010 month: 8 day: 9)! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 8/9/2010 22:02'!
+!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 9/Aug/2010 22:02:00'!
 testInfectISO
 	field formatString: 'YYYY-MM-DD'.
 	self assert: (field infect: (Date year: 1999 month: 12 day: 31)) = '1999-12-31'! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 8/9/2010 18:56'!
+!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 9/Aug/2010 18:56:00'!
 testInfectUK
 	field formatString: 'DD/MM/YYYY'.
 	self assert: (field infect: (Date year: 1999 month: 12 day: 31)) = '31/12/1999'! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 8/9/2010 22:04'!
+!DateFieldTest methodsFor: 'tests' stamp: 'KenTreis 9/Aug/2010 22:04:00'!
 testInfectUS
 	field formatString: 'MM/DD/YYYY'.
 	self assert: (field infect: (Date year: 1999 month: 12 day: 31)) = '12/31/1999'.
 	self assert: (field infect: (Date year: 2009 month: 7 day: 8)) = '07/08/2009'! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 4/18/2023 17:28:55'!
+!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 18/Apr/2023 17:28:55'!
 testValidateInput
 	field inputMorphContents: String new.
 	field validateInput.
@@ -365,7 +365,7 @@ testValidateInput
 	self deny: field isValid.
 	field input: ''! !
 
-!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 4/18/2023 20:20:29'!
+!DateFieldTest methodsFor: 'tests' stamp: 'hlsf 18/Apr/2023 20:20:29'!
 testValidationOnDate
 	field beRequired.
 	field addCondition: [ :input :disinfected | disinfected > (Date year: 2010 month: 1 day: 1) or: [disinfected = (Date year: 2010 month: 1 day: 1)] ].
@@ -376,7 +376,7 @@ testValidationOnDate
 	field validateInput.
 	self assert: field isValid! !
 
-!FieldTest methodsFor: 'running' stamp: 'hlsf 4/20/2023 09:26:14'!
+!FieldTest methodsFor: 'running' stamp: 'hlsf 20/Apr/2023 09:26:14'!
 testRequired
 	| field |
 	field := Field new.
@@ -395,7 +395,7 @@ testRequired
 	self assert: field isValid.
 	self assert: field value = 'text'! !
 
-!FieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:47:04'!
+!FieldTest methodsFor: 'running' stamp: 'hlsf 18/Apr/2023 20:47:04'!
 testValidateInput
 	| field |
 	field := Field new.
@@ -408,15 +408,15 @@ testValidateInput
 	self shouldnt: [field input: true] raise: Error "Not a CheckboxField"
 ! !
 
-!FloatFieldTest methodsFor: 'running' stamp: 'KenTreis 8/5/2010 17:10'!
+!FloatFieldTest methodsFor: 'running' stamp: 'KenTreis 5/Aug/2010 17:10:00'!
 assertValueEquals: aFloat within: aTolerance
 	self assert: (field value - aFloat) abs < aTolerance! !
 
-!FloatFieldTest methodsFor: 'running' stamp: 'kdt 7/15/2009 18:02'!
+!FloatFieldTest methodsFor: 'running' stamp: 'kdt 15/Jul/2009 18:02:00'!
 setUp
 	field := FloatField new! !
 
-!FloatFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:20:41'!
+!FloatFieldTest methodsFor: 'running' stamp: 'hlsf 18/Apr/2023 20:20:41'!
 testBlankInput
 	field inputMorphContents: ''.
 	field validateInput.
@@ -426,7 +426,7 @@ testBlankInput
 	field validateInput.
 	self deny: field isValid! !
 
-!FloatFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:57'!
+!FloatFieldTest methodsFor: 'running' stamp: 'hlsf 18/Apr/2023 20:21:57'!
 testInput
 	field inputMorphContents: '5'.
 	field validateInput.
@@ -444,11 +444,11 @@ testInput
 	self assert: field isValid.
 	self assertValueEquals: 0.87 within: 0.001! !
 
-!IntegerFieldTest methodsFor: 'running' stamp: 'kdt 4/4/2008 11:21'!
+!IntegerFieldTest methodsFor: 'running' stamp: 'kdt 4/Apr/2008 11:21:00'!
 setUp
 	field := IntegerField new! !
 
-!IntegerFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:09'!
+!IntegerFieldTest methodsFor: 'running' stamp: 'hlsf 18/Apr/2023 20:21:09'!
 testBlankInput
 	field inputMorphContents: ''.
 	field validateInput.
@@ -458,7 +458,7 @@ testBlankInput
 	field validateInput.
 	self deny: field isValid! !
 
-!IntegerFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:21'!
+!IntegerFieldTest methodsFor: 'running' stamp: 'hlsf 18/Apr/2023 20:21:21'!
 testInput
 	field inputMorphContents: '5'.
 	field validateInput.
@@ -471,14 +471,14 @@ testInput
 	field validateInput.
 	self deny: field isValid! !
 
-!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 15:58:44'!
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 23/Apr/2023 15:58:44'!
 setUp
 	model := ListMultiModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`:: selectedIndexes: #(1).
 	field := SelectMultipleField new
 		on: #selectedIndexes of: model;
 		beRequired ! !
 
-!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 16:12:12'!
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 23/Apr/2023 16:12:12'!
 testConditon1
 	field addCondition: [:input :value | input size >= 2]
 		 labeled: 'Select at least two elements'.
@@ -498,7 +498,7 @@ testConditon1
 	self deny: field isValid.
 	! !
 
-!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 16:14:04'!
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 23/Apr/2023 16:14:04'!
 testConditon2
 	field addCondition: [:input :value | value includesAllOf: #('P5' 'P3' 'P1')]
 		 labeled: 'Select at least P1, P3 and P5'.
@@ -522,7 +522,7 @@ testConditon2
 	self deny: field isValid.
 ! !
 
-!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 16:02:19'!
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 23/Apr/2023 16:02:19'!
 testState1
 	field validateInput.
 	self assert: field input equals: #(1) asOrderedCollection.
@@ -536,7 +536,7 @@ testState1
 	self assert: model selectedIndexes equals: #(1) asOrderedCollection.
 ! !
 
-!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 16:07:51'!
+!MultiselectFieldTest methodsFor: 'as yet unclassified' stamp: 'hlsf 23/Apr/2023 16:07:51'!
 testState2
 	field inputMorphContents: #(3 5);
 		validateInput.
@@ -551,11 +551,11 @@ testState2
 	self assert: model selectedItems equals:  #('P3' 'P5') asOrderedCollection .
 	self assert: model selectedIndexes equals: #(3 5) asOrderedCollection.! !
 
-!PercentageFieldTest methodsFor: 'running' stamp: 'KenTreis 8/5/2010 17:09'!
+!PercentageFieldTest methodsFor: 'running' stamp: 'KenTreis 5/Aug/2010 17:09:00'!
 assertValueEquals: aFloat within: aTolerance
 	self assert: (field value - aFloat) abs < aTolerance! !
 
-!PercentageFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:43'!
+!PercentageFieldTest methodsFor: 'running' stamp: 'hlsf 18/Apr/2023 20:21:43'!
 testBlankInput
 	field
 		inputMorphContents: '';
@@ -567,7 +567,7 @@ testBlankInput
 		validateInput.
 	self deny: field isValid! !
 
-!PercentageFieldTest methodsFor: 'running' stamp: 'hlsf 4/18/2023 20:21:35'!
+!PercentageFieldTest methodsFor: 'running' stamp: 'hlsf 18/Apr/2023 20:21:35'!
 testInput
 	field inputMorphContents: '5'.
 	field validateInput.
@@ -582,11 +582,11 @@ testInput
 	self assert: field isValid.
 	self assertValueEquals: 0.009 within: 0.0001! !
 
-!PercentageFieldTest methodsFor: 'initialize-release'!
+!PercentageFieldTest methodsFor: 'initialize-release' stamp: ''!
 setUp
 	field := PercentageField new! !
 
-!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 14:06:11'!
+!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 23/Apr/2023 14:06:11'!
 testCondition1
 	field addCondition: [:input :value | 		input = 1 and: [value = 'P1'] ]		 labeled: 'First element'.
 	field validateInput.
@@ -596,7 +596,7 @@ testCondition1
 		validateInput.
 	self deny: field isValid! !
 
-!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 14:06:45'!
+!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 23/Apr/2023 14:06:45'!
 testCondition2
 	field addCondition: [:input :value | 		input = 3 and: [value = 'P3'] ]		 labeled: 'Third element'.
 	field validateInput.
@@ -606,7 +606,7 @@ testCondition2
 		validateInput.
 	self assert: field isValid! !
 
-!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 14:02:05'!
+!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 23/Apr/2023 14:02:05'!
 testState
 	field validateInput.
 	self assert: field isValid.
@@ -618,7 +618,7 @@ testState
 		validateInput.
 	self deny: field isValid.! !
 
-!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 4/23/2023 14:02:34'!
+!SelectFieldTest methodsFor: 'tests' stamp: 'hlsf 23/Apr/2023 14:02:34'!
 testStateModel
 	field inputMorphContents: 2;
 		validateInput.
@@ -632,84 +632,84 @@ testStateModel
 	self assert: model selectedItem equals: 'P2'.
 ! !
 
-!SelectFieldTest methodsFor: 'setUp/tearDown' stamp: 'hlsf 4/23/2023 13:00:29'!
+!SelectFieldTest methodsFor: 'setUp/tearDown' stamp: 'hlsf 23/Apr/2023 13:00:29'!
 setUp
 	model := ListModel with: `{'P1' . 'P2' . 'P3' . 'P4' . 'P5'}`.
 	field := SelectField new
 		on: #listIndex of: model.! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:24:09'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 15/Apr/2023 21:24:09'!
 errorsColumn
 " Return a column layout morph where to plug the error messages "
 	^ widget firstSubmorph ! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:22:13'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 15/Apr/2023 21:22:13'!
 exampleMorph
 " A label morph, it may not exist if no example was provided "
 	^ self inputColumn submorphCount = 1 
 		ifTrue: [nil] 
 		ifFalse: [self inputColumn firstSubmorph ]! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 10:58:07'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 10:58:07'!
 highlightInputMorph
 	self inputMorph backgroundColor: (self isValid 
 		ifTrue: [self inputMorph defaultBackgroundColor]
 		ifFalse: [Color red muchLighter])! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 21:24:16'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 15/Apr/2023 21:24:16'!
 inputColumn
 	^ widget lastSubmorph! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 5/29/2023 12:08:42'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 29/May/2023 12:08:42'!
 inputMorph
 "The widget morph representing the model "
 	^ self inputColumn lastSubmorph ! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/15/2023 12:56:07'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 15/Apr/2023 12:56:07'!
 inputMorphContents
 	^ self inputMorph contents! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/16/2023 16:48:38'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 16/Apr/2023 16:48:38'!
 inputMorphContents: anInput
 	self inputMorph contents: anInput! !
 
-!Field methodsFor: 'accessing widget' stamp: 'hlsf 4/16/2023 11:32:01'!
+!Field methodsFor: 'accessing widget' stamp: 'hlsf 16/Apr/2023 11:32:01'!
 labelAndWidget
 	modifyBlock ifNotNil: [ " Last minute user customization "
 		modifyBlock valueWithPossibleArgs: 
 			(Array with: widget with: self inputMorph with: self exampleMorph with: self errorsColumn)].
 	^ label  -> widget! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:04'!
+!Field methodsFor: 'accessing' stamp: 'kdt 28/Jan/2008 22:04:00'!
 addCondition: aBlock 
 	self addCondition: aBlock labeled: 'Invalid entry'! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:04'!
+!Field methodsFor: 'accessing' stamp: 'kdt 28/Jan/2008 22:04:00'!
 addCondition: aBlock labeled: aStringOrBlock 
 	conditions add: aStringOrBlock -> aBlock! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 4/4/2008 13:48'!
+!Field methodsFor: 'accessing' stamp: 'kdt 4/Apr/2008 13:48:00'!
 beOptional
 	isRequired := false! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 4/4/2008 13:49'!
+!Field methodsFor: 'accessing' stamp: 'kdt 4/Apr/2008 13:49:00'!
 beRequired
 	isRequired := true! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 4/4/2008 13:50'!
+!Field methodsFor: 'accessing' stamp: 'kdt 4/Apr/2008 13:50:00'!
 beRequired: aStringOrBlock 
 	self beRequired.
 	self requirementCondition key: aStringOrBlock! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:04'!
+!Field methodsFor: 'accessing' stamp: 'kdt 28/Jan/2008 22:04:00'!
 callback: aBlock 
 	callback := aBlock! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:04'!
+!Field methodsFor: 'accessing' stamp: 'kdt 28/Jan/2008 22:04:00'!
 customize: aBlock 
 	modifyBlock := aBlock! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 17:37:16'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 16/Apr/2023 17:37:16'!
 example: aString
 | exampleString |
 	exampleString := (String streamContents: [:s | s nextPut: $( ; nextPutAll: aString ; nextPut: $)]) asText italic.
@@ -721,11 +721,11 @@ example: aString
 		ifNotNil: [	:labelMorph |
 			labelMorph contents: exampleString ]! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:03'!
+!Field methodsFor: 'accessing' stamp: 'kdt 28/Jan/2008 22:03:00'!
 input
 	^ input! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 17:00:35'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 16/Apr/2023 17:00:35'!
 input: val 
 "The input value as keyin by the user. A string most of the time "
 	| trimmed |
@@ -736,18 +736,18 @@ input: val
 		ifTrue: [ nil ]
 		ifFalse: [ trimmed ]! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/15/2023 09:59:33'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 15/Apr/2023 09:59:33'!
 label: aString
 	label := aString ! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 14:59:41'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 20/Apr/2023 14:59:41'!
 on: accessor of: model
 	self value: (model perform: accessor ).
 	self inputMorphContents: input.
 	self 
 		callback: [:val | model perform: (accessor, ':') asSymbol with: val]! !
 
-!Field methodsFor: 'accessing' stamp: 'AnthonyKaufman 7/6/2010 09:51'!
+!Field methodsFor: 'accessing' stamp: 'AnthonyKaufman 6/Jul/2010 09:51:00'!
 save
 	callback
 		ifNotNil: [ 
@@ -755,49 +755,49 @@ save
 				ifTrue: [ callback value: value ]
 				ifFalse: [ callback value ] ]! !
 
-!Field methodsFor: 'accessing' stamp: 'kdt 1/28/2008 22:01'!
+!Field methodsFor: 'accessing' stamp: 'kdt 28/Jan/2008 22:01:00'!
 value
 	^ value! !
 
-!Field methodsFor: 'accessing' stamp: 'hlsf 4/18/2023 20:45:39'!
+!Field methodsFor: 'accessing' stamp: 'hlsf 18/Apr/2023 20:45:39'!
 value: anObject
 "The model I will present an object "
 	value := anObject .
 	input := self infect: anObject .
 	self valueChanged! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:46:59'!
+!Field methodsFor: 'private' stamp: 'hlsf 18/Apr/2023 12:46:59'!
 addRequirementCondition
 	self addCondition: [:userInput :theValue| isRequired not or: [	theValue notNil]]
 		labeled: 'Field required or unvalid.'! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:41:26'!
+!Field methodsFor: 'private' stamp: 'hlsf 18/Apr/2023 20:41:26'!
 disinfect: aString
 	"Convert aString into the type of object that this field ultimately represents"
 	^aString! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/16/2023 11:39:47'!
+!Field methodsFor: 'private' stamp: 'hlsf 16/Apr/2023 11:39:47'!
 evaluate: aBlockOrString withPossibleArguments: anArray
 	^ aBlockOrString isBlock
 		ifFalse: [aBlockOrString asString ]
 		ifTrue: [aBlockOrString valueWithPossibleArgs: anArray]
 ! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/15/2023 14:45:59'!
+!Field methodsFor: 'private' stamp: 'hlsf 15/Apr/2023 14:45:59'!
 infect: model
 	"Convert the model into the type of object that this field's widget expects for a value"
 	
 	^model ifNil: ['']! !
 
-!Field methodsFor: 'private' stamp: 'kdt 4/4/2008 13:50'!
+!Field methodsFor: 'private' stamp: 'kdt 4/Apr/2008 13:50:00'!
 requirementCondition
 	^ conditions first! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:12:54'!
+!Field methodsFor: 'private' stamp: 'hlsf 16/Apr/2023 17:12:54'!
 validateConditions
 	^ self validateUserConditions ! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/20/2023 10:58:20'!
+!Field methodsFor: 'private' stamp: 'hlsf 20/Apr/2023 10:58:20'!
 validateInput
 	errors := OrderedCollection new.
 	self input: self inputMorphContents. "retrieve the input from the input Morph"
@@ -810,7 +810,7 @@ validateInput
 			layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0)			].
 	self  highlightInputMorph ! !
 
-!Field methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:19:20'!
+!Field methodsFor: 'private' stamp: 'hlsf 21/Apr/2023 14:19:20'!
 validateUserConditions
 	| disinfected arguments |
 	disinfected := [ self disinfect: input ] on: Error do: [ :ex | nil ].
@@ -823,10 +823,10 @@ validateUserConditions
 					each = self requirementCondition
 						ifTrue: [ ^ self ] ] ]! !
 
-!Field methodsFor: 'private'!
+!Field methodsFor: 'private' stamp: ''!
 valueChanged! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/18/2023 12:05:15'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 19/Apr/2026 12:24:50'!
 initialize
 	conditions := OrderedCollection new.
 	errors := OrderedCollection new.
@@ -839,11 +839,11 @@ initialize
 		addMorph: (LayoutMorph newColumn name: 'error' :: 
 				color: Color transparent) . 
 	isRequired := false.
-	label := 'unammed label'.
+	label := 'unnamed label'.
 	self setInputWidget.
 	self addRequirementCondition! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 14:23:42'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 20/Apr/2023 14:23:42'!
 inputMorphInstance
 "
 	Subclass according to the nature of the input 
@@ -851,47 +851,47 @@ inputMorphInstance
 "
 	^ TextEntryMorph new! !
 
-!Field methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 14:23:43'!
+!Field methodsFor: 'initialize-release' stamp: 'hlsf 20/Apr/2023 14:23:43'!
 setInputWidget
 	self inputColumn
 		addMorph: self inputMorphInstance layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1)! !
 
-!Field methodsFor: 'testing' stamp: 'kdt 4/4/2008 13:45'!
+!Field methodsFor: 'testing' stamp: 'kdt 4/Apr/2008 13:45:00'!
 isRequired
 	^ isRequired! !
 
-!Field methodsFor: 'testing' stamp: 'kdt 1/28/2008 22:02'!
+!Field methodsFor: 'testing' stamp: 'kdt 28/Jan/2008 22:02:00'!
 isValid
 	^ errors isEmpty! !
 
-!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 20:51:30'!
+!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 20:51:30'!
 highlightInputMorph
 	self inputMorph borderColor: (self isValid 
 		ifTrue: [self inputMorph defaultColor]
 		ifFalse: [Color red muchLighter])! !
 
-!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 19:52:51'!
+!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 19:52:51'!
 inputMorphContents
 	^ self inputMorph isSelected! !
 
-!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 4/23/2023 12:20:50'!
+!CheckboxField methodsFor: 'accessing widget' stamp: 'hlsf 23/Apr/2023 12:20:50'!
 inputMorphContents: anInputBoolean
 	self inputMorph isSelected: anInputBoolean! !
 
-!CheckboxField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 19:49:36'!
+!CheckboxField methodsFor: 'initialize-release' stamp: 'hlsf 20/Apr/2023 19:49:36'!
 inputMorphInstance
 	^ CheckButtonMorph new! !
 
-!CheckboxField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 19:56:51'!
+!CheckboxField methodsFor: 'initialize-release' stamp: 'hlsf 20/Apr/2023 19:56:51'!
 setInputWidget
 	self inputColumn
 		addMorph: self inputMorphInstance layoutSpec: LayoutSpec keepMorphExtent! !
 
-!CheckboxField methodsFor: 'private' stamp: 'hlsf 4/20/2023 20:46:16'!
+!CheckboxField methodsFor: 'private' stamp: 'hlsf 20/Apr/2023 20:46:16'!
 infect: model
 	^ model ifNil: [false]! !
 
-!DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:19:33'!
+!DateField methodsFor: 'private' stamp: 'hlsf 16/Apr/2023 17:19:33'!
 disinfect: aString
 	| year month day rs |
 	rs := aString readStream.
@@ -915,15 +915,15 @@ disinfect: aString
 				ifFalse: [ rs next: token size ] ].
 	Date year: year month: month day: day ] on: Error do: [ :ex | nil ]! !
 
-!DateField methodsFor: 'private' stamp: 'hlsf 4/14/2023 16:47:04'!
+!DateField methodsFor: 'private' stamp: 'hlsf 14/Apr/2023 16:47:04'!
 format: aDate dayOn: ws
 	ws nextPutAll: (aDate dayOfMonth  printStringBase: 10 length: 2 padded: true)! !
 
-!DateField methodsFor: 'private' stamp: 'hlsf 4/14/2023 16:46:37'!
+!DateField methodsFor: 'private' stamp: 'hlsf 14/Apr/2023 16:46:37'!
 format: aDate monthOn: ws
 	ws nextPutAll: (aDate monthIndex  printStringBase: 10 length: 2 padded: true)! !
 
-!DateField methodsFor: 'private' stamp: 'KenTreis 8/9/2010 19:08'!
+!DateField methodsFor: 'private' stamp: 'KenTreis 9/Aug/2010 19:08:00'!
 format: aDate token: aToken on: ws
 	| map function |
 	map := Dictionary new.
@@ -934,11 +934,11 @@ format: aDate token: aToken on: ws
 	function := map at: aToken ifAbsent: [ ^ ws nextPutAll: aToken ].
 	self perform: function with: aDate with: ws! !
 
-!DateField methodsFor: 'private' stamp: 'hlsf 4/14/2023 16:46:10'!
+!DateField methodsFor: 'private' stamp: 'hlsf 14/Apr/2023 16:46:10'!
 format: aDate yearOn: ws
 	ws nextPutAll: (aDate yearNumber  printStringBase: 10 length: 4 padded: true)! !
 
-!DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 16:23:04'!
+!DateField methodsFor: 'private' stamp: 'hlsf 16/Apr/2023 16:23:04'!
 infect: aDate
 	| ws |
 	aDate ifNil: [^''].
@@ -946,25 +946,25 @@ infect: aDate
 	format do: [ :token | self format: aDate token: token on: ws ].
 	^ ws contents! !
 
-!DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 16:54:15'!
+!DateField methodsFor: 'private' stamp: 'hlsf 16/Apr/2023 16:54:15'!
 initialize
 	super initialize.
 	self formatString: 'DD/MM/YYYY'! !
 
-!DateField methodsFor: 'private' stamp: 'hlsf 4/16/2023 17:24:09'!
+!DateField methodsFor: 'private' stamp: 'hlsf 16/Apr/2023 17:24:09'!
 validateConditions
 	(input notNil and: [(self disinfect: input) isNil])
 		ifTrue: [ errors add: 'Date not in format ', (String streamContents: [:s | format asStringOn: s delimiter: '' last: '']) ].
 	self validateUserConditions! !
 
-!DateField methodsFor: 'accessing' stamp: 'KenTreis 8/9/2010 22:37'!
+!DateField methodsFor: 'accessing' stamp: 'KenTreis 9/Aug/2010 22:37:00'!
 formatString
 	| ws |
 	ws := String new writeStream.
 	format do: [ :token | ws nextPutAll: token ].
 	^ ws contents! !
 
-!DateField methodsFor: 'accessing' stamp: 'hlsf 4/16/2023 16:29:58'!
+!DateField methodsFor: 'accessing' stamp: 'hlsf 16/Apr/2023 16:29:58'!
 formatString: aString
 	"aString should be some combination of MM, DD, and YYYY (use whatever separator you want).
 	Note that the input parser doesn't require leading zeros like 'MM' or 'DD' implies, but it prints them in its output.
@@ -1001,7 +1001,7 @@ formatString: aString
 			chunks := tokens ].
 	format := chunks asArray! !
 
-!FloatField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:30:11'!
+!FloatField methodsFor: 'private' stamp: 'hlsf 18/Apr/2023 20:30:11'!
 disinfect: aString
 	| disinfected  |
 	disinfected := aString select: [ :char | '+-1234567890.' includes: char ].
@@ -1010,52 +1010,52 @@ disinfect: aString
 		ifTrue: [ disinfected := '0' , disinfected ].
 	^ [ Number readFrom: disinfected readStream ] on: Error do: [ :ex | nil ]! !
 
-!FloatField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:45:29'!
+!FloatField methodsFor: 'private' stamp: 'hlsf 18/Apr/2023 20:45:29'!
 infect: aNumber 
 	^ aNumber 
 		ifNotNil: [aNumber asFloat printString]
 		ifNil: ['']! !
 
-!FloatField methodsFor: 'private' stamp: 'kdt 7/15/2009 18:02'!
+!FloatField methodsFor: 'private' stamp: 'kdt 15/Jul/2009 18:02:00'!
 validateConditions
 	super validateConditions.
 	self isValid ifFalse: [ ^ self ].
 	input ifNil: [ ^ self ].
 	(self disinfect: input) ifNil: [ errors add: 'Invalid number.' ]! !
 
-!PercentageField methodsFor: 'private' stamp: 'hlsf 6/5/2024 21:22:48'!
+!PercentageField methodsFor: 'private' stamp: 'hlsf 5/Jun/2024 21:22:48'!
 disinfect: aString 
 	^ (super disinfect: aString) ifNotNil: [ :number | (number / 100) asFloat ]! !
 
-!PercentageField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:47:37'!
+!PercentageField methodsFor: 'private' stamp: 'hlsf 18/Apr/2023 20:47:37'!
 infect: aNumber 
 	^aNumber ifNil: [''] ifNotNil: [super infect: aNumber * 100]! !
 
-!IntegerField methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:46:11'!
+!IntegerField methodsFor: 'private' stamp: 'hlsf 18/Apr/2023 12:46:11'!
 disinfect: aString 
 	('+-1234567890' includesAllOf: aString) ifFalse: [^nil].
 	^ [aString asNumber] on: Error do: [:ex | nil ]! !
 
-!IntegerField methodsFor: 'private' stamp: 'hlsf 4/18/2023 12:03:05'!
+!IntegerField methodsFor: 'private' stamp: 'hlsf 18/Apr/2023 12:03:05'!
 infect: anInteger 
 	^ anInteger ifNil: [''] ifNotNil: [anInteger printString]! !
 
-!IntegerField methodsFor: 'private' stamp: 'kdt 7/15/2009 18:07'!
+!IntegerField methodsFor: 'private' stamp: 'kdt 15/Jul/2009 18:07:00'!
 validateConditions
 	super validateConditions.
 	self isValid ifFalse: [ ^ self ].
 	input ifNil: [ ^ self ].
 	(self disinfect: input) isInteger ifFalse: [ errors add: 'Fractions and decimals are not allowed here.' ]! !
 
-!SelectField methodsFor: 'initialization' stamp: 'hlsf 4/20/2023 15:48:17'!
+!SelectField methodsFor: 'initialization' stamp: 'hlsf 20/Apr/2023 15:48:17'!
 inputMorphInstance
 	^ PluggableListMorph new! !
 
-!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/20/2023 15:29:38'!
+!SelectField methodsFor: 'accessing' stamp: 'hlsf 20/Apr/2023 15:29:38'!
 input: anIndex
 	input := anIndex ! !
 
-!SelectField methodsFor: 'accessing' stamp: 'jmv 5/17/2024 18:04:29'!
+!SelectField methodsFor: 'accessing' stamp: 'jmv 17/May/2024 18:04:29'!
 on: accessor of: model
 	"̈Copy the model, so it is only saved at validation time, not at operating time"
 	listModel := model copy.
@@ -1067,46 +1067,46 @@ on: accessor of: model
 	" Save operation done on the original model "
 	self callback: [:val | model perform: (accessor, ':') asSymbol with: val]! !
 
-!SelectField methodsFor: 'accessing' stamp: 'hlsf 4/21/2023 14:40:36'!
+!SelectField methodsFor: 'accessing' stamp: 'hlsf 21/Apr/2023 14:40:36'!
 value: theSelectedItem
 "The model I will present an object "
 	value := theSelectedItem. 
 	self valueChanged! !
 
-!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 15:58:32'!
+!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 15:58:32'!
 highlightInputMorph
 	self inputMorph color: (self isValid 
 		ifTrue: [self inputMorph defaultColor]
 		ifFalse: [Color red muchLighter])! !
 
-!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 15:21:18'!
+!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 15:21:18'!
 inputMorphContents
 " The inputMorph had already changed the listModel, ask its listIndex "
 	^ listModel listIndex ! !
 
-!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 4/23/2023 15:27:19'!
+!SelectField methodsFor: 'accessing widget' stamp: 'hlsf 23/Apr/2023 15:27:19'!
 inputMorphContents: index
 " Inform the index of the select item in the list model just changed "
 	listModel listIndex: index
 ! !
 
-!SelectField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:15:55'!
+!SelectField methodsFor: 'private' stamp: 'hlsf 21/Apr/2023 14:15:55'!
 addRequirementCondition
 	self addCondition: [:userInput :theValue| isRequired not or: [	userInput isZero not]]
 		labeled: 'Field required.'! !
 
-!SelectField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:03:00'!
+!SelectField methodsFor: 'private' stamp: 'hlsf 21/Apr/2023 14:03:00'!
 disinfect: anIndex
 "Return the selected item"
 	^ listModel selectedItem! !
 
-!SelectField methodsFor: 'private' stamp: 'hlsf 4/21/2023 14:42:39'!
+!SelectField methodsFor: 'private' stamp: 'hlsf 21/Apr/2023 14:42:39'!
 infect: object
 " When object is nil index is zero, otherwise return its index"	
 "	^ listModel listIndex"
 	self shouldNotHappen ! !
 
-!SelectField methodsFor: 'as yet unclassified' stamp: 'hlsf 9/28/2023 15:16:07'!
+!SelectField methodsFor: 'as yet unclassified' stamp: 'hlsf 28/Sep/2023 15:16:07'!
 save
 	callback
 		ifNotNil: [ 
@@ -1114,31 +1114,31 @@ save
 				ifTrue: [ callback value: input ]
 				ifFalse: [ callback value ] ]! !
 
-!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/21/2023 15:21:29'!
+!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 21/Apr/2023 15:21:29'!
 addRequirementCondition
 	self addCondition: [:userInput :theValue| isRequired not or: [	userInput isEmpty not]]
 		labeled: 'Field required.'! !
 
-!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 4/23/2023 16:04:41'!
+!SelectMultipleField methodsFor: 'private' stamp: 'hlsf 23/Apr/2023 16:04:41'!
 disinfect: indexes
 "Return the selected item"
 	^listModel selectedItems! !
 
-!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 4/23/2023 15:47:16'!
+!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 23/Apr/2023 15:47:16'!
 inputMorphContents
 " Return the indexes of the selected item "
 	^ listModel selectedIndexes 
 	! !
 
-!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 4/23/2023 15:43:18'!
+!SelectMultipleField methodsFor: 'accessing widget' stamp: 'hlsf 23/Apr/2023 15:43:18'!
 inputMorphContents: selectedIndexes
 	listModel selectedIndexes: selectedIndexes! !
 
-!SelectMultipleField methodsFor: 'initialization' stamp: 'hlsf 4/21/2023 12:40:19'!
+!SelectMultipleField methodsFor: 'initialization' stamp: 'hlsf 21/Apr/2023 12:40:19'!
 inputMorphInstance
 	^ PluggableListMorphOfMany new! !
 
-!SelectMultipleField methodsFor: 'accessing' stamp: 'jmv 5/17/2024 18:04:37'!
+!SelectMultipleField methodsFor: 'accessing' stamp: 'jmv 17/May/2024 18:04:37'!
 on: accessor of: model
 	"̈Copy the model, so it is only saved at validation time, not at operating time"
 	listModel := model copy.
@@ -1150,71 +1150,71 @@ on: accessor of: model
 	" Save operation done on the original model "
 	self callback: [:val | model perform: (accessor, ':') asSymbol with: val]! !
 
-!TextField methodsFor: 'initialize-release' stamp: 'hlsf 4/20/2023 14:23:43'!
+!TextField methodsFor: 'initialize-release' stamp: 'hlsf 20/Apr/2023 14:23:43'!
 inputMorphInstance
 	^ TextModelMorph textProvider: self textGetter: #contents ! !
 
-!TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 10:46:52'!
+!TextField methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 10:46:52'!
 contents
 " Getter for the TextModelMorph. I return the contents to provide to the inputWidget "
 	^ input ifNil: ['']! !
 
-!TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 11:07:16'!
+!TextField methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 11:07:16'!
 highlightInputMorph
 	self inputMorph color: (self isValid 
 		ifTrue: [self inputMorph defaultColor]
 		ifFalse: [Color red muchLighter])! !
 
-!TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 11:28:32'!
+!TextField methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 11:28:32'!
 inputMorphContents
 	^ self inputMorph model actualContents asString! !
 
-!TextField methodsFor: 'accessing widget' stamp: 'hlsf 4/20/2023 10:35:29'!
+!TextField methodsFor: 'accessing widget' stamp: 'hlsf 20/Apr/2023 10:35:29'!
 inputMorphContents: anInput
 " Inform the inputWidget its input field must be updated "
 	self changed: #contents! !
 
-!TimeField methodsFor: 'private' stamp: 'hlsf 4/20/2023 09:34:22'!
+!TimeField methodsFor: 'private' stamp: 'hlsf 20/Apr/2023 09:34:22'!
 disinfect: aString
 	^Time fromString: aString withBlanksTrimmed! !
 
-!TimeField methodsFor: 'private' stamp: 'hlsf 4/18/2023 20:46:28'!
+!TimeField methodsFor: 'private' stamp: 'hlsf 18/Apr/2023 20:46:28'!
 infect: aTime
 	^aTime ifNil: [''] ifNotNil: [aTime asString]! !
 
-!Mold methodsFor: 'accessing' stamp: 'kdt 4/4/2008 11:20'!
+!Mold methodsFor: 'accessing' stamp: 'kdt 4/Apr/2008 11:20:00'!
 at: aKey 
 	^ fields detect: [:each | each key = aKey] ifNone: [nil]! !
 
-!Mold methodsFor: 'accessing'!
+!Mold methodsFor: 'accessing' stamp: ''!
 fields
 	^fields! !
 
-!Mold methodsFor: 'accessing'!
+!Mold methodsFor: 'accessing' stamp: ''!
 save
 	fields do: #save! !
 
-!Mold methodsFor: 'accessing' stamp: 'kdt 8/26/2008 21:32'!
+!Mold methodsFor: 'accessing' stamp: 'kdt 26/Aug/2008 21:32:00'!
 validate
 	fields do: [ :each | each validateInput ]! !
 
-!Mold methodsFor: 'accessing'!
+!Mold methodsFor: 'accessing' stamp: ''!
 valueAt: aKey
 	^(self at: aKey) value! !
 
-!Mold methodsFor: 'initialize-release' stamp: 'kdt 1/28/2008 22:15'!
+!Mold methodsFor: 'initialize-release' stamp: 'kdt 28/Jan/2008 22:15:00'!
 initialize
 	fields := OrderedCollection new! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: ''!
 checkboxField
 	^fields add: CheckboxField new! !
 
-!Mold methodsFor: 'fields' stamp: 'KenTreis 8/9/2010 22:38'!
+!Mold methodsFor: 'fields' stamp: 'KenTreis 9/Aug/2010 22:38:00'!
 dateField
 	^ fields add: DateField new! !
 
-!Mold methodsFor: 'fields' stamp: 'hlsf 4/20/2023 20:22:57'!
+!Mold methodsFor: 'fields' stamp: 'hlsf 20/Apr/2023 20:22:57'!
 emailField
 	^ self stringField
 		addCondition: 
@@ -1225,23 +1225,23 @@ emailField
 			labeled: 'Invalid email address';
 		yourself! !
 
-!Mold methodsFor: 'fields' stamp: 'hlsf 4/18/2023 20:57:55'!
+!Mold methodsFor: 'fields' stamp: 'hlsf 18/Apr/2023 20:57:55'!
 floatField
 	^fields add: FloatField new! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: ''!
 integerField
 	^fields add: IntegerField new! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: ''!
 passwordField
 	^fields add: PasswordField new! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: ''!
 percentageField
 	^self percentageField: 'Invalid percentage'! !
 
-!Mold methodsFor: 'fields' stamp: 'kdt 4/4/2008 11:14'!
+!Mold methodsFor: 'fields' stamp: 'kdt 4/Apr/2008 11:14:00'!
 percentageField: anErrorMessage 
 	^ fields 
 		add: (PercentageField new addCondition: 
@@ -1251,33 +1251,33 @@ percentageField: anErrorMessage
 								or: [val matchesRegex: '(\d)*.(\d)+%?']]]
 				labeled: anErrorMessage)! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: ''!
 selectField
 	^fields add: SelectField new! !
 
-!Mold methodsFor: 'fields' stamp: 'hlsf 4/21/2023 15:03:17'!
+!Mold methodsFor: 'fields' stamp: 'hlsf 21/Apr/2023 15:03:17'!
 selectMultiField
 	^fields add: SelectMultipleField new! !
 
-!Mold methodsFor: 'fields' stamp: 'hlsf 4/20/2023 09:25:05'!
+!Mold methodsFor: 'fields' stamp: 'hlsf 20/Apr/2023 09:25:05'!
 stringField
 	^fields add: Field new! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: ''!
 textField
 	^fields add: TextField new! !
 
-!Mold methodsFor: 'fields'!
+!Mold methodsFor: 'fields' stamp: ''!
 timeField
 	^fields add: TimeField new! !
 
-!Mold methodsFor: 'fields' stamp: 'hlsf 4/20/2023 09:26:07'!
+!Mold methodsFor: 'fields' stamp: 'hlsf 20/Apr/2023 09:26:07'!
 zipCodeField
 	^fields add: (Field new 
 				addCondition: [:val | val isNil or: [val matchesRegex: '(\d\d\d\d\d)(-\d\d\d\d)?']]
 				labeled: 'Invalid zip code')! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 8/27/2023 15:37:31'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 27/Aug/2023 15:37:31'!
 newPane
 	| pane |
 	pane := nil.
@@ -1291,7 +1291,7 @@ newPane
 				self triggerEvent: #edited] ].
 	^ pane! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 8/27/2023 15:35:42'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 27/Aug/2023 15:35:42'!
 openDialog: title
 	| panel |
 	panel := nil.
@@ -1306,31 +1306,31 @@ openDialog: title
 				self triggerEvent: #edited.
 				panel delete] ]! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 4/20/2023 11:43:40'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 20/Apr/2023 11:43:40'!
 renderForms
 	^ LabelGroup with: (fields collect: #labelAndWidget) ::
 		doAdoptWidgetsColor;
 		yourself
 	! !
 
-!Mold methodsFor: 'testing' stamp: 'KenTreis 7/27/2011 13:49'!
+!Mold methodsFor: 'testing' stamp: 'KenTreis 27/Jul/2011 13:49:00'!
 isValid
 	self validate.
 	^ fields allSatisfy: #isValid! !
 
-!Mold methodsFor: 'removing' stamp: 'kdt 4/4/2008 11:18'!
+!Mold methodsFor: 'removing' stamp: 'kdt 4/Apr/2008 11:18:00'!
 remove: aKey
 	| field |
 	field := self at: aKey.
 	fields remove: field! !
 
-!Mold methodsFor: 'removing' stamp: 'kdt 4/4/2008 11:18'!
+!Mold methodsFor: 'removing' stamp: 'kdt 4/Apr/2008 11:18:00'!
 remove: aKey ifAbsent: exceptionBlock 
 	| field |
 	field := self at: aKey.
 	fields remove: field ifAbsent: exceptionBlock! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/23/2023 12:47:22'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 23/Apr/2023 12:47:22'!
 eight
 "
 	MoldExample eight
@@ -1368,7 +1368,7 @@ eight
 			labeled: 'Sorry, you may not opt out of our spam unless your name starts with K.'.
 	mold openDialog: 'Example Eight'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 10:43:12'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 20/Apr/2023 10:43:12'!
 five
 "
 	MoldExample five
@@ -1384,7 +1384,7 @@ five
 		beRequired.
 	mold openDialog: 'Example Five'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/19/2023 00:12:12'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 19/Apr/2023 00:12:12'!
 four
 "
 	MoldExample four
@@ -1400,7 +1400,7 @@ four
 		beRequired.
 	mold openDialog: 'Example Four'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/22/2023 22:23:20'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 22/May/2023 22:23:20'!
 nine
 "
 	MoldExample nine
@@ -1421,7 +1421,7 @@ nine
 		on: #selectedIndexes of: (ListMultiModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
 	mold openDialog: 'Example Nine'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 5/29/2023 11:43:34'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 29/May/2023 11:43:34'!
 one
 "
 	MoldExample one
@@ -1444,7 +1444,7 @@ one
 		beRequired.
 	mold newPane openInWorld! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/21/2023 14:33:58'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 21/Apr/2023 14:33:58'!
 seven
 "
 	MoldExample seven
@@ -1465,7 +1465,7 @@ seven
 		on: #listIndex of: (ListModel with: `{'P6' . 'P7' . 'P8' . 'P9' . 'P10'}`).
 	mold openDialog: 'Example Seven'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/20/2023 16:03:32'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 20/Apr/2023 16:03:32'!
 six
 "
 	MoldExample six
@@ -1483,7 +1483,7 @@ six
 		beRequired.
 	mold openDialog: 'Example Six'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 21:13:52'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 18/Apr/2023 21:13:52'!
 three
 "
 	MoldExample three
@@ -1499,7 +1499,7 @@ three
 		beRequired.
 	mold openDialog: 'Example Three' ! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 4/18/2023 21:14:06'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 18/Apr/2023 21:14:06'!
 two
 "
 	MoldExample two

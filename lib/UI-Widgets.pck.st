@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7875] on 14 April 2026 at 3:22:50 pm'!
+'From Cuis7.7 [latest update: #7879] on 19 April 2026 at 12:25:53 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 68!
+!provides: 'UI-Widgets' 1 69!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -135,7 +135,7 @@ A wheel widget control. I can be used in two different ways:
 - I send a mouse scroll event to a target, each time I am rolled.!
 
 !ChevronMorph commentStamp: '<historical>' prior: 0!
-I am a button for a circular morph. I look like a truncated section of a circle, I am nammed chevron as a shorter name.
+I am a button for a circular morph. I look like a truncated section of a circle, I am named chevron as a shorter name.
 I  am inserted in a cicular toolbar of the given radius.
 
 - model I request action or state to
