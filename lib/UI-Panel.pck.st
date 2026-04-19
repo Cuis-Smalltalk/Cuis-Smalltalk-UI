@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7840] on 1 March 2026 at 10:11:18 pm'!
+'From Cuis7.7 [latest update: #7879] on 19 April 2026 at 10:36:54 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 148!
+!provides: 'UI-Panel' 1 149!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -210,7 +210,7 @@ TextEntryPanel class
 
 !classDefinition: #WizardPanel category: #'UI-Panel'!
 DialogPanel subclass: #WizardPanel
-	instanceVariableNames: 'pages currentPageIndex acceptSelector'
+	instanceVariableNames: 'pages currentPageIndex acceptSelector currentPage'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -2299,15 +2299,15 @@ buildMorphicWindow
 	super buildMorphicWindow .
 	layoutMorph adoptWidgetsColor: self widgetsColor! !
 
-!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 27/Dec/2021 10:25:00'!
+!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 19/Apr/2026 22:29:44'!
 newButtonArea
 "Ask the current page its buttons, if any"
-	^ buttonArea _  currentPageIndex ifNotNil: [ (pages at: currentPageIndex) buttons]! !
+	^ buttonArea :=  currentPageIndex ifNotNil: [ currentPage buttons]! !
 
-!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 27/Dec/2021 10:20:00'!
+!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 19/Apr/2026 22:26:40'!
 newPane
 "Ask to the current page its pane, if any"
-	^ currentPageIndex ifNotNil: [	(pages at: currentPageIndex) panel]! !
+	^ currentPage panel! !
 
 !WizardPanel methodsFor: 'accessing' stamp: 'hlsf 25/Dec/2021 16:51:00'!
 emptyPane
@@ -2315,13 +2315,22 @@ emptyPane
 		doAdoptWidgetsColor;
 		adoptWidgetsColor: self widgetsColor.! !
 
+!WizardPanel methodsFor: 'accessing' stamp: 'hlsf 19/Apr/2026 22:17:27'!
+numberOfPage
+	^ self pageBuilders size! !
+
+!WizardPanel methodsFor: 'accessing' stamp: 'hlsf 19/Apr/2026 22:17:01'!
+pageBuilders
+"	A collection of method symbol, each one builds and returns a WizardPage " 
+	^ self subclassResponsibility ! !
+
 !WizardPanel methodsFor: 'actions' stamp: 'hlsf 3/Nov/2021 18:41:00'!
 apply
 	self triggerEvent: #apply! !
 
-!WizardPanel methodsFor: 'actions' stamp: 'hlsf 3/Nov/2021 18:43:00'!
+!WizardPanel methodsFor: 'actions' stamp: 'hlsf 19/Apr/2026 22:30:07'!
 cancel
-	pages do: [:each | each delete].
+	currentPage delete.
 	self delete.
 	self triggerEvent: #cancel! !
 
@@ -2334,29 +2343,34 @@ nextPage
 previousPage
 	self goPage: currentPageIndex - 1! !
 
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 3/Nov/2021 16:20:00'!
+!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 19/Apr/2026 22:18:58'!
 addPage: wizardPage
+" OBSOLETE, TO BE REMOVED "
 	pages add: wizardPage.
 	currentPageIndex ifNil: ["The first added page is the first one to show"
-		currentPageIndex _ 1.
+		currentPageIndex := 1.
 		self setLabel: wizardPage title.
 		self buildMorphicWindow	]! !
 
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 27/Dec/2021 11:10:00'!
+!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 19/Apr/2026 22:19:05'!
 addPages
+" OBSOLETE, TO BE REMOVED "
 " override to add the pages to your wizrard panel"
 	self shouldBeImplemented ! !
 
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 31/Oct/2021 10:08:00'!
+!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 19/Apr/2026 22:28:51'!
 initialize
 	super initialize.
-	pages _ OrderedCollection new.! !
+	self goPage: 1.
+	" OBSOLETE, TO BE REMOVED "
+	pages := OrderedCollection new.! !
 
-!WizardPanel methodsFor: 'navigation' stamp: 'hlsf 3/Nov/2021 18:40:00'!
+!WizardPanel methodsFor: 'navigation' stamp: 'hlsf 19/Apr/2026 22:27:48'!
 goPage: number
-	(number < 1 or: [number > pages size]) ifTrue: [^ self].
-	currentPageIndex _ number.
-	self setLabel: (pages at: currentPageIndex) title.
+	(number between: 1 and: self numberOfPage) ifFalse: [^ self].
+	currentPageIndex := number.
+	currentPage := self perform: (self pageBuilders at: currentPageIndex).
+	self setLabel: currentPage title.
 	self buildMorphicWindow.
 	self triggerEvent: #page with: number.! !
 
