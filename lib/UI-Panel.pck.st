@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 20 April 2026 at 10:12:19 pm'!
+'From Cuis7.7 [latest update: #7880] on 20 April 2026 at 11:54:09 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 150!
+!provides: 'UI-Panel' 1 151!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1120,12 +1120,12 @@ drawClassicFrameOn: aCanvas color: titleColor
 	The look is that the title area is inside the window"
 	aCanvas fillRectangle: (borderWidth@borderWidth extent: extent x - (2*borderWidth)@ self labelHeight) color: titleColor! !
 
-!Panel methodsFor: 'drawing' stamp: 'jmv 7/Jan/2025 11:48:00'!
+!Panel methodsFor: 'drawing' stamp: 'hlsf 20/Apr/2026 23:40:25'!
 drawOn: aCanvas
 
 	| titleColor |
 
-	titleColor := self defaultColor.
+	titleColor := self buttonColor.
 	(Theme current roundWindowCorners)
 		ifTrue: [
 			"Round corners. Optional title gradient."
@@ -1310,6 +1310,11 @@ minimumExtent
 		@ (minTitleExtent y + minLayoutExtent y))
 	! !
 
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 20/Apr/2026 23:37:31'!
+adoptWidgetsColor: paneColor
+	color := Theme current paneBackgroundFrom: paneColor.
+	super adoptWidgetsColor: paneColor.! !
+
 !Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013 18:55:00'!
 buildMorphicWindow
 
@@ -1354,6 +1359,15 @@ textBackgroundColor
 !Panel methodsFor: 'GUI building' stamp: 'hlsf 29/Jul/2024 10:35:00'!
 widgetsColor
 	^ borderColor ! !
+
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 20/Apr/2026 23:18:28'!
+widgetsColor: aColor
+	"aColor will be used for titles, borders, etc.
+	A variation of it, #paneColorFrom:, will be used for panes background"
+
+	borderColor := aColor.
+	self color: self textBackgroundColor.
+	self adoptWidgetsColor: borderColor! !
 
 !Panel methodsFor: 'dropping/grabbing' stamp: 'KenD 17/Sep/2019 13:26:00'!
 valueWhenDropped
@@ -1426,17 +1440,13 @@ defaultSeparation
 
 	^ 10 "Pixels between controls/layouts"! !
 
-!Panel methodsFor: 'initialization' stamp: 'hlsf 29/Jul/2024 10:34:00'!
+!Panel methodsFor: 'initialization' stamp: 'hlsf 20/Apr/2026 23:46:32'!
 initialize
 	"Initialize a system window. Add label, stripes, etc., if desired"
-
 	super initialize.
 	self buildTitle;
 		beColumn.  "by default"
-	borderColor := self defaultColor. " widget color "
-	self color: self textBackgroundColor ;
-		adoptWidgetsColor: self widgetsColor.
-	
+	self widgetsColor: self defaultColor.
 ! !
 
 !Panel methodsFor: 'initialization' stamp: 'KenD 16/Jul/2024 13:58:00'!
@@ -1707,11 +1717,12 @@ buildMorphicWindow
 	super buildMorphicWindow.
 	layoutMorph adoptWidgetsColor: self widgetsColor.! !
 
-!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 15:16:00'!
+!PluggableDialogPanel methodsFor: 'GUI building' stamp: 'hlsf 20/Apr/2026 23:47:55'!
 newButtonArea
 "Return the morph where the buttons are layed out"
 	buttonArea := LayoutMorph newRow ::
 		gap: 8;
+		color: Color transparent ;
 		axisEdgeWeight: #rowRight;
 		addMorph: (PluggableButtonMorph
 			model: actionOnButton 
@@ -1826,16 +1837,16 @@ label
 	^ 'a pane'
 	! !
 
+!PluggablePane methodsFor: 'geometry' stamp: 'hlsf 16/Jul/2024 10:54:00'!
+adjustExtent
+	self morphWidth: owner viewableWidth! !
+
 !PluggablePane methodsFor: 'geometry' stamp: 'hlsf 2/Sep/2024 19:39:00'!
 layoutBounds
 	"Return the bounds for laying out children of the receiver"
 	"Exclude the label area"
 
 	^  0@0 extent: self extentInOwner! !
-
-!PluggablePane methodsFor: 'as yet unclassified' stamp: 'hlsf 16/Jul/2024 10:54:00'!
-adjustExtent
-	self morphWidth: owner viewableWidth! !
 
 !PluggablePane class methodsFor: 'instance creation' stamp: 'hlsf 27/Aug/2023 15:37:00'!
 open: model view: aSelector action: acceptSelectorOrAction
@@ -2304,10 +2315,10 @@ newButtonArea
 "Ask the current page its buttons, if any"
 	^ buttonArea :=  currentPageIndex ifNotNil: [ currentPage buttons]! !
 
-!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 19/Apr/2026 22:26:40'!
+!WizardPanel methodsFor: 'GUI building' stamp: 'hlsf 20/Apr/2026 22:53:31'!
 newPane
 "Ask to the current page its pane, if any"
-	^ currentPage panel! !
+	^ currentPage panel ! !
 
 !WizardPanel methodsFor: 'accessing' stamp: 'hlsf 25/Dec/2021 16:51:00'!
 emptyPane

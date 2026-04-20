@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7879] on 19 April 2026 at 12:25:53 pm'!
+'From Cuis7.7 [latest update: #7880] on 20 April 2026 at 11:54:19 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 69!
+!provides: 'UI-Widgets' 1 70!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -174,18 +174,13 @@ See my Class side:
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'KenD 1/Apr/2022 12:31:18'!
-defaultColor
-
-	^ Color transparent ! !
-
-!LabelGroup methodsFor: 'initialization' stamp: 'KenD 14/Sep/2024 15:13:09'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 20/Apr/2026 23:05:15'!
 initialize
-
 	super initialize.
+	self doAdoptWidgetsColor.
 	self gap: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 14/Jul/2025 09:51:45'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 20/Apr/2026 23:31:48'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
@@ -206,8 +201,9 @@ with: labelsAndControls
 			ifFalse: [row addMorph: control layoutSpec: LayoutSpec keepMorphExtent]		.
 		self addMorph: row fixedHeight: height]! !
 
-!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 10/Aug/2025 11:05:20'!
+!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 20/Apr/2026 23:29:45'!
 adoptWidgetsColor: paneColor
+	super adoptWidgetsColor: paneColor.
 	adoptsWidgetsColor 
 		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
 
@@ -215,6 +211,10 @@ adoptWidgetsColor: paneColor
 controls
 	" search for the controls, those all widgets not label nor layoutmorph"
 	^ self submorphs reverse collect: [:aLayout | aLayout submorphs first] ! !
+
+!LabelGroup methodsFor: 'as yet unclassified' stamp: 'hlsf 20/Apr/2026 23:31:25'!
+defaultColor
+	^ Color transparent! !
 
 !LabelGroup class methodsFor: 'instance creation' stamp: 'KenD 24/Jul/2024 12:12:45'!
 initializedInstance
