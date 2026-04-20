@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7879] on 19 April 2026 at 10:36:54 pm'!
+'From Cuis7.7 [latest update: #7880] on 20 April 2026 at 10:12:19 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 149!
+!provides: 'UI-Panel' 1 150!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -210,7 +210,7 @@ TextEntryPanel class
 
 !classDefinition: #WizardPanel category: #'UI-Panel'!
 DialogPanel subclass: #WizardPanel
-	instanceVariableNames: 'pages currentPageIndex acceptSelector currentPage'
+	instanceVariableNames: 'currentPageIndex acceptSelector currentPage'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -2328,9 +2328,8 @@ pageBuilders
 apply
 	self triggerEvent: #apply! !
 
-!WizardPanel methodsFor: 'actions' stamp: 'hlsf 19/Apr/2026 22:30:07'!
+!WizardPanel methodsFor: 'actions' stamp: 'drgeo 20/Apr/2026 22:09:22'!
 cancel
-	currentPage delete.
 	self delete.
 	self triggerEvent: #cancel! !
 
@@ -2343,27 +2342,10 @@ nextPage
 previousPage
 	self goPage: currentPageIndex - 1! !
 
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 19/Apr/2026 22:18:58'!
-addPage: wizardPage
-" OBSOLETE, TO BE REMOVED "
-	pages add: wizardPage.
-	currentPageIndex ifNil: ["The first added page is the first one to show"
-		currentPageIndex := 1.
-		self setLabel: wizardPage title.
-		self buildMorphicWindow	]! !
-
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 19/Apr/2026 22:19:05'!
-addPages
-" OBSOLETE, TO BE REMOVED "
-" override to add the pages to your wizrard panel"
-	self shouldBeImplemented ! !
-
-!WizardPanel methodsFor: 'initialize-release' stamp: 'hlsf 19/Apr/2026 22:28:51'!
+!WizardPanel methodsFor: 'initialize-release' stamp: 'drgeo 20/Apr/2026 21:53:13'!
 initialize
 	super initialize.
-	self goPage: 1.
-	" OBSOLETE, TO BE REMOVED "
-	pages := OrderedCollection new.! !
+	self goPage: 1! !
 
 !WizardPanel methodsFor: 'navigation' stamp: 'hlsf 19/Apr/2026 22:27:48'!
 goPage: number
@@ -2383,35 +2365,16 @@ delete
 minimumExtent
 	^ 550 @ (350 max: super minimumExtent y)! !
 
-!WizardPanel methodsFor: 'testing' stamp: 'hlsf 25/Dec/2021 16:53:00'!
+!WizardPanel methodsFor: 'testing' stamp: 'drgeo 20/Apr/2026 21:58:09'!
 isReadyToApply
+"Override, return true when the wizard is ready to appy its effect
+The apply button is usually found in the last page of the wizard, an Apply Page"
 	^ false! !
-
-!WizardPanel methodsFor: 'event handling' stamp: 'hlsf 16/Apr/2023 12:48:00'!
-refreshView
-
-	self subclassResponsibility ! !
 
 !WizardPanel class methodsFor: 'new-morph participation' stamp: 'KenD 13/Mar/2022 07:32:00'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
-
-!WizardPanel class methodsFor: 'examples' stamp: 'hlsf 27/Dec/2021 11:09:00'!
-example1
-"
-	self example1 openInWorld
-"
-| wizard | 
-	wizard := WizardPanel open: nil label: 'A Wizard panel'.
-	wizard 
-		addPage: ((WizardPage firstPage: 'First page' on: wizard) 
-			contents: 'A description for first page');
-		addPage: ((WizardPage standardPage: 'Standard page' on: wizard) 
-			contents: 'A description for standard page');
-		addPage: ((WizardPage applyPage: 'Final page' on: wizard) 
-			contents: 'Another description for apply page').
-	^ wizard! !
 
 !WizardPage methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024 15:17:00'!
 buttons
@@ -2473,7 +2436,7 @@ previousButton
 		action: #previousPage
 		label: 'Previous'! !
 
-!WizardPage methodsFor: 'initialization' stamp: 'hlsf 3/Nov/2021 15:20:00'!
+!WizardPage methodsFor: 'page types' stamp: 'hlsf 3/Nov/2021 15:20:00'!
 applyPage: string
 	title _ string.
 	self buttons
@@ -2481,18 +2444,14 @@ applyPage: string
 		addMorph: self previousButton;
 		addMorph: self applyButton! !
 
-!WizardPage methodsFor: 'initialization' stamp: 'hlsf 3/Nov/2021 15:08:00'!
-delete
-"Clean up if necessary at Wizard close"! !
-
-!WizardPage methodsFor: 'initialization' stamp: 'hlsf 3/Nov/2021 15:16:00'!
+!WizardPage methodsFor: 'page types' stamp: 'hlsf 3/Nov/2021 15:16:00'!
 firstPage: string
 	title _ string.
 	self buttons
 		addMorph: self cancelButton;
 		addMorph: self nextButton.! !
 
-!WizardPage methodsFor: 'initialization' stamp: 'hlsf 3/Nov/2021 15:18:00'!
+!WizardPage methodsFor: 'page types' stamp: 'hlsf 3/Nov/2021 15:18:00'!
 standardPage: string
 	title _ string.
 	self buttons
