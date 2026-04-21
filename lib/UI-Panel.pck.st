@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 20 April 2026 at 11:54:09 pm'!
+'From Cuis7.7 [latest update: #7880] on 21 April 2026 at 3:16:55 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 151!
+!provides: 'UI-Panel' 1 152!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -379,13 +379,13 @@ removeSliceButtonsAfter: aNavButton
 	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
 	navBar removeAllMorphsIn: toDelete! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 13/Jul/2023 09:24:00'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 21/Apr/2026 14:47:35'!
 replaceView: aView byView: anotherView
 " Replace a view in the pane with another viewer and shrink the panel "
 	aView releaseActionMap.
 	self replaceSubmorph: aView by: anotherView .
 	self morphExtent: self minimumExtent.
-	self adoptWidgetsColor: self defaultBorderColor ! !
+	self adoptWidgetsColor: self defaultBorderColor! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 2/Jul/2023 13:03:00'!
 replaceViewWith: anObject
