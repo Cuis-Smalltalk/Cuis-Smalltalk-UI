@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 21 April 2026 at 3:16:55 pm'!
+'From Cuis7.7 [latest update: #7880] on 22 April 2026 at 11:29:57 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 152!
+!provides: 'UI-Panel' 1 153!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -2395,16 +2395,16 @@ buttons
 		axisEdgeWeight: #rowRight;
 		yourself]! !
 
-!WizardPage methodsFor: 'accessing' stamp: 'hlsf 30/Dec/2021 10:11:00'!
+!WizardPage methodsFor: 'accessing' stamp: 'hlsf 22/Apr/2026 22:45:02'!
 contents: aStringOrMorph
-	aStringOrMorph isString 
+	(aStringOrMorph isString or: [aStringOrMorph is: #Text])
 		ifTrue: [ "If string, just be our new panel"
-			panel _ TextParagraphMorph contents: aStringOrMorph.
+			panel := TextParagraphMorph contents: aStringOrMorph.
 			panel 
 				borderWidth: 0 ; 
 				color: Color transparent]
 		ifFalse: [ "If Morph, the Wizard directly gave us the panel with contents already set"
-			panel _ aStringOrMorph]! !
+			panel := aStringOrMorph]! !
 
 !WizardPage methodsFor: 'accessing' stamp: 'hlsf 31/Oct/2021 12:22:00'!
 panel
