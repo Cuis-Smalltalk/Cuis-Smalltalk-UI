@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 22 April 2026 at 11:29:57 pm'!
+'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 12:53:25 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 153!
+!provides: 'UI-Panel' 1 154!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -26,6 +26,16 @@ LinearLayoutMorph subclass: #DecoratedPane
 	category: 'UI-Panel'!
 !classDefinition: 'DecoratedPane class' category: #'UI-Panel'!
 DecoratedPane class
+	instanceVariableNames: ''!
+
+!classDefinition: #SidePane category: #'UI-Panel'!
+LinearLayoutMorph subclass: #SidePane
+	instanceVariableNames: 'presenter categories'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'SidePane class' category: #'UI-Panel'!
+SidePane class
 	instanceVariableNames: ''!
 
 !classDefinition: #FlapItem category: #'UI-Panel'!
@@ -245,6 +255,12 @@ The browsed objects listen to events:
 - I present morphs in a pane with optional scrollbars
 - I am decorated with a surounding thin line and quick buttons for actions in my model!
 
+!SidePane commentStamp: '<historical>' prior: 0!
+I am a side bar to navigate in categories of various sections, features or options
+- categories :  a dictionary whose keys are category names and values are message symbols,  
+- presenter: it responds to the categoies' message. Each message is implemented
+as a method in the presenter, each one returns a view for a category!
+
 !FlapItem commentStamp: '<historical>' prior: 0!
 I encapsulate Object presented in a Flap.
 - target : a Morph Class I accept to be drop into
@@ -392,7 +408,7 @@ replaceViewWith: anObject
 "Replace the main view in the pane with the viewer of the given object"
 	self replaceView: submorphs first byView: (anObject accept: viewer new)! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 19/Jul/2025 12:59:00'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 26/Apr/2026 00:29:26'!
 sliceButtonFor: anObject
 " A navigation button to browse anObject "
 	| navButton |
@@ -400,10 +416,11 @@ sliceButtonFor: anObject
 	anObject when: #browseTo send: #browseTo: to: self.
 	navButton := PluggableButtonMorph 
 		model: [self replaceViewWith: anObject.
-			self removeSliceButtonsAfter: navButton] 
+			self removeSliceButtonsAfter: navButton.
+			navButton adoptWidgetsColor: self defaultBorderColor muchLighter] 
 		action: #value label: anObject printString.
 	anObject when: #edited send: #updateSliceButton:with: to: self withArguments: {navButton . anObject}.
-	navButton adoptWidgetsColor: self defaultBorderColor .
+	navButton adoptWidgetsColor: self defaultBorderColor lighter .
 	^ navButton! !
 
 !BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 28/Jun/2023 00:10:00'!
