@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7879] on 19 April 2026 at 12:25:36 pm'!
+'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 4:51:52 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 18!
+!provides: 'UI-Mold' 1 19!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: #'UI-Mold'!
@@ -1384,7 +1384,7 @@ five
 		beRequired.
 	mold openDialog: 'Example Five'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 19/Apr/2023 00:12:12'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 26/Apr/2026 16:13:44'!
 four
 "
 	MoldExample four
@@ -1395,8 +1395,8 @@ four
 		label: 'α';
 		on: #propertyValue of: ValueHolder new;
 		example: ' -1 ≤ α ≤ 1 ';
-		addCondition: [:input :value| value >= -1] 		labeled: 'α < -1!!';
-		addCondition: [:input :value| value <= 1] 		labeled: 'α >  1!!';
+		addCondition: [:input :value| value >= -1] labeled: 'α < -1!!';
+		addCondition: [:input :value| value <= 1] labeled: 'α >  1!!';
 		beRequired.
 	mold openDialog: 'Example Four'! !
 
@@ -1483,7 +1483,7 @@ six
 		beRequired.
 	mold openDialog: 'Example Six'! !
 
-!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 18/Apr/2023 21:13:52'!
+!MoldExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 26/Apr/2026 16:14:13'!
 three
 "
 	MoldExample three
@@ -1494,8 +1494,8 @@ three
 		label: 'Slot value';
 		on: #propertyValue of: ValueHolder new;
 		example: 'an integer value';
-		addCondition: [:input :value| value >= 4] 		labeled: 'Value must be greater or equal to 4.';
-		addCondition: [:input :value| value <= -10] 		labeled: 'Value must be lower or equal to -10.';
+		addCondition: [:input :value| value >= 4] labeled: 'Value must be greater or equal to 4.';
+		addCondition: [:input :value| value <= -10] labeled: 'Value must be lower or equal to -10.';
 		beRequired.
 	mold openDialog: 'Example Three' ! !
 
