@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 4:51:56 pm'!
+'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 11:41:29 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 156!
+!provides: 'UI-Panel' 1 158!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -30,12 +30,22 @@ DecoratedPane class
 
 !classDefinition: #SidePane category: #'UI-Panel'!
 LinearLayoutMorph subclass: #SidePane
-	instanceVariableNames: 'presenter categories currentView selectedAction'
+	instanceVariableNames: 'presenter categories currentCategoryView currentCategoryRow'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
 !classDefinition: 'SidePane class' category: #'UI-Panel'!
 SidePane class
+	instanceVariableNames: ''!
+
+!classDefinition: #SidePaneExample category: #'UI-Panel'!
+LinearLayoutMorph subclass: #SidePaneExample
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'SidePaneExample class' category: #'UI-Panel'!
+SidePaneExample class
 	instanceVariableNames: ''!
 
 !classDefinition: #FlapItem category: #'UI-Panel'!
@@ -76,16 +86,6 @@ ScrollBar subclass: #PluggableScrollBar
 	category: 'UI-Panel'!
 !classDefinition: 'PluggableScrollBar class' category: #'UI-Panel'!
 PluggableScrollBar class
-	instanceVariableNames: ''!
-
-!classDefinition: #SidePaneExample category: #'UI-Panel'!
-SystemWindow subclass: #SidePaneExample
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Panel'!
-!classDefinition: 'SidePaneExample class' category: #'UI-Panel'!
-SidePaneExample class
 	instanceVariableNames: ''!
 
 !classDefinition: #Panel category: #'UI-Panel'!
@@ -621,39 +621,52 @@ presenter: anObject
 	presenter := anObject 
 	! !
 
-!SidePane methodsFor: 'initialization' stamp: 'hlsf 26/Apr/2026 16:05:55'!
+!SidePane methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:39:58'!
+select: actionMessage
+	| newView | 
+	newView := presenter perform: actionMessage.
+	currentCategoryView ifNotNil: [
+			currentCategoryView releaseActionMap.
+			self removeMorph: currentCategoryView].
+	self addMorph: newView layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0).
+	self morphExtent: self minimumExtent.
+	currentCategoryView := newView.
+	self triggerEvent: #selectedCategory with: actionMessage! !
+
+!SidePane methodsFor: 'initialization' stamp: 'hlsf 26/Apr/2026 23:33:14'!
 initialize
 	| sideBar |
 	super initialize.
 	self beRow.
-	sideBar := LinearLayoutMorph newColumn.
+	self color: presenter defaultColor.
+	sideBar := LinearLayoutMorph newColumn color: presenter defaultColor.
 	self addMorph: sideBar layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0).
-	categories keysAndValuesDo: [:label :action | 
-		| button |
-		button := PluggableButtonMorph 
-			model: self 
-			stateGetter: #isSelected: stateArgument: action 
-			action: #select: actionArgument: action
-			label: label.
-		sideBar addMorph: button layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0)].
-	self select: categories values first.! !
+	categories associationsDo: [:labelAndAction | 
+		sideBar addMorph: (self categoryBtn: labelAndAction ) layoutSpec: (LayoutSpec useAll offAxisEdgeWeight: 0)].
+"	Select the first category "
+	sideBar submorphs last perform: #'mouseButton1Up:localPosition:' withArguments: #(0 0).! !
 
-!SidePane methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 16:11:20'!
-select: actionMessage
-	| newView | 
-	newView := presenter perform: actionMessage.
-	currentView ifNotNil: [
-			currentView releaseActionMap.
-			self removeMorph: currentView].
-	self addMorph: newView layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0).
-	self morphExtent: self minimumExtent.
-	self adoptWidgetsColor: self defaultColor.
-	currentView := newView.
-	selectedAction := actionMessage! !
-
-!SidePane methodsFor: 'testing' stamp: 'hlsf 26/Apr/2026 16:03:03'!
-isSelected: actionMessage
-	^ actionMessage = selectedAction ! !
+!SidePane methodsFor: 'ui' stamp: 'hlsf 26/Apr/2026 23:32:15'!
+categoryBtn: labelAndAction
+	| row label |
+	row := LinearLayoutMorph newRow 
+		borderWidth: 4;
+		borderColor: Color transparent;
+		color: presenter defaultColor;
+		padding: 16@12.
+	label := LabelMorph contents: labelAndAction key.
+	row addMorph: label layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0.5).
+	row 
+		setProperty:  #handlesMouseDown: toValue: true;
+		setProperty: #'mouseButton1Up:localPosition:' toValue: [:evt :localPosition | 
+			currentCategoryRow ifNotNil: [
+				currentCategoryRow submorphs first emphasis: 0 .
+				currentCategoryRow color: presenter defaultColor].
+			currentCategoryRow := row.
+			row color: presenter defaultColor darker.
+			label emphasis: 1.
+			self select: labelAndAction value].
+	^ row! !
 
 !SidePane class methodsFor: 'instance creation' stamp: 'hlsf 26/Apr/2026 16:00:37'!
 on: aPresenter with: dictionary
@@ -669,6 +682,54 @@ includeInNewMorphMenu
 
 !SidePane class methodsFor: 'examples' stamp: 'hlsf 26/Apr/2026 10:59:33'!
 example1! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:49:00'!
+coloursView
+	^ DropDownButtonMorph example1! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:38:16'!
+fieldsView
+| mold |
+	mold := Mold new.
+	(mold integerField)
+		label: 'Slot value';
+		on: #propertyValue of: ValueHolder new;
+		example: 'an integer value';
+		addCondition: [:input :value| value >= 4] labeled: 'Value must be greater or equal to 4.';
+		addCondition: [:input :value| value <= -10] labeled: 'Value must be lower or equal to -10.';
+		beRequired.
+	^ mold newPane color: Color transparent! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:38:28'!
+imageView
+	^ RadioGroup example2 color: Color transparent! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:37:59'!
+labelView
+	^ LabelGroup example1 color: Color transparent! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:46:20'!
+smalltalkView
+	^ CheckGroup example1! !
+
+!SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 26/Apr/2026 23:15:56'!
+initialize
+	| categories |
+	super initialize.
+	self beRow.
+	categories := Dictionary new.
+	categories 
+		at: 'Label Group' put: #labelView;
+		at: 'Smalltalks' put: #smalltalkView;
+		at: 'Images' put: #imageView;
+		at: 'Colours' put: #coloursView;
+		at: 'Edit some values' put: #fieldsView.
+		
+	self addMorphUseAll: (SidePane on: self with: categories) ! !
+
+!SidePaneExample methodsFor: 'as yet unclassified' stamp: 'hlsf 26/Apr/2026 23:37:13'!
+defaultColor
+	^ Color gray muchLighter muchLighter ! !
 
 !FlapItem methodsFor: 'accessing' stamp: 'hlsf 13/Feb/2025 10:35:00'!
 flap
@@ -1134,49 +1195,6 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:49:00'!
-coloursView
-	^ DropDownButtonMorph example1! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 16:15:01'!
-fieldsView
-| mold |
-	mold := Mold new.
-	(mold integerField)
-		label: 'Slot value';
-		on: #propertyValue of: ValueHolder new;
-		example: 'an integer value';
-		addCondition: [:input :value| value >= 4] labeled: 'Value must be greater or equal to 4.';
-		addCondition: [:input :value| value <= -10] labeled: 'Value must be lower or equal to -10.';
-		beRequired.
-	^ mold newPane ! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:47:12'!
-imageView
-	^ RadioGroup example2! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:45:53'!
-labelView
-	^ LabelGroup example1! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:46:20'!
-smalltalkView
-	^ CheckGroup example1! !
-
-!SidePaneExample methodsFor: 'as yet unclassified' stamp: 'hlsf 26/Apr/2026 16:15:33'!
-initialize
-	| categories |
-	super initialize.
-	categories := Dictionary new.
-	categories 
-		at: 'Label Group' put: #labelView;
-		at: 'Smalltalks' put: #smalltalkView;
-		at: 'Images' put: #imageView;
-		at: 'Colours' put: #coloursView;
-		at: 'Edit some values' put: #fieldsView.
-		
-	self addMorph: (SidePane on: self with: categories)! !
 
 !Panel methodsFor: 'printing' stamp: 'KenD 24/Apr/2015 16:04:00'!
 printOn: aStream 
