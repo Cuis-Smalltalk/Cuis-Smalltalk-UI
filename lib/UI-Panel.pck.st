@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 12:53:25 am'!
+'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 11:04:45 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 154!
+!provides: 'UI-Panel' 1 155!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -30,7 +30,7 @@ DecoratedPane class
 
 !classDefinition: #SidePane category: #'UI-Panel'!
 LinearLayoutMorph subclass: #SidePane
-	instanceVariableNames: 'presenter categories'
+	instanceVariableNames: 'presenter categories currentView selectedAction'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UI-Panel'!
@@ -408,7 +408,7 @@ replaceViewWith: anObject
 "Replace the main view in the pane with the viewer of the given object"
 	self replaceView: submorphs first byView: (anObject accept: viewer new)! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 26/Apr/2026 00:29:26'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 26/Apr/2026 10:28:22'!
 sliceButtonFor: anObject
 " A navigation button to browse anObject "
 	| navButton |
@@ -417,7 +417,7 @@ sliceButtonFor: anObject
 	navButton := PluggableButtonMorph 
 		model: [self replaceViewWith: anObject.
 			self removeSliceButtonsAfter: navButton.
-			navButton adoptWidgetsColor: self defaultBorderColor muchLighter] 
+			navButton adoptWidgetsColor: self defaultBorderColor lighter] 
 		action: #value label: anObject printString.
 	anObject when: #edited send: #updateSliceButton:with: to: self withArguments: {navButton . anObject}.
 	navButton adoptWidgetsColor: self defaultBorderColor lighter .
@@ -601,6 +601,62 @@ open: aPane label: aString quickButtons: aCollection
 		quickButtons: aCollection;
 		contents: aPane.
 	^ pane! !
+
+!SidePane methodsFor: 'accessing' stamp: 'hlsf 26/Apr/2026 10:35:42'!
+categories: dictionary
+	categories := dictionary ! !
+
+!SidePane methodsFor: 'accessing' stamp: 'hlsf 26/Apr/2026 10:35:32'!
+presenter: anObject
+	presenter := anObject 
+	! !
+
+!SidePane methodsFor: 'initialization' stamp: 'hlsf 26/Apr/2026 10:47:04'!
+initialize
+	| sideBar |
+	sideBar := LinearLayoutMorph newColumn.
+	self addMorph: sideBar layoutSpec: LayoutSpec keepMorphExtent.
+	categories keysAndValuesDo: [:label :action | 
+		| button |
+		button := PluggableButtonMorph 
+			model: self 
+			stateGetter: #isSelected: stateArgument: action 
+			action: #select: actionArgument: action
+			label: label.
+		sideBar addMorph: button layoutSpec: LayoutSpec keepMorphExtent].
+	self select: categories first value.! !
+
+!SidePane methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 10:58:19'!
+select: actionMessage
+	| newView | 
+	newView := presenter perform: actionMessage.
+	currentView 
+		ifNotNil: [
+			currentView releaseActionMap.
+			self replaceSubmorph: currentView by: newView]
+		ifNil: [self addMorph: newView layoutSpec: LayoutSpec keepMorphExtent].
+	self morphExtent: self minimumExtent.
+	self adoptWidgetsColor: self defaultColor.
+	currentView := newView.
+	selectedAction := actionMessage! !
+
+!SidePane methodsFor: 'testing' stamp: 'hlsf 26/Apr/2026 10:58:22'!
+isSected: actionMessage
+	^ actionMessage = selectedAction ! !
+
+!SidePane class methodsFor: 'instance creation' stamp: 'hlsf 26/Apr/2026 10:34:18'!
+on: aPresenter with: dictionary
+	^ self newRow
+		presenter: aPresenter;
+		categories: dictionary;
+		initialize! !
+
+!SidePane class methodsFor: 'new-morph participation' stamp: 'hlsf 26/Apr/2026 10:20:51'!
+includeInNewMorphMenu
+	^ false! !
+
+!SidePane class methodsFor: 'examples' stamp: 'hlsf 26/Apr/2026 10:59:33'!
+example1! !
 
 !FlapItem methodsFor: 'accessing' stamp: 'hlsf 13/Feb/2025 10:35:00'!
 flap
