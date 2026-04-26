@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 11:41:29 pm'!
+'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 11:49:10 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 158!
+!provides: 'UI-Panel' 1 159!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -646,7 +646,7 @@ initialize
 "	Select the first category "
 	sideBar submorphs last perform: #'mouseButton1Up:localPosition:' withArguments: #(0 0).! !
 
-!SidePane methodsFor: 'ui' stamp: 'hlsf 26/Apr/2026 23:32:15'!
+!SidePane methodsFor: 'ui' stamp: 'hlsf 26/Apr/2026 23:47:45'!
 categoryBtn: labelAndAction
 	| row label |
 	row := LinearLayoutMorph newRow 
@@ -663,7 +663,7 @@ categoryBtn: labelAndAction
 				currentCategoryRow submorphs first emphasis: 0 .
 				currentCategoryRow color: presenter defaultColor].
 			currentCategoryRow := row.
-			row color: presenter defaultColor darker.
+			row color: presenter defaultColor lighter.
 			label emphasis: 1.
 			self select: labelAndAction value].
 	^ row! !
