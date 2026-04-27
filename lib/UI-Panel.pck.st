@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 11:49:10 pm'!
+'From Cuis7.7 [latest update: #7880] on 27 April 2026 at 10:57:25 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 159!
+!provides: 'UI-Panel' 1 160!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -36,16 +36,6 @@ LinearLayoutMorph subclass: #SidePane
 	category: 'UI-Panel'!
 !classDefinition: 'SidePane class' category: #'UI-Panel'!
 SidePane class
-	instanceVariableNames: ''!
-
-!classDefinition: #SidePaneExample category: #'UI-Panel'!
-LinearLayoutMorph subclass: #SidePaneExample
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UI-Panel'!
-!classDefinition: 'SidePaneExample class' category: #'UI-Panel'!
-SidePaneExample class
 	instanceVariableNames: ''!
 
 !classDefinition: #FlapItem category: #'UI-Panel'!
@@ -238,6 +228,16 @@ DialogPanel subclass: #WizardPanel
 WizardPanel class
 	instanceVariableNames: ''!
 
+!classDefinition: #SidePaneExample category: #'UI-Panel'!
+Object subclass: #SidePaneExample
+	instanceVariableNames: 'icons'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Panel'!
+!classDefinition: 'SidePaneExample class' category: #'UI-Panel'!
+SidePaneExample class
+	instanceVariableNames: ''!
+
 !classDefinition: #WizardPage category: #'UI-Panel'!
 Object subclass: #WizardPage
 	instanceVariableNames: 'wizard panel buttons title'
@@ -265,11 +265,18 @@ The browsed objects listen to events:
 - I present morphs in a pane with optional scrollbars
 - I am decorated with a surounding thin line and quick buttons for actions in my model!
 
-!SidePane commentStamp: '<historical>' prior: 0!
+!SidePane commentStamp: 'hlsf 27/Apr/2026 20:59:54' prior: 0!
 I am a side bar to navigate in categories of various sections, features or options
-- categories :  a dictionary whose keys are category names and values are message symbols,  
-- presenter: it responds to the categoies' message. Each message is implemented
-as a method in the presenter, each one returns a view for a category!
+
+- categories :  collection of 2-array or 3-array:
+   2-array: Category name, message symbol
+   3-array: Category name, message symbol, icon symbol
+Message symbol is sent to the presenter to get the Category view to display
+Icon symbol is used against the IconImporter provider by the presenter's 'icons' method
+
+- presenter: an object responsible to provide each category view and optionally
+an icons importer (IconImporter class)
+!
 
 !FlapItem commentStamp: '<historical>' prior: 0!
 I encapsulate Object presented in a Flap.
@@ -633,7 +640,7 @@ select: actionMessage
 	currentCategoryView := newView.
 	self triggerEvent: #selectedCategory with: actionMessage! !
 
-!SidePane methodsFor: 'initialization' stamp: 'hlsf 26/Apr/2026 23:33:14'!
+!SidePane methodsFor: 'initialization' stamp: 'hlsf 27/Apr/2026 21:05:12'!
 initialize
 	| sideBar |
 	super initialize.
@@ -641,32 +648,67 @@ initialize
 	self color: presenter defaultColor.
 	sideBar := LinearLayoutMorph newColumn color: presenter defaultColor.
 	self addMorph: sideBar layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0).
-	categories associationsDo: [:labelAndAction | 
+	categories do: [:labelAndAction | 
 		sideBar addMorph: (self categoryBtn: labelAndAction ) layoutSpec: (LayoutSpec useAll offAxisEdgeWeight: 0)].
 "	Select the first category "
 	sideBar submorphs last perform: #'mouseButton1Up:localPosition:' withArguments: #(0 0).! !
 
-!SidePane methodsFor: 'ui' stamp: 'hlsf 26/Apr/2026 23:47:45'!
+!SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026 22:53:30'!
 categoryBtn: labelAndAction
-	| row label |
+	| row label isIconic |
+	isIconic := labelAndAction size = 3.
 	row := LinearLayoutMorph newRow 
-		borderWidth: 4;
+		borderWidth: 8;
+		separation: 16;
 		borderColor: Color transparent;
-		color: presenter defaultColor;
-		padding: 16@12.
-	label := LabelMorph contents: labelAndAction key.
+		color: presenter defaultColor.
+	label := (LabelMorph contents: labelAndAction first) 
+		emphasis: 1;
+		color: self unselectedCategoryColor .
+	isIconic ifTrue: [ | image |
+		image := presenter icons 
+			getMorph: labelAndAction third 
+			ofSize: label morphHeight rounded 
+			fill: self unselectedCategoryColor.
+		image 
+			setProperty: #icon toValue: labelAndAction third. 
+		row addMorph: image
+			layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0.5)].
+		
 	row addMorph: label layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0.5).
 	row 
 		setProperty:  #handlesMouseDown: toValue: true;
 		setProperty: #'mouseButton1Up:localPosition:' toValue: [:evt :localPosition | 
 			currentCategoryRow ifNotNil: [
-				currentCategoryRow submorphs first emphasis: 0 .
+				self setCategory: currentCategoryRow toColor: self unselectedCategoryColor.
 				currentCategoryRow color: presenter defaultColor].
 			currentCategoryRow := row.
+			self setCategory: currentCategoryRow toColor: self selectedCategoryColor.
 			row color: presenter defaultColor lighter.
-			label emphasis: 1.
-			self select: labelAndAction value].
+			self select: labelAndAction second].
 	^ row! !
+
+!SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026 22:09:31'!
+selectedCategoryColor
+	^ Color black! !
+
+!SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026 22:55:45'!
+setCategory: categoryRow toColor: aColor
+"	Set the color scheme of the row contents to the given color "
+	| image contents |
+	contents := categoryRow submorphs.
+	contents first color: aColor.
+"	Is there an icon? "
+	contents size = 1 ifTrue: [^ self ].
+	image := contents second.
+	image image: (presenter icons 
+			getForm: (image valueOfProperty: #icon)
+			ofSize: image form width 
+			fill: aColor)! !
+
+!SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026 22:09:42'!
+unselectedCategoryColor
+	^ Color lightGray lighter! !
 
 !SidePane class methodsFor: 'instance creation' stamp: 'hlsf 26/Apr/2026 16:00:37'!
 on: aPresenter with: dictionary
@@ -682,54 +724,6 @@ includeInNewMorphMenu
 
 !SidePane class methodsFor: 'examples' stamp: 'hlsf 26/Apr/2026 10:59:33'!
 example1! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:49:00'!
-coloursView
-	^ DropDownButtonMorph example1! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:38:16'!
-fieldsView
-| mold |
-	mold := Mold new.
-	(mold integerField)
-		label: 'Slot value';
-		on: #propertyValue of: ValueHolder new;
-		example: 'an integer value';
-		addCondition: [:input :value| value >= 4] labeled: 'Value must be greater or equal to 4.';
-		addCondition: [:input :value| value <= -10] labeled: 'Value must be lower or equal to -10.';
-		beRequired.
-	^ mold newPane color: Color transparent! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:38:28'!
-imageView
-	^ RadioGroup example2 color: Color transparent! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:37:59'!
-labelView
-	^ LabelGroup example1 color: Color transparent! !
-
-!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:46:20'!
-smalltalkView
-	^ CheckGroup example1! !
-
-!SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 26/Apr/2026 23:15:56'!
-initialize
-	| categories |
-	super initialize.
-	self beRow.
-	categories := Dictionary new.
-	categories 
-		at: 'Label Group' put: #labelView;
-		at: 'Smalltalks' put: #smalltalkView;
-		at: 'Images' put: #imageView;
-		at: 'Colours' put: #coloursView;
-		at: 'Edit some values' put: #fieldsView.
-		
-	self addMorphUseAll: (SidePane on: self with: categories) ! !
-
-!SidePaneExample methodsFor: 'as yet unclassified' stamp: 'hlsf 26/Apr/2026 23:37:13'!
-defaultColor
-	^ Color gray muchLighter muchLighter ! !
 
 !FlapItem methodsFor: 'accessing' stamp: 'hlsf 13/Feb/2025 10:35:00'!
 flap
@@ -2532,6 +2526,84 @@ The apply button is usually found in the last page of the wizard, an Apply Page"
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ false! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:49:00'!
+coloursView
+	^ DropDownButtonMorph example1! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:38:16'!
+fieldsView
+| mold |
+	mold := Mold new.
+	(mold integerField)
+		label: 'Slot value';
+		on: #propertyValue of: ValueHolder new;
+		example: 'an integer value';
+		addCondition: [:input :value| value >= 4] labeled: 'Value must be greater or equal to 4.';
+		addCondition: [:input :value| value <= -10] labeled: 'Value must be lower or equal to -10.';
+		beRequired.
+	^ mold newPane color: Color transparent! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:38:28'!
+imageView
+	^ RadioGroup example2 color: Color transparent! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:37:59'!
+labelView
+	^ LabelGroup example1 color: Color transparent! !
+
+!SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:46:20'!
+smalltalkView
+	^ CheckGroup example1! !
+
+!SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 26/Apr/2026 23:37:13'!
+defaultColor
+	^ Color gray muchLighter muchLighter ! !
+
+!SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 27/Apr/2026 22:37:47'!
+sidePaneWithIcons
+	| categories |
+	icons := IconImporter path: DyboSystem iconsPath.
+	categories := #(
+		('Label Group' labelView group)
+		('Smalltalks' smalltalkView settings)
+		('Images' imageView calibrate)
+		('Colours' coloursView drag)
+		('Edit some values' fieldsView pen)).
+		
+	^ SidePane on: self with: categories.! !
+
+!SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 27/Apr/2026 21:21:00'!
+sidePaneWithoutIcon
+	| categories sideBar |
+	categories := #(
+		('Label Group' labelView)
+		('Smalltalks' smalltalkView)
+		('Images' imageView)
+		('Colours' coloursView)
+		('Edit some values' fieldsView)).
+		
+	sideBar := SidePane on: self with: categories.
+	sideBar when: #selectedCategory send: #show: to: Transcript.
+	^ sideBar ! !
+
+!SidePaneExample methodsFor: 'accessing' stamp: 'hlsf 27/Apr/2026 21:38:51'!
+icons
+	^ icons! !
+
+!SidePaneExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 27/Apr/2026 21:18:10'!
+example1
+"
+	SidePaneExample example1
+"
+	self new sidePaneWithoutIcon openInWorld! !
+
+!SidePaneExample class methodsFor: 'as yet unclassified' stamp: 'hlsf 27/Apr/2026 21:42:05'!
+example2
+"
+	SidePaneExample example2
+"
+	self new sidePaneWithIcons openInWorld! !
 
 !WizardPage methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024 15:17:00'!
 buttons

@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7839] on 12 February 2026 at 9:41:01 am'!
+'From Cuis7.7 [latest update: #7880] on 27 April 2026 at 10:57:20 pm'!
 'Description Utility code to fetch grapics from file system.'!
-!provides: 'UI-Graphic-Import' 1 6!
+!provides: 'UI-Graphic-Import' 1 7!
 !requires: 'SVG' 1 21 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Graphic-Import'!
@@ -39,11 +39,11 @@ getForm: icon ofSize: rectWidthPixels
 " Search first for SVG icon, then PNG one "
 	^ self getForm: icon ofSize: rectWidthPixels fill: nil! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'hlsf 12/Feb/2026 09:36:48'!
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 27/Apr/2026 22:05:53'!
 getForm: icon ofSize: rectWidthPixels fill: aColor
 " Search first for SVG icon, then PNG one "
 	| iconKey |
-	iconKey := (icon, (aColor ifNotNil: [aColor colorName capitalized ] ifNil: ['']), rectWidthPixels asString) asSymbol.
+	iconKey := (icon, (aColor ifNotNil: [aColor hexStringRGB]), 'x', rectWidthPixels asString) asSymbol.
 	^ forms 
 		at: iconKey
 		ifAbsentPut: [ | file | 
@@ -72,6 +72,11 @@ getMorph: iconSymbolWithSize
 getMorph: iconSymbol ofSize: rectWidthPixels
 
 	^ ImageMorph newWith: (self getForm:  iconSymbol ofSize: rectWidthPixels)! !
+
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 27/Apr/2026 22:52:45'!
+getMorph: iconSymbol ofSize: rectWidthPixels fill: aColor
+
+	^ ImageMorph newWith: (self getForm:  iconSymbol ofSize: rectWidthPixels fill: aColor)! !
 
 !IconImporter methodsFor: 'accessing' stamp: 'KenD 15/Sep/2024 12:26:47'!
 path: iconsDirectoryEntry
