@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 27 April 2026 at 10:57:25 pm'!
+'From Cuis7.7 [latest update: #7880] on 28 April 2026 at 12:17:01 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 160!
+!provides: 'UI-Panel' 1 161!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -628,15 +628,16 @@ presenter: anObject
 	presenter := anObject 
 	! !
 
-!SidePane methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 23:39:58'!
+!SidePane methodsFor: 'action' stamp: 'hlsf 28/Apr/2026 11:07:01'!
 select: actionMessage
 	| newView | 
 	newView := presenter perform: actionMessage.
 	currentCategoryView ifNotNil: [
 			currentCategoryView releaseActionMap.
 			self removeMorph: currentCategoryView].
-	self addMorph: newView layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0).
+	self addMorph: newView layoutSpec: (LayoutSpec useAll offAxisEdgeWeight: 0).
 	self morphExtent: self minimumExtent.
+	newView adoptWidgetsColor: presenter defaultBorderColor.
 	currentCategoryView := newView.
 	self triggerEvent: #selectedCategory with: actionMessage! !
 
@@ -653,7 +654,7 @@ initialize
 "	Select the first category "
 	sideBar submorphs last perform: #'mouseButton1Up:localPosition:' withArguments: #(0 0).! !
 
-!SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026 22:53:30'!
+!SidePane methodsFor: 'ui' stamp: 'hlsf 28/Apr/2026 11:39:03'!
 categoryBtn: labelAndAction
 	| row label isIconic |
 	isIconic := labelAndAction size = 3.
@@ -2555,6 +2556,10 @@ labelView
 !SidePaneExample methodsFor: 'action' stamp: 'hlsf 26/Apr/2026 15:46:20'!
 smalltalkView
 	^ CheckGroup example1! !
+
+!SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 28/Apr/2026 11:06:17'!
+defaultBorderColor
+	^ Color gray ! !
 
 !SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 26/Apr/2026 23:37:13'!
 defaultColor
