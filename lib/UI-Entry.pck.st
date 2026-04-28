@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7824] on 3 February 2026 at 3:54:38 pm'!
+'From Cuis7.7 [latest update: #7880] on 28 April 2026 at 6:57:03 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 61!
+!provides: 'UI-Entry' 1 62!
 !requires: 'UI-Click-Select' 1 3 nil!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -574,23 +574,22 @@ updateFromContents
 	contents := self editor string.
 	self redrawNeeded! !
 
-!TextEntryMorph methodsFor: 'menu - shortcuts - ehhhh' stamp: 'jmv 1/Aug/2024 11:47:00'!
+!TextEntryMorph methodsFor: 'menu - shortcuts - ehhhh' stamp: 'jmv 28/Apr/2026 18:56:51'!
 menuNshortcutsSpecsDo: aBlock
-	"Subclasses may implement specific ways of providing menu items and
+	"Iterate over our own menu and shortcut specs.
+	Subclasses may implement specific ways of providing menu items and
 	keyboard shortcuts for themselves.
 	See implementors."
 
 	"First take default editor menu and shortcut specs"
 	self editor defaultMenuSpec do: aBlock.
 
-	self window ifNotNil: [ :window |
+	self window ifNotNil: [ :myWindow |
+
 		"Then include additions, overrides and deletions registered for #Editor, #TextEditor, #SmalltalkEditor, etc.
 		Hierarchy order allows more specific classes to override choices made by superclasses."
-		self editor editorClassesInHierarchyOrderDo: [ :editorClass |
-			(window class registeredMenuAndShortcutsSpecProviders: editorClass name) ifNotNil: [ :providers |
-				providers do: [ :eachMessageSend |
-					(eachMessageSend valueWithPossibleArgument: self) do: aBlock ]]		].
-		]! !
+		(self editor class withAllSuperclassesDownFrom: Editor) do: [ :editorClass |
+			myWindow allRegisteredMenuAndShortcutsSpecProviders: editorClass name do: aBlock widget: self ]].! !
 
 !TextEntryMorph class methodsFor: 'new-morph participation' stamp: 'KenD 20/Mar/2022 18:50:00'!
 categoryInNewMorphMenu

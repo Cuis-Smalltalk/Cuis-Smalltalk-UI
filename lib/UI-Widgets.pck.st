@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7880] on 20 April 2026 at 11:54:19 pm'!
+'From Cuis7.7 [latest update: #7880] on 28 April 2026 at 6:53:57 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 70!
+!provides: 'UI-Widgets' 1 71!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -651,20 +651,20 @@ mouseMove: evt localPosition: position
 				ifFalse: [	self doTargetAction: position] ]
 			! !
 
-!WheelMorph methodsFor: 'event handling' stamp: 'hlsf 10/Feb/2022 17:28:13'!
+!WheelMorph methodsFor: 'event handling' stamp: 'jmv 28/Apr/2026 18:15:20'!
 sendScrollEvent: cursorPoint
 	| new delta mouseScrollDirection |
 	self isHorizontal
 		ifTrue: [ "left lower, right higher"
-				new _ cursorPoint x. 
-				delta _ new - old.
+				new := cursorPoint x. 
+				delta := new - old.
 				(delta < 0)
 					ifTrue:   [ mouseScrollDirection := #left ] 
 					ifFalse:  [ mouseScrollDirection := #right ] 
 		]
 		ifFalse: [ "down lower, up higher"
-				new _ cursorPoint y. 
-				delta _ old - new.
+				new := cursorPoint y. 
+				delta := old - new.
 				(delta < 0)
 					ifTrue:   [ mouseScrollDirection := #down ] 
 					ifFalse:  [ mouseScrollDirection := #up ] 
@@ -672,13 +672,12 @@ sendScrollEvent: cursorPoint
 	
 	delta isZero ifTrue: [^self].
 	self addAngle: delta.
-	old _ new.
+	old := new.
 		
 	(target ~~ nil) ifTrue: [ | scrollEvent wheelPosition |
 		wheelPosition := self morphPosition + (self morphExtent // 2). "wheel center"
 		scrollEvent := MouseScrollEvent new
-						setType: #mouseScroll
-						position: wheelPosition
+						setPosition: wheelPosition
 						direction: mouseScrollDirection
 						buttons: InputSensor mouseButton1
 						hand: self activeHand
@@ -687,9 +686,7 @@ sendScrollEvent: cursorPoint
 		Cursor normalCursor showWhile: [ "Send a scrollEvent for each 'tick' "
 			1 to: (delta abs) do: [ :count | scrollEvent sendEventTo: target ]
 		]
-	]
-
-! !
+	].! !
 
 !WheelMorph methodsFor: 'drawing' stamp: 'hlsf 28/Jul/2025 14:32:08'!
 drawOn: aCanvas
