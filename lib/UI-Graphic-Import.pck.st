@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7880] on 27 April 2026 at 10:57:20 pm'!
+'From Cuis7.7 [latest update: #7880] on 28 April 2026 at 10:08:03 am'!
 'Description Utility code to fetch grapics from file system.'!
-!provides: 'UI-Graphic-Import' 1 7!
+!provides: 'UI-Graphic-Import' 1 8!
 !requires: 'SVG' 1 21 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
 SystemOrganization addCategory: #'UI-Graphic-Import'!
@@ -39,11 +39,11 @@ getForm: icon ofSize: rectWidthPixels
 " Search first for SVG icon, then PNG one "
 	^ self getForm: icon ofSize: rectWidthPixels fill: nil! !
 
-!IconImporter methodsFor: 'accessing' stamp: 'hlsf 27/Apr/2026 22:05:53'!
+!IconImporter methodsFor: 'accessing' stamp: 'hlsf 28/Apr/2026 10:03:52'!
 getForm: icon ofSize: rectWidthPixels fill: aColor
 " Search first for SVG icon, then PNG one "
 	| iconKey |
-	iconKey := (icon, (aColor ifNotNil: [aColor hexStringRGB]), 'x', rectWidthPixels asString) asSymbol.
+	iconKey := (icon, (aColor ifNotNil: [aColor hexStringRGB] ifNil: ['']), 'x', rectWidthPixels asString) asSymbol.
 	^ forms 
 		at: iconKey
 		ifAbsentPut: [ | file | 
