@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7880] on 28 April 2026 at 12:17:01 pm'!
+'From Cuis7.7 [latest update: #7899] on 4 May 2026 at 9:56:09 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 161!
+!provides: 'UI-Panel' 1 162!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -628,6 +628,10 @@ presenter: anObject
 	presenter := anObject 
 	! !
 
+!SidePane methodsFor: 'accessing' stamp: 'hlsf 4/May/2026 21:53:34'!
+sidebar
+	^ self lastSubmorph ! !
+
 !SidePane methodsFor: 'action' stamp: 'hlsf 28/Apr/2026 11:07:01'!
 select: actionMessage
 	| newView | 
@@ -688,6 +692,11 @@ categoryBtn: labelAndAction
 			row color: presenter defaultColor lighter.
 			self select: labelAndAction second].
 	^ row! !
+
+!SidePane methodsFor: 'ui' stamp: 'hlsf 4/May/2026 21:55:02'!
+selectFirstCategory
+	self sidebar lastSubmorph  perform: #'mouseButton1Up:localPosition:' withArguments: #(0 0).
+	! !
 
 !SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026 22:09:31'!
 selectedCategoryColor
