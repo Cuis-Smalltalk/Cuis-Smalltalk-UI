@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7880] on 28 April 2026 at 6:53:57 pm'!
+'From Cuis7.7 [latest update: #7912] on 10 May 2026 at 3:21:51 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 71!
+!provides: 'UI-Widgets' 1 72!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -1296,15 +1296,18 @@ example1
 isSpinnerRunning 
 	^ isSpinnerRunning ifNil: [isSpinnerRunning _ false]! !
 
-!WaitSpinner class methodsFor: 'accessing' stamp: 'hlsf 21/Apr/2020 21:39:08'!
+!WaitSpinner class methodsFor: 'accessing' stamp: 'hlsf 10/May/2026 15:21:22'!
 start
+	| spinnerArea |
 	self isSpinnerRunning ifTrue: [ self stop ].
-	isSpinnerRunning _ true.
-	process _ [
+	isSpinnerRunning := true.
+	spinnerArea := Rectangle 
+		origin: Display center - ((self at: 1) extent // 2)
+		extent: (self at:1) extent.
+	process := [
 		[1 to: self spinnerQty do: [ :i | 
-			| form |
-			form _ self at: i.
-			form displayAt: Display center - (form extent // 2).
+			(self at: i) displayAt: spinnerArea origin.
+			Display forceToScreen: spinnerArea.
 			(Delay forMilliseconds: 100) wait ]] repeat 
 	] newProcess.
 	process resume! !
