@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7880] on 26 April 2026 at 4:51:52 pm'!
+'From Cuis7.7 [latest update: #7955] on 21 May 2026 at 7:51:23 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 19!
+!provides: 'UI-Mold' 1 20!
 !requires: 'UI-Widgets' 1 17 nil!
 !requires: 'UI-Panel' 1 58 nil!
 SystemOrganization addCategory: #'UI-Mold'!
@@ -1277,7 +1277,7 @@ zipCodeField
 				addCondition: [:val | val isNil or: [val matchesRegex: '(\d\d\d\d\d)(-\d\d\d\d)?']]
 				labeled: 'Invalid zip code')! !
 
-!Mold methodsFor: 'rendering' stamp: 'hlsf 27/Aug/2023 15:37:31'!
+!Mold methodsFor: 'rendering' stamp: 'hlsf 21/May/2026 19:47:06'!
 newPane
 	| pane |
 	pane := nil.
@@ -1288,7 +1288,11 @@ newPane
 			pane morphExtent: pane minimumExtent. "I don't like to do it manually"
 			self isValid 	ifTrue: [
 				self save.
-				self triggerEvent: #edited] ].
+				self triggerEvent: #edited]]
+		::
+		buttonLabel: 'Validate';
+		buildMorphicWindow;
+		yourself.
 	^ pane! !
 
 !Mold methodsFor: 'rendering' stamp: 'hlsf 27/Aug/2023 15:35:42'!
