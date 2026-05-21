@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7835] on 9 February 2026 at 12:50:14 pm'!
+'From Cuis7.7 [latest update: #7955] on 21 May 2026 at 11:10:07 am'!
 'Description Generally useful methods for UI'!
-!provides: 'UI-Core' 1 27!
+!provides: 'UI-Core' 1 28!
 !requires: 'Cuis-Base' 71 6722 nil!
 SystemOrganization addCategory: #'UI-Core'!
 
@@ -1376,4 +1376,20 @@ wantsDroppedMorph: aMorph event: evt
 	^self valueOfProperty: #wantsDroppedMorph:event:
 		 ifPresentDo: [ :wantsMorphEvt | wantsMorphEvt value: aMorph value: evt ]
 		 ifAbsent: [ true ]! !
+
+!BoxMorph methodsFor: '*ui-core' stamp: 'hlsf 21/May/2026 11:09:17'!
+centered
+"	Change the position of this morph to be centered in its owner.
+	Owner can be WorldMorph, in that case it is centered in the cuis window "
+	owner ifNil: [^ self ].
+	self morphPosition: owner morphExtent - self morphExtent // 2! !
+
+!BoxMorph methodsFor: '*ui-core' stamp: 'hlsf 18/Sep/2024 20:57:09'!
+morphCenter
+	^ extent // 2! !
+
+!BoxMorph methodsFor: '*ui-core' stamp: 'hlsf 18/Sep/2024 20:57:21'!
+morphCenter: aPoint
+"Positionning centered in its owner, according to its extent"
+	self morphPosition: aPoint - (extent // 2) + (`1@1`)! !
 FrameMorph initialize!
