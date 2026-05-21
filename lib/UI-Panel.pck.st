@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7899] on 4 May 2026 at 9:56:09 pm'!
+'From Cuis7.7 [latest update: #7955] on 21 May 2026 at 11:30:21 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 162!
+!provides: 'UI-Panel' 1 163!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -2526,6 +2526,10 @@ delete
 minimumExtent
 	^ 550 @ (350 max: super minimumExtent y)! !
 
+!WizardPanel methodsFor: 'testing' stamp: 'hlsf 21/May/2026 11:25:30'!
+isCancellingPossible
+	^ true! !
+
 !WizardPanel methodsFor: 'testing' stamp: 'drgeo 20/Apr/2026 21:58:09'!
 isReadyToApply
 "Override, return true when the wizard is ready to appy its effect
@@ -2679,26 +2683,25 @@ previousButton
 		action: #previousPage
 		label: 'Previous'! !
 
-!WizardPage methodsFor: 'page types' stamp: 'hlsf 3/Nov/2021 15:20:00'!
+!WizardPage methodsFor: 'page types' stamp: 'hlsf 21/May/2026 11:29:19'!
 applyPage: string
-	title _ string.
+	title := string.
+	wizard isCancellingPossible ifTrue: [self buttons addMorph: self cancelButton].
 	self buttons
-		addMorph: self cancelButton;
 		addMorph: self previousButton;
 		addMorph: self applyButton! !
 
-!WizardPage methodsFor: 'page types' stamp: 'hlsf 3/Nov/2021 15:16:00'!
+!WizardPage methodsFor: 'page types' stamp: 'hlsf 21/May/2026 11:29:24'!
 firstPage: string
-	title _ string.
-	self buttons
-		addMorph: self cancelButton;
-		addMorph: self nextButton.! !
+	title := string.
+	wizard isCancellingPossible ifTrue: [self buttons addMorph: self cancelButton].
+	self buttons	addMorph: self nextButton.! !
 
-!WizardPage methodsFor: 'page types' stamp: 'hlsf 3/Nov/2021 15:18:00'!
+!WizardPage methodsFor: 'page types' stamp: 'hlsf 21/May/2026 11:29:29'!
 standardPage: string
-	title _ string.
+	title := string.
+	wizard isCancellingPossible ifTrue: [self buttons addMorph: self cancelButton].
 	self buttons
-		addMorph: self cancelButton;
 		addMorph: self previousButton;
 		addMorph: self nextButton ! !
 
