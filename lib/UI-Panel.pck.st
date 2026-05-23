@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7955] on 21 May 2026 at 11:30:21 am'!
+'From Cuis7.7 [latest update: #7963] on 23 May 2026 at 3:59:54 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 163!
+!provides: 'UI-Panel' 1 164!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -619,13 +619,31 @@ open: aPane label: aString quickButtons: aCollection
 		contents: aPane.
 	^ pane! !
 
-!SidePane methodsFor: 'accessing' stamp: 'hlsf 26/Apr/2026 10:35:42'!
-categories: dictionary
-	categories := dictionary ! !
+!SidePane methodsFor: 'accessing' stamp: 'hlsf 23/May/2026 15:36:49'!
+categories: aCollection
+	categories := aCollection ! !
 
 !SidePane methodsFor: 'accessing' stamp: 'hlsf 26/Apr/2026 10:35:32'!
 presenter: anObject
 	presenter := anObject 
+	! !
+
+!SidePane methodsFor: 'accessing' stamp: 'hlsf 23/May/2026 15:47:05'!
+selectCategory: aCategoryTitle
+" Simulate a click on the category title "
+	aCategoryTitle perform: #'mouseButton1Up:localPosition:' withArguments: #(0 0)
+	! !
+
+!SidePane methodsFor: 'accessing' stamp: 'hlsf 23/May/2026 15:50:14'!
+selectCategoryNamed: viewMessageSymbol
+"	the symbol used to get the view if the category "
+	self selectCategory: (self sidebar submorphsSatisfying: [:m | m name = viewMessageSymbol ]) first
+		
+	! !
+
+!SidePane methodsFor: 'accessing' stamp: 'hlsf 23/May/2026 15:47:39'!
+selectFirstCategory
+	self selectCategory: self sidebar lastSubmorph
 	! !
 
 !SidePane methodsFor: 'accessing' stamp: 'hlsf 4/May/2026 21:53:34'!
@@ -645,7 +663,7 @@ select: actionMessage
 	currentCategoryView := newView.
 	self triggerEvent: #selectedCategory with: actionMessage! !
 
-!SidePane methodsFor: 'initialization' stamp: 'hlsf 27/Apr/2026 21:05:12'!
+!SidePane methodsFor: 'initialization' stamp: 'hlsf 23/May/2026 15:37:34'!
 initialize
 	| sideBar |
 	super initialize.
@@ -655,10 +673,9 @@ initialize
 	self addMorph: sideBar layoutSpec: (LayoutSpec keepMorphExtent offAxisEdgeWeight: 0).
 	categories do: [:labelAndAction | 
 		sideBar addMorph: (self categoryBtn: labelAndAction ) layoutSpec: (LayoutSpec useAll offAxisEdgeWeight: 0)].
-"	Select the first category "
-	sideBar submorphs last perform: #'mouseButton1Up:localPosition:' withArguments: #(0 0).! !
+	self selectFirstCategory ! !
 
-!SidePane methodsFor: 'ui' stamp: 'hlsf 28/Apr/2026 11:39:03'!
+!SidePane methodsFor: 'ui' stamp: 'hlsf 23/May/2026 15:41:28'!
 categoryBtn: labelAndAction
 	| row label isIconic |
 	isIconic := labelAndAction size = 3.
@@ -666,7 +683,8 @@ categoryBtn: labelAndAction
 		borderWidth: 8;
 		separation: 16;
 		borderColor: Color transparent;
-		color: presenter defaultColor.
+		color: presenter defaultColor;
+		name: labelAndAction second.
 	label := (LabelMorph contents: labelAndAction first) 
 		emphasis: 1;
 		color: self unselectedCategoryColor .
@@ -693,11 +711,6 @@ categoryBtn: labelAndAction
 			self select: labelAndAction second].
 	^ row! !
 
-!SidePane methodsFor: 'ui' stamp: 'hlsf 4/May/2026 21:55:02'!
-selectFirstCategory
-	self sidebar lastSubmorph  perform: #'mouseButton1Up:localPosition:' withArguments: #(0 0).
-	! !
-
 !SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026 22:09:31'!
 selectedCategoryColor
 	^ Color black! !
@@ -720,20 +733,17 @@ setCategory: categoryRow toColor: aColor
 unselectedCategoryColor
 	^ Color lightGray lighter! !
 
-!SidePane class methodsFor: 'instance creation' stamp: 'hlsf 26/Apr/2026 16:00:37'!
-on: aPresenter with: dictionary
+!SidePane class methodsFor: 'instance creation' stamp: 'hlsf 23/May/2026 15:38:35'!
+on: aPresenter with: aCollection
 	^ self basicNew
 		presenter: aPresenter;
-		categories: dictionary;
+		categories: aCollection ;
 		initialize;
 		yourself! !
 
 !SidePane class methodsFor: 'new-morph participation' stamp: 'hlsf 26/Apr/2026 10:20:51'!
 includeInNewMorphMenu
 	^ false! !
-
-!SidePane class methodsFor: 'examples' stamp: 'hlsf 26/Apr/2026 10:59:33'!
-example1! !
 
 !FlapItem methodsFor: 'accessing' stamp: 'hlsf 13/Feb/2025 10:35:00'!
 flap
