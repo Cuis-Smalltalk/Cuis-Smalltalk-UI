@@ -1,7 +1,7 @@
-'From Cuis7.7 [latest update: #7963] on 23 May 2026 at 3:59:54 pm'!
+'From Cuis7.7 [latest update: #7964] on 27 May 2026 at 9:33:17 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 164!
+!provides: 'UI-Panel' 1 165!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -412,10 +412,10 @@ removeSliceButtonsAfter: aNavButton
 	navBar submorphsInFrontOf: aNavButton do: [:aSliceButton | toDelete add: aSliceButton].
 	navBar removeAllMorphsIn: toDelete! !
 
-!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 21/Apr/2026 14:47:35'!
+!BreadcrumbsPane methodsFor: 'navigate' stamp: 'hlsf 27/May/2026 21:29:18'!
 replaceView: aView byView: anotherView
 " Replace a view in the pane with another viewer and shrink the panel "
-	aView releaseActionMap.
+	aView removeAllActions .
 	self replaceSubmorph: aView by: anotherView .
 	self morphExtent: self minimumExtent.
 	self adoptWidgetsColor: self defaultBorderColor! !
@@ -650,12 +650,12 @@ selectFirstCategory
 sidebar
 	^ self lastSubmorph ! !
 
-!SidePane methodsFor: 'action' stamp: 'hlsf 28/Apr/2026 11:07:01'!
+!SidePane methodsFor: 'action' stamp: 'hlsf 27/May/2026 21:29:24'!
 select: actionMessage
 	| newView | 
 	newView := presenter perform: actionMessage.
 	currentCategoryView ifNotNil: [
-			currentCategoryView releaseActionMap.
+			currentCategoryView removeAllActions .
 			self removeMorph: currentCategoryView].
 	self addMorph: newView layoutSpec: (LayoutSpec useAll offAxisEdgeWeight: 0).
 	self morphExtent: self minimumExtent.
@@ -1231,15 +1231,15 @@ addMorph: aMorph layoutSpec: aLayoutSpec
 
 	layoutMorph addMorph: aMorph layoutSpec: aLayoutSpec! !
 
-!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 18/Dec/2013 19:36:00'!
+!Panel methodsFor: 'submorphs-add/remove' stamp: 'hlsf 27/May/2026 21:30:01'!
 replaceArea: oldArea with: newArea
 	"Replace oldArea in its container with newArea and clean up any ActionMaps"
 	
 	oldArea owner replaceSubmorph: oldArea by: newArea.
-	oldArea releaseActionMap.
+	oldArea removeAllActions .
 	self model removeActionsWithReceiver: oldArea.
 	oldArea submorphsDo: [ :sm | 
-		sm releaseActionMap.
+		sm removeAllActions .
 		self model removeActionsWithReceiver: sm
 	].
 
@@ -2527,10 +2527,10 @@ goPage: number
 	self buildMorphicWindow.
 	self triggerEvent: #page with: number.! !
 
-!WizardPanel methodsFor: 'open/close' stamp: 'hlsf 19/Nov/2021 11:04:00'!
+!WizardPanel methodsFor: 'open/close' stamp: 'hlsf 27/May/2026 21:30:36'!
 delete
 	super delete.
-	self releaseActionMap ! !
+	self removeAllActions ! !
 
 !WizardPanel methodsFor: 'open/close' stamp: 'hlsf 7/Apr/2022 15:54:00'!
 minimumExtent
