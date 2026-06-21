@@ -1,7 +1,7 @@
-'From Cuis7.9 [latest update: #8014] on 21 June 2026 at 10:45:00 am'!
+'From Cuis7.9 [latest update: #8014] on 21 June 2026 at 12:14:47 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 166!
+!provides: 'UI-Panel' 1 167!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -826,28 +826,12 @@ fillColor
 
 	^ borderColor twiceLighter! !
 
-!Flap methodsFor: 'accessing' stamp: 'hlsf 21/Jun/2026, 8:41:29 am (UTC)'!
-iconicObjects: dyboScripts
-	objects := dyboScripts collect: [:each | | item |
-		item := FlapItem 
-			object: each 
-			image: each icon
-			buttons: nil 
-			label: each title ::
-			setBalloonText: each description;
-			flap: self;
-			setProperty: #allowsItemDrag toValue: true;
-			adoptWidgetsColor: borderColor;
-			borderWidth: 2.
-		item imageMorph setBalloonText: each description.
-		item]! !
-
-!Flap methodsFor: 'accessing' stamp: 'hlsf 13/Feb/2025, 8:35:00 am (UTC)'!
+!Flap methodsFor: 'accessing' stamp: 'hlsf 21/Jun/2026, 10:09:15 am (UTC)'!
 objects: placedMorphs
 	objects := placedMorphs collect: [:each |
 		FlapItem 
 			object: each 
-			image: (each imageForm: 32)
+			image: each icon
 			buttons: nil 
 			label: each name ::
 			flap: self;
@@ -1002,35 +986,17 @@ aboutToBeGrabbedBy: aHand
 includeInNewMorphMenu
 	^ false! !
 
-!Flap class methodsFor: 'instance creation' stamp: 'hlsf 21/Jun/2026, 8:41:29 am (UTC)'!
-label: aString emphasis: emphasis iconicObjects: dyboScripts
-"	label: the name of the flap 
- 	emphasis: Text emphasis applyed to the label, nil for none 
-	iconicObjects: array of PlacedMorphs of this flap, these understand the #icon message as view in the flap
-"
-	| flap |
-	flap := self contents: aString font: nil emphasis: emphasis.
-	flap iconicObjects: dyboScripts.
-	^ flap
-	
-! !
-
-!Flap class methodsFor: 'instance creation' stamp: 'hlsf 21/Jun/2026, 8:37:31 am (UTC)'!
+!Flap class methodsFor: 'instance creation' stamp: 'hlsf 21/Jun/2026, 10:07:42 am (UTC)'!
 label: aString emphasis: emphasis objects: placedMorphs
 "	label: the name of the flap 
  	emphasis: Text emphasis applyed to the label, nil for none 
-	objects: array of PlacedMorphs of this flap, the iconic view of each is computed from its imageForm
+	objects: array of PlacedMorphs of this flap, each view asked with the #icon message
 "
 	| flap |
 	flap := self contents: aString font: nil emphasis: emphasis.
 	flap objects: 	placedMorphs .
 	^ flap
 	
-! !
-
-!Flap class methodsFor: 'instance creation' stamp: 'hlsf 21/Jun/2026, 8:40:29 am (UTC)'!
-label: aString iconicObjects: dyboScripts
-	^ self label: aString emphasis: 0 iconicObjects: dyboScripts 
 ! !
 
 !Flap class methodsFor: 'instance creation' stamp: 'hlsf 7/Feb/2025, 5:07:00 pm (UTC)'!
