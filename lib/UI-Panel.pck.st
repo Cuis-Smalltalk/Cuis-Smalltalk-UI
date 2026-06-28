@@ -1,7 +1,7 @@
-'From Cuis7.9 [latest update: #8014] on 21 June 2026 at 12:14:47 pm'!
+'From Cuis7.9 [latest update: #8031] on 28 June 2026 at 10:21:50 am'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 167!
+!provides: 'UI-Panel' 1 168!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1214,40 +1214,103 @@ includeInNewMorphMenu
 	
 	^ false! !
 
-!Panel methodsFor: 'printing' stamp: 'KenD 24/Apr/2015, 2:04:00 pm (UTC)'!
-printOn: aStream 
+!Panel methodsFor: 'GUI building' stamp: 'drgeo 28/Jun/2026, 7:32:43 am (UTC)'!
+adoptWidgetsColor: paneColor
+	color := Theme current paneBackgroundFrom: paneColor.
+	super adoptWidgetsColor: paneColor.! !
 
-	super printOn: aStream.
-	aStream nextPutAll: '('.
-	aStream
-		print: self label;
-		nextPutAll: ')'! !
+!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013, 4:55:00 pm (UTC)'!
+buildMorphicWindow
 
-!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 9/Dec/2013, 2:44:00 pm (UTC)'!
-addMorph: aMorph 
-	"Add a submorph to our client area."
+	self subclassResponsibility ! !
 
-	layoutMorph addMorph: aMorph! !
+!Panel methodsFor: 'GUI building' stamp: 'KenD 26/Dec/2025, 12:29:43 pm (UTC)'!
+buildTitle
+	titleMorph := WindowTitleMorph title: 'Untitled'.
+	stayUp := false. "UI push pin to change"
+	titleMorph 
+		layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0);
+		morphExtent: extent x @ (self labelHeight + borderWidth);
+		layoutSubmorphs.
+	super addMorphBack: titleMorph.! !
 
-!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 9/Dec/2013, 2:44:00 pm (UTC)'!
-addMorph: aMorph layoutSpec: aLayoutSpec
-	"Add a submorph to our client area."
+!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013, 4:42:00 pm (UTC)'!
+buttonColor
 
-	layoutMorph addMorph: aMorph layoutSpec: aLayoutSpec! !
+	^ Theme current buttonColorFrom: self widgetsColor! !
 
-!Panel methodsFor: 'submorphs-add/remove' stamp: 'hlsf 27/May/2026, 7:30:01 pm (UTC)'!
-replaceArea: oldArea with: newArea
-	"Replace oldArea in its container with newArea and clean up any ActionMaps"
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/Jul/2022, 11:07:00 am (UTC)'!
+defaultButtonPaneHeight
+	"Answer the user's preferred default height for new button panes."
+
+	^ (Preferences at: #standardButtonFont) lineSpacing * 14 // 8! !
+
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 28/May/2023, 7:17:00 pm (UTC)'!
+hideButtons
+
+	self titleMorph hideAllButtons ! !
+
+!Panel methodsFor: 'GUI building' stamp: 'KenD 25/Apr/2015, 6:45:00 am (UTC)'!
+showButtonsNamed: aSymbolCollection
+
+	self titleMorph showButtonsNamed: aSymbolCollection ! !
+
+!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013, 4:42:00 pm (UTC)'!
+textBackgroundColor
+
+	^ Theme current paneBackgroundFrom: self widgetsColor! !
+
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 29/Jul/2024, 8:35:00 am (UTC)'!
+widgetsColor
+	^ borderColor ! !
+
+!Panel methodsFor: 'GUI building' stamp: 'hlsf 20/Apr/2026, 9:18:28 pm (UTC)'!
+widgetsColor: aColor
+	"aColor will be used for titles, borders, etc.
+	A variation of it, #paneColorFrom:, will be used for panes background"
+
+	borderColor := aColor.
+	self color: self textBackgroundColor.
+	self adoptWidgetsColor: borderColor! !
+
+!Panel methodsFor: 'accessing' stamp: 'KenD 10/Jan/2026, 11:04:24 am (UTC)'!
+defaultLayerNumber
+	^ 16! !
+
+!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015, 1:54:00 pm (UTC)'!
+layoutMorph
+
+	^ layoutMorph! !
+
+!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015, 1:41:00 pm (UTC)'!
+pinButton
+	"private"
 	
-	oldArea owner replaceSubmorph: oldArea by: newArea.
-	oldArea removeAllActions .
-	self model removeActionsWithReceiver: oldArea.
-	oldArea submorphsDo: [ :sm | 
-		sm removeAllActions .
-		self model removeActionsWithReceiver: sm
-	].
+	^ titleMorph pinButton ! !
 
-! !
+!Panel methodsFor: 'accessing' stamp: 'KenD 19/Apr/2015, 5:30:00 am (UTC)'!
+stayUp
+
+	^ stayUp! !
+
+!Panel methodsFor: 'accessing' stamp: 'KenD 19/Apr/2015, 12:11:00 pm (UTC)'!
+stayUp: aBoolean
+
+	stayUp := aBoolean.
+	aBoolean
+		ifTrue: [ self pinButton hide ] 
+		ifFalse: [ self pinButton show ] ! !
+
+!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015, 1:44:00 pm (UTC)'!
+titleMorph 
+
+	^ titleMorph! !
+
+!Panel methodsFor: 'change reporting' stamp: 'hlsf 28/May/2023, 7:39:00 pm (UTC)'!
+morphExtent: newExtent
+
+	super morphExtent: newExtent.
+	titleMorph ifNotNil: [titleMorph morphExtent: extent x @ (self labelHeight + borderWidth)]! !
 
 !Panel methodsFor: 'drawing' stamp: 'KenD 5/Sep/2020, 12:04:00 pm (UTC)'!
 addPossiblyUncoveredAreasIn: aRectangle to: aCollection
@@ -1330,52 +1393,51 @@ makeMeVisible
 	"window not on screen (probably due to reframe) -- move it now"
 	self morphPosition: (RealEstateAgent initialFrameFor: self initialExtent: extent world: self world) topLeft! !
 
-!Panel methodsFor: 'layout' stamp: 'KenD 26/Dec/2025, 11:35:48 am (UTC)'!
-beColumn
-	layoutMorph
-		ifNotNil: [ layoutMorph beColumn ]
-		ifNil: [
-			layoutMorph := LayoutMorph newColumn.
-			self addMorphBack: layoutMorph ]! !
+!Panel methodsFor: 'dropping/grabbing' stamp: 'KenD 17/Sep/2019, 11:26:00 am (UTC)'!
+valueWhenDropped
 
-!Panel methodsFor: 'layout' stamp: 'KenD 9/Dec/2013, 2:46:00 pm (UTC)'!
-beRow
-	layoutMorph
-		ifNotNil: [ layoutMorph beRow ]
-		ifNil: [
-			layoutMorph _ LayoutMorph newRow.
-			self addMorphFront: layoutMorph ]! !
+	^nil! !
 
-!Panel methodsFor: 'layout' stamp: 'jmv 23/Aug/2020, 6:43:00 pm (UTC)'!
-layoutSubmorphs
-	"Compute a new layout of submorphs based on the given layout bounds."
+!Panel methodsFor: 'events' stamp: 'hlsf 3/Jul/2022, 11:07:00 am (UTC)'!
+closeButtonClicked
+	"The user clicked on the close-box control in the window title.  For Mac users only, the Mac convention of option-click-on-close-box is obeyed if the mac option key is down."
 
-	| myBounds |
-	layoutMorph ifNotNil: [
-		myBounds _ self layoutBounds.
-		layoutMorph
-			morphPosition: myBounds origin;
-			morphExtent: myBounds extent 
-	].
-	titleMorph ifNotNil: [ titleMorph layoutSubmorphs ].
-	
-	self layoutNeeded: false! !
-
-!Panel methodsFor: 'layout' stamp: 'jmv 7/Jan/2025, 9:03:00 am (UTC)'!
-layoutSubmorphsIfNeeded
-	"Return self. Recompute the layout if necessary."
-
-	self isLayoutNeeded ifTrue: [
-		self layoutSubmorphs ].
+	(Preferences at: #dismissAllOnOptionClose) ifTrue:
+		[Sensor rawMacOptionKeyPressed ifTrue:
+			[^ self world closeUnchangedWindows]].
+	self delete  "closeBox overrides stayUp"
 ! !
 
-!Panel methodsFor: 'layout' stamp: 'jmv 7/Jan/2025, 9:30:00 am (UTC)'!
-someSubmorphPositionOrExtentChanged
-	"Some submorph changed at any nested level.
-	Must layout submorphs again."
+!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015, 2:45:00 pm (UTC)'!
+collapseButtonClicked
+	
+	self collapse
+! !
 
-	super someSubmorphPositionOrExtentChanged.
-	self layoutNeeded: true.! !
+!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015, 2:45:00 pm (UTC)'!
+expandButtonClicked
+	
+	self expand
+! !
+
+!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015, 2:46:00 pm (UTC)'!
+pinButtonClicked
+	"The user clicked on the push pin. Subclasses should add actions and invoke me"
+	
+	self stayUp: true
+	! !
+
+!Panel methodsFor: 'events' stamp: 'KenD 9/Dec/2013, 3:07:00 pm (UTC)'!
+wantsToBeDroppedInto: aMorph
+	"Return true if it's okay to drop the receiver into aMorph"
+	
+	^ aMorph isWorldMorph! !
+
+!Panel methodsFor: 'events' stamp: 'KenD 28/Apr/2015, 11:42:00 am (UTC)'!
+windowMenuButtonClicked
+	
+	self subclassResponsibility 
+! !
 
 !Panel methodsFor: 'geometry' stamp: 'hlsf 3/Jul/2022, 11:07:00 am (UTC)'!
 boxExtent
@@ -1474,111 +1536,6 @@ minimumExtent
 		@ (minTitleExtent y + minLayoutExtent y))
 	! !
 
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 20/Apr/2026, 9:37:31 pm (UTC)'!
-adoptWidgetsColor: paneColor
-	color := Theme current paneBackgroundFrom: paneColor.
-	super adoptWidgetsColor: paneColor.! !
-
-!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013, 4:55:00 pm (UTC)'!
-buildMorphicWindow
-
-	self subclassResponsibility ! !
-
-!Panel methodsFor: 'GUI building' stamp: 'KenD 26/Dec/2025, 12:29:43 pm (UTC)'!
-buildTitle
-	titleMorph := WindowTitleMorph title: 'Untitled'.
-	stayUp := false. "UI push pin to change"
-	titleMorph 
-		layoutSpec: (LayoutSpec morphHeightProportionalWidth: 1.0);
-		morphExtent: extent x @ (self labelHeight + borderWidth);
-		layoutSubmorphs.
-	super addMorphBack: titleMorph.! !
-
-!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013, 4:42:00 pm (UTC)'!
-buttonColor
-
-	^ Theme current buttonColorFrom: self widgetsColor! !
-
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 3/Jul/2022, 11:07:00 am (UTC)'!
-defaultButtonPaneHeight
-	"Answer the user's preferred default height for new button panes."
-
-	^ (Preferences at: #standardButtonFont) lineSpacing * 14 // 8! !
-
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 28/May/2023, 7:17:00 pm (UTC)'!
-hideButtons
-
-	self titleMorph hideAllButtons ! !
-
-!Panel methodsFor: 'GUI building' stamp: 'KenD 25/Apr/2015, 6:45:00 am (UTC)'!
-showButtonsNamed: aSymbolCollection
-
-	self titleMorph showButtonsNamed: aSymbolCollection ! !
-
-!Panel methodsFor: 'GUI building' stamp: 'KenD 9/Dec/2013, 4:42:00 pm (UTC)'!
-textBackgroundColor
-
-	^ Theme current paneBackgroundFrom: self widgetsColor! !
-
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 29/Jul/2024, 8:35:00 am (UTC)'!
-widgetsColor
-	^ borderColor ! !
-
-!Panel methodsFor: 'GUI building' stamp: 'hlsf 20/Apr/2026, 9:18:28 pm (UTC)'!
-widgetsColor: aColor
-	"aColor will be used for titles, borders, etc.
-	A variation of it, #paneColorFrom:, will be used for panes background"
-
-	borderColor := aColor.
-	self color: self textBackgroundColor.
-	self adoptWidgetsColor: borderColor! !
-
-!Panel methodsFor: 'dropping/grabbing' stamp: 'KenD 17/Sep/2019, 11:26:00 am (UTC)'!
-valueWhenDropped
-
-	^nil! !
-
-!Panel methodsFor: 'events' stamp: 'hlsf 3/Jul/2022, 11:07:00 am (UTC)'!
-closeButtonClicked
-	"The user clicked on the close-box control in the window title.  For Mac users only, the Mac convention of option-click-on-close-box is obeyed if the mac option key is down."
-
-	(Preferences at: #dismissAllOnOptionClose) ifTrue:
-		[Sensor rawMacOptionKeyPressed ifTrue:
-			[^ self world closeUnchangedWindows]].
-	self delete  "closeBox overrides stayUp"
-! !
-
-!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015, 2:45:00 pm (UTC)'!
-collapseButtonClicked
-	
-	self collapse
-! !
-
-!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015, 2:45:00 pm (UTC)'!
-expandButtonClicked
-	
-	self expand
-! !
-
-!Panel methodsFor: 'events' stamp: 'KenD 24/Apr/2015, 2:46:00 pm (UTC)'!
-pinButtonClicked
-	"The user clicked on the push pin. Subclasses should add actions and invoke me"
-	
-	self stayUp: true
-	! !
-
-!Panel methodsFor: 'events' stamp: 'KenD 9/Dec/2013, 3:07:00 pm (UTC)'!
-wantsToBeDroppedInto: aMorph
-	"Return true if it's okay to drop the receiver into aMorph"
-	
-	^ aMorph isWorldMorph! !
-
-!Panel methodsFor: 'events' stamp: 'KenD 28/Apr/2015, 11:42:00 am (UTC)'!
-windowMenuButtonClicked
-	
-	self subclassResponsibility 
-! !
-
 !Panel methodsFor: 'initialization' stamp: 'hlsf 29/Dec/2021, 8:17:00 am (UTC)'!
 defaultAlignement
 
@@ -1622,15 +1579,6 @@ openInWorld
 					world: self runningWorld ) topLeft.
 	super 	openInWorld! !
 
-!Panel methodsFor: 'testing' stamp: 'KenD 9/Dec/2013, 2:45:00 pm (UTC)'!
-is: aSymbol
-	^ aSymbol == #Panel or: [ super is: aSymbol ]! !
-
-!Panel methodsFor: 'testing' stamp: 'KenD 9/Dec/2013, 2:45:00 pm (UTC)'!
-isOpaqueMorph
-	"Not really used, as we also reimplement #addPossiblyUncoveredAreasIn:to:"
-	^ (Theme current roundWindowCorners or: [ color mightBeTranslucent ]) not! !
-
 !Panel methodsFor: 'label' stamp: 'KenD 24/Apr/2015, 1:48:00 pm (UTC)'!
 label
 
@@ -1665,44 +1613,96 @@ update: aSymbol
 	aSymbol == #relabel
 		ifTrue: [ model ifNotNil: [ self setLabel: model labelString ]]! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 10/Jan/2026, 11:04:24 am (UTC)'!
-defaultLayerNumber
-	^ 16! !
+!Panel methodsFor: 'layout' stamp: 'KenD 26/Dec/2025, 11:35:48 am (UTC)'!
+beColumn
+	layoutMorph
+		ifNotNil: [ layoutMorph beColumn ]
+		ifNil: [
+			layoutMorph := LayoutMorph newColumn.
+			self addMorphBack: layoutMorph ]! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015, 1:54:00 pm (UTC)'!
-layoutMorph
+!Panel methodsFor: 'layout' stamp: 'KenD 9/Dec/2013, 2:46:00 pm (UTC)'!
+beRow
+	layoutMorph
+		ifNotNil: [ layoutMorph beRow ]
+		ifNil: [
+			layoutMorph _ LayoutMorph newRow.
+			self addMorphFront: layoutMorph ]! !
 
-	^ layoutMorph! !
+!Panel methodsFor: 'layout' stamp: 'jmv 23/Aug/2020, 6:43:00 pm (UTC)'!
+layoutSubmorphs
+	"Compute a new layout of submorphs based on the given layout bounds."
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015, 1:41:00 pm (UTC)'!
-pinButton
-	"private"
+	| myBounds |
+	layoutMorph ifNotNil: [
+		myBounds _ self layoutBounds.
+		layoutMorph
+			morphPosition: myBounds origin;
+			morphExtent: myBounds extent 
+	].
+	titleMorph ifNotNil: [ titleMorph layoutSubmorphs ].
 	
-	^ titleMorph pinButton ! !
+	self layoutNeeded: false! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 19/Apr/2015, 5:30:00 am (UTC)'!
-stayUp
+!Panel methodsFor: 'layout' stamp: 'jmv 7/Jan/2025, 9:03:00 am (UTC)'!
+layoutSubmorphsIfNeeded
+	"Return self. Recompute the layout if necessary."
 
-	^ stayUp! !
+	self isLayoutNeeded ifTrue: [
+		self layoutSubmorphs ].
+! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 19/Apr/2015, 12:11:00 pm (UTC)'!
-stayUp: aBoolean
+!Panel methodsFor: 'layout' stamp: 'jmv 7/Jan/2025, 9:30:00 am (UTC)'!
+someSubmorphPositionOrExtentChanged
+	"Some submorph changed at any nested level.
+	Must layout submorphs again."
 
-	stayUp := aBoolean.
-	aBoolean
-		ifTrue: [ self pinButton hide ] 
-		ifFalse: [ self pinButton show ] ! !
+	super someSubmorphPositionOrExtentChanged.
+	self layoutNeeded: true.! !
 
-!Panel methodsFor: 'accessing' stamp: 'KenD 24/Apr/2015, 1:44:00 pm (UTC)'!
-titleMorph 
+!Panel methodsFor: 'printing' stamp: 'KenD 24/Apr/2015, 2:04:00 pm (UTC)'!
+printOn: aStream 
 
-	^ titleMorph! !
+	super printOn: aStream.
+	aStream nextPutAll: '('.
+	aStream
+		print: self label;
+		nextPutAll: ')'! !
 
-!Panel methodsFor: 'change reporting' stamp: 'hlsf 28/May/2023, 7:39:00 pm (UTC)'!
-morphExtent: newExtent
+!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 9/Dec/2013, 2:44:00 pm (UTC)'!
+addMorph: aMorph 
+	"Add a submorph to our client area."
 
-	super morphExtent: newExtent.
-	titleMorph ifNotNil: [titleMorph morphExtent: extent x @ (self labelHeight + borderWidth)]! !
+	layoutMorph addMorph: aMorph! !
+
+!Panel methodsFor: 'submorphs-add/remove' stamp: 'KenD 9/Dec/2013, 2:44:00 pm (UTC)'!
+addMorph: aMorph layoutSpec: aLayoutSpec
+	"Add a submorph to our client area."
+
+	layoutMorph addMorph: aMorph layoutSpec: aLayoutSpec! !
+
+!Panel methodsFor: 'submorphs-add/remove' stamp: 'hlsf 27/May/2026, 7:30:01 pm (UTC)'!
+replaceArea: oldArea with: newArea
+	"Replace oldArea in its container with newArea and clean up any ActionMaps"
+	
+	oldArea owner replaceSubmorph: oldArea by: newArea.
+	oldArea removeAllActions .
+	self model removeActionsWithReceiver: oldArea.
+	oldArea submorphsDo: [ :sm | 
+		sm removeAllActions .
+		self model removeActionsWithReceiver: sm
+	].
+
+! !
+
+!Panel methodsFor: 'testing' stamp: 'KenD 9/Dec/2013, 2:45:00 pm (UTC)'!
+is: aSymbol
+	^ aSymbol == #Panel or: [ super is: aSymbol ]! !
+
+!Panel methodsFor: 'testing' stamp: 'KenD 9/Dec/2013, 2:45:00 pm (UTC)'!
+isOpaqueMorph
+	"Not really used, as we also reimplement #addPossiblyUncoveredAreasIn:to:"
+	^ (Theme current roundWindowCorners or: [ color mightBeTranslucent ]) not! !
 
 !Panel class methodsFor: 'instance creation' stamp: 'hlsf 1/May/2025, 9:49:00 pm (UTC)'!
 example1
