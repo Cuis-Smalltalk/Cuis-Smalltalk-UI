@@ -1,6 +1,6 @@
-'From Cuis7.9 [latest update: #8031] on 28 June 2026 at 10:21:53 am'!
+'From Cuis7.9 [latest update: #8045] on 4 July 2026 at 5:25:50 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 102!
+!provides: 'UI-Click-Select' 1 103!
 !requires: 'UI-Widgets' 1 48 nil!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 0 nil!
@@ -705,10 +705,11 @@ updateButton
 			morphExtent: form extent;
 			redrawNeeded ]! !
 
-!DropDownButtonMorph methodsFor: 'accessing' stamp: 'drgeo 28/Jun/2026, 7:48:55 am (UTC)'!
+!DropDownButtonMorph methodsFor: 'accessing' stamp: 'hlsf 4/Jul/2026, 3:23:48 pm (UTC)'!
 adoptWidgetsColor: paneColor
 	super adoptWidgetsColor: paneColor.
-	adoptsWidgetsColor ifTrue: [dropDownList adoptWidgetsColor: paneColor]! !
+	dropDownList adoptWidgetsColor: paneColor.
+	color := 	Theme current paneBackgroundFrom: paneColor! !
 
 !DropDownButtonMorph methodsFor: 'accessing' stamp: 'hlsf 23/Aug/2025, 10:57:46 am (UTC)'!
 buttonStyle: buttonStyle
