@@ -1,6 +1,6 @@
-'From Cuis7.9 [latest update: #8056] on 15 July 2026 at 2:49:08 pm'!
+'From Cuis7.9 [latest update: #8056] on 16 July 2026 at 1:13:38 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 73!
+!provides: 'UI-Widgets' 1 74!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -201,11 +201,13 @@ with: labelsAndControls
 			ifFalse: [row addMorph: control layoutSpec: LayoutSpec keepMorphExtent]		.
 		self addMorph: row fixedHeight: height]! !
 
-!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 20/Apr/2026, 9:29:45 pm (UTC)'!
+!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 16/Jul/2026, 11:09:51 am (UTC)'!
 adoptWidgetsColor: paneColor
 	super adoptWidgetsColor: paneColor.
 	adoptsWidgetsColor 
-		ifTrue: [self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
+		ifTrue: [
+			self color: (Theme current paneBackgroundFrom: paneColor).
+			self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
 
 !LabelGroup methodsFor: 'accessing' stamp: 'hlsf 14/Jul/2025, 7:52:35 am (UTC)'!
 controls
