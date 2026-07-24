@@ -1,7 +1,7 @@
-'From Cuis7.9 [latest update: #8056] on 15 July 2026 at 2:48:26 pm'!
+'From Cuis7.9 [latest update: #8087] on 24 July 2026 at 2:33:51 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 169!
+!provides: 'UI-Panel' 1 170!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -2484,11 +2484,9 @@ newPane
 "Ask to the current page its pane, if any"
 	^ currentPage panel ! !
 
-!WizardPanel methodsFor: 'accessing' stamp: 'hlsf 25/Dec/2021, 2:51:00 pm (UTC)'!
+!WizardPanel methodsFor: 'accessing' stamp: 'hlsf 24/Jul/2026, 12:33:49 pm (UTC)'!
 emptyPane
-	^ LayoutMorph newColumn 
-		doAdoptWidgetsColor;
-		adoptWidgetsColor: self widgetsColor.! !
+	^ LayoutMorph newColumn ! !
 
 !WizardPanel methodsFor: 'accessing' stamp: 'hlsf 19/Apr/2026, 8:17:27 pm (UTC)'!
 numberOfPage
