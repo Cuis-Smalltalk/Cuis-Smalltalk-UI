@@ -1,6 +1,6 @@
-'From Cuis7.9 [latest update: #8056] on 16 July 2026 at 1:13:38 pm'!
+'From Cuis7.9 [latest update: #8087] on 24 July 2026 at 2:18:38 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 74!
+!provides: 'UI-Widgets' 1 75!
 !requires: 'Cuis-Base' 75 7262 nil!
 !requires: 'UI-Core' 1 18 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -174,18 +174,21 @@ See my Class side:
 	WaitSpinner stop.   "Remove animated WaitSpinner"
  !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 20/Apr/2026, 9:05:15 pm (UTC)'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 20/Apr/2026, 9:31:25 pm (UTC)'!
+defaultColor
+	^ Color transparent! !
+
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 24/Jul/2026, 12:11:55 pm (UTC)'!
 initialize
 	super initialize.
-	self doAdoptWidgetsColor.
 	self gap: 2! !
 
-!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 20/Apr/2026, 9:31:48 pm (UTC)'!
+!LabelGroup methodsFor: 'initialization' stamp: 'hlsf 24/Jul/2026, 12:11:27 pm (UTC)'!
 with: labelsAndControls
 
 	| labelMorphs labelWidth |
 	labelMorphs := labelsAndControls collect: [:assoc | | label |
-		label := 	LabelMorph contents: (assoc key contractTo: 40).
+		label := 	LabelMorph contents: (assoc key contractTo: 40) bold.
 		assoc key size > 40 ifTrue: [label setBalloonText: assoc key].
 		label].
 	labelWidth := labelMorphs max: [:each | each morphWidth].
@@ -201,22 +204,10 @@ with: labelsAndControls
 			ifFalse: [row addMorph: control layoutSpec: LayoutSpec keepMorphExtent]		.
 		self addMorph: row fixedHeight: height]! !
 
-!LabelGroup methodsFor: 'accessing' stamp: 'hlsf 16/Jul/2026, 11:09:51 am (UTC)'!
-adoptWidgetsColor: paneColor
-	super adoptWidgetsColor: paneColor.
-	adoptsWidgetsColor 
-		ifTrue: [
-			self color: (Theme current paneBackgroundFrom: paneColor).
-			self controls do: [:e | e adoptWidgetsColor: paneColor ] ]! !
-
 !LabelGroup methodsFor: 'accessing' stamp: 'hlsf 14/Jul/2025, 7:52:35 am (UTC)'!
 controls
 	" search for the controls, those all widgets not label nor layoutmorph"
 	^ self submorphs reverse collect: [:aLayout | aLayout submorphs first] ! !
-
-!LabelGroup methodsFor: 'as yet unclassified' stamp: 'hlsf 20/Apr/2026, 9:31:25 pm (UTC)'!
-defaultColor
-	^ Color transparent! !
 
 !LabelGroup class methodsFor: 'instance creation' stamp: 'KenD 24/Jul/2024, 10:12:45 am (UTC)'!
 initializedInstance
