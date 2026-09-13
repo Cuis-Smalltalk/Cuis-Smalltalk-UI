@@ -1,7 +1,7 @@
-'From Cuis7.9 [latest update: #8087] on 24 July 2026 at 2:33:51 pm'!
+'From Cuis7.9 [latest update: #8171] on 13 September 2026 at 5:40:59 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 170!
+!provides: 'UI-Panel' 1 171!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -715,7 +715,7 @@ categoryBtn: labelAndAction
 selectedCategoryColor
 	^ Color black! !
 
-!SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026, 8:55:45 pm (UTC)'!
+!SidePane methodsFor: 'ui' stamp: 'hlsf 13/Sep/2026, 3:39:22 pm (UTC)'!
 setCategory: categoryRow toColor: aColor
 "	Set the color scheme of the row contents to the given color "
 	| image contents |
@@ -726,7 +726,7 @@ setCategory: categoryRow toColor: aColor
 	image := contents second.
 	image image: (presenter icons 
 			getForm: (image valueOfProperty: #icon)
-			ofSize: image form width 
+			ofSize: image image width 
 			fill: aColor)! !
 
 !SidePane methodsFor: 'ui' stamp: 'hlsf 27/Apr/2026, 8:09:42 pm (UTC)'!
@@ -765,10 +765,10 @@ target
 target: aMoprh
 	target := aMoprh ! !
 
-!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 13/Feb/2025, 8:39:00 am (UTC)'!
+!FlapItem methodsFor: 'dropping/grabbing' stamp: 'hlsf 13/Sep/2026, 3:39:30 pm (UTC)'!
 aboutToBeGrabbedBy: aMorph
 " I am still owned by my flap, request it the target I am destinated for "
-	^ FlapItem object: object image: self imageMorph form ::
+	^ FlapItem object: object image: self imageMorph image ::
 			target: flap target;
 			flap: flap;
 			color: color;
