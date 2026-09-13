@@ -1,7 +1,7 @@
-'From Cuis7.9 [latest update: #8171] on 13 September 2026 at 5:40:59 pm'!
+'From Cuis7.9 [latest update: #8171] on 13 September 2026 at 5:50:40 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 171!
+!provides: 'UI-Panel' 1 172!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -2590,10 +2590,10 @@ defaultBorderColor
 defaultColor
 	^ Color gray muchLighter muchLighter ! !
 
-!SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 27/Apr/2026, 8:37:47 pm (UTC)'!
+!SidePaneExample methodsFor: 'initialization' stamp: 'hlsf 13/Sep/2026, 3:49:59 pm (UTC)'!
 sidePaneWithIcons
 	| categories |
-	icons := IconImporter path: DyboSystem iconsPath.
+	icons := IconImporter path: DirectoryEntry workingDirectory parent / 'Cuis-Smalltalk-UI' / 'icons'.
 	categories := #(
 		('Label Group' labelView group)
 		('Smalltalks' smalltalkView settings)
