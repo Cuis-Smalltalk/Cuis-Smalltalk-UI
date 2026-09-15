@@ -1,7 +1,7 @@
-'From Cuis7.9 [latest update: #8171] on 13 September 2026 at 5:50:40 pm'!
+'From Cuis7.9 [latest update: #8182] on 15 September 2026 at 3:42:47 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 172!
+!provides: 'UI-Panel' 1 173!
 !requires: 'Cuis-Base' 75 7734 nil!
 !requires: 'UI-Core' 1 25 nil!
 !requires: 'UI-Entry' 1 53 nil!
@@ -1095,7 +1095,7 @@ gap
 " Gap between two previews in a row "
 	^ 12	! !
 
-!FlowLayoutMorph methodsFor: 'layout' stamp: 'hlsf 21/Apr/2025, 10:15:00 pm (UTC)'!
+!FlowLayoutMorph methodsFor: 'layout' stamp: 'hlsf 15/Sep/2026, 12:47:52 pm (UTC)'!
 updateLayout
 	| tableWidth leftSpace row |
 	tableWidth := self viewableWidth.
@@ -1118,7 +1118,7 @@ extentChanged: oldExtent
 	self updateLayout.
 	super extentChanged: oldExtent.! !
 
-!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 13/Feb/2025, 6:16:00 pm (UTC)'!
+!FlowLayoutMorph class methodsFor: 'examples' stamp: 'hlsf 15/Sep/2026, 12:49:38 pm (UTC)'!
 example1
 "
 	self example1
@@ -1128,6 +1128,7 @@ example1
 	cells := OrderedCollection new.
 	50 timesRepeat: [ cells add: (ColoredBoxMorph new :: 
 			morphExtent: (5 to: 80) atRandom asPoint;
+			layoutSpec: LayoutSizeSpec keepMorphExtent ;
 			color: Color random)].
 	flow cells: cells! !
 
