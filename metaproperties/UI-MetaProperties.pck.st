@@ -1,6 +1,7 @@
-'From Cuis7.7 [latest update: #7835] on 9 February 2026 at 12:49:12 pm'!
+'From Cuis7.9 [latest update: #8266] on 13 October 2026 at 1:13:14 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 151!
+!provides: 'UI-MetaProperties' 1 152!
+!requires: 'Cuis-Base' 79 8266 nil!
 !requires: 'UI-Components' 1 6 nil!
 !requires: 'UI-Shapes' 1 38 nil!
 !requires: 'Complex' 1 0 nil!
@@ -209,7 +210,7 @@ I test via  (aClosure value: newValue).
 
 aClosure should take one argument and return a boolean.!
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 18/Sep/2019 16:05:00'!
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 18/Sep/2019, 11:05:00 pm (UTC)'!
 displayString
 
 	| propValue propString |
@@ -222,45 +223,45 @@ displayString
 			ifFalse: [propValue printString]].
 	^ name asString , ': ', propString! !
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:29:00'!
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:29:00 pm (UTC)'!
 metaProperty
 
 	^ metaProperty! !
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:29:00'!
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:29:00 pm (UTC)'!
 name
 
 	^ name! !
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:29:00'!
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:29:00 pm (UTC)'!
 prevValue
 
 	^ prevValue! !
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:30:00'!
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:30:00 pm (UTC)'!
 propertyDescriptor
 
 	^ self metaProperty! !
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/Dec/2016 14:38:00'!
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/Dec/2016, 9:38:00 pm (UTC)'!
 propertyValue
 	"Getter"
 
 	^ accessProc value! !
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 22/Dec/2016 16:50:00'!
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 22/Dec/2016, 11:50:00 pm (UTC)'!
 propertyValue: newValue
 	"Setter"
 
 	updateProc value: newValue.
 	self update! !
 
-!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:35:00'!
+!VisualPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:35:00 pm (UTC)'!
 targetMorph
 
 	^ targetMorph ! !
 
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:42:00'!
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022, 7:42:00 pm (UTC)'!
 acceptDroppingMorph: aMorph event: evt
 	"This message is sent when a morph is dropped onto 
 	 a morph that has agreed to accept the dropped morph 
@@ -268,13 +269,13 @@ acceptDroppingMorph: aMorph event: evt
 	
 	self dropAction: aMorph! !
 
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 28/Nov/2016 16:38:00'!
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 28/Nov/2016, 11:38:00 pm (UTC)'!
 allowsMorphDrop
 	"Answer whether we accept dropping morphs. Redefined to answer true."
 
 	^ true! !
 
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:45:00'!
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022, 7:45:00 pm (UTC)'!
 processDropMorph: aDropEvent
 	"I have already expressed a desire for the drop. Just do it."
 	
@@ -284,7 +285,7 @@ processDropMorph: aDropEvent
 	self propertyValue: dropedMorph valueWhenDropped.
 	dropedMorph showAcceptAndDeleteSelf.! !
 
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 7/Dec/2016 14:55:00'!
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 7/Dec/2016, 9:55:00 pm (UTC)'!
 processMouseDown: evt localPosition: localEventPosition
 	"Do nothing upon mouse-down except inform the hand to watch for a 
 	click; wait until an ensuing #click: message gets dispatched"
@@ -299,7 +300,7 @@ processMouseDown: evt localPosition: localEventPosition
 
 ! !
 
-!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:18:00'!
+!VisualPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022, 7:18:00 pm (UTC)'!
 wantsDroppedMorph: aMorph event: evt
 	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
 
@@ -307,25 +308,25 @@ wantsDroppedMorph: aMorph event: evt
 	
 ! !
 
-!VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 18/Dec/2016 13:05:00'!
+!VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 18/Dec/2016, 8:05:00 pm (UTC)'!
 edit
 
 	self metaProperty edit: self targetMorph menuItem: self.
 	self update ! !
 
-!VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 28/Nov/2016 16:35:00'!
+!VisualPropertyMenuItem methodsFor: 'editing' stamp: 'KenD 28/Nov/2016, 11:35:00 pm (UTC)'!
 undo
 	"Reset value from remembered value"
 
 	self targetMorph setProperty: self name  toValue: self prevValue! !
 
-!VisualPropertyMenuItem methodsFor: 'events-processing' stamp: 'KenD 14/Apr/2019 15:27:00'!
+!VisualPropertyMenuItem methodsFor: 'events-processing' stamp: 'KenD 14/Apr/2019, 10:27:00 pm (UTC)'!
 update
 
 	self updateContents.
 	self targetMorph redrawNeeded.! !
 
-!VisualPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 11/Mar/2022 16:14:00'!
+!VisualPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 11/Mar/2022, 11:14:00 pm (UTC)'!
 propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor accessProc: getterClosure updateProc: setterClosure
 
 	super initialize.
@@ -345,16 +346,16 @@ propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor accessProc: getter
 		color: DropColorMorph swatchBorderColor 
 ! !
 
-!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 28/Nov/2016 16:37:00'!
+!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 28/Nov/2016, 11:37:00 pm (UTC)'!
 allowsValue: aValue
 
 	^ self metaProperty accepts: aValue! !
 
-!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 13/Apr/2019 14:30:00'!
+!VisualPropertyMenuItem methodsFor: 'testing' stamp: 'KenD 13/Apr/2019, 9:30:00 pm (UTC)'!
 is: aSymbol
 	^ aSymbol == #VisualPropertyMenuItem or: [ super is: aSymbol ]! !
 
-!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 10/Jan/2026 12:42:52'!
+!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 10/Jan/2026, 7:42:52 pm (UTC)'!
 displayStringForWidth: maxWidth
 	"Answer a string which fits in maxwidth"
 	|  myString count stringWidth  |
@@ -373,7 +374,7 @@ displayStringForWidth: maxWidth
 		ifFalse: [ ^(myString truncateTo: count) , '..' ] 
 	! !
 
-!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 14/Apr/2019 16:12:00'!
+!VisualPropertyMenuItem methodsFor: 'private' stamp: 'KenD 14/Apr/2019, 11:12:00 pm (UTC)'!
 updateContents
 	"(re)set my content string and icon"
 
@@ -383,157 +384,157 @@ updateContents
 	self contents: ( self displayStringForWidth: (myWidth - 20) ). "space for icon + border"
 	self setIcon: (self propertyValue icon)! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:21:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:21:00 pm (UTC)'!
 blankIcon
 
 	^BlankIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:21:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:21:00 pm (UTC)'!
 booleanIcon
 
 	^BoolIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:21:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:21:00 pm (UTC)'!
 charIcon
 
 	^CharIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:21:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:21:00 pm (UTC)'!
 chronIcon
 
 	^ChronIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:21:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:21:00 pm (UTC)'!
 classIcon
 
 	^ClassIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 closureIcon
 
 	^ClosureIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 collectionIcon
 
 	^CollectIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 complexIcon
 
 	^CpxIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 falseIcon
 
 	^FalseIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 fileIcon
 
 	^FileIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 floatIcon
 
 	^FloatIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 folderIcon
 
 	^FolderIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 fontIcon
 
 	^FontIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 fractionIcon
 
 	^FracIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 3/Feb/2022 15:41:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 3/Feb/2022, 10:41:00 pm (UTC)'!
 grabLineHorizIcon
 
 	^GrabLineHorizIcon ! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 3/Feb/2022 15:40:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 3/Feb/2022, 10:40:00 pm (UTC)'!
 grabLineVertIcon
 
 	^GrabLineVertIcon ! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 14/Dec/2021 12:40:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 14/Dec/2021, 7:40:00 pm (UTC)'!
 imageIcon
 
 	^ImageIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:22:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:22:00 pm (UTC)'!
 integerIcon
 
 	^IntIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 14/Dec/2021 12:40:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 14/Dec/2021, 7:40:00 pm (UTC)'!
 layoutIcon
 
 	^LayoutIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 nilIcon
 
 	^NilIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 objectIcon
 
 	^ObjIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 oneOfIcon
 
 	^OneOfIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 pointIcon
 
 	^PtIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 rangeIcon
 
 	^RngIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 streamIcon
 
 	^StreamIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 stringIcon
 
 	^StrIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 symbolIcon
 
 	^SymIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 30/Jan/2022 15:19:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 30/Jan/2022, 10:19:00 pm (UTC)'!
 targetIcon
 
 	^TargetIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 trueIcon
 
 	^TrueIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016 16:23:00'!
+!VisualPropertyMenuItem class methodsFor: 'accessing' stamp: 'KenD 28/Nov/2016, 11:23:00 pm (UTC)'!
 windowIcon
 
 	^WindowIcon! !
 
-!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 3/Feb/2022 15:44:00'!
+!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 3/Feb/2022, 10:44:00 pm (UTC)'!
 initialize
 "
 	VisualPropertyMenuItem initialize.
@@ -575,13 +576,13 @@ initialize
 	
 ! !
 
-!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 7/Dec/2016 15:07:00'!
+!VisualPropertyMenuItem class methodsFor: 'class initialization' stamp: 'KenD 7/Dec/2016, 10:07:00 pm (UTC)'!
 propName: aSymbol morph: aMorph
 
 	^ self propName: aSymbol morph: aMorph propMeta: MetaProperty default
 ! !
 
-!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/Dec/2016 14:39:00'!
+!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/Dec/2016, 9:39:00 pm (UTC)'!
 ivarName: aSymbol morph: aMorph propMeta: aPropertyDescriptor
 	"Instance Variable based accessor"
 	
@@ -592,7 +593,7 @@ ivarName: aSymbol morph: aMorph propMeta: aPropertyDescriptor
 		accessProc: [ ^ aMorph instVarNamed: aSymbol ] 
 		updateProc: [ :newValue | aMorph instVarNamed: aSymbol put: newValue ] ! !
 
-!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 22/Dec/2016 19:59:00'!
+!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 23/Dec/2016, 2:59:00 am (UTC)'!
 propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor
 	"Selector based accessor"
 	
@@ -616,7 +617,7 @@ propName: aSymbol morph: aMorph propMeta: aPropertyDescriptor
 				ifTrue: [ [ :newValue |  setterProc value: (aPropertyDescriptor encodeProc value: newValue) ] ])
 			! !
 
-!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/Dec/2016 14:39:00'!
+!VisualPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 12/Dec/2016, 9:39:00 pm (UTC)'!
 propName: aSymbol 
 morph: aMorph 
 propMeta: aPropertyDescriptor 
@@ -630,27 +631,27 @@ updateProc: setterClosure
 				accessProc: getterClosure 
 				updateProc: setterClosure ! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/May/2018 19:45:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 13/May/2018, 2:45:00 am (UTC)'!
 icon
 
 	^icon! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 12/May/2018 19:45:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 13/May/2018, 2:45:00 am (UTC)'!
 icon: anIcon
 
 	self setIcon: anIcon! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 2/Dec/2016 16:07:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 2/Dec/2016, 11:07:00 pm (UTC)'!
 name
 
 	^ name! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 2/Dec/2016 16:15:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 2/Dec/2016, 11:15:00 pm (UTC)'!
 targetMorph
 
 	^ targetMorph! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 2/Dec/2016 16:22:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'accessing' stamp: 'KenD 2/Dec/2016, 11:22:00 pm (UTC)'!
 value
 	"Answer value of my targetMorph's property or instance variable"
 
@@ -658,13 +659,13 @@ value
 		ifTrue:  [ targetMorph valueOfProperty: name ]
 		ifFalse: [ targetMorph instVarNamed:     name ]! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 11/Dec/2016 13:53:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 11/Dec/2016, 8:53:00 pm (UTC)'!
 allowsMorphDrop
 	"We don't allow editing by Drop, but answer true here to visually reject and delete dropped morph."
 
 	^ true! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 2/Dec/2016 16:05:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 2/Dec/2016, 11:05:00 pm (UTC)'!
 processMouseDown: evt localPosition: localEventPosition
 	"Do nothing upon mouse-down except inform the hand to watch for a 
 	click; wait until an ensuing #click: message gets dispatched"
@@ -679,7 +680,7 @@ processMouseDown: evt localPosition: localEventPosition
 
 ! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2026 09:24:48'!
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2026, 4:24:48 pm (UTC)'!
 showReject: aMorph
 	"Draw and erase a red X"
 
@@ -708,7 +709,7 @@ showReject: aMorph
 	PopUpMenu inform: 'You can''t set this'
 	! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022 12:40:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'dropping/grabbing' stamp: 'KenD 3/Mar/2022, 7:40:00 pm (UTC)'!
 wantsDroppedMorph: aMorph event: evt
 	"Return true if the receiver wishes to accept the given morph, which is being dropped by a hand in response to the given event. Note that for a successful drop operation both parties need to agree. The symmetric check is done automatically via aMorph wantsToBeDroppedInto: self."
 
@@ -717,31 +718,31 @@ wantsDroppedMorph: aMorph event: evt
 	"Rejecting the drop adds aMorph to its old owner at 0@0."
 	^ false  "Reject the drop"! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 2/Dec/2016 16:03:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 2/Dec/2016, 11:03:00 pm (UTC)'!
 itemForIVar: aName targetMorph: aMorph
 
 	accessKind := #instanceVariable.
 	targetMorph := aMorph.
 	name := aName.! !
 
-!OrdinaryPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 2/Dec/2016 16:02:00'!
+!OrdinaryPropertyMenuItem methodsFor: 'initialization' stamp: 'KenD 2/Dec/2016, 11:02:00 pm (UTC)'!
 itemForProperty: aName targetMorph: aMorph
 
 	accessKind := #property.
 	targetMorph := aMorph.
 	name := aName.! !
 
-!OrdinaryPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 2/Dec/2016 16:00:00'!
+!OrdinaryPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 2/Dec/2016, 11:00:00 pm (UTC)'!
 itemForIVar: aName targetMorph: aMorph
 
 	^self new itemForIVar: aName targetMorph: aMorph! !
 
-!OrdinaryPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 2/Dec/2016 16:01:00'!
+!OrdinaryPropertyMenuItem class methodsFor: 'instance creation' stamp: 'KenD 2/Dec/2016, 11:01:00 pm (UTC)'!
 itemForProperty: aName targetMorph: aMorph
 
 	^self new itemForProperty: aName targetMorph: aMorph! !
 
-!MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 17/May/2023 10:06:00'!
+!MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 17/May/2023, 5:06:00 pm (UTC)'!
 boxExtent
 	"answer the extent to use in all the buttons. 
 	 
@@ -750,18 +751,18 @@ boxExtent
 	e := (Preferences at: #windowTitleFont) lineSpacing.
 	^e@e! !
 
-!MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 30/Sep/2016 17:06:00'!
+!MorphMessageBox methodsFor: 'geometry' stamp: 'KenD 1/Oct/2016, 12:06:00 am (UTC)'!
 minimumExtent
 
 	^ 700@(self boxExtent y * 2.3)! !
 
-!MorphMessageBox methodsFor: 'initialization' stamp: 'KenD 30/Sep/2016 15:28:00'!
+!MorphMessageBox methodsFor: 'initialization' stamp: 'KenD 30/Sep/2016, 10:28:00 pm (UTC)'!
 initialize
 
 	super initialize.
 	self morphExtent: self minimumExtent.! !
 
-!MorphMessageBox class methodsFor: 'instance creation' stamp: 'KenD 30/Sep/2016 16:59:00'!
+!MorphMessageBox class methodsFor: 'instance creation' stamp: 'KenD 30/Sep/2016, 11:59:00 pm (UTC)'!
 openForMorph: aMorph
 "
 	MorphMessageBox openForMorph: EllipseMorph initializedInstance.
@@ -781,7 +782,7 @@ openForMorph: aMorph
 	self runningWorld activeHand newMouseFocus: win.
 	^win! !
 
-!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 24/Nov/2022 14:34:00'!
+!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 24/Nov/2022, 9:34:00 pm (UTC)'!
 testAccepts
 
 	self assert: ((MetaProperty kind: CharacterSequence) accepts: 'aString').
@@ -826,7 +827,7 @@ testAccepts
 	self deny: ((MetaPropertyViaTest kind: CharacterSequence test: [ :s | '*baz*' match: s ]) accepts: 43).
 ! !
 
-!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 5/Dec/2016 13:55:00'!
+!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 5/Dec/2016, 8:55:00 pm (UTC)'!
 testCreationGuards
 
 	"Kind must be a Class"
@@ -844,7 +845,7 @@ testCreationGuards
 	self should: [ MetaPropertyViaTest kind: Number test: [ :a :b | a + b ] ] raise: Error.
 	self should: [ MetaPropertyViaTest kind: 34 test: [ :a :b | a + b ] ] raise: Error.! !
 
-!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 5/Dec/2016 13:22:00'!
+!MetaPropertyTests methodsFor: 'testing' stamp: 'KenD 5/Dec/2016, 8:22:00 pm (UTC)'!
 testPredefinedMProps
 
 	self assert: ((MetaProperty metaPropNamed: #acceptsString) accepts: 'aString').
@@ -855,12 +856,12 @@ testPredefinedMProps
 	self deny: ((MetaProperty metaPropNamed: #acceptsPositivePoint) accepts: -2@3).
 	self deny: ((MetaProperty metaPropNamed: #acceptsPositiveNumber) accepts: -1).! !
 
-!MetaProperty methodsFor: 'testing' stamp: 'KenD 14/Aug/2022 13:29:00'!
+!MetaProperty methodsFor: 'testing' stamp: 'KenD 14/Aug/2022, 8:29:00 pm (UTC)'!
 accepts: newValue
 
 	^ (MetaProperty classTestFor: kind) value: newValue ! !
 
-!MetaProperty methodsFor: 'editing' stamp: 'KenD 22/Dec/2016 14:38:00'!
+!MetaProperty methodsFor: 'editing' stamp: 'KenD 22/Dec/2016, 9:38:00 pm (UTC)'!
 edit: myMorph menuItem: item
 
 	(self editProc) 
@@ -868,29 +869,29 @@ edit: myMorph menuItem: item
 			popUpForHand: myMorph world activeHand ]
 		ifNotNil: [ :closure | closure value: myMorph value: self value: item ]! !
 
-!MetaProperty methodsFor: 'accessing' stamp: 'KenD 14/Dec/2016 10:52:00'!
+!MetaProperty methodsFor: 'accessing' stamp: 'KenD 14/Dec/2016, 5:52:00 pm (UTC)'!
 editProc
 
 	^ editProc ! !
 
-!MetaProperty methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016 14:33:00'!
+!MetaProperty methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016, 9:33:00 pm (UTC)'!
 kind
 
 	^ kind! !
 
-!MetaProperty methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016 14:20:00'!
+!MetaProperty methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016, 9:20:00 pm (UTC)'!
 initialize
 
 	kind := Object "default"! !
 
-!MetaProperty methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016 14:19:00'!
+!MetaProperty methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016, 9:19:00 pm (UTC)'!
 kind: aClass
 
 	(aClass isKindOf: Class)
 	ifTrue:  [ kind := aClass ]
 	ifFalse: [ self error: 'Expected a class: ', aClass printString ].! !
 
-!MetaProperty methodsFor: 'initialization' stamp: 'KenD 14/Dec/2016 10:51:00'!
+!MetaProperty methodsFor: 'initialization' stamp: 'KenD 14/Dec/2016, 5:51:00 pm (UTC)'!
 kind: aClass editProc: aClosure
 
 	(aClass isKindOf: Class)
@@ -904,12 +905,12 @@ kind: aClass editProc: aClosure
 							  aClosure printString ].
 	editProc := aClosure ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:10:36 pm (UTC)'!
 addPredefinedMetaProperties
 
 	"Does nothing -- method inherited by subclasses which do not override it"! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:09:28'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:09:28 pm (UTC)'!
 initialize
 	"Add typical usages to dictionary for sharing."
 "
@@ -919,7 +920,7 @@ initialize
 	self initializePreDefinedPropsDict
 ! !
 
-!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+!MetaProperty class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:10:36 pm (UTC)'!
 initializePreDefinedPropsDict
 	"Add typical usages to dictionary for sharing."
 "
@@ -1019,23 +1020,23 @@ initializePreDefinedPropsDict
 	
 	! !
 
-!MetaProperty class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:24:00'!
+!MetaProperty class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 9:24:00 pm (UTC)'!
 kind: aClass
 
 	^ self new kind: aClass! !
 
-!MetaProperty class methodsFor: 'instance creation' stamp: 'KenD 14/Dec/2016 10:46:00'!
+!MetaProperty class methodsFor: 'instance creation' stamp: 'KenD 14/Dec/2016, 5:46:00 pm (UTC)'!
 kind: aClass editProc: aClosure
 
 	^ self new kind: aClass editProc: aClosure! !
 
-!MetaProperty class methodsFor: 'accessing' stamp: 'KenD 5/Dec/2016 07:39:00'!
+!MetaProperty class methodsFor: 'accessing' stamp: 'KenD 5/Dec/2016, 2:39:00 pm (UTC)'!
 metaPropNamed: metaPropName
 
 	^ PreDefinedPropsDict at: metaPropName ifAbsent: [ nil ]
 	! !
 
-!MetaProperty class methodsFor: 'accessing' stamp: 'KenD 25/Jan/2026 14:41:07'!
+!MetaProperty class methodsFor: 'accessing' stamp: 'KenD 25/Jan/2026, 9:41:07 pm (UTC)'!
 metaPropsForMorph: aMorph
 	"Answer a combined Dictionary of name->metaProp by collecting all inherited MetaProps"
 	
@@ -1050,12 +1051,12 @@ metaPropsForMorph: aMorph
 	
 	^ metaPropDict! !
 
-!MetaProperty class methodsFor: 'accessing' stamp: 'KenD 14/Dec/2016 14:09:00'!
+!MetaProperty class methodsFor: 'accessing' stamp: 'KenD 14/Dec/2016, 9:09:00 pm (UTC)'!
 preDefinedPropsDict
 
 	^ PreDefinedPropsDict ! !
 
-!MetaProperty class methodsFor: 'documentation' stamp: 'KenD 28/Jan/2026 13:07:33'!
+!MetaProperty class methodsFor: 'documentation' stamp: 'KenD 28/Jan/2026, 8:07:33 pm (UTC)'!
 whyMe
 
 ^
@@ -1070,7 +1071,7 @@ Note that these visual properties may be virtual.  The idea being that changing 
 MetaProperties are immutable and may be shared.  They are associated with Morph classes and are inherited by Morph subclasses.
 '! !
 
-!MetaProperty class methodsFor: 'testing' stamp: 'KenD 14/Aug/2022 13:33:00'!
+!MetaProperty class methodsFor: 'testing' stamp: 'KenD 14/Aug/2022, 8:33:00 pm (UTC)'!
 classTestFor: aClass
 	"Answer a predicate test for class, 
 	 where Symbol and UnicodeSymbol use #isSymbol
@@ -1081,30 +1082,30 @@ classTestFor: aClass
 	
 	! !
 
-!MetaPropertyFrom methodsFor: 'testing' stamp: 'KenD 4/Dec/2016 14:57:00'!
+!MetaPropertyFrom methodsFor: 'testing' stamp: 'KenD 4/Dec/2016, 9:57:00 pm (UTC)'!
 accepts: newValue
 
 	^ (super accepts: newValue)
 		and: [ minValue <= newValue ]! !
 
-!MetaPropertyFrom methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016 14:58:00'!
+!MetaPropertyFrom methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016, 9:58:00 pm (UTC)'!
 kind: aClass minValue: min
 
 	super kind: aClass.
 	(min  isKindOf: aClass) ifFalse: [ self error: 'minValue must be aKindOf: ',  aClass printString ].
 	minValue := min.! !
 
-!MetaPropertyFrom methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016 14:56:00'!
+!MetaPropertyFrom methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016, 9:56:00 pm (UTC)'!
 minValue
 
 	^ minValue! !
 
-!MetaPropertyFrom methodsFor: 'accessing' stamp: 'KenD 22/Dec/2016 15:52:00'!
+!MetaPropertyFrom methodsFor: 'accessing' stamp: 'KenD 22/Dec/2016, 10:52:00 pm (UTC)'!
 minValue: aValue
 
 	minValue := aValue ! !
 
-!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:10:36 pm (UTC)'!
 addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
@@ -1148,39 +1149,39 @@ addPredefinedMetaProperties
 								fitInWorld ]).
 	! !
 
-!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+!MetaPropertyFrom class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:10:36 pm (UTC)'!
 initialize
 
 	self preDefinedPropsDict ifNil: [ PreDefinedPropsDict := IdentityDictionary new].
 	self addPredefinedMetaProperties.! !
 
-!MetaPropertyFrom class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:59:00'!
+!MetaPropertyFrom class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 9:59:00 pm (UTC)'!
 kind: aClass minValue: min
 
 	^ self new kind: aClass minValue: min! !
 
-!MetaPropertyFrom class methodsFor: 'instance creation' stamp: 'KenD 22/Dec/2016 15:53:00'!
+!MetaPropertyFrom class methodsFor: 'instance creation' stamp: 'KenD 22/Dec/2016, 10:53:00 pm (UTC)'!
 kind: aClass minValue: min editProc: editProc
 
 	^ self new kind: aClass editProc: editProc :: minValue: min! !
 
-!MetaPropertyFrom class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:59:00'!
+!MetaPropertyFrom class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 9:59:00 pm (UTC)'!
 minValue: min
 
 	^ self new kind: Object minValue: min! !
 
-!MetaPropertyOneOf methodsFor: 'testing' stamp: 'KenD 4/Dec/2016 14:29:00'!
+!MetaPropertyOneOf methodsFor: 'testing' stamp: 'KenD 4/Dec/2016, 9:29:00 pm (UTC)'!
 accepts: newValue
 
 	^ (super accepts: newValue)
 		and: [ choiceCollection includes: newValue ]! !
 
-!MetaPropertyOneOf methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016 14:34:00'!
+!MetaPropertyOneOf methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016, 9:34:00 pm (UTC)'!
 choices
 
 	^ choiceCollection! !
 
-!MetaPropertyOneOf methodsFor: 'editing' stamp: 'KenD 24/Dec/2016 15:59:00'!
+!MetaPropertyOneOf methodsFor: 'editing' stamp: 'KenD 24/Dec/2016, 10:59:00 pm (UTC)'!
 edit: myMorph menuItem: item
 
 	| menu selectIndex |
@@ -1189,7 +1190,7 @@ edit: myMorph menuItem: item
 	item propertyValue: ( self choices at: selectIndex ). 
 	myMorph redrawNeeded.! !
 
-!MetaPropertyOneOf methodsFor: 'initialization' stamp: 'Install-Morphic-MetaProperties 14/Aug/2022 13:17:00'!
+!MetaPropertyOneOf methodsFor: 'initialization' stamp: 'Install-Morphic-MetaProperties 14/Aug/2022, 8:17:00 pm (UTC)'!
 kind: aClass choices: aCollection
 	| classTest |
 	super kind: aClass.
@@ -1203,7 +1204,7 @@ kind: aClass choices: aCollection
 	choiceCollection := aCollection.
 ! !
 
-!MetaPropertyOneOf class methodsFor: 'testing' stamp: 'KenD 18/Dec/2016 09:49:00'!
+!MetaPropertyOneOf class methodsFor: 'testing' stamp: 'KenD 18/Dec/2016, 4:49:00 pm (UTC)'!
 accepts: newValue
 
 	(newValue isKindOf: Integer)
@@ -1218,7 +1219,7 @@ accepts: newValue
 	
 	"test decodeProc"! !
 
-!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:10:36 pm (UTC)'!
 addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
@@ -1237,22 +1238,22 @@ addPredefinedMetaProperties
 									choices: #(none theme round  rectangular)).
 ! !
 
-!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+!MetaPropertyOneOf class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:10:36 pm (UTC)'!
 initialize
 
 	self addPredefinedMetaProperties.! !
 
-!MetaPropertyOneOf class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:40:00'!
+!MetaPropertyOneOf class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 9:40:00 pm (UTC)'!
 choices: aCollection
 
 	^ self new kind: Object choices: aCollection! !
 
-!MetaPropertyOneOf class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:30:00'!
+!MetaPropertyOneOf class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 9:30:00 pm (UTC)'!
 kind: aClass choices: aCollection
 
 	^ self new kind: aClass choices: aCollection! !
 
-!MetaPropertyMultiSelect methodsFor: 'testing' stamp: 'KenD 9/Feb/2022 07:14:00'!
+!MetaPropertyMultiSelect methodsFor: 'testing' stamp: 'KenD 9/Feb/2022, 2:14:00 pm (UTC)'!
 accepts: newValue
 
 	| encoding  |
@@ -1267,7 +1268,7 @@ accepts: newValue
 	]
 	on: Error do: [ ^ false ]! !
 
-!MetaPropertyMultiSelect methodsFor: 'testing' stamp: 'KenD 18/Dec/2016 12:54:00'!
+!MetaPropertyMultiSelect methodsFor: 'testing' stamp: 'KenD 18/Dec/2016, 7:54:00 pm (UTC)'!
 encodingInRange: encoded
 
 	(encoded isKindOf: Integer)
@@ -1277,19 +1278,19 @@ encodingInRange: encoded
 		]
 		ifFalse: [ ^ false ]! !
 
-!MetaPropertyMultiSelect methodsFor: 'accessing' stamp: 'KenD 18/Dec/2016 15:10:00'!
+!MetaPropertyMultiSelect methodsFor: 'accessing' stamp: 'KenD 18/Dec/2016, 10:10:00 pm (UTC)'!
 decodeProc
 	"Answer a closure which takes an integer and answers a string"
 
 	^ decodeProc ! !
 
-!MetaPropertyMultiSelect methodsFor: 'accessing' stamp: 'KenD 18/Dec/2016 15:09:00'!
+!MetaPropertyMultiSelect methodsFor: 'accessing' stamp: 'KenD 18/Dec/2016, 10:09:00 pm (UTC)'!
 encodeProc
 	"Answer a closure which takes a value and encodes it into an integer"
 
 	^ encodeProc ! !
 
-!MetaPropertyMultiSelect methodsFor: 'editing' stamp: 'KenD 9/Feb/2022 14:36:00'!
+!MetaPropertyMultiSelect methodsFor: 'editing' stamp: 'KenD 9/Feb/2022, 9:36:00 pm (UTC)'!
 edit: myMorph menuItem: item
 
 	| menu encodedResult |
@@ -1301,14 +1302,14 @@ edit: myMorph menuItem: item
 	item propertyValue: encodedResult. 
 	myMorph redrawNeeded.! !
 
-!MetaPropertyMultiSelect methodsFor: 'initialization' stamp: 'KenD 9/Dec/2022 13:21:00'!
+!MetaPropertyMultiSelect methodsFor: 'initialization' stamp: 'KenD 9/Dec/2022, 8:21:00 pm (UTC)'!
 multiChoiceFrom: aCollection encodeProc: encoder decodeProc: decoder
 
 	self multiChoiceFrom: aCollection kind: Object encodeProc: encoder decodeProc: decoder
 
 ! !
 
-!MetaPropertyMultiSelect methodsFor: 'initialization' stamp: 'KenD 9/Feb/2022 07:25:00'!
+!MetaPropertyMultiSelect methodsFor: 'initialization' stamp: 'KenD 9/Feb/2022, 2:25:00 pm (UTC)'!
 multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decoder
 
 	super kind: aClass choices: aCollection.
@@ -1323,7 +1324,7 @@ multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decode
 
 ! !
 
-!MetaPropertyMultiSelect class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+!MetaPropertyMultiSelect class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:10:36 pm (UTC)'!
 addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
@@ -1351,24 +1352,24 @@ addPredefinedMetaProperties
 				]
 				).! !
 
-!MetaPropertyMultiSelect class methodsFor: 'instance creation' stamp: 'KenD 18/Dec/2016 09:13:00'!
+!MetaPropertyMultiSelect class methodsFor: 'instance creation' stamp: 'KenD 18/Dec/2016, 4:13:00 pm (UTC)'!
 multiChoiceFrom: aCollection encodeProc: encoder decodeProc: decoder
 
 	^ self new multiChoiceFrom: aCollection encodeProc: encoder decodeProc: decoder! !
 
-!MetaPropertyMultiSelect class methodsFor: 'instance creation' stamp: 'KenD 9/Feb/2022 07:24:00'!
+!MetaPropertyMultiSelect class methodsFor: 'instance creation' stamp: 'KenD 9/Feb/2022, 2:24:00 pm (UTC)'!
 multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decoder
 
 	^ self new multiChoiceFrom: aCollection kind: aClass encodeProc: encoder decodeProc: decoder! !
 
-!MetaPropertyRange methodsFor: 'testing' stamp: 'KenD 4/Dec/2016 14:43:00'!
+!MetaPropertyRange methodsFor: 'testing' stamp: 'KenD 4/Dec/2016, 9:43:00 pm (UTC)'!
 accepts: newValue
 
 	^ (super accepts: newValue)
 		and: [ minValue <= newValue ]
 			and: [ newValue <= maxValue ]! !
 
-!MetaPropertyRange methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016 14:45:00'!
+!MetaPropertyRange methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016, 9:45:00 pm (UTC)'!
 kind: aClass minValue: min maxValue: max
 
 	super kind: aClass.
@@ -1377,52 +1378,52 @@ kind: aClass minValue: min maxValue: max
 	minValue := min.
 	maxValue := max.! !
 
-!MetaPropertyRange methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016 14:42:00'!
+!MetaPropertyRange methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016, 9:42:00 pm (UTC)'!
 maxValue
 
 	^ maxValue! !
 
-!MetaPropertyRange methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016 14:42:00'!
+!MetaPropertyRange methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016, 9:42:00 pm (UTC)'!
 minValue
 
 	^ minValue! !
 
-!MetaPropertyRange class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:41:00'!
+!MetaPropertyRange class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 9:41:00 pm (UTC)'!
 kind: aClass minValue: min maxValue: max
 
 	^ self new kind: aClass minValue: min maxValue: max! !
 
-!MetaPropertyRange class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 14:41:00'!
+!MetaPropertyRange class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 9:41:00 pm (UTC)'!
 minValue: min maxValue: max
 
 	^ self new kind: Object minValue: min maxValue: max! !
 
-!MetaPropertyTransducer methodsFor: 'testing' stamp: 'KenD 22/Dec/2016 20:16:00'!
+!MetaPropertyTransducer methodsFor: 'testing' stamp: 'KenD 23/Dec/2016, 3:16:00 am (UTC)'!
 accepts: newValue
 
 	^ (self kinds anySatisfy: [ :class | newValue isKindOf: class ])! !
 
-!MetaPropertyTransducer methodsFor: 'accessing' stamp: 'KenD 22/Dec/2016 19:58:00'!
+!MetaPropertyTransducer methodsFor: 'accessing' stamp: 'KenD 23/Dec/2016, 2:58:00 am (UTC)'!
 decodeProc
 	"Emulate multiselect protocol"
 	^ [ :value | value ] "identity/pass-through"! !
 
-!MetaPropertyTransducer methodsFor: 'accessing' stamp: 'KenD 22/Dec/2016 19:58:00'!
+!MetaPropertyTransducer methodsFor: 'accessing' stamp: 'KenD 23/Dec/2016, 2:58:00 am (UTC)'!
 encodeProc
 	"Emulate multiselect protocol"
 	^ transformProc ! !
 
-!MetaPropertyTransducer methodsFor: 'accessing' stamp: 'KenD 22/Dec/2016 19:37:00'!
+!MetaPropertyTransducer methodsFor: 'accessing' stamp: 'KenD 23/Dec/2016, 2:37:00 am (UTC)'!
 kinds
 
 	^ kinds! !
 
-!MetaPropertyTransducer methodsFor: 'accessing' stamp: 'KenD 22/Dec/2016 19:37:00'!
+!MetaPropertyTransducer methodsFor: 'accessing' stamp: 'KenD 23/Dec/2016, 2:37:00 am (UTC)'!
 transformProc
 
 	^ transformProc ! !
 
-!MetaPropertyTransducer methodsFor: 'initialization' stamp: 'KenD 22/Dec/2016 19:43:00'!
+!MetaPropertyTransducer methodsFor: 'initialization' stamp: 'KenD 23/Dec/2016, 2:43:00 am (UTC)'!
 kinds: classCollection transformProc: aClosure
 
 	(classCollection allSatisfy: [ :c | c isKindOf: Class ])
@@ -1435,7 +1436,7 @@ kinds: classCollection transformProc: aClosure
 	transformProc := aClosure.
 	kinds := classCollection.! !
 
-!MetaPropertyTransducer class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:10:36'!
+!MetaPropertyTransducer class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:10:36 pm (UTC)'!
 addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
@@ -1464,18 +1465,18 @@ addPredefinedMetaProperties
 
 ! !
 
-!MetaPropertyTransducer class methodsFor: 'instance creation' stamp: 'KenD 22/Dec/2016 19:44:00'!
+!MetaPropertyTransducer class methodsFor: 'instance creation' stamp: 'KenD 23/Dec/2016, 2:44:00 am (UTC)'!
 kinds: classCollection transformProc: aClosure
 
 	^ self new kinds: classCollection transformProc: aClosure! !
 
-!MetaPropertyViaTest methodsFor: 'testing' stamp: 'KenD 4/Dec/2016 15:19:00'!
+!MetaPropertyViaTest methodsFor: 'testing' stamp: 'KenD 4/Dec/2016, 10:19:00 pm (UTC)'!
 accepts: newValue
 
 	^ (super accepts: newValue)
 		and: [ testClosure value: newValue ]! !
 
-!MetaPropertyViaTest methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016 15:18:00'!
+!MetaPropertyViaTest methodsFor: 'initialization' stamp: 'KenD 4/Dec/2016, 10:18:00 pm (UTC)'!
 kind: aClass test: aClosure
 
 	super kind: aClass.
@@ -1486,17 +1487,17 @@ kind: aClass test: aClosure
 					aClosure printString ].
 	testClosure := aClosure.! !
 
-!MetaPropertyViaTest methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016 15:18:00'!
+!MetaPropertyViaTest methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016, 10:18:00 pm (UTC)'!
 test
 
 	^ testClosure! !
 
-!MetaPropertyViaTest methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016 15:18:00'!
+!MetaPropertyViaTest methodsFor: 'accessing' stamp: 'KenD 4/Dec/2016, 10:18:00 pm (UTC)'!
 testClosure
 
 	^ testClosure! !
 
-!MetaPropertyViaTest class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026 13:11:33'!
+!MetaPropertyViaTest class methodsFor: 'class initialization' stamp: 'KenD 28/Jan/2026, 8:11:33 pm (UTC)'!
 addPredefinedMetaProperties
 	"Add typical usages to dictionary for sharing."
 "
@@ -1507,149 +1508,149 @@ addPredefinedMetaProperties
 	props := self preDefinedPropsDict.
 "! !
 
-!MetaPropertyViaTest class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 15:21:00'!
+!MetaPropertyViaTest class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 10:21:00 pm (UTC)'!
 kind: aClass test: aClosure
 
 	^ self new kind: aClass test: aClosure! !
 
-!MetaPropertyViaTest class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016 15:21:00'!
+!MetaPropertyViaTest class methodsFor: 'instance creation' stamp: 'KenD 4/Dec/2016, 10:21:00 pm (UTC)'!
 test: aClosure
 
 	^ self new kind: Object test: aClosure! !
 
-!ProtoObject methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:11:00'!
+!ProtoObject methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:11:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem blankIcon! !
 
-!Object methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:10:00'!
+!Object methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:10:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem objectIcon ! !
 
-!Object methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:10:00'!
+!Object methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:10:00 pm (UTC)'!
 morphForDrag
 	"Answer a morph suitable for DragNDrop"
 	
 	^ SignMorph forObject: self
 ! !
 
-!Form methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:47:00'!
+!Form methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:47:00 pm (UTC)'!
 morphForDrag
 	"Answer a morph suitable for DragNDrop"
 	
 	^ ImageMorph new image: self
 ! !
 
-!AbstractFont methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:35:00'!
+!AbstractFont methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:35:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem fontIcon ! !
 
-!AbstractFont methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:35:00'!
+!AbstractFont methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:35:00 pm (UTC)'!
 morphForDrag
 	"Answer a morph suitable for DragNDrop"
 	
 	^ FontMorph font: self
 ! !
 
-!Timespan methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:14:00'!
+!Timespan methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:14:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem chronIcon ! !
 
-!Collection methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:39:00'!
+!Collection methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:39:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem collectionIcon ! !
 
-!CharacterSequence methodsFor: '*ui-metaproperties' stamp: 'KenD 9/Dec/2022 13:06:00'!
+!CharacterSequence methodsFor: '*ui-metaproperties' stamp: 'KenD 9/Dec/2022, 8:06:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem stringIcon ! !
 
-!Symbol methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:13:00'!
+!Symbol methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:13:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem symbolIcon ! !
 
-!UnicodeSymbol methodsFor: '*ui-metaproperties' stamp: 'KenD 9/Dec/2022 13:07:00'!
+!UnicodeSymbol methodsFor: '*ui-metaproperties' stamp: 'KenD 9/Dec/2022, 8:07:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem symbolIcon ! !
 
-!Stream methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:12:00'!
+!Stream methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:12:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem streamIcon ! !
 
-!BlockClosure methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:37:00'!
+!BlockClosure methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:37:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem closureIcon ! !
 
-!Boolean methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:38:00'!
+!Boolean methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:38:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem booleanIcon ! !
 
-!False methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:44:00'!
+!False methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:44:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem falseIcon ! !
 
-!True methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:45:00'!
+!True methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:45:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem trueIcon ! !
 
-!Magnitude methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:06:00'!
+!Magnitude methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:06:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem integerIcon ! !
 
-!Time methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:14:00'!
+!Time methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:14:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem chronIcon ! !
 
-!Float methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:47:00'!
+!Float methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:47:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem floatIcon ! !
 
-!Fraction methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:48:00'!
+!Fraction methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:48:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem fractionIcon ! !
 
-!Integer methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:01:00'!
+!Integer methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:01:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem integerIcon ! !
 
-!Color methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:40:00'!
+!Color methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:40:00 pm (UTC)'!
 morphForDrag
 	"Answer a morph suitable for DragNDrop"
 	
 	^ DropColorMorph fromColor: self! !
 
-!UndefinedObject methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:15:00'!
+!UndefinedObject methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:15:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem nilIcon ! !
 
-!Character methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:38:00'!
+!Character methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:38:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem charIcon ! !
 
-!Point methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:11:00'!
+!Point methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:11:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem pointIcon ! !
 
-!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 14:38:58'!
+!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 9:38:58 pm (UTC)'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
 	"Add morph-specific items to the given menu which was invoked by the given hand.  This method provides is invoked both from the halo-menu and from the control-menu regimes."
 
@@ -1663,12 +1664,12 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 				 add: 'edit my layoutSpec' action: #editMyLayoutSpec
 		]! !
 
-!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 6/Mar/2022 07:52:00'!
+!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 6/Mar/2022, 2:52:00 pm (UTC)'!
 messageWindow
 
 	^ MorphMessageBox openForMorph: self! !
 
-!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:09:00'!
+!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:09:00 pm (UTC)'!
 morphForDrag
 	"Answer a morph suitable for DragNDrop"
 	
@@ -1679,7 +1680,7 @@ morphForDrag
 	
 ! !
 
-!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 6/Mar/2022 07:52:00'!
+!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 6/Mar/2022, 2:52:00 pm (UTC)'!
 nameForWorkspace
 	"Answer a name suitable for a Workspace variable"
 	| displayName |
@@ -1693,19 +1694,19 @@ nameForWorkspace
 		] 
 		ifNil: [ self class name asLowercase , self identityHash asString ]! !
 
-!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:09:00'!
+!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:09:00 pm (UTC)'!
 propertiesDict
 	"Private - could export a #propertiesDo: method"
 
 	^ properties ! !
 
-!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:09:00'!
+!Morph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:09:00 pm (UTC)'!
 valueWhenDropped
 	"Subclasses which wrap values should override (e.g. SignMorph, DropColorMorph)"
 	
 	^ self copy! !
 
-!Morph class methodsFor: '*ui-metaproperties' stamp: 'KenD 26/Jan/2026 11:54:51'!
+!Morph class methodsFor: '*ui-metaproperties' stamp: 'KenD 26/Jan/2026, 6:54:51 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	"Used by any Morph with Visual MetaProperties.
@@ -1716,7 +1717,7 @@ addLocalMetaPropsTo: aDict
 	
 	^ aDict ifNotNil: [aDict] ifNil: [Dictionary new] "Base Case"! !
 
-!PlacedMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:06:24'!
+!PlacedMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:06:24 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1725,7 +1726,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #morphPosition put: (predefinedPropsDict at: #acceptsPoint). 
 	aDict! !
 
-!BoxMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:07:13'!
+!BoxMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:07:13 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1733,7 +1734,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #morphExtent   put: (predefinedPropsDict at: #acceptsPositivePoint). 
 	aDict! !
 
-!ColoredBoxMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:07:42'!
+!ColoredBoxMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:07:42 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1741,7 +1742,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #color   put: (predefinedPropsDict at: #acceptsColor). 
 	aDict! !
 
-!BorderedBoxMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:08:05'!
+!BorderedBoxMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:08:05 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1751,12 +1752,12 @@ addLocalMetaPropsTo: aDict
 	aDict at: #padding        put: (predefinedPropsDict at: #acceptsPoint). 
 	aDict! !
 
-!LayoutMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:44:00'!
+!LayoutMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:44:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem layoutIcon ! !
 
-!LinearLayoutMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:08:53'!
+!LinearLayoutMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:08:53 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1764,7 +1765,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #gap   put: (predefinedPropsDict at: #acceptsPositiveInteger). 
 	aDict! !
 
-!WindowTitleMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 14:03:25'!
+!WindowTitleMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 9:03:25 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1772,7 +1773,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #titleString   put: (predefinedPropsDict at: #acceptsString). 
 	aDict! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:06:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:06:00 pm (UTC)'!
 aboutToGrab: aMorph
 	"submorph is being grabbed by a hand.
 	Perform necessary adjustments (if any) and return the actual morph
@@ -1792,7 +1793,7 @@ aboutToGrab: aMorph
 	ifFalse: [ ^ valueToDrag morphForDrag ]
 ! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 14:29:11'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 9:29:11 pm (UTC)'!
 addVisualProperties
 
 	| theMorphOfInterest morphMetaPropDict |
@@ -1820,13 +1821,13 @@ addVisualProperties
 	theMorphOfInterest when: #propertyChanged send: #refreshView to: self. 
 	! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:06:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:06:00 pm (UTC)'!
 allowsSubmorphDrag
 	"Answer whether our morphs can just be grabbed with the hand, instead of requiring the use of the halo. Redefined to answer true."
 
 	^ true! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:07:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:07:00 pm (UTC)'!
 edit: propName
 "
 	Remove
@@ -1839,13 +1840,13 @@ edit: propName
 	(HoverHelpMorph contents: 'Need editor for ' , propName asString)
 		popUpForHand: self targetMorph world activeHand! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:07:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:07:00 pm (UTC)'!
 fontPreferenceChanged
 
 	super fontPreferenceChanged.
 	self refreshView.! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:07:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:07:00 pm (UTC)'!
 metaPropNames
 	"Answer an alpha-sorted collection of MetaProperty names"
 
@@ -1855,18 +1856,18 @@ metaPropNames
 
 	^ metaPropNames ! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:07:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:07:00 pm (UTC)'!
 metaProps
 
 	^ self valueOfProperty: #metaProps ifAbsent: [ Dictionary new ].! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:07:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:07:00 pm (UTC)'!
 morphSelectorProperties
 	"Answer a collection of names of properties accessed via selector"
 
 	^ #(morphPosition morphExtent)! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:07:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:07:00 pm (UTC)'!
 refreshView "of visual properties"
 
 	self items do: [ :item |
@@ -1875,7 +1876,7 @@ refreshView "of visual properties"
 	]
 ! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 15/Sep/2024 08:05:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 15/Sep/2024, 3:05:00 pm (UTC)'!
 showTargetHalo
 	"Show my targetMorph's halo"
 	| aMorph |
@@ -1892,34 +1893,34 @@ showTargetHalo
 				addHalo   
 		]! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:07:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:07:00 pm (UTC)'!
 targetMorph
 	"My defaultTarget is the morph of interest"
 	
 	^ defaultTarget! !
 
-!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:07:00'!
+!MenuMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:07:00 pm (UTC)'!
 valueWhenDropped
 
 	^nil! !
 
-!ImageMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:45:00'!
+!ImageMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:45:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem imageIcon ! !
 
-!ImageMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:49:00'!
+!ImageMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Oct/2026, 7:34:58 pm (UTC)'!
 image
 
-	^ self form! !
+	^ self imageForm! !
 
-!ImageMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:49:00'!
+!ImageMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Oct/2026, 7:35:48 pm (UTC)'!
 valueWhenDropped
 	"Answer my form (image)"
 	
-	^ self form! !
+	^ self imageForm! !
 
-!ImageMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:09:38'!
+!ImageMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:09:38 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1927,12 +1928,12 @@ addLocalMetaPropsTo: aDict
 	aDict at: #image   put: (predefinedPropsDict at: #acceptsForm). 
 	aDict! !
 
-!LabelMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:03:00'!
+!LabelMorph methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:03:00 pm (UTC)'!
 emphasis
 
 	^ emphasis! !
 
-!LabelMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:10:08'!
+!LabelMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:10:08 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1942,7 +1943,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #emphasis put: (predefinedPropsDict at: #acceptsEmphasis). 
 	aDict! !
 
-!PluggableButtonMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:10:48'!
+!PluggableButtonMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:10:48 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1955,17 +1956,17 @@ addLocalMetaPropsTo: aDict
 	aDict at: #buttonStyle put:  (predefinedPropsDict at: #acceptsButtonStyle).
 	aDict! !
 
-!SystemWindow methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:13:00'!
+!SystemWindow methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:13:00 pm (UTC)'!
 labelString
 
 	^ self label! !
 
-!SystemWindow methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:13:00'!
+!SystemWindow methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:13:00 pm (UTC)'!
 labelString: aString
 
 	self setLabel: aString! !
 
-!SystemWindow class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 14:06:23'!
+!SystemWindow class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 9:06:23 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1973,12 +1974,12 @@ addLocalMetaPropsTo: aDict
 	aDict at: #labelString put: (predefinedPropsDict at: #acceptsString).
 	aDict! !
 
-!Panel methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:10:00'!
+!Panel methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:10:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem windowIcon ! !
 
-!Panel class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 13:05:47'!
+!Panel class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 8:05:47 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1987,7 +1988,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #stayUp 		put: (predefinedPropsDict at: #acceptsBoolean). 
 	aDict! !
 
-!FrameMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:54:16'!
+!FrameMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:54:16 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -1995,7 +1996,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #borderStyle put: (predefinedPropsDict at: #acceptsBorderStyle).
 	aDict! !
 
-!FontMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 13:56:51'!
+!FontMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 8:56:51 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2006,7 +2007,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #emphasis     put: (predefinedPropsDict at: #acceptsEmphasis). 
 	aDict! !
 
-!TextEntryMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 14:04:55'!
+!TextEntryMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 9:04:55 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2017,7 +2018,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #backgroundColor put: (predefinedPropsDict at: #acceptsColor).
 	aDict! !
 
-!LineMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:28:09'!
+!LineMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:28:09 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2028,7 +2029,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #lineWidth put: (predefinedPropsDict at: #acceptsPositiveInteger). 
 	aDict! !
 
-!PointerLineMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:58:23'!
+!PointerLineMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:58:23 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2036,7 +2037,7 @@ addLocalMetaPropsTo: aDict
 	aDict at: #endPointMorph  put: (predefinedPropsDict at: #acceptsForm). 
 	aDict! !
 
-!ArrowMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 14:49:05'!
+!ArrowMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 9:49:05 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2059,7 +2060,7 @@ addLocalMetaPropsTo: aDict
 		put: (predefinedPropsDict at: #acceptsColor). 
 	aDict! !
 
-!BezierQuadraticMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:35:36'!
+!BezierQuadraticMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:35:36 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2076,7 +2077,7 @@ addLocalMetaPropsTo: aDict
 		put: (predefinedPropsDict at: #acceptsColor). 
 	aDict! !
 
-!BezierCubicMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:36:38'!
+!BezierCubicMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:36:38 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2085,7 +2086,7 @@ addLocalMetaPropsTo: aDict
 		put: (predefinedPropsDict at: #acceptsPoint).  
 	aDict! !
 
-!CircleShapeMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:38:18'!
+!CircleShapeMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:38:18 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2102,7 +2103,7 @@ addLocalMetaPropsTo: aDict
 		put: (predefinedPropsDict at: #acceptsColor).  
 	aDict! !
 
-!LineShapeMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:40:25'!
+!LineShapeMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:40:25 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2117,7 +2118,7 @@ addLocalMetaPropsTo: aDict
 		put: (predefinedPropsDict at: #acceptsColor). 
 	aDict! !
 
-!RectangleShapeMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026 12:44:44'!
+!RectangleShapeMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:44:44 pm (UTC)'!
 addLocalMetaPropsTo: aDict
 
 	| predefinedPropsDict |
@@ -2134,47 +2135,47 @@ addLocalMetaPropsTo: aDict
 		put: (predefinedPropsDict at: #acceptsColor). 
 	aDict! !
 
-!LayoutSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021 12:44:00'!
+!LayoutSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 14/Dec/2021, 7:44:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem layoutIcon ! !
 
-!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026 13:31:40'!
+!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026, 8:31:40 pm (UTC)'!
 privateFixedHeight
 
 	^ fixedHeight! !
 
-!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026 13:31:48'!
+!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026, 8:31:48 pm (UTC)'!
 privateFixedWidth
 
 	^ fixedWidth! !
 
-!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026 13:32:07'!
+!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026, 8:32:07 pm (UTC)'!
 privateProportionalHeight
 
 	^ proportionalHeight! !
 
-!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026 13:32:14'!
+!LayoutSizeSpec methodsFor: '*ui-metaproperties' stamp: 'KenD 27/Jan/2026, 8:32:14 pm (UTC)'!
 privateProportionalWidth
 
 	^ proportionalWidth ! !
 
-!FileIOAccessor methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:46:00'!
+!FileIOAccessor methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:46:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem fileIcon ! !
 
-!FileSystemEntry methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:46:00'!
+!FileSystemEntry methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:46:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem fileIcon ! !
 
-!DirectoryEntry methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:41:00'!
+!DirectoryEntry methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:41:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem folderIcon ! !
 
-!FileEntry methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021 16:46:00'!
+!FileEntry methodsFor: '*ui-metaproperties' stamp: 'KenD 13/Dec/2021, 11:46:00 pm (UTC)'!
 icon
 
 	^ VisualPropertyMenuItem fileIcon ! !
