@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7816] on 27 January 2026 at 1:38:52 pm'!
+'From Cuis7.9 [latest update: #8266] on 15 October 2026 at 2:29:17 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 26!
+!provides: 'UI-Layout-Panel' 1 27!
 !requires: 'UI-Click-Select' 1 63 nil!
 !requires: 'UI-DragAndDrop' 1 4 nil!
 !requires: 'Cuis-Base' 75 7734 nil!
@@ -45,13 +45,13 @@ I am a simple editor for a LayoutSpec.
 
 !
 
-!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'hlsf 28/Jul/2024 10:48:00'!
+!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'hlsf 28/Jul/2024, 5:48:00 pm (UTC)'!
 buildMorphicWindow
 	super buildMorphicWindow.
 	self setLabel: 'Layout: ', (self model printStringLimitedTo: 30).
 	self titleMorph showButtonsNamed: #( close pin collapse showHalo )! !
 
-!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024 16:22:00'!
+!LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'KenD 14/Sep/2024, 11:22:00 pm (UTC)'!
 newPane
 	| controlArea leftCol rightCol  |	
 		
@@ -85,57 +85,57 @@ newPane
 
 ! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 16/Dec/2013 15:29:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 16/Dec/2013, 10:29:00 pm (UTC)'!
 colorArea
 
 	^ colorArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 12:26:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013, 7:26:00 pm (UTC)'!
 colorArea: newColorArea
 
 	colorArea := newColorArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 16/Dec/2013 15:29:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 16/Dec/2013, 10:29:00 pm (UTC)'!
 directionArea
 
 	^ directionArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 12:26:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013, 7:26:00 pm (UTC)'!
 directionArea: newDirectonArea
 
 	directionArea := newDirectonArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024 16:20:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024, 11:20:00 pm (UTC)'!
 padEntry
 
 	^ axisEntry! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024 16:20:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024, 11:20:00 pm (UTC)'!
 padRadio
 
 	^ axisRadio! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024 16:19:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024, 11:19:00 pm (UTC)'!
 paddingArea
 
 	^ edgeWeightArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024 16:19:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 14/Sep/2024, 11:19:00 pm (UTC)'!
 paddingArea: newPaddingArea
 
 	edgeWeightArea := newPaddingArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 16/Dec/2013 15:29:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 16/Dec/2013, 10:29:00 pm (UTC)'!
 separationArea
 
 	^ separationArea! !
 
-!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 12:27:00'!
+!LayoutMorphEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013, 7:27:00 pm (UTC)'!
 separationArea: newSeparationArea
 
 	separationArea := newSeparationArea! !
 
-!LayoutMorphEditPanel methodsFor: 'private' stamp: 'KenD 26/Mar/2022 09:28:00'!
+!LayoutMorphEditPanel methodsFor: 'private' stamp: 'KenD 26/Mar/2022, 4:28:00 pm (UTC)'!
 colorMorph
 	"Answer a framed color swatch"
 	
@@ -166,7 +166,7 @@ colorMorph
 	^ frameMorph
 ! !
 
-!LayoutMorphEditPanel methodsFor: 'geometry' stamp: 'KenD 26/Aug/2015 14:43:00'!
+!LayoutMorphEditPanel methodsFor: 'geometry' stamp: 'KenD 26/Aug/2015, 9:43:00 pm (UTC)'!
 fontPreferenceChanged
 	"My size needs adjustment"
 
@@ -175,7 +175,7 @@ fontPreferenceChanged
 	self submorphsDo: [ :m | m fontPreferenceChanged ].
 .	self morphExtent: self minimumExtent ! !
 
-!LayoutMorphEditPanel methodsFor: 'geometry' stamp: 'KenD 9/Mar/2020 13:08:00'!
+!LayoutMorphEditPanel methodsFor: 'geometry' stamp: 'KenD 9/Mar/2020, 8:08:00 pm (UTC)'!
 xxMminimumExtent
 "Answer minimum extent to hold my submorphs"
 
@@ -188,7 +188,7 @@ xxMminimumExtent
 	].
 	^ width @ height! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 15/Sep/2024 04:46:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 15/Sep/2024, 11:46:00 am (UTC)'!
 modelBeColumn
 	"My editModel should be a Column"
 
@@ -197,7 +197,7 @@ modelBeColumn
 	self refreshEdgeWeightArea.
 "	self editModel refreshExtent."! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 15/Sep/2024 08:40:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 15/Sep/2024, 3:40:00 pm (UTC)'!
 modelBeRow
 	"My editModel should be a Row"
 	
@@ -206,44 +206,44 @@ modelBeRow
 	self refreshEdgeWeightArea.
 	"self editModel refreshExtent."! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 17/Dec/2013 12:35:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 17/Dec/2013, 7:35:00 pm (UTC)'!
 modelColor: aColor
 	
 	self editModel color: aColor.
 	self refreshColorArea.! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 14/Sep/2024 16:18:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 14/Sep/2024, 11:18:00 pm (UTC)'!
 modelEdgeWeight: numPixels
 	
 	self editModel axisEdgeWeight: numPixels.
 	self refreshEdgeWeightArea.! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 14/Sep/2024 16:13:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 14/Sep/2024, 11:13:00 pm (UTC)'!
 modelGap: numPixels
 
 	self editModel gap: numPixels.
 	self refreshSeparationtionArea.! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 15/Sep/2024 04:45:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 15/Sep/2024, 11:45:00 am (UTC)'!
 modelXPadding: numPixels
 
 	self editModel padding: (numPixels @ editModel padding y).
 	self refreshSeparationtionArea.! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 15/Sep/2024 04:45:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 15/Sep/2024, 11:45:00 am (UTC)'!
 modelYPadding: numPixels
 
 	self editModel padding: (editModel padding x @numPixels).
 	self refreshSeparationtionArea.! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 17/Dec/2013 14:18:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 17/Dec/2013, 9:18:00 pm (UTC)'!
 newDirectionSelection: dirSymbol
 
 	(dirSymbol = #Row)
 		ifTrue: [ self modelBeRow ] 
 		ifFalse: [ self modelBeColumn ]! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 14/Sep/2024 16:18:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 14/Sep/2024, 11:18:00 pm (UTC)'!
 refreshView
 
 	self refreshColorArea; 
@@ -251,7 +251,7 @@ refreshView
 		refreshEdgeWeightArea; 
 		refreshSeparationtionArea! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 27/Jul/2015 16:26:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 27/Jul/2015, 11:26:00 pm (UTC)'!
 showHaloButtonClicked
 
 	| aMorph |
@@ -264,7 +264,7 @@ showHaloButtonClicked
 				popUpForHand: self  world activeHand
 	]! !
 
-!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 1/Dec/2025 12:28:00'!
+!LayoutMorphEditPanel methodsFor: 'event handling' stamp: 'KenD 1/Dec/2025, 7:28:00 pm (UTC)'!
 updateMasterFromCopy
 	"Update model from editModel"
 	
@@ -289,7 +289,7 @@ updateMasterFromCopy
 		ifTrue: [ self refreshView ]
 ! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 23/Oct/2020 08:37:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 23/Oct/2020, 3:37:00 pm (UTC)'!
 newColorArea
 	"Answer a FramedLayoutMorph showing color swatch and hex RGB entry"
 	
@@ -332,7 +332,7 @@ newColorArea
 	
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 1/Dec/2025 12:24:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 1/Dec/2025, 7:24:00 pm (UTC)'!
 newDirectionArea
 	"Answer a FramedLayoutMorph with controls for Direction (Row,Column)"
 	
@@ -358,7 +358,7 @@ newDirectionArea
 	
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 1/Dec/2025 12:25:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 1/Dec/2025, 7:25:00 pm (UTC)'!
 newEdgeWeightArea
 	"Answer a FramedLayoutMorph with controls for AxisEdgeWeight"
 	
@@ -391,7 +391,7 @@ newEdgeWeightArea
 	
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 14/Sep/2024 16:23:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 14/Sep/2024, 11:23:00 pm (UTC)'!
 newEdgeWeightSelection: padSym
 
 	| radio |
@@ -407,7 +407,7 @@ newEdgeWeightSelection: padSym
 
 ! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 15/Sep/2024 04:55:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 15/Sep/2024, 11:55:00 am (UTC)'!
 newSeparationtionArea
 	"Answer a FramedLayoutMorph with controls for gap and padding"
 	
@@ -475,7 +475,7 @@ newSeparationtionArea
 	
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013 12:30:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013, 7:30:00 pm (UTC)'!
 refreshColorArea
 	"Update my view"
 	
@@ -486,7 +486,7 @@ refreshColorArea
 	self colorArea: newArea 
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013 12:29:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013, 7:29:00 pm (UTC)'!
 refreshDirectionArea
 	"Update my view"
 	
@@ -497,7 +497,7 @@ refreshDirectionArea
 	self directionArea: newArea 
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 14/Sep/2024 16:22:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 14/Sep/2024, 11:22:00 pm (UTC)'!
 refreshEdgeWeightArea
 	"Update my view"
 	
@@ -508,7 +508,7 @@ refreshEdgeWeightArea
 	self paddingArea: newArea 
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013 12:28:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013, 7:28:00 pm (UTC)'!
 refreshSeparationtionArea
 	"Update my view"
 	
@@ -519,7 +519,7 @@ refreshSeparationtionArea
 	self separationArea: newArea 
 	! !
 
-!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013 14:29:00'!
+!LayoutMorphEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013, 9:29:00 pm (UTC)'!
 setPadRadio: radio fromPadFactor: factor
 
 	factor caseOf: {
@@ -528,7 +528,7 @@ setPadRadio: radio fromPadFactor: factor
 		[1.0] -> [ (radio buttons at: 3) select ].
 	} otherwise: [ (radio buttons at: 4) select ]! !
 
-!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 5/Sep/2020 14:08:00'!
+!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 5/Sep/2020, 9:08:00 pm (UTC)'!
 addFixedHeightEntryMorphTo: radio
 	"Add entry field to #Fixed radioButton row"
 
@@ -550,7 +550,7 @@ addFixedHeightEntryMorphTo: radio
 			addMorph: fixEntry.
 ! !
 
-!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 1/Jun/2020 14:46:00'!
+!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 1/Jun/2020, 9:46:00 pm (UTC)'!
 addFixedWidthEntryMorphTo: radio
 	"Add entry field to #Fixed radioButton row"
 
@@ -572,7 +572,7 @@ addFixedWidthEntryMorphTo: radio
 			addMorph: fixEntry.
 ! !
 
-!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 30/Oct/2015 14:23:00'!
+!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 30/Oct/2015, 9:23:00 pm (UTC)'!
 newProportionalHeightAuxArea
 	"Add proportion factor and minSize fields"
 
@@ -585,7 +585,7 @@ newProportionalHeightAuxArea
 		addMorph: self propHeightMinimum;
 		yourself! !
 
-!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 30/Oct/2015 14:23:00'!
+!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 30/Oct/2015, 9:23:00 pm (UTC)'!
 newProportionalWidthAuxArea
 	"Add proportion factor and minSize fields"
 
@@ -598,7 +598,7 @@ newProportionalWidthAuxArea
 		addMorph: self propWidthMinimum;
 		yourself! !
 
-!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 28/Apr/2019 18:41:00'!
+!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 29/Apr/2019, 1:41:00 am (UTC)'!
 propHeightMinimum
 	"proportion percent"
 
@@ -622,7 +622,7 @@ propHeightMinimum
 		addMorph: (LabelMorph contents: ' pixels');
 		yourself! !
 
-!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 28/Apr/2019 18:41:00'!
+!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 29/Apr/2019, 1:41:00 am (UTC)'!
 propHeightPercent
 	"proportion percent"
 
@@ -643,7 +643,7 @@ propHeightPercent
 		addMorph: (LabelMorph contents: '%');
 		yourself! !
 
-!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 28/Apr/2019 18:42:00'!
+!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 29/Apr/2019, 1:42:00 am (UTC)'!
 propWidthMinimum
 	"proportion percent"
 
@@ -667,7 +667,7 @@ propWidthMinimum
 		addMorph: (LabelMorph contents: ' pixels');
 		yourself! !
 
-!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 28/Apr/2019 18:42:00'!
+!LayoutSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 29/Apr/2019, 1:42:00 am (UTC)'!
 propWidthPercent
 	"proportion percent"
 
@@ -688,13 +688,13 @@ propWidthPercent
 		addMorph: (LabelMorph contents: '%');
 		yourself! !
 
-!LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'hlsf 28/Jul/2024 10:47:00'!
+!LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'hlsf 28/Jul/2024, 5:47:00 pm (UTC)'!
 buildMorphicWindow
 	super buildMorphicWindow.
 	self setLabel: 'LayoutSpec: ', (self model morph printStringLimitedTo: 30).
 	self titleMorph showButtonsNamed: #( close pin collapse showHalo ); layoutSubmorphs! !
 
-!LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 25/Jul/2024 16:08:00'!
+!LayoutSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 25/Jul/2024, 11:08:00 pm (UTC)'!
 newPane
 	| controlsArea |
 		
@@ -711,7 +711,7 @@ newPane
 		color: Theme current textPane.
 	^ controlsArea ! !
 
-!LayoutSpecEditPanel methodsFor: 'geometry' stamp: 'KenD 26/Aug/2015 14:43:00'!
+!LayoutSpecEditPanel methodsFor: 'geometry' stamp: 'KenD 26/Aug/2015, 9:43:00 pm (UTC)'!
 fontPreferenceChanged
 	"My size needs adjustment"
 
@@ -720,47 +720,47 @@ fontPreferenceChanged
 	self submorphsDo: [ :m | m fontPreferenceChanged. ] 
 .	self morphExtent: self minimumExtent ! !
 
-!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 19:50:00'!
+!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 18/Dec/2013, 2:50:00 am (UTC)'!
 heightArea
 
 	^ heightArea! !
 
-!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 19:51:00'!
+!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 18/Dec/2013, 2:51:00 am (UTC)'!
 heightArea: newHeightArea
 
 	heightArea := newHeightArea! !
 
-!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 19:49:00'!
+!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 18/Dec/2013, 2:49:00 am (UTC)'!
 padEntry
 
 	^ padEntry! !
 
-!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 19:48:00'!
+!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 18/Dec/2013, 2:48:00 am (UTC)'!
 padRadio
 
 	^ padRadio! !
 
-!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 19:49:00'!
+!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 18/Dec/2013, 2:49:00 am (UTC)'!
 paddingArea
 
 	^ paddingArea! !
 
-!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 19:49:00'!
+!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 18/Dec/2013, 2:49:00 am (UTC)'!
 paddingArea: newPaddingArea
 
 	paddingArea := newPaddingArea! !
 
-!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 19:50:00'!
+!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 18/Dec/2013, 2:50:00 am (UTC)'!
 widthArea
 
 	^ widthArea! !
 
-!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 17/Dec/2013 19:51:00'!
+!LayoutSpecEditPanel methodsFor: 'accessing' stamp: 'KenD 18/Dec/2013, 2:51:00 am (UTC)'!
 widthArea: newWidthArea
 
 	widthArea := newWidthArea ! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 18/Dec/2013 18:21:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 19/Dec/2013, 1:21:00 am (UTC)'!
 heightSelectionSymbol
 
 	| fix prop |
@@ -774,7 +774,7 @@ heightSelectionSymbol
 		]
 		ifNotNil: [ #Proportional ].! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/Mar/2020 13:56:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/Mar/2020, 8:56:00 pm (UTC)'!
 newEmptyAuxArea
 
 	| aux |
@@ -788,7 +788,7 @@ newEmptyAuxArea
 		separation: self defaultSeparation;"
 		yourself! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 23/Oct/2020 08:33:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 23/Oct/2020, 3:33:00 pm (UTC)'!
 newHeightArea
 	"Answer a FramedLayoutMorph with controls for Height"
 	
@@ -820,7 +820,7 @@ newHeightArea
 		yourself 
 ! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 23/Oct/2020 08:33:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 23/Oct/2020, 3:33:00 pm (UTC)'!
 newPaddingArea
 	"Answer a FramedLayoutMorph with controls for Padding"
 	
@@ -857,7 +857,7 @@ newPaddingArea
 		yourself 
 ! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 23/Oct/2020 08:34:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 23/Oct/2020, 3:34:00 pm (UTC)'!
 newWidthArea
 	"Answer a FramedLayoutMorph with controls for Width"
 	
@@ -885,7 +885,7 @@ newWidthArea
 		yourself 
 ! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/Mar/2020 14:00:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/Mar/2020, 9:00:00 pm (UTC)'!
 refreshHeightArea
 	"Update my view"
 	
@@ -897,7 +897,7 @@ refreshHeightArea
 		 morphExtent: self minimumExtent 
 	! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/Mar/2020 14:00:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/Mar/2020, 9:00:00 pm (UTC)'!
 refreshPaddingArea
 	"Update my view"
 	
@@ -909,7 +909,7 @@ refreshPaddingArea
 		 morphExtent: self minimumExtent 
 	! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/Mar/2020 14:00:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 9/Mar/2020, 9:00:00 pm (UTC)'!
 refreshWidthArea
 	"Update my view"
 	
@@ -921,7 +921,7 @@ refreshWidthArea
 		 morphExtent: self minimumExtent 
 	! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 17/Dec/2013 19:55:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 18/Dec/2013, 2:55:00 am (UTC)'!
 setPadRadio: radio fromPadFactor: factor
 
 	factor caseOf: {
@@ -930,12 +930,12 @@ setPadRadio: radio fromPadFactor: factor
 		[1.0] -> [ (radio buttons at: 3) select ].
 	} otherwise: [ (radio buttons at: 4) select ]! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 18/Dec/2013 19:45:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 19/Dec/2013, 2:45:00 am (UTC)'!
 setRadioSelection: radio selectSym: newSelectSym
 
 	(radio buttonFor: newSelectSym) select! !
 
-!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 18/Dec/2013 18:22:00'!
+!LayoutSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 19/Dec/2013, 1:22:00 am (UTC)'!
 widthSelectionSymbol
 
 	| fix prop |
@@ -949,13 +949,13 @@ widthSelectionSymbol
 		]
 		ifNotNil: [ #Proportional ].! !
 
-!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 5/Jun/2020 07:49:00'!
+!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 5/Jun/2020, 2:49:00 pm (UTC)'!
 modelPadding: numPixels
 	
 	self editModel offAxisEdgeWeight: numPixels.
 	self refreshPaddingArea.! !
 
-!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 18/Dec/2013 19:44:00'!
+!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 19/Dec/2013, 2:44:00 am (UTC)'!
 newHeightSelection: selectSym
 
 	| spec origFix origProp |
@@ -975,7 +975,7 @@ newHeightSelection: selectSym
 	
 	self refreshHeightArea ! !
 
-!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 17/Dec/2013 20:24:00'!
+!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 18/Dec/2013, 3:24:00 am (UTC)'!
 newPaddingSelection: padSym
 
 	| radio |
@@ -989,7 +989,7 @@ newPaddingSelection: padSym
 
 ! !
 
-!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 18/Dec/2013 19:46:00'!
+!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 19/Dec/2013, 2:46:00 am (UTC)'!
 newWidthSelection: selectSym
 
 	| spec origFix origProp |
@@ -1011,7 +1011,7 @@ newWidthSelection: selectSym
 	
 ! !
 
-!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 9/Mar/2020 13:58:00'!
+!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 9/Mar/2020, 8:58:00 pm (UTC)'!
 refreshView
 
 	self refreshHeightArea; 
@@ -1019,7 +1019,7 @@ refreshView
 		refreshWidthArea;
 		morphExtent: self minimumExtent! !
 
-!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 27/Jul/2015 16:27:00'!
+!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 27/Jul/2015, 11:27:00 pm (UTC)'!
 showHalo
 
 	| aMorph |
@@ -1032,12 +1032,12 @@ showHalo
 				popUpForHand: self  world activeHand
 	]! !
 
-!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 4/Jul/2015 15:24:00'!
+!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 4/Jul/2015, 10:24:00 pm (UTC)'!
 showHaloButtonClicked
 
 	self showHalo! !
 
-!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 1/Dec/2025 12:42:00'!
+!LayoutSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 1/Dec/2025, 7:42:00 pm (UTC)'!
 updateMasterFromCopy
 	"Update model from editModel"
 	
@@ -1067,19 +1067,19 @@ updateMasterFromCopy
 		ifFalse: [ self delete ] 
 		ifTrue: [ self refreshView ]! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 17/Sep/2016 10:08:00'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 15/Oct/2026, 9:21:28 pm (UTC)'!
 colorizeLayouts
 	"debug"
 	"Tinge rows red, columns blue"
 	
 	self submorphsDo: [ :s | s colorizeLayouts ].
-	(self isKindOf: LayoutMorph) ifTrue: [
-		(self direction = #horizontal)
+	(self isKindOf: LinearLayoutMorph) ifTrue: [
+		(self isRow)
 		ifTrue:  [self color: (Color lightRed alpha: 0.5)] "Row"
 		ifFalse: [self color: (Color skyBlue  alpha: 0.5)] "Column"
 	]! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 1/Dec/2025 12:34:00'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 1/Dec/2025, 7:34:00 pm (UTC)'!
 containingLayout
 	"Answer the LayoutMorph containing me or nil"
 	
@@ -1090,7 +1090,7 @@ containingLayout
 		].
 	^nil! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 2/Sep/2024 19:49:00'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 3/Sep/2024, 2:49:00 am (UTC)'!
 frameLayouts: colors depth: depth
 	"Display frames around LayoutMorphs, then erase"
 	
@@ -1110,7 +1110,7 @@ frameLayouts: colors depth: depth
 		self submorphsDo: [ :m | m frameLayouts: colors depth: depth + 1 ].
 	].! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 2/Sep/2024 19:49:00'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 3/Sep/2024, 2:49:00 am (UTC)'!
 frameNonLayouts: colors depth: depth
 	"Display frames around LayoutMorphs, then erase"
 	
@@ -1130,7 +1130,7 @@ frameNonLayouts: colors depth: depth
 		self submorphsDo: [ :m | m frameNonLayouts: colors depth: depth + 1 ].
 	].! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 16/Sep/2016 15:16:00'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 16/Sep/2016, 10:16:00 pm (UTC)'!
 shadowNonLayouts
 	"debug"
 	"Turn on dropShadows for submorphs' graphic elements"
@@ -1140,7 +1140,7 @@ shadowNonLayouts
 	self submorphsDo: [ :s | s shadowNonLayouts ].
 	(self isKindOf: LayoutMorph) ifFalse: [ self showDropShadow ]! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 3/Aug/2023 13:37:00'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 3/Aug/2023, 8:37:00 pm (UTC)'!
 showLayouts
 	"debug"
 	"Display frames around LayoutMorphs; then delete"
@@ -1153,7 +1153,7 @@ showLayouts
 	"Assume only my frames were added to World"
 	self world submorphsDo: [ :s | (s isKindOf: FrameMorph) ifTrue: [ s delete ]].! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 3/Aug/2023 13:38:00'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 3/Aug/2023, 8:38:00 pm (UTC)'!
 showNonLayouts
 	"debug"
 	"Display frames around LayoutMorphs; then delete"
@@ -1166,14 +1166,14 @@ showNonLayouts
 	"Assume only my frames were added to World"
 	self world submorphsDo: [ :s | (s isKindOf: FrameMorph) ifTrue: [ s delete ]].! !
 
-!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 16/Sep/2016 15:14:00'!
+!Morph methodsFor: '*ui-layout-panel' stamp: 'KenD 16/Sep/2016, 10:14:00 pm (UTC)'!
 unShadowNonLayouts
 	"debug"
 	"Remove submorph dropShadows"
 	(self isKindOf: LayoutMorph) ifFalse: [ self hideDropShadow ].
 	self submorphsDo: [ :s | s unShadowNonLayouts ].! !
 
-!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 28/May/2022 10:57:00'!
+!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 28/May/2022, 5:57:00 pm (UTC)'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
 	"Add morph-specific items to the given menu which was invoked by the given hand.  This method provides is invoked both from the halo-menu and from the control-menu regimes."
 
@@ -1182,14 +1182,14 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		"addLine;"
 		add: 'edit my LayoutSpec' action: #editMyLayoutSpec! !
 
-!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 1/Dec/2025 12:47:00'!
+!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 1/Dec/2025, 7:47:00 pm (UTC)'!
 editMyLayoutSpec
 
 	layoutSpec ifNil: [ self layoutSpec: LayoutSpec keepMorphExtent ].
 	self runningWorld activeHand releaseMouseFocus .
 	LayoutSpecEditPanel open: self layoutSpec! !
 
-!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 24/Dec/2013 15:22:00'!
+!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 24/Dec/2013, 10:22:00 pm (UTC)'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph
 	"Add morph-specific items to the given menu which was invoked by the given hand.  This method provides is invoked both from the halo-menu and from the control-menu regimes."
 
@@ -1198,20 +1198,13 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		"addLine;"
 		add: 'edit me (a LayoutMorph)' action: #editMe! !
 
-!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 24/Dec/2013 15:14:00'!
-direction: horizOrVert
-
-	self flag: #jmvVer. "Move to category #accessing"
-
-	direction := horizOrVert! !
-
-!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 14/Sep/2024 15:56:00'!
+!LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 14/Sep/2024, 10:56:00 pm (UTC)'!
 editMe
 
 	self runningWorld activeHand releaseMouseFocus .
 	LayoutMorphEditPanel open: self! !
 
-!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 18/Apr/2015 20:18:00'!
+!LayoutSpec methodsFor: '*ui-layout-panel' stamp: 'KenD 19/Apr/2015, 3:18:00 am (UTC)'!
 morph
 	"For #showHalo"
 	^ morph! !
