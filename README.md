@@ -175,7 +175,8 @@ and drop onto any area which takes a Color.
 The basic mechanics of this are described in files
 'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI/blob/main/VisualMetaPropGist.md'
 and
-'https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/DragAndDrop.md' 
+'https://github.com/DrCuis/How-to-guides/blob/main/100-Drag-and-Drop/DragAndDrop.md'
+
 
 
 ### UI-MetaProperties
