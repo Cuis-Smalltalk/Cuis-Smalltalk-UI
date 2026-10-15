@@ -21,20 +21,25 @@ In MetaProperty class >> initializeDictionaries
 		]).
 ````
 
-MetaProperties are inherited.
-For example, BoxedMorph inherits from PlacedMorph.
+MetaProperties are inherited, so just added visual properties are specified for each class.
+For example, BorderedBoxMorph inherits from ColoredBoxMorph.
 ````Smalltalk
-VisualPropertyEditor class >> initialize
-...
-  classDict := MetaProperty metaPropsDictForClass: PlacedMorph.
-  classDict at: #layoutSpec   put: (propsDict at: #acceptsLayoutSpec). 
+ColoredBoxMorph class >> addLocalMetaPropsTo: aDict
 
-  classDict := MetaProperty metaPropsDictForClass: BoxedMorph.
-  classDict at: #morphExtent   put: (propsDict at: #acceptsPositivePoint). 
-  classDict at: #morphPosition put: (propsDict at: #acceptsPoint). 
-  classDict at: #color put: (propsDict at: #acceptsColor). 
-  classDict at: #borderColor put: (propsDict at: #acceptsColor). 
-  classDict at: #borderWidth put: (propsDict at: #acceptsPositiveInteger).
+	| predefinedPropsDict |
+	predefinedPropsDict := MetaProperty preDefinedPropsDict.
+	aDict at: #color   put: (predefinedPropsDict at: #acceptsColor). 
+	aDict
+````
+````Smalltalk
+BorderedBoxMorph class >> addLocalMetaPropsTo: aDict
+
+	| predefinedPropsDict |
+	predefinedPropsDict := MetaProperty preDefinedPropsDict.
+	aDict at: #borderColor  put: (predefinedPropsDict at: #acceptsColor). 
+	aDict at: #borderWidth put: (predefinedPropsDict at: #acceptsPositiveNumber).
+	aDict at: #padding        put: (predefinedPropsDict at: #acceptsPositivePoint). 
+	aDict
 ````
 
 To get the complete set of MetaProperties for a Morph, one
