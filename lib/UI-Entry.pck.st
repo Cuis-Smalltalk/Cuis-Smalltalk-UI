@@ -1,11 +1,21 @@
-'From Cuis7.9 [latest update: #8069] on 16 July 2026 at 12:18:56 pm'!
+'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 2:05:28 pm'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' 1 63!
-!requires: 'UI-Click-Select' 1 3 nil!
-!requires: 'Cuis-Base' 75 7734 nil!
-!requires: 'UI-Core' 1 0 nil!
+!provides: 'UI-Entry' '1.63.0'!
+!requires: 'UI-Click-Select' '1.3.0' '1.*.*'!
+!requires: 'Cuis-Base' '7.5.7734' '7.*.*'!
+!requires: 'UI-Core' '1.0.0' '1.*.*'!
 SystemOrganization addCategory: #'UI-Entry'!
 
+
+!classDefinition: #LimitedHeightTextMorph category: #'UI-Entry'!
+TextModelMorph subclass: #LimitedHeightTextMorph
+	instanceVariableNames: 'maxHeight'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Entry'!
+!classDefinition: 'LimitedHeightTextMorph class' category: #'UI-Entry'!
+LimitedHeightTextMorph class
+	instanceVariableNames: ''!
 
 !classDefinition: #TextEntryMorph category: #'UI-Entry'!
 BorderedBoxMorph subclass: #TextEntryMorph
@@ -27,6 +37,14 @@ TextEntryMorph subclass: #SimpleNumberEntryMorph
 SimpleNumberEntryMorph class
 	instanceVariableNames: ''!
 
+
+!LimitedHeightTextMorph commentStamp: '<historical>' prior: 0!
+A TextMorph that will expand and contract vertically to adjust for the contents, but limited to a specific max height. If contents are larger, a scrollbar will be used.
+
+LimitedHeightTextMorph new
+	maxHeight: 48;
+	model: (TextModel new contents: 'This is some text to test the morph.');
+	openInWorld!
 
 !TextEntryMorph commentStamp: '<historical>' prior: 0!
 A plain text editor for Morphic. Handles only one line. Does not handle fonts/styles, alignment, Smalltalk utilities and any other advanced stuff in TextModelMorph. Just a simple text editor.
@@ -51,6 +69,33 @@ iVars
 
 The validator is applied on return and if nil, the old value is redisplayed and the field flashed,
 else the new value is remembered and displayed.!
+
+!LimitedHeightTextMorph methodsFor: 'accessing' stamp: 'jmv 14/Nov/2011, 11:32:00 pm (UTC)'!
+maxHeight: aNumber
+	maxHeight _ aNumber! !
+
+!LimitedHeightTextMorph methodsFor: 'initialization' stamp: 'jmv 22/Aug/2012, 4:59:00 am (UTC)'!
+initialize
+	super initialize.
+	extent _  200 @ 120! !
+
+!LimitedHeightTextMorph methodsFor: 'geometry' stamp: 'jmv 12/Dec/2011, 9:20:00 pm (UTC)'!
+innerHeight: aNumber
+	"Adjust height and scrollbar to the new contents height."
+	self morphHeight: (aNumber + 10 min: maxHeight)! !
+
+!LimitedHeightTextMorph methodsFor: 'geometry' stamp: 'jmv 20/Jul/2014, 5:12:00 pm (UTC)'!
+privateExtent: aPoint
+
+	^ (super privateExtent: aPoint)
+		ifTrue: [
+			maxHeight _ extent y ]; yourself! !
+
+!LimitedHeightTextMorph class methodsFor: 'instance creation' stamp: 'jmv 14/Nov/2011, 11:32:00 pm (UTC)'!
+initializedInstance
+	^self new
+		maxHeight: 48;
+		model: (TextModel new contents: 'This is some text to test the morph.')! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 20/Mar/2022, 2:31:00 pm (UTC)'!
 acceptCancelReceiver

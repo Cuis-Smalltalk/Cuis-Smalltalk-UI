@@ -1,13 +1,13 @@
-'From Cuis7.9 [latest update: #8266] on 13 October 2026 at 1:13:14 pm'!
+'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 2:05:36 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
-!provides: 'UI-MetaProperties' 1 152!
-!requires: 'Cuis-Base' 79 8266 nil!
-!requires: 'UI-Components' 1 6 nil!
-!requires: 'UI-Shapes' 1 38 nil!
-!requires: 'Complex' 1 0 nil!
-!requires: 'UI-Packager' 1 0 nil!
-!requires: 'UI-Layout-Panel' 1 10 nil!
-!requires: 'UI-Color-Panel' 1 3 nil!
+!provides: 'UI-MetaProperties' '1.152.0'!
+!requires: 'Cuis-Base' '7.9.8266' '7.*.*'!
+!requires: 'UI-Components' '1.6.0' '1.*.*'!
+!requires: 'UI-Shapes' '1.38.0' '1.*.*'!
+!requires: 'Complex' '1.0.0' '1.*.*'!
+!requires: 'UI-Packager' '1.0.0' '1.*.*'!
+!requires: 'UI-Layout-Panel' '1.10.0' '1.*.*'!
+!requires: 'UI-Color-Panel' '1.3.0' '1.*.*'!
 SystemOrganization addCategory: #'UI-MetaProperties'!
 
 
@@ -2017,6 +2017,13 @@ addLocalMetaPropsTo: aDict
 	aDict at: #emphasis 		put: (predefinedPropsDict at: #acceptsEmphasis).
 	aDict at: #backgroundColor put: (predefinedPropsDict at: #acceptsColor).
 	aDict! !
+
+!MagnifierMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 28/Oct/2026, 8:46:14 pm (UTC)'!
+addLocalMetaPropsTo: aDict
+
+	| predefinedPropsDict |
+	predefinedPropsDict := MetaProperty preDefinedPropsDict.
+	aDict at: #magnification put: (predefinedPropsDict at: #acceptsPositiveInteger).! !
 
 !LineMorph class methodsFor: '*ui-metaproperties' stamp: 'KenD 25/Jan/2026, 7:28:09 pm (UTC)'!
 addLocalMetaPropsTo: aDict

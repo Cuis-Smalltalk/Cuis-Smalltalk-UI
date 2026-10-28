@@ -1,9 +1,9 @@
-'From Cuis7.9 [latest update: #8087] on 24 July 2026 at 2:18:38 pm'!
+'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 2:05:45 pm'!
 'Description Widgets for general use.'!
-!provides: 'UI-Widgets' 1 75!
-!requires: 'Cuis-Base' 75 7262 nil!
-!requires: 'UI-Core' 1 18 nil!
-!requires: 'Graphics-Files-Additional' 1 29 nil!
+!provides: 'UI-Widgets' '1.75.0'!
+!requires: 'Cuis-Base' '7.5.7262' '7.*.*'!
+!requires: 'UI-Core' '1.18.0' '1.*.*'!
+!requires: 'Graphics-Files-Additional' '1.29.0' '1.*.*'!
 SystemOrganization addCategory: #'UI-Widgets'!
 
 
@@ -45,6 +45,26 @@ PluggableButtonMorph subclass: #ButtonMorph
 	category: 'UI-Widgets'!
 !classDefinition: 'ButtonMorph class' category: #'UI-Widgets'!
 ButtonMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #FunctionGraphMorph category: #'UI-Widgets'!
+BorderedBoxMorph subclass: #FunctionGraphMorph
+	instanceVariableNames: 'xMin xMax yMin yMax functions colors yRangeInvalid'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Widgets'!
+!classDefinition: 'FunctionGraphMorph class' category: #'UI-Widgets'!
+FunctionGraphMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #MagnifierMorph category: #'UI-Widgets'!
+BorderedBoxMorph subclass: #MagnifierMorph
+	instanceVariableNames: 'magnification trackPointer lastPos srcExtent auxCanvas magnifiedForm'
+	classVariableNames: 'RecursionLock'
+	poolDictionaries: ''
+	category: 'UI-Widgets'!
+!classDefinition: 'MagnifierMorph class' category: #'UI-Widgets'!
+MagnifierMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #WheelMorph category: #'UI-Widgets'!
@@ -128,6 +148,46 @@ I represent a preview of a file.
 !ButtonMorph commentStamp: '<historical>' prior: 0!
 An iconic button with a selection color.
 - selectedColor : my color when I am selected (state)!
+
+!FunctionGraphMorph commentStamp: '<historical>' prior: 0!
+For continuous functions on a real domain.
+
+| g d |
+d _ -1.
+g _ FunctionGraphMorph new.
+g domain: (-4 to: 4).
+g addFunction: [ :x | x \\ d ] color: Color green.
+g addFunction: [ :x | x // d ] color: Color red.
+(g embeddedInMorphicWindowLabeled: 'graph') openInWorld
+
+| g d |
+d _ -1.
+g _ FunctionGraphMorph new.
+g domain: (-4 to: 4).
+g addFunction: [ :x | x rem: d ] color: Color green.
+g addFunction: [ :x | x quo: d ] color: Color red.
+g openInWorld
+
+| g d |
+d _ -1.
+g _ FunctionGraphMorph new.
+g domain: (-4 to: 4).
+g addFunction: [ :x | x mod: d ] color: Color green.
+g addFunction: [ :x | x div: d ] color: Color red.
+g openInWorld
+
+| g |
+g _ FunctionGraphMorph new.
+g domain: (-30 to: 30 count: 2000).
+g domain: (-30 to: 30).
+g yRange: (-200 to: 200).
+g addFunction: [ :x | ((3* x *x)) / (x+2) ] color: Color red.
+g addFunction: [ :x | ((3* x *x*x) - (6*x*x)) / (x squared -4) ] color: Color green.
+(g embeddedInMorphicWindowLabeled: 'graph') openInWorld.
+!
+
+!MagnifierMorph commentStamp: '<historical>' prior: 0!
+Provides a magnifying glass. Magnifies the morphs below (if grabbed) or the area around the mouse pointer.!
 
 !WheelMorph commentStamp: 'hlsf 1/5/2022 12:29:58' prior: 0!
 A wheel widget control. I can be used in two different ways:
@@ -494,6 +554,274 @@ example
 		borderWidth: 2;
 		morphExtent: Theme current switchIcon extent * 1.5
 		! !
+
+!FunctionGraphMorph methodsFor: 'accessing' stamp: 'jmv 18/Nov/2014, 3:52:00 pm (UTC)'!
+addFunction: aOneArgBlock color: aColor
+
+	functions add: aOneArgBlock.
+	colors add: aColor! !
+
+!FunctionGraphMorph methodsFor: 'accessing' stamp: 'jmv 9/Mar/2018, 11:06:11 pm (UTC)'!
+domain: anInterval
+
+	xMin _ anInterval first asFloat.
+	xMax _ anInterval last asFloat.
+
+	yMin _ nil.
+	yMax _ nil.! !
+
+!FunctionGraphMorph methodsFor: 'accessing' stamp: 'jmv 22/Apr/2020, 3:44:35 am (UTC)'!
+yRange: anInterval
+
+	yMin _ anInterval first asFloat.
+	yMax _ anInterval last asFloat.
+	yRangeInvalid := false.! !
+
+!FunctionGraphMorph methodsFor: 'drawing' stamp: 'jmv 11/Jun/2020, 11:49:39 pm (UTC)'!
+drawOn: aCanvas
+	"
+	| g |
+	g _ FunctionGraphMorph new.
+	g domain: (-4 to: 4).
+	g addFunction: [ :x | x mod: 1 ] color: Color green.
+	g addFunction: [ :x | x div: 1 ] color: Color red.
+	g openInWorld
+	"
+	| r fontToUse xtra p prevP |
+	yRangeInvalid ifTrue: [
+		yMin _ Float infinity.
+		yMax _ Float negativeInfinity.
+		self iterate: [ :x :y :c |
+			y notNil ifTrue: [
+				yMin _ yMin min: y.
+				yMax _ yMax max: y ]].
+		yMax = yMin ifTrue: [
+			yMin _ yMin min: 0.
+			yMax _ yMax max: 0 ].
+		xtra _ yMax-yMin/50.
+		yMin _ yMin - xtra.
+		yMax _ yMax + xtra.
+		yRangeInvalid := false.
+		].
+			
+	r _ 40@0 corner: extent - (0@20).
+	aCanvas
+		frameAndFillRectangle: r fillColor: (Color gray: 0.9)
+		borderWidth: 0.05 borderColor: Color white.
+	(0 between: xMin and: xMax) ifTrue: [
+		aCanvas line: (self toMorphic:0@yMin)-(0@2) to: (self toMorphic: 0 @ yMax)+(0@2) width: 2 color: Color darkGray ].
+	(0 between: yMin and: yMax) ifTrue: [
+		aCanvas line: (self toMorphic: xMin@0)+(2@0) to: (self toMorphic: xMax@0)-(2@0) width: 2 color: Color darkGray ].
+
+	"To plot lines"
+	functions with: colors do: [ :f :c |
+		prevP _ nil.
+		xMin asFloat to: xMax count: extent x do: [ :x | | y |
+			y _ [ f value: x ] on: Error do: [].
+			(y notNil and: [
+					p _ (self xToMorphic: x)@(self yToMorphic: y).
+					(r containsPoint: p) ])
+				ifFalse: [
+					prevP _ nil]
+				ifTrue: [
+					prevP notNil ifTrue: [
+						aCanvas line: prevP to: p width: 2 color: c ].
+					prevP _ p ]]].
+
+	"To plot just the points"
+	"self iterate: [ :x :y :c |
+		(y between: yMin and: yMax) ifTrue: [
+			r2 _ (self xToMorphic: x)@(self yToMorphic: y) extent: 2.5.
+			(r containsRect: r2) ifTrue: [
+				aCanvas
+					fillRectangle: r2
+					color: c ]]]."
+
+	fontToUse _ FontFamily defaultFamilyAndPointSize.
+	aCanvas drawString: xMin printString at: 40@(extent y - 16) font: fontToUse color: Color black.
+	aCanvas drawString: xMax printString at: extent -(32@16) font: fontToUse color: Color black.
+	aCanvas drawString: yMin printString at: 4@(extent y - 32) font: fontToUse color: Color black.
+	aCanvas drawString: yMax printString at: 4@4 font: fontToUse color: Color black.! !
+
+!FunctionGraphMorph methodsFor: 'drawing' stamp: 'jmv 22/Apr/2020, 3:25:25 am (UTC)'!
+iterate: aBlock
+
+	| y |
+	functions with: colors do: [ :f :c |
+		xMin asFloat to: xMax count: extent x do: [ :x |
+			y _ [ f value: x ] on: Error do: [].
+			aBlock value: x value: y asFloat value: c ]]! !
+
+!FunctionGraphMorph methodsFor: 'initialization' stamp: 'pb 28/May/2019, 1:19:57 am (UTC)'!
+initialize
+	super initialize.
+	extent _ 320@240.
+	functions _ OrderedCollection new.
+	colors _ OrderedCollection new.
+	yRangeInvalid := true! !
+
+!FunctionGraphMorph methodsFor: 'initialization' stamp: 'pb 28/May/2019, 1:19:17 am (UTC)'!
+invalidateYRange
+	yRangeInvalid := true! !
+
+!FunctionGraphMorph methodsFor: 'geometry' stamp: 'jmv 17/May/2015, 4:20:00 pm (UTC)'!
+toMorphic: aPoint
+	^(self xToMorphic: aPoint x) @ (self yToMorphic: aPoint y)! !
+
+!FunctionGraphMorph methodsFor: 'geometry' stamp: 'jmv 25/Nov/2016, 6:03:22 pm (UTC)'!
+xToMorphic: x
+	^x - xMin / (xMax - xMin ) * (extent x-40)+40! !
+
+!FunctionGraphMorph methodsFor: 'geometry' stamp: 'jmv 25/Nov/2016, 6:03:27 pm (UTC)'!
+yToMorphic: y
+	^yMax - y / (yMax - yMin ) * (extent y-20)! !
+
+!FunctionGraphMorph class methodsFor: 'instance creation' stamp: 'jmv 20/Jul/2016, 5:00:31 pm (UTC)'!
+initializedInstance
+	"
+	self  initializedInstance openInWorld
+	"
+	| g |
+	g _ FunctionGraphMorph new.
+	g domain: (-4 to: 4).
+	g addFunction: [ :x | x cos ] color: Color green.
+	g addFunction: [ :x | (x + 1) squared - 3 ] color: Color red. "parabola with vertex at (-1,-3)"
+	^ g! !
+
+!MagnifierMorph methodsFor: 'stepping' stamp: 'jmv 28/Feb/2016, 2:53:00 am (UTC)'!
+stepAt: millisecondSinceLast
+
+	self redrawNeeded! !
+
+!MagnifierMorph methodsFor: 'stepping' stamp: 'jmv 12/Jun/2012, 6:32:00 am (UTC)'!
+stepTime
+	"Update very often. Very short steptimes should only be used for morphs that are not stepping all the time!!"
+	^ 20! !
+
+!MagnifierMorph methodsFor: 'stepping' stamp: 'jmv 11/Jun/2012, 4:58:00 pm (UTC)'!
+wantsSteps
+	"Return true if the receiver wants to its #step or #stepAt: methods be run ALL THE TIME.
+	Morphs that send #startStepping and #stopStepping at appropriate times (i.e. when they are already in the world!!) don't need to answer true to this message"
+
+	^true! !
+
+!MagnifierMorph methodsFor: 'magnifying' stamp: 'KenD 28/Oct/2026, 8:48:06 pm (UTC)'!
+magnification
+	
+	^ magnification! !
+
+!MagnifierMorph methodsFor: 'magnifying' stamp: 'jmv 30/Mar/2025, 10:15:04 pm (UTC)'!
+magnification: aNumber
+
+	magnification := aNumber min: 8 max: 0.5.
+	magnification := magnification roundTo:
+		(magnification < 3 ifTrue: [0.5] ifFalse: [1]).
+	srcExtent := srcExtent min: (512@512) // magnification. "to prevent accidents"
+	self morphExtent: self desiredExtent.! !
+
+!MagnifierMorph methodsFor: 'magnifying' stamp: 'jmv 8/Jul/2025, 11:50:41 pm (UTC)'!
+magnifiedForm
+	| srcRect form neededExtent newForm |
+	self displayBounds ifNil: [ ^nil ].
+	lastPos := self sourcePoint.
+	srcRect := self sourceRectFrom: lastPos.
+	srcRect := srcRect origin // magnification * magnification extent: srcRect extent.
+	((srcRect intersects: self displayBounds) and: [ RecursionLock == nil ])
+			| true
+		ifTrue: [
+			RecursionLock := self.
+			"try to reuse form if possible"
+			newForm := (auxCanvas notNil and: [ auxCanvas extent = srcExtent ])
+				ifTrue: [ auxCanvas form ]
+				ifFalse: [ Form extent: srcRect extent depth: 32 ].
+			"Just in case we go out of the Display"
+			srcRect origin > (0@0) ifFalse: [
+				newForm fillBlack ].
+			auxCanvas := BitBltCanvas onForm: newForm translation: srcRect origin negated.
+			auxCanvas fullDraw: self world.
+			form := auxCanvas form.
+			RecursionLock := nil]
+		ifFalse: [
+			"cheaper method if the source is not occluded"
+			form := Display copy: srcRect].
+	"smooth if non-integer scale"
+	neededExtent := (srcExtent * magnification ) truncated.
+	(magnifiedForm isNil or: [ magnifiedForm extent ~=  neededExtent ])
+		ifTrue: [ magnifiedForm := Form extent: neededExtent depth: 32 ].
+	(WarpBlt toForm: magnifiedForm)
+		sourceForm: form;
+		colorMap: (form colormapIfNeededFor: magnifiedForm);
+		cellSize: (magnification isInteger ifTrue: [1] ifFalse: [2]);  "installs a new colormap if cellSize > 1"
+		combinationRule: 3;
+		copyQuad: form boundingBox innerCorners toRect: magnifiedForm boundingBox.
+	^magnifiedForm.! !
+
+!MagnifierMorph methodsFor: 'magnifying' stamp: 'jmv 8/Jul/2025, 11:53:54 pm (UTC)'!
+sourcePoint
+	"If we are being dragged use our center, otherwise use pointer position"
+	"(trackPointer not or: [owner notNil and: [owner is: #HandMorph]])
+		ifTrue: [ self displayBounds ifNotNil: [ :r | ^r center ]]."
+	^self world activeHand morphPosition! !
+
+!MagnifierMorph methodsFor: 'magnifying' stamp: 'jmv 4/Aug/2012, 11:41:00 pm (UTC)'!
+sourceRect
+	"world global coordinates, etc"
+	self flag: #jmvVer2.
+	^self sourceRectFrom: self sourcePoint! !
+
+!MagnifierMorph methodsFor: 'magnifying' stamp: 'jmv 18/Aug/2012, 1:52:00 am (UTC)'!
+sourceRectFrom: aPoint
+	^ (aPoint extent: srcExtent) translatedBy: (srcExtent // -2) + 1.
+! !
+
+!MagnifierMorph methodsFor: 'drawing' stamp: 'jmv 15/Oct/2020, 10:44:41 pm (UTC)'!
+drawOn: aCanvas
+	RecursionLock == self ifFalse: [
+		super drawOn: aCanvas.		"border and fill"
+		self magnifiedForm ifNotNil: [ :f |
+			aCanvas image: f at: borderWidth@borderWidth ]]! !
+
+!MagnifierMorph methodsFor: 'initialization' stamp: 'jmv 2/Dec/2011, 5:20:00 pm (UTC)'!
+defaultBorderWidth
+	"answer the default border width for the receiver"
+	^ 1! !
+
+!MagnifierMorph methodsFor: 'initialization' stamp: 'KenD 28/Oct/2026, 8:25:06 pm (UTC)'!
+initialize
+	super initialize.
+	trackPointer := true.
+	magnification := 2.
+	self morphExtent: 128@128;
+		borderWidth: 4;
+		borderColor: Color white.! !
+
+!MagnifierMorph methodsFor: 'geometry' stamp: 'jmv 30/Mar/2025, 10:15:01 pm (UTC)'!
+borderWidth: anInteger
+	"Grow outwards preserving innerBounds"
+
+	super borderWidth: anInteger.
+	self morphExtent: self desiredExtent.! !
+
+!MagnifierMorph methodsFor: 'geometry' stamp: 'jmv 30/Mar/2025, 10:14:50 pm (UTC)'!
+desiredExtent
+	^(srcExtent * magnification) truncated + (2 * borderWidth)! !
+
+!MagnifierMorph methodsFor: 'geometry' stamp: 'jmv 30/Mar/2025, 10:15:09 pm (UTC)'!
+privateExtent: aPoint
+	"Round to multiples of magnification"
+
+	srcExtent := (aPoint - (2 * borderWidth)) // magnification.
+	^ super privateExtent: self desiredExtent! !
+
+!MagnifierMorph methodsFor: 'events' stamp: 'jmv 15/Jan/2013, 5:45:00 am (UTC)'!
+mouseButton2Down: aMouseButtonEvent localPosition: localEventPosition
+
+	self chooseMagnification: aMouseButtonEvent! !
+
+!MagnifierMorph class methodsFor: 'new-morph participation' stamp: 'KenD 28/Oct/2026, 8:29:18 pm (UTC)'!
+initializedInstance
+
+	^self new! !
 
 !WheelMorph methodsFor: 'accessing' stamp: ''!
 actionSelector
