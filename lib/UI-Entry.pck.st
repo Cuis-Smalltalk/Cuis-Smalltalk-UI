@@ -1,4 +1,4 @@
-'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 2:05:28 pm'!
+'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 3:12:16 pm'!
 'Description I supply simple text entry fields.'!
 !provides: 'UI-Entry' '1.63.0'!
 !requires: 'UI-Click-Select' '1.3.0' '1.*.*'!
@@ -15,6 +15,16 @@ TextModelMorph subclass: #LimitedHeightTextMorph
 	category: 'UI-Entry'!
 !classDefinition: 'LimitedHeightTextMorph class' category: #'UI-Entry'!
 LimitedHeightTextMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #MinimalStringMorph category: #'UI-Entry'!
+BorderedBoxMorph subclass: #MinimalStringMorph
+	instanceVariableNames: 'font emphasis contents'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Entry'!
+!classDefinition: 'MinimalStringMorph class' category: #'UI-Entry'!
+MinimalStringMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #TextEntryMorph category: #'UI-Entry'!
@@ -45,6 +55,9 @@ LimitedHeightTextMorph new
 	maxHeight: 48;
 	model: (TextModel new contents: 'This is some text to test the morph.');
 	openInWorld!
+
+!MinimalStringMorph commentStamp: '<historical>' prior: 0!
+A greatly reduced StringMorph. May be of some use.!
 
 !TextEntryMorph commentStamp: '<historical>' prior: 0!
 A plain text editor for Morphic. Handles only one line. Does not handle fonts/styles, alignment, Smalltalk utilities and any other advanced stuff in TextModelMorph. Just a simple text editor.
@@ -96,6 +109,80 @@ initializedInstance
 	^self new
 		maxHeight: 48;
 		model: (TextModel new contents: 'This is some text to test the morph.')! !
+
+!MinimalStringMorph methodsFor: 'accessing' stamp: 'jmv 6/Jun/2014, 5:58:00 pm (UTC)'!
+contents: newContents 
+	contents _ (newContents is: #Text)
+		ifTrue: [
+			emphasis := newContents emphasisAt: 1.
+			 newContents string]
+		ifFalse: [
+			contents = newContents ifTrue: [^self].	"no substantive change"
+			newContents].
+	self fitContents.
+	self redrawNeeded! !
+
+!MinimalStringMorph methodsFor: 'accessing' stamp: 'jmv 2/Jan/2015, 4:16:00 am (UTC)'!
+fitContents
+	"Measures contents later at #minimumExtent"
+	self morphExtent: 0@0! !
+
+!MinimalStringMorph methodsFor: 'accessing' stamp: 'jmv 11/Jun/2020, 11:49:55 pm (UTC)'!
+fontToUse
+	| fontToUse |
+	fontToUse := font ifNil: [FontFamily defaultFamilyAndPointSize].
+	^(emphasis isNil or: [emphasis = 0]) 
+		ifTrue: [fontToUse]
+		ifFalse: [fontToUse emphasized: emphasis]! !
+
+!MinimalStringMorph methodsFor: 'accessing' stamp: 'jmv 25/Apr/2019, 5:09:59 pm (UTC)'!
+measureContents
+	| f |
+	f _ self fontToUse.
+	^(((f widthOfString: contents) max: 3)  @ f lineSpacing).! !
+
+!MinimalStringMorph methodsFor: 'initialization' stamp: 'cbr 4/Dec/2010, 6:29:00 am (UTC)'!
+defaultColor
+	"answer the default color/fill style for the receiver"
+	^ Theme current text! !
+
+!MinimalStringMorph methodsFor: 'initialization' stamp: 'jmv 11/Sep/2010, 5:55:00 am (UTC)'!
+initWithContents: aString font: aFont emphasis: emphasisCode 
+	self initialize.
+	
+	font _ aFont.
+	emphasis _ emphasisCode.
+	self contents: aString! !
+
+!MinimalStringMorph methodsFor: 'initialization' stamp: 'jmv 11/Sep/2010, 5:55:00 am (UTC)'!
+initialize
+	super initialize.
+	font _ nil.
+	emphasis _ 0! !
+
+!MinimalStringMorph methodsFor: 'drawing' stamp: 'jmv 11/Jul/2014, 5:41:00 am (UTC)'!
+drawOn: aCanvas
+
+	aCanvas drawString: contents at: 0@0 font: self fontToUse color: color! !
+
+!MinimalStringMorph class methodsFor: 'instance creation' stamp: 'jmv 4/Apr/2011, 5:34:00 am (UTC)'!
+contents: aString
+	" 'StringMorph contents: str' is faster than 'StringMorph new contents: str' 
+	(MinimalStringMorph contents: 'Some string') openInWorld
+	"
+	^ self contents: aString font: nil! !
+
+!MinimalStringMorph class methodsFor: 'instance creation' stamp: 'jmv 4/Nov/2008, 7:56:00 pm (UTC)'!
+contents: aString font: aFont
+	^ self basicNew initWithContents: aString font: aFont emphasis: 0! !
+
+!MinimalStringMorph class methodsFor: 'instance creation' stamp: 'jmv 4/Nov/2008, 7:56:00 pm (UTC)'!
+contents: aString font: aFont emphasis: emphasisCode
+	^ self basicNew initWithContents: aString font: aFont emphasis: emphasisCode! !
+
+!MinimalStringMorph class methodsFor: 'instance creation' stamp: 'jmv 4/Apr/2011, 5:34:00 am (UTC)'!
+new
+	^self contents: 'some string'! !
 
 !TextEntryMorph methodsFor: 'accessing' stamp: 'KenD 20/Mar/2022, 2:31:00 pm (UTC)'!
 acceptCancelReceiver
