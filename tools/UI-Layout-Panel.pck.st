@@ -1,13 +1,23 @@
-'From Cuis7.9 [latest update: #8266] on 15 October 2026 at 2:29:17 pm'!
+'From Cuis7.9 [latest update: #8306] on 3 November 2026 at 3:34:16 pm'!
 'Description I supply LayourSpec and Layout editors'!
-!provides: 'UI-Layout-Panel' 1 27!
-!requires: 'UI-Click-Select' 1 63 nil!
-!requires: 'UI-DragAndDrop' 1 4 nil!
-!requires: 'Cuis-Base' 75 7734 nil!
-!requires: 'UI-Shapes' 1 45 nil!
-!requires: 'UI-Panel' 1 138 nil!
+!provides: 'UI-Layout-Panel' '1.27.0'!
+!requires: 'UI-Click-Select' '1.63.0' '1.*.*'!
+!requires: 'UI-DragAndDrop' '1.4.0' '1.*.*'!
+!requires: 'Cuis-Base' '7.5.7734' '7.*.*'!
+!requires: 'UI-Shapes' '1.45.0' '1.*.*'!
+!requires: 'UI-Panel' '1.138.0' '1.*.*'!
 SystemOrganization addCategory: #'UI-Layout-Panel'!
 
+
+!classDefinition: #LayoutEdgeSpecEditPanel category: #'UI-Layout-Panel'!
+EditPanel subclass: #LayoutEdgeSpecEditPanel
+	instanceVariableNames: 'topLeftArea bottomRightArea'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UI-Layout-Panel'!
+!classDefinition: 'LayoutEdgeSpecEditPanel class' category: #'UI-Layout-Panel'!
+LayoutEdgeSpecEditPanel class
+	instanceVariableNames: ''!
 
 !classDefinition: #LayoutMorphEditPanel category: #'UI-Layout-Panel'!
 EditPanel subclass: #LayoutMorphEditPanel
@@ -30,6 +40,10 @@ LayoutSpecEditPanel class
 	instanceVariableNames: ''!
 
 
+!LayoutEdgeSpecEditPanel commentStamp: '<historical>' prior: 0!
+I am a simple editor for a FormLayoutMorph with a LayoutEdgesSpec.
+!
+
 !LayoutMorphEditPanel commentStamp: '<historical>' prior: 0!
 I am a simple editor for a LayoutMorph.
 
@@ -41,9 +55,232 @@ iVars:
 LayoutMorphEditPanel open: (LayoutMorph newRow).!
 
 !LayoutSpecEditPanel commentStamp: '<historical>' prior: 0!
-I am a simple editor for a LayoutSpec.
+I am a simple editor for a LinearLayoutMorph with a LayoutSizeSpec.
 
 !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'geometry' stamp: 'KenD 1/Nov/2026, 9:16:16 pm (UTC)'!
+fontPreferenceChanged
+	"My size needs adjustment"
+
+	self submorphsDo: [ :m | m fontPreferenceChanged. ].
+	self refreshView.
+	self submorphsDo: [ :m | m fontPreferenceChanged. ] 
+.	self morphExtent: self minimumExtent ! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 3/Nov/2026, 10:15:15 pm (UTC)'!
+newBottomRightArea
+
+	^LayoutMorph newColumn :: 
+			borderWidth: 2; 
+			borderColor: Color black;
+			axisEdgeWeight: #center;
+			addMorph: (LabelMorph contents: 'BottomRight Corner' ::
+					 		emphasis: AbstractFont boldCode);
+			addMorph: self bottomRightPercentEntry;
+			addMorph: self bottomRightOffsetEntry;
+			yourself
+
+	! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'area layouts' stamp: 'KenD 3/Nov/2026, 10:12:42 pm (UTC)'!
+newTopLeftArea
+
+	^LayoutMorph newColumn :: 
+			borderWidth: 2; 
+			borderColor: Color black;
+			axisEdgeWeight: #center;
+			addMorph: (LabelMorph contents: 'TopLeft Corner' ::
+					 		emphasis: AbstractFont boldCode);
+			addMorph: self topLeftPercentEntryLayout;
+			addMorph: self topLeftOffsetEntry;
+			yourself
+
+	! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 1/Nov/2026, 9:15:13 pm (UTC)'!
+buildMorphicWindow
+	super buildMorphicWindow.
+	self setLabel: 'LayoutSpec: ', (self model morph printStringLimitedTo: 30).
+	self titleMorph showButtonsNamed: #( close pin collapse showHalo ); layoutSubmorphs! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 3/Nov/2026, 10:16:02 pm (UTC)'!
+newPane
+			
+	^LayoutMorph newRow ::
+		color: Color white;
+		gap: self defaultSeparation;
+		axisEdgeWeight: #center;
+		separation: self defaultSeparation;
+		addMorph: self newTopLeftArea;
+		addMorph: self newBottomRightArea;
+		color: Theme current textPane;
+		yourself! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 3/Nov/2026, 11:09:16 pm (UTC)'!
+refreshView
+
+	self "refreshTopLeftArea; 
+		refreshBottomRigntArea;"
+		morphExtent: self minimumExtent! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 1/Nov/2026, 10:20:22 pm (UTC)'!
+showHalo
+
+	| aMorph |
+	aMorph := self model morph.
+	(aMorph isInWorld) 
+	ifTrue: [aMorph show; addHalo ]
+	ifFalse: [
+		(HoverHelpMorph 
+			contents: aMorph printString , ' not shown in world')
+				popUpForHand: self  world activeHand
+	]! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 1/Nov/2026, 10:20:34 pm (UTC)'!
+showHaloButtonClicked
+
+	self showHalo! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 3/Nov/2026, 11:14:07 pm (UTC)'!
+updateMasterFromCopy
+	"Update model from editModel"
+	
+	| original editCopy |
+	original := self model.
+	editCopy := self editModel.
+	original topLeftEdgesWeight: editCopy topLeftEdgesWeight.
+	original topLeftOffset: editCopy topLeftOffset.
+	original bottomRightEdgesWeight: editCopy bottomRightEdgesWeight.
+	original bottomRightOffset: editCopy bottomRightOffset.
+	original triggerEvent: #propertyChanged.
+	original morph redrawNeeded.
+	
+	self stayUp 
+		ifFalse: [ self delete ] 
+		ifTrue: [ self refreshView ]! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 3/Nov/2026, 10:48:15 pm (UTC)'!
+bottomRightOffsetEntry
+	"bottomRight position displacement"
+
+	| row xEntryMorph yEntryMorph |
+	row :=  LayoutMorph newRow.
+	
+	xEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
+	yEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
+	xEntryMorph valueAccessor: [ :myModel |  myModel bottomRightOffset x ].
+	yEntryMorph valueAccessor: [ :myModel |  myModel bottomRightOffset y ].
+	xEntryMorph valueUpdator: [ :newXoffset | 
+		self editModel bottomRightOffset: (newXoffset @ self editModel bottomRightOffset y)].
+	yEntryMorph valueUpdator: [ :newYoffset | 
+		self editModel bottomRightOffset: (self editModel bottomRightOffset x @ newYoffset)].
+	xEntryMorph refreshValueFrom: self editModel.
+	yEntryMorph refreshValueFrom: self editModel.
+
+	^LayoutMorph newRow ""
+		gap: self defaultSeparation;
+		color: (Color transparent);
+		axisEdgeWeight: #center;
+		addMorph: (LabelMorph new :: contents: 'Position Offset ' );
+		addMorph: xEntryMorph; 
+		addMorph: (LabelMorph new :: contents: '@' );
+		addMorph: yEntryMorph;
+		yourself
+	
+	! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 3/Nov/2026, 10:41:44 pm (UTC)'!
+bottomRightPercentEntry
+	"Answer a row of <x%> <y%>"
+	| row xPercent yPercent  |
+	
+	xPercent := SimpleNumberEntryMorph percentForRealFactor: 1.0.
+	yPercent := SimpleNumberEntryMorph percentForRealFactor: 1.0.
+	xPercent valueAccessor: [ :myModel |  myModel bottomRightEdgesWeight x ].
+	yPercent valueAccessor: [ :myModel |  myModel bottomRightEdgesWeight y ].
+	xPercent valueUpdator: [ :newXpercent | 
+		self editModel bottomRightEdgesWeight: (newXpercent @ self editModel bottomRightEdgesWeight y)].
+	yPercent valueUpdator: [ :newYpercent | 
+		self editModel bottomRightEdgesWeight: (self editModel bottomRightEdgesWeight x @ newYpercent)].
+	xPercent refreshValueFrom: self editModel.
+	yPercent refreshValueFrom: self editModel.
+	
+	^row :=  LayoutMorph newRow  ::
+		padding: 20@20;
+		gap: self defaultSeparation;
+		axisEdgeWeight: #center;
+		color: Color transparent;
+		addMorph: (LabelMorph contents: 'X %');
+		addMorph: xPercent;
+		addMorph: (LabelMorph contents: '          Y % ');
+		addMorph: yPercent;
+		yourself
+		
+
+! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 3/Nov/2026, 10:46:10 pm (UTC)'!
+topLeftOffsetEntry
+	"topLeft position displacement"
+
+	| row xEntryMorph yEntryMorph |
+	row :=  LayoutMorph newRow.
+	
+	xEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
+	yEntryMorph := SimpleNumberEntryMorph floatDefault: 0.0 maxNumChars: 8.
+	xEntryMorph valueAccessor: [ :myModel |  myModel topLeftOffset x ].
+	yEntryMorph valueAccessor: [ :myModel |  myModel topLeftOffset y ].
+	xEntryMorph valueUpdator: [ :newXoffset | 
+		self editModel topLeftOffset: (newXoffset
+								  @ self editModel topLeftOffset y )].
+	yEntryMorph valueUpdator: [ :newyOffset | 
+		self editModel topLeftOffset: (self editModel topLeftOffset x
+								  @ newyOffset)].
+	xEntryMorph refreshValueFrom: self editModel.
+	yEntryMorph refreshValueFrom: self editModel.
+
+	^LayoutMorph newRow ""
+		gap: self defaultSeparation;
+		color: (Color transparent);
+		axisEdgeWeight: #center;
+		addMorph: (LabelMorph new :: contents: 'Position Offset ' );
+		addMorph: xEntryMorph; 
+		addMorph: (LabelMorph new :: contents: '@' );
+		addMorph: yEntryMorph;
+		yourself
+	
+	! !
+
+!LayoutEdgeSpecEditPanel methodsFor: 'entry morphs' stamp: 'KenD 3/Nov/2026, 10:44:31 pm (UTC)'!
+topLeftPercentEntryLayout
+	"Answer a row of <x> <y>"
+	| row xPercent yPercent  |
+	
+	xPercent := SimpleNumberEntryMorph percentForRealFactor: 1.0.
+	yPercent := SimpleNumberEntryMorph percentForRealFactor: 1.0.
+	xPercent valueAccessor: [ :myModel |  myModel topLeftEdgesWeight x ].
+	yPercent valueAccessor: [ :myModel |  myModel topLeftEdgesWeight y ].
+	xPercent valueUpdator: [ :newXpercent | 
+		self editModel topLeftEdgesWeight: (newXpercent @ self editModel topLeftEdgesWeight y)].
+	yPercent valueUpdator: [ :newYpercent | 
+		self editModel topLeftEdgesWeight: (self editModel topLeftEdgesWeight x @ newYpercent)].
+	xPercent refreshValueFrom: self editModel.
+	yPercent refreshValueFrom: self editModel.
+	
+	^row :=  LayoutMorph newRow  ::
+		padding: 20@20;
+		gap: self defaultSeparation;
+		axisEdgeWeight: #center;
+		color: Color transparent;
+		addMorph: (LabelMorph contents: 'X %');
+		addMorph: xPercent;
+		addMorph: (LabelMorph contents: '          Y % ');
+		addMorph: yPercent;
+		yourself
+		
+
+! !
 
 !LayoutMorphEditPanel methodsFor: 'GUI building' stamp: 'hlsf 28/Jul/2024, 5:48:00 pm (UTC)'!
 buildMorphicWindow
@@ -1182,12 +1419,14 @@ addCustomMenuItems: aCustomMenu hand: aHandMorph
 		"addLine;"
 		add: 'edit my LayoutSpec' action: #editMyLayoutSpec! !
 
-!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 1/Dec/2025, 7:47:00 pm (UTC)'!
+!PlacedMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 2/Nov/2026, 3:51:08 pm (UTC)'!
 editMyLayoutSpec
 
 	layoutSpec ifNil: [ self layoutSpec: LayoutSpec keepMorphExtent ].
 	self runningWorld activeHand releaseMouseFocus .
-	LayoutSpecEditPanel open: self layoutSpec! !
+	layoutSpec isLayoutEdgesSpec 
+		ifTrue: [ LayoutEdgeSpecEditPanel open: self layoutSpec ]
+		ifFalse: [ LayoutSpecEditPanel open: self layoutSpec ]! !
 
 !LayoutMorph methodsFor: '*ui-layout-panel' stamp: 'KenD 24/Dec/2013, 10:22:00 pm (UTC)'!
 addCustomMenuItems: aCustomMenu hand: aHandMorph

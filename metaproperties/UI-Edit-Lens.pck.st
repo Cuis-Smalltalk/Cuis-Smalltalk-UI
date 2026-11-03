@@ -5,8 +5,8 @@ I display SVG control points and allow change, e.g. to bezier curves.
 
 I also allow one to drop morphs which make changes to myMorph.
 Each such morph has property DropActionMorph set to true.'!
-!provides: 'UI-Edit-Lens' 1 9!
-!requires: 'UI-DragAndDrop' 1 7 nil!
+!provides: 'UI-Edit-Lens' '1.9.0'!
+!requires: 'UI-DragAndDrop' '1.7.0' '*.*.*'!
 SystemOrganization addCategory: 'UI-Edit-Lens'!
 
 
