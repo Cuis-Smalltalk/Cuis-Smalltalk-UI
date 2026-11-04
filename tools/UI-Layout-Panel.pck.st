@@ -1,4 +1,4 @@
-'From Cuis7.9 [latest update: #8306] on 3 November 2026 at 3:34:16 pm'!
+'From Cuis7.9 [latest update: #8306] on 4 November 2026 at 8:09:11 am'!
 'Description I supply LayourSpec and Layout editors'!
 !provides: 'UI-Layout-Panel' '1.27.0'!
 !requires: 'UI-Click-Select' '1.63.0' '1.*.*'!
@@ -104,25 +104,33 @@ buildMorphicWindow
 	self setLabel: 'LayoutSpec: ', (self model morph printStringLimitedTo: 30).
 	self titleMorph showButtonsNamed: #( close pin collapse showHalo ); layoutSubmorphs! !
 
-!LayoutEdgeSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 3/Nov/2026, 10:16:02 pm (UTC)'!
+!LayoutEdgeSpecEditPanel methodsFor: 'GUI building' stamp: 'KenD 4/Nov/2026, 3:51:50 pm (UTC)'!
 newPane
 			
+	topLeftArea := self newTopLeftArea.
+	bottomRightArea := self newBottomRightArea.
 	^LayoutMorph newRow ::
 		color: Color white;
 		gap: self defaultSeparation;
 		axisEdgeWeight: #center;
 		separation: self defaultSeparation;
-		addMorph: self newTopLeftArea;
-		addMorph: self newBottomRightArea;
+		addMorph: topLeftArea;
+		addMorph: bottomRightArea;
 		color: Theme current textPane;
 		yourself! !
 
-!LayoutEdgeSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 3/Nov/2026, 11:09:16 pm (UTC)'!
+!LayoutEdgeSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 4/Nov/2026, 4:04:33 pm (UTC)'!
 refreshView
 
-	self "refreshTopLeftArea; 
-		refreshBottomRigntArea;"
-		morphExtent: self minimumExtent! !
+	| newTL newBR |
+	editModel := nil. "reclone from self model"
+	newTL := self newTopLeftArea.
+	newBR := self newBottomRightArea.
+	self replaceArea: topLeftArea with: newTL.
+	self replaceArea: bottomRightArea with: newBR.
+	topLeftArea := newTL.
+	bottomRightArea := newBR.
+	self morphExtent: self minimumExtent; redrawNeeded.! !
 
 !LayoutEdgeSpecEditPanel methodsFor: 'event handling' stamp: 'KenD 1/Nov/2026, 10:20:22 pm (UTC)'!
 showHalo
