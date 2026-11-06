@@ -1,14 +1,14 @@
 'From Cuis7.9 [latest update: #8266] on 13 October 2026 at 1:12:52 pm'!
 'Description I supply the RGB/HSB and OK-LCH ColorEditor Panels'!
-!provides: 'UI-Color-Panel' 1 66!
-!requires: 'Cuis-Base' 79 8266 nil!
-!requires: 'UI-DragAndDrop' 1 4 nil!
-!requires: 'CSS3-NamedColors' 1 1 nil!
-!requires: 'UI-Click-Select' 1 84 nil!
-!requires: 'Color-Extras' 1 9 nil!
-!requires: 'UI-Panel' 1 140 nil!
-!requires: 'UI-Palette' 1 19 nil!
-!requires: 'Graphics-Files-Additional' 1 30 nil!
+!provides: 'UI-Color-Panel' '1.66.0' '*.*.*'!
+!requires: 'Cuis-Base' '7.9.8266' '*.*.*'!
+!requires: 'UI-DragAndDrop' '1.4.*' '*.*.*'!
+!requires: 'CSS3-NamedColors'  '1.1.*' '*.*.*'!
+!requires: 'UI-Click-Select'  '1.84.*'  '*.*.*'!
+!requires: 'Color-Extras' '1.9.*' '*.*.*'!
+!requires: 'UI-Panel'  '1.140.*' '*.*.*'!
+!requires: 'UI-Palette'  '1.19.*' '*.*.*'!
+!requires: 'Graphics-Files-Additional' '1.30.*' '*.*.*'!
 SystemOrganization addCategory: #'UI-Color-Panel'!
 
 

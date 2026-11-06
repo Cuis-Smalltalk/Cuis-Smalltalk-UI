@@ -1,8 +1,8 @@
 'From Cuis7.1 [latest update: #6792] on 22 October 2024 at 1:23:49 pm'!
 'Description Tools to create and investigate CompassRecognizer pattern exemplars.'!
 !provides: 'UI-StrokeRecognizer-Tools' 1 3!
-!requires: 'Cuis-Base' 71 6792 nil!
-!requires: 'UI-StrokeRecognizer' 1 28 nil!
+!requires: 'Cuis-Base' '7.1.6792' '*.*.*'!
+!requires: 'UI-StrokeRecognizer' '1.28.0'  '*.*.*'!
 SystemOrganization addCategory: #'UI-StrokeRecognizer-Tools'!
 
 

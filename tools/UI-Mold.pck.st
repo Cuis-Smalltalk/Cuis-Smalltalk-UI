@@ -1,8 +1,8 @@
 'From Cuis7.9 [latest update: #8087] on 24 July 2026 at 2:33:16 pm'!
 'Description An helper tool to describe  dialog panel for user input and validation.'!
-!provides: 'UI-Mold' 1 21!
-!requires: 'UI-Widgets' 1 17 nil!
-!requires: 'UI-Panel' 1 58 nil!
+!provides: 'UI-Mold' '1.21.0'!
+!requires: 'UI-Widgets' '1.17.*' '*.*.*'!
+!requires: 'UI-Panel' '1.58.*' '*.*.*'!
 SystemOrganization addCategory: #'UI-Mold'!
 SystemOrganization addCategory: #'UI-Mold-Test'!
 

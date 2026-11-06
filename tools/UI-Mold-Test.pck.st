@@ -1,7 +1,7 @@
 'From Cuis 6.0 [latest update: #5772] on 23 April 2023 at 4:14:21 pm'!
 'Description '!
-!provides: 'UI-Mold-Test' 1 3!
-!requires: 'UI-Mold' 1 6 nil!
+!provides: 'UI-Mold-Test'  '1.3.0'!
+!requires: 'UI-Mold'  '1.6.0' '*.*.*'!
 SystemOrganization addCategory: 'UI-Mold-Test'!
 
 

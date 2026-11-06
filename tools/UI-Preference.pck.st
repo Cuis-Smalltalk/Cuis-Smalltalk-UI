@@ -1,9 +1,9 @@
 'From Cuis7.1 [latest update: #6539] on 29 July 2024 at 11:00:39 am'!
 'Description '!
-!provides: 'UI-Preference' 1 28!
-!requires: 'UI-Click-Select' 1 31 nil!
-!requires: 'UI-Panel' 1 51 nil!
-!requires: 'UI-Widgets' 1 22 nil!
+!provides: 'UI-Preference' '1.28.0'!
+!requires: 'UI-Click-Select'  '1.31.0' '*.*.*'!
+!requires: 'UI-Panel'  '1.51.0' '*.*.*'!
+!requires: 'UI-Widgets'  '1.22.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-Preference'!
 
 
