@@ -2,8 +2,8 @@
 'Description Models and morphs for defining and displaying tables.
 
 See class method category examples in TableMorph.'!
-!provides: 'UI-Table' 1 8!
-!requires: 'Cuis-Base' 73 7095 nil!
+!provides: 'UI-Table'  '1.8.0'!
+!requires: 'Cuis-Base' '7.3.7095' '*.*.*'!
 SystemOrganization addCategory: #'UI-Table'!
 
 

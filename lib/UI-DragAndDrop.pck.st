@@ -1,8 +1,8 @@
 'From Cuis7.7 [latest update: #7834] on 7 February 2026 at 12:40:38 pm'!
 'Description '!
-!provides: 'UI-DragAndDrop' 1 7!
-!requires: 'Cuis-Base' 71 6722 nil!
-!requires: 'UI-Core' 1 18 nil!
+!provides: 'UI-DragAndDrop'  '1.7.0'!
+!requires: 'Cuis-Base' '7.1.6722' '*.*.*'!
+!requires: 'UI-Core' '1.18.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-DragAndDrop'!
 
 

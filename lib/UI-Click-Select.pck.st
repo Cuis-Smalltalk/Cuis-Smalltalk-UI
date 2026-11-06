@@ -1,9 +1,9 @@
 'From Cuis7.9 [latest update: #8045] on 4 July 2026 at 5:25:50 pm'!
 'Description I supply simple click-select elements.'!
-!provides: 'UI-Click-Select' 1 103!
-!requires: 'UI-Widgets' 1 48 nil!
-!requires: 'Cuis-Base' 75 7262 nil!
-!requires: 'UI-Core' 1 0 nil!
+!provides: 'UI-Click-Select'  '1.103.0'!
+!requires: 'UI-Widgets' '1.48.0' '*.*.*'!
+!requires: 'Cuis-Base' '7.5.7262' '*.*.*'!
+!requires: 'UI-Core' '1.0.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-Click-Select'!
 
 

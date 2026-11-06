@@ -1,7 +1,7 @@
 'From Cuis7.7 [latest update: #7955] on 21 May 2026 at 11:10:07 am'!
 'Description Generally useful methods for UI'!
-!provides: 'UI-Core' 1 28!
-!requires: 'Cuis-Base' 71 6722 nil!
+!provides: 'UI-Core' '1.28.0'!
+!requires: 'Cuis-Base' '7.1.6722' '*.*.*'!
 SystemOrganization addCategory: #'UI-Core'!
 
 

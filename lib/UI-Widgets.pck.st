@@ -1,9 +1,9 @@
 'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 2:05:45 pm'!
 'Description Widgets for general use.'!
 !provides: 'UI-Widgets' '1.75.0'!
-!requires: 'Cuis-Base' '7.5.7262' '7.*.*'!
-!requires: 'UI-Core' '1.18.0' '1.*.*'!
-!requires: 'Graphics-Files-Additional' '1.29.0' '1.*.*'!
+!requires: 'Cuis-Base' '7.5.7262' '*.*.*'!
+!requires: 'UI-Core' '1.18.0' '*.*.*'!
+!requires: 'Graphics-Files-Additional' '1.29.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-Widgets'!
 
 

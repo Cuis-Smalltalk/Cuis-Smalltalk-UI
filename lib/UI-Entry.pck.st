@@ -1,9 +1,9 @@
 'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 3:12:16 pm'!
 'Description I supply simple text entry fields.'!
 !provides: 'UI-Entry' '1.63.0'!
-!requires: 'UI-Click-Select' '1.3.0' '1.*.*'!
-!requires: 'Cuis-Base' '7.5.7734' '7.*.*'!
-!requires: 'UI-Core' '1.0.0' '1.*.*'!
+!requires: 'UI-Click-Select' '1.3.0' '*.*.*'!
+!requires: 'Cuis-Base' '7.5.7734' '*.*.*'!
+!requires: 'UI-Core' '1.0.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-Entry'!
 
 

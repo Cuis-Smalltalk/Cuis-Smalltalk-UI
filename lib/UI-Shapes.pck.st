@@ -1,7 +1,7 @@
 'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 2:29:26 pm'!
 'Description Various Vector Graphic Morph Examples'!
 !provides: 'UI-Shapes' '1.48.0'!
-!requires: 'UI-Core' '1.11.0' '1.*.*'!
+!requires: 'UI-Core' '1.11.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-Shapes'!
 
 

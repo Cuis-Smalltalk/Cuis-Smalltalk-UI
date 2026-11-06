@@ -1,10 +1,10 @@
 'From Cuis7.9 [latest update: #8182] on 15 September 2026 at 3:42:47 pm'!
 'Description I supply titled Panels, useful windows simpler
 than SystemWindows.'!
-!provides: 'UI-Panel' 1 173!
-!requires: 'Cuis-Base' 75 7734 nil!
-!requires: 'UI-Core' 1 25 nil!
-!requires: 'UI-Entry' 1 53 nil!
+!provides: 'UI-Panel' '1.173.0'!
+!requires: 'Cuis-Base' '7.5.7734' '*.*.*'!
+!requires: 'UI-Core' '1.25.0' '*.*.*'!
+!requires: 'UI-Entry' '1.53.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-Panel'!
 
 
