@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:42:21 pm'!
+'From Cuis7.9 [latest update: #8306] on 10 November 2026 at 2:49:50 pm'!
 'Description Save combined Morph into a package which requires its dependent code.
 Restore via
   Feature require: <package>'!
-!provides: 'UI-Packager' 1 2!
+!provides: 'UI-Packager' '1.2.0'!
 SystemOrganization addCategory: #'UI-Packager'!
 
 
@@ -25,14 +25,14 @@ This means you can require that package and get your complex morph back.
 
 !
 
-!ReferenceStream methodsFor: '*ui-packager' stamp: 'KenD 3/7/2022 17:07:30'!
+!ReferenceStream methodsFor: '*ui-packager' stamp: 'KenD 8/Mar/2022, 1:07:30 am (UTC)'!
 references
 	"Answer IdentityDictionary of objects written out so far.
 	 Keys are the objects."
 	
 	^ references! !
 
-!ReferenceStream class methodsFor: '*ui-packager' stamp: 'KenD 3/7/2022 17:07:53'!
+!ReferenceStream class methodsFor: '*ui-packager' stamp: 'KenD 8/Mar/2022, 1:07:53 am (UTC)'!
 packagesFromDumpOnFile: morphObjectFileEntry object: aMorph
 	"Export object to file and answer set of packages it requires.
 	 WARNING: will overwrite file without checking!!"
@@ -53,7 +53,7 @@ packagesFromDumpOnFile: morphObjectFileEntry object: aMorph
 		
 	! !
 
-!Morph methodsFor: '*ui-packager' stamp: 'KenD 3/26/2022 12:50:44'!
+!Morph methodsFor: '*ui-packager' stamp: 'KenD 10/Nov/2026, 10:47:32 pm (UTC)'!
 packageFileEntry: packageFileEntry 
 requires: packRequires 
 forLoadofName: packageName
@@ -72,7 +72,7 @@ forLoadofName: packageName
 		named: packageName 
 		createIfAbsent: true 
 		registerIfNew: false.
-	feature := Feature name: packageName version: 1 revision: 0. 
+	feature := Feature name: packageName version: SemanticVersion zero. 
 	fspec := FeatureSpec provides: feature requires: requirements.
 	codePkg
  	       description: 'Load Morph for ', packageName;
@@ -114,7 +114,7 @@ initialize
 ).
 	PopUpMenu inform: packageFileEntry name , ' saved'.! !
 
-!Morph methodsFor: '*ui-packager' stamp: 'jmv 9/12/2024 12:41:39'!
+!Morph methodsFor: '*ui-packager' stamp: 'jmv 12/Sep/2024, 8:41:39 pm (UTC)'!
 saveAsPackage
 	"Save me and create a package which requires all my dependent code."
 	
@@ -134,7 +134,7 @@ saveAsPackage
 
 	! !
 
-!Morph methodsFor: '*ui-packager' stamp: 'KenD 3/9/2022 08:50:16'!
+!Morph methodsFor: '*ui-packager' stamp: 'KenD 9/Mar/2022, 4:50:16 pm (UTC)'!
 saveAsPackage: packageName
 	"Save me and create a package which requires all my dependent code."
 	
