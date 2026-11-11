@@ -1,12 +1,12 @@
 'From Cuis7.7 [latest update: #7782] on 1 January 2026 at 10:26:48 am'!
 'Description I supply Palettes of selectable items.
 E.g. see PickAnIconPalette, PickAColorPalette'!
-!provides: 'UI-Palette' 1 20!
-!requires: 'Cuis-Base' 71 6722 nil!
-!requires: 'UI-Panel' 1 17 nil!
-!requires: 'UI-Click-Select' 1 63 nil!
-!requires: 'UI-DragAndDrop' 1 4 nil!
-!requires: 'UI-Shapes' 1 45 nil!
+!provides: 'UI-Palette' '1.20.0'!
+!requires: 'Cuis-Base' '7.1.6722' '*.*.*'!
+!requires: 'UI-Panel' '1.17.0' '*.*.*'!
+!requires: 'UI-Click-Select' '1.63.0' '*.*.*'!
+!requires: 'UI-DragAndDrop' '1.4.0' '*.*.*'!
+!requires: 'UI-Shapes' '1.45.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-Palette'!
 
 

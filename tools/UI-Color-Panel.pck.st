@@ -2,13 +2,13 @@
 'Description I supply the RGB/HSB and OK-LCH ColorEditor Panels'!
 !provides: 'UI-Color-Panel' '1.66.0' '*.*.*'!
 !requires: 'Cuis-Base' '7.9.8266' '*.*.*'!
-!requires: 'UI-DragAndDrop' '1.4.*' '*.*.*'!
-!requires: 'CSS3-NamedColors'  '1.1.*' '*.*.*'!
-!requires: 'UI-Click-Select'  '1.84.*'  '*.*.*'!
-!requires: 'Color-Extras' '1.9.*' '*.*.*'!
-!requires: 'UI-Panel'  '1.140.*' '*.*.*'!
-!requires: 'UI-Palette'  '1.19.*' '*.*.*'!
-!requires: 'Graphics-Files-Additional' '1.30.*' '*.*.*'!
+!requires: 'UI-DragAndDrop' '1.4.0' '*.*.*'!
+!requires: 'CSS3-NamedColors'  '1.1.0' '*.*.*'!
+!requires: 'UI-Click-Select'  '1.84.0'  '*.*.*'!
+!requires: 'Color-Extras' '1.9.0' '*.*.*'!
+!requires: 'UI-Panel'  '1.140.0' '*.*.*'!
+!requires: 'UI-Palette'  '1.19.0' '*.*.*'!
+!requires: 'Graphics-Files-Additional' '1.30.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-Color-Panel'!
 
 

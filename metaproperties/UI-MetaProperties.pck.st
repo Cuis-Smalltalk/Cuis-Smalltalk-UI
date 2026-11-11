@@ -1,15 +1,15 @@
 'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 3:16:38 pm'!
 'Description MetaProperties describe and define public visual properties of Morphs.  They are used in Morph Menus.  Visual menu properties are purple and can be edited (one click) or dragged onto another menu (Drag ''n Drop),'!
 !provides: 'UI-MetaProperties' '1.152.0'!
-!requires: 'Cuis-Base' '7.9.8266' '7.*.*'!
-!requires: 'UI-Components' '1.6.0' '1.*.*'!
-!requires: 'UI-Shapes' '1.38.0' '1.*.*'!
-!requires: 'Complex' '1.0.0' '1.*.*'!
+!requires: 'Cuis-Base' '7.9.8266' '*.*.*'!
+!requires: 'UI-Components' '1.6.0' '*.*.*'!
+!requires: 'UI-Shapes' '1.38.0' '*.*.*'!
+!requires: 'Complex' '1.0.0' '*.*.*'!
 !requires: 'UI-Packager' '1.0.0' '1.*.*'!
-!requires: 'UI-Layout-Panel' '1.10.0' '1.*.*'!
-!requires: 'UI-Color-Panel' '1.3.0' '1.*.*'!
-!requires: 'UI-Mold' '1.21.0' '1.*.*'!
-!requires: 'UI-Entry' '1.63.0' '1.*.*'!
+!requires: 'UI-Layout-Panel' '1.10.0' '*.*.*'!
+!requires: 'UI-Color-Panel' '1.3.0' '*.*.*'!
+!requires: 'UI-Mold' '1.21.0' '*.*.*'!
+!requires: 'UI-Entry' '1.63.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-MetaProperties'!
 
 
