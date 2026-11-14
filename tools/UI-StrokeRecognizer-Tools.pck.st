@@ -1,8 +1,8 @@
-'From Cuis7.1 [latest update: #6792] on 22 October 2024 at 1:23:49 pm'!
+'From Cuis7.9 [latest update: #8340] on 14 November 2026 at 12:44:25 pm'!
 'Description Tools to create and investigate CompassRecognizer pattern exemplars.'!
-!provides: 'UI-StrokeRecognizer-Tools'  '1.3.0'!
+!provides: 'UI-StrokeRecognizer-Tools' '1.3.1'!
 !requires: 'Cuis-Base' '7.1.6792' '*.*.*'!
-!requires: 'UI-StrokeRecognizer' '1.28.0'  '*.*.*'!
+!requires: 'UI-StrokeRecognizer' '1.28.0' '*.*.*'!
 SystemOrganization addCategory: #'UI-StrokeRecognizer-Tools'!
 
 
@@ -47,7 +47,7 @@ CompassSampleMorph class
 	instanceVariableNames: ''!
 
 
-!CompassSampleCompareMorph commentStamp: '<historical>' prior: 0!
+!CompassSampleCompareMorph commentStamp: '<historical>'!
 I am a Row of CompassSampleMorphs.
 
 As the samples each gather stroke info, I generate a comparisonIndices array
@@ -62,7 +62,7 @@ differences significant enough to recognize.  We also want to avoid "false posit
 
 !
 
-!CompassSampleSizeMorph commentStamp: '<historical>' prior: 0!
+!CompassSampleSizeMorph commentStamp: '<historical>'!
 Compare input gesture at different sample size resolutions.
 
 Useful to compare "close" distinctions, e.g. between $B $D $P $R.
@@ -72,14 +72,14 @@ What "sample resolution" gives crisp results?
 Note: CompassTrainingMorph
 !
 
-!CompassTrainingMorph commentStamp: '<historical>' prior: 0!
+!CompassTrainingMorph commentStamp: '<historical>'!
 I am a Morph useful to try out stroke recognition and add new pattern exemplars to recognizer.
 
 Feature require: 'StrokeRecognizer'.
 CompassTrainingMorph new openInHand.
 StrokeInputMorph strokeMorph openInHand. "Shows PalmOS Graffiti gestures"!
 
-!CompassSampleMorph commentStamp: '<historical>' prior: 0!
+!CompassSampleMorph commentStamp: '<historical>'!
 I am used to compare one of a number of stroke training samples.
 
 I inform my owner of new samples and can colorize my results
@@ -89,7 +89,7 @@ See class CompassSampleCompareMorph.
 
 !
 
-!CompassSampleCompareMorph methodsFor: 'initialization' stamp: 'KenD 10/19/2024 15:39:15'!
+!CompassSampleCompareMorph methodsFor: 'initialization' stamp: 'KenD 19/Oct/2024, 11:39:15 pm (UTC)'!
 initialize
 
 	| sharedRecognizer |
@@ -102,7 +102,7 @@ initialize
 		self addMorph: sampler.
 	].! !
 
-!CompassSampleCompareMorph methodsFor: 'event handling' stamp: 'KenD 10/20/2024 11:00:26'!
+!CompassSampleCompareMorph methodsFor: 'event handling' stamp: 'KenD 20/Oct/2024, 7:00:26 pm (UTC)'!
 newSample
 
 	"Compare across all samples to colorize match/misMatch."
@@ -122,40 +122,40 @@ newSample
 	
 	! !
 
-!CompassSampleCompareMorph class methodsFor: 'access' stamp: 'KenD 10/15/2024 14:03:40'!
+!CompassSampleCompareMorph class methodsFor: 'access' stamp: 'KenD 15/Oct/2024, 10:03:40 pm (UTC)'!
 matchColor
 
 	"Answer text color for matchs" 
 	^Color black! !
 
-!CompassSampleCompareMorph class methodsFor: 'access' stamp: 'KenD 10/15/2024 14:04:00'!
+!CompassSampleCompareMorph class methodsFor: 'access' stamp: 'KenD 15/Oct/2024, 10:04:00 pm (UTC)'!
 misMatchColor
 
 	"Answer text color for non-matches" 
 	^Color red! !
 
-!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/19/2024 10:40:05'!
+!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 19/Oct/2024, 6:40:05 pm (UTC)'!
 categoryInNewMorphMenu
 
 	^ 'Stroke Input'! !
 
-!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/19/2024 10:39:57'!
+!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 19/Oct/2024, 6:39:57 pm (UTC)'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/19/2024 15:22:45'!
+!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 19/Oct/2024, 11:22:45 pm (UTC)'!
 initializedInstance
 " self initializedInstance openInWorld. "
 	^self new! !
 
-!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/19/2024 15:23:03'!
+!CompassSampleCompareMorph class methodsFor: 'new-morph participation' stamp: 'KenD 19/Oct/2024, 11:23:03 pm (UTC)'!
 new
 
 	^self newRow! !
 
-!CompassSampleSizeMorph methodsFor: 'event handling' stamp: 'KenD 10/19/2024 15:08:52'!
+!CompassSampleSizeMorph methodsFor: 'event handling' stamp: 'KenD 19/Oct/2024, 11:08:52 pm (UTC)'!
 strokeResult: points
 
 	"Update view of user input"
@@ -172,7 +172,7 @@ strokeResult: points
 	].
 ! !
 
-!CompassSampleSizeMorph methodsFor: 'gui building' stamp: 'KenD 9/21/2024 12:56:12'!
+!CompassSampleSizeMorph methodsFor: 'gui building' stamp: 'KenD 21/Sep/2024, 8:56:12 pm (UTC)'!
 resultsArea
 
 	| resultsLayout col1 col2 col3 resultCols |
@@ -204,48 +204,48 @@ resultsArea
 	
 	! !
 
-!CompassSampleSizeMorph methodsFor: 'initialization' stamp: 'KenD 9/21/2024 12:44:32'!
+!CompassSampleSizeMorph methodsFor: 'initialization' stamp: 'KenD 14/Nov/2026, 8:40:41 pm (UTC)'!
 initialize
 
 	super initialize.
 	resultsArray := Array new: 3.
 	self
-		addMorph: StrokeInputMorph new;
+		addMorph: StrokeExemplarMorph new;
 		addMorph: self resultsArea;
 		color: Color green.! !
 
-!CompassSampleSizeMorph methodsFor: 'accessing' stamp: 'KenD 9/21/2024 12:09:08'!
+!CompassSampleSizeMorph methodsFor: 'accessing' stamp: 'KenD 21/Sep/2024, 8:09:08 pm (UTC)'!
 sampleSizeArray
 
 	^ `#(16 20 30)`! !
 
-!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/21/2024 12:40:09'!
+!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 21/Sep/2024, 8:40:09 pm (UTC)'!
 categoryInNewMorphMenu
 
 	^ 'Stroke Input'! !
 
-!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/21/2024 12:40:18'!
+!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 21/Sep/2024, 8:40:18 pm (UTC)'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/21/2024 12:40:25'!
+!CompassSampleSizeMorph class methodsFor: 'new-morph participation' stamp: 'KenD 21/Sep/2024, 8:40:25 pm (UTC)'!
 initializedInstance
 
 	^self new! !
 
-!CompassSampleSizeMorph class methodsFor: 'instance creation' stamp: 'KenD 9/21/2024 12:39:10'!
+!CompassSampleSizeMorph class methodsFor: 'instance creation' stamp: 'KenD 21/Sep/2024, 8:39:10 pm (UTC)'!
 new
 	
 	^self newColumn! !
 
-!CompassSampleSizeMorph class methodsFor: 'instance creation' stamp: 'KenD 9/21/2024 12:39:29'!
+!CompassSampleSizeMorph class methodsFor: 'instance creation' stamp: 'KenD 21/Sep/2024, 8:39:29 pm (UTC)'!
 open
 	
 	^self newColumn openInWorld! !
 
-!CompassTrainingMorph methodsFor: 'event handling' stamp: 'KenD 9/10/2024 15:48:27'!
+!CompassTrainingMorph methodsFor: 'event handling' stamp: 'KenD 10/Sep/2024, 11:48:27 pm (UTC)'!
 saveStroke
 
 	"Button request to save into recognizer.  Get a name for it"
@@ -258,7 +258,7 @@ saveStroke
 			(CompassExemplar name: daName asSymbol pattern: sample)
 	].! !
 
-!CompassTrainingMorph methodsFor: 'event handling' stamp: 'KenD 10/19/2024 15:09:13'!
+!CompassTrainingMorph methodsFor: 'event handling' stamp: 'KenD 19/Oct/2024, 11:09:13 pm (UTC)'!
 strokeResult: points
 
 	"Update view of user input"
@@ -269,12 +269,12 @@ strokeResult: points
 	strokeDirections contents: sample strokeTravelDirections.	
 	! !
 
-!CompassTrainingMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2024 21:51:47'!
+!CompassTrainingMorph methodsFor: 'initialization' stamp: 'KenD 14/Nov/2026, 8:40:46 pm (UTC)'!
 initialize
 	
 	super initialize.
 	recognizer := CompassRecognizer new.
-	inputMorph := StrokeInputMorph new.
+	inputMorph := StrokeExemplarMorph new.
 	self addMorph: inputMorph .
 
 	pointDirections := TextParagraphMorph contents: '#()'.
@@ -300,7 +300,7 @@ initialize
 
 	! !
 
-!CompassTrainingMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2024 21:44:17'!
+!CompassTrainingMorph methodsFor: 'initialization' stamp: 'KenD 13/Sep/2024, 5:44:17 am (UTC)'!
 resultRegion
 
 	| upMsg downMsg msgLayout |
@@ -319,31 +319,31 @@ resultRegion
 				addMorph: downMsg;
 				layoutSpec: (LayoutSpec proportionalWidth: 0.4  proportionalHeight: 0.1 ).! !
 
-!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:34:37'!
+!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 17/Oct/2024, 9:34:37 pm (UTC)'!
 pointDirections
 
 	"Answer a TextParagraphMorph"
 	^pointDirections ! !
 
-!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:54:02'!
+!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 17/Oct/2024, 9:54:02 pm (UTC)'!
 recognizer: aCompassRecognizer
 
 	recognizer := aCompassRecognizer ! !
 
-!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:34:31'!
+!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 17/Oct/2024, 9:34:31 pm (UTC)'!
 strokeDirections
 	
 	"Answer a TextParagraphMorph"
 	^strokeDirections ! !
 
-!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:37:43'!
+!CompassTrainingMorph methodsFor: 'accessing' stamp: 'KenD 17/Oct/2024, 9:37:43 pm (UTC)'!
 strokeSample
 
 	"Answer a CompassPattern whose #pattern is 
 	 an array of compass direction symbols."
 	^sample ! !
 
-!CompassTrainingMorph class methodsFor: 'instance creation' stamp: 'KenD 9/10/2024 17:55:41'!
+!CompassTrainingMorph class methodsFor: 'instance creation' stamp: 'KenD 11/Sep/2024, 1:55:41 am (UTC)'!
 new
 
 	| newSelf |
@@ -351,23 +351,23 @@ new
 	newSelf morphExtent: newSelf minimumExtent.
 	^newSelf! !
 
-!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 07:59:32'!
+!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 18/Sep/2024, 3:59:32 pm (UTC)'!
 categoryInNewMorphMenu
 
 	^ 'Stroke Input'! !
 
-!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 07:59:24'!
+!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 18/Sep/2024, 3:59:24 pm (UTC)'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ true! !
 
-!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 9/18/2024 07:59:10'!
+!CompassTrainingMorph class methodsFor: 'new-morph participation' stamp: 'KenD 18/Sep/2024, 3:59:10 pm (UTC)'!
 initializedInstance
 
 	^self new! !
 
-!CompassSampleMorph methodsFor: 'event handling' stamp: 'KenD 10/22/2024 13:18:34'!
+!CompassSampleMorph methodsFor: 'event handling' stamp: 'KenD 22/Oct/2024, 9:18:34 pm (UTC)'!
 colorizeDirections: aBooleanVector
 
 	"aBooleanVector elements are used to colorize"
@@ -381,7 +381,7 @@ colorizeDirections: aBooleanVector
 	
 	! !
 
-!CompassSampleMorph methodsFor: 'event handling' stamp: 'KenD 10/19/2024 15:36:52'!
+!CompassSampleMorph methodsFor: 'event handling' stamp: 'KenD 19/Oct/2024, 11:36:52 pm (UTC)'!
 strokeResult: points
 
 	"Update view of user input"
@@ -390,25 +390,25 @@ strokeResult: points
 	
 	! !
 
-!CompassSampleMorph methodsFor: 'initialization' stamp: 'KenD 10/20/2024 07:51:40'!
+!CompassSampleMorph methodsFor: 'initialization' stamp: 'KenD 20/Oct/2024, 3:51:40 pm (UTC)'!
 initialization
 
 	super initialize.
 	self separation: 10. "override"! !
 
-!CompassSampleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/17/2024 13:48:13'!
+!CompassSampleMorph class methodsFor: 'new-morph participation' stamp: 'KenD 17/Oct/2024, 9:48:13 pm (UTC)'!
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	
 	^ false! !
 
-!CompassSampleMorph class methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:49:59'!
+!CompassSampleMorph class methodsFor: 'accessing' stamp: 'KenD 17/Oct/2024, 9:49:59 pm (UTC)'!
 matchColor
 
 	"Answer text color for matches" 
 	^Color black! !
 
-!CompassSampleMorph class methodsFor: 'accessing' stamp: 'KenD 10/17/2024 13:49:07'!
+!CompassSampleMorph class methodsFor: 'accessing' stamp: 'KenD 17/Oct/2024, 9:49:07 pm (UTC)'!
 misMatchColor
 
 	"Answer text color for non-matches" 
