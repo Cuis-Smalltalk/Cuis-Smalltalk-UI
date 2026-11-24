@@ -1,6 +1,6 @@
-'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 3:12:16 pm'!
+'From Cuis7.9 [latest update: #8395] on 24 November 2026 at 11:07:58 am'!
 'Description I supply simple text entry fields.'!
-!provides: 'UI-Entry' '1.63.0'!
+!provides: 'UI-Entry' '1.64.0'!
 !requires: 'UI-Click-Select' '1.3.0' '*.*.*'!
 !requires: 'Cuis-Base' '7.5.7734' '*.*.*'!
 !requires: 'UI-Core' '1.0.0' '*.*.*'!
@@ -48,7 +48,7 @@ SimpleNumberEntryMorph class
 	instanceVariableNames: ''!
 
 
-!LimitedHeightTextMorph commentStamp: '<historical>' prior: 0!
+!LimitedHeightTextMorph commentStamp: '<historical>'!
 A TextMorph that will expand and contract vertically to adjust for the contents, but limited to a specific max height. If contents are larger, a scrollbar will be used.
 
 LimitedHeightTextMorph new
@@ -56,15 +56,15 @@ LimitedHeightTextMorph new
 	model: (TextModel new contents: 'This is some text to test the morph.');
 	openInWorld!
 
-!MinimalStringMorph commentStamp: '<historical>' prior: 0!
+!MinimalStringMorph commentStamp: '<historical>'!
 A greatly reduced StringMorph. May be of some use.!
 
-!TextEntryMorph commentStamp: '<historical>' prior: 0!
+!TextEntryMorph commentStamp: '<historical>'!
 A plain text editor for Morphic. Handles only one line. Does not handle fonts/styles, alignment, Smalltalk utilities and any other advanced stuff in TextModelMorph. Just a simple text editor.
 
 Can optionally include a crAction: a zero argument closure, to be evaluated on Cr keystroke.!
 
-!SimpleNumberEntryMorph commentStamp: '<historical>' prior: 0!
+!SimpleNumberEntryMorph commentStamp: '<historical>'!
 I am a simple numeric entry form.  I display and accept numeric values.
 
 See class side for examples.
@@ -686,6 +686,9 @@ hasUnacceptedEdits: aBoolean
 	self flag: #jmv.
 	"Not used in this morph, as it doesn't do accept / cancel"
 	self redrawNeeded! !
+
+!TextEntryMorph methodsFor: 'unaccepted edits' stamp: 'jmv 24/Nov/2026, 2:07:44 pm (UTC)'!
+userHasEdited! !
 
 !TextEntryMorph methodsFor: 'private' stamp: 'KenD 1/Dec/2025, 2:08:00 pm (UTC)'!
 aboutToEdit
